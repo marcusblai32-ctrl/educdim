@@ -10,4 +10,5 @@ urlpatterns = [
     path('passer/<int:tentative_pk>/', views.take_quiz, name='take_quiz'),
     path('soumettre/<int:tentative_pk>/', views.submit_quiz, name='submit'),
     path('resultat/<int:tentative_pk>/', views.quiz_result, name='quiz_result'),
+    path('question/<int:question_id>/upload-type/', views.get_question_upload_type, name='get_upload_type'),
 ]

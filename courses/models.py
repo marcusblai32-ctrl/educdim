@@ -3,6 +3,34 @@ from django.conf import settings
 from django.utils.translation import get_language
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+# ============================================
+# LEARNING PATH (NOUVEAU)
+# ============================================
+class LearningPath(models.Model):
+    nom = models.CharField(max_length=200, verbose_name="Nom du Learning Path")
+    description = models.TextField(blank=True, verbose_name="Description")
+    image = models.ImageField(upload_to='learning_paths/', blank=True, null=True, verbose_name="Image")
+    actif = models.BooleanField(default=True, verbose_name="Actif")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Learning Path"
+        verbose_name_plural = "Learning Paths"
+        ordering = ['nom']
+
+    def __str__(self):
+        return self.nom
+
+    def nombre_cours(self):
+        return self.cours.filter(publie=True).count()
+
+    def cours_publies(self):
+        return self.cours.filter(publie=True).order_by('position')
+
+# ============================================
+# CATEGORY (EXISTANT)
+# ============================================
 class Category(models.Model):
     nom = models.CharField(max_length=100, unique=True, verbose_name="Nom de la catégorie")
     description = models.TextField(blank=True, verbose_name="Description")
@@ -18,6 +46,10 @@ class Category(models.Model):
     def __str__(self):
         return self.nom
 
+
+# ============================================
+# NIVEAU (EXISTANT)
+# ============================================
 class Niveau(models.Model):
     NIVEAUX = [
         ('debutant', 'Débutant'),
@@ -35,6 +67,10 @@ class Niveau(models.Model):
     def __str__(self):
         return self.get_nom_display()
 
+
+# ============================================
+# PROMOTIONS (EXISTANT)
+# ============================================
 class Promotions(models.Model):
     nom = models.CharField(max_length=100, verbose_name="Nom de la promotion")
     nivo = models.ForeignKey(Niveau, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Niveau")
@@ -55,7 +91,12 @@ class Promotions(models.Model):
     def nombre_etudiants(self):
         return self.etudiants.count()
 
+
+# ============================================
+# COURSE (MODIFIÉ)
+# ============================================
 class Course(models.Model):
+    # Champs existants
     titre = models.CharField(max_length=255, verbose_name="Titre")
     description = models.TextField(blank=True, verbose_name="Description")
     image_url = models.URLField(blank=True, verbose_name="URL de l'image (recommandée)")
@@ -74,10 +115,15 @@ class Course(models.Model):
     inscription_ouverte = models.BooleanField(default=True, verbose_name="Inscriptions ouvertes")
     promotion = models.ForeignKey(Promotions, on_delete=models.SET_NULL, null=True, blank=True, related_name='cours_promo', verbose_name="Promotion")
 
+    # ===== NOUVEAUX CHAMPS =====
+    learning_path = models.ForeignKey(LearningPath, on_delete=models.SET_NULL, null=True, blank=True, related_name='cours', verbose_name="Learning Path")
+    position = models.PositiveIntegerField(default=0, verbose_name="Position dans le Learning Path")
+
     class Meta:
         verbose_name = "Cours"
         verbose_name_plural = "Cours"
-        ordering = ['titre']
+        ordering = ['learning_path', 'position', 'titre']
+        unique_together = ['learning_path', 'position']
 
     @property
     def est_payant(self):
@@ -103,6 +149,77 @@ class Course(models.Model):
             return self.image.url
         return None
 
+    # ===== NOUVELLES MÉTHODES =====
+
+    def get_position_display(self):
+        """Retourne la position du cours dans le Learning Path"""
+        if self.learning_path:
+            cours_path = self.learning_path.cours_publies()
+            total = cours_path.count()
+            position = list(cours_path).index(self) + 1 if self in cours_path else 0
+            return f"Cours {position} sur {total}"
+        return None
+
+    def get_previous_course(self):
+        """Retourne le cours précédent dans le Learning Path"""
+        if not self.learning_path:
+            return None
+        return self.learning_path.cours_publies().filter(position__lt=self.position).last()
+
+    def get_next_course(self):
+        """Retourne le cours suivant dans le Learning Path"""
+        if not self.learning_path:
+            return None
+        return self.learning_path.cours_publies().filter(position__gt=self.position).first()
+
+    def get_prerequisites(self):
+        """Retourne tous les prérequis du cours"""
+        return self.est_prerequis_de.all()
+
+    def get_prerequisites_completed(self, user):
+        """Vérifie si l'utilisateur a complété tous les prérequis"""
+        from enrollments.models import Enrollment
+        prerequis = self.get_prerequisites()
+        if not prerequis:
+            return True, []
+        completed = []
+        missing = []
+        for prereq in prerequis:
+            cours_prerequis = prereq.prerequis
+            if Enrollment.objects.filter(utilisateur=user, cours=cours_prerequis, statut='active').exists():
+                completed.append(cours_prerequis)
+            else:
+                missing.append(cours_prerequis)
+        return len(missing) == 0, missing
+
+    def is_completed_by_user(self, user):
+        """Vérifie si l'utilisateur a terminé ce cours"""
+        from enrollments.models import Enrollment
+        return Enrollment.objects.filter(utilisateur=user, cours=self, statut='active').exists()
+
+
+# ============================================
+# COURSE PREREQUISITE (NOUVEAU)
+# ============================================
+class CoursePrerequisite(models.Model):
+    cours = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='prerequis_pour', verbose_name="Cours principal")
+    prerequis = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='est_prerequis_de', verbose_name="Cours prérequis")
+    obligatoire = models.BooleanField(default=True, verbose_name="Obligatoire")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('cours', 'prerequis')
+        verbose_name = "Prérequis de cours"
+        verbose_name_plural = "Prérequis de cours"
+        ordering = ['cours', 'prerequis']
+
+    def __str__(self):
+        return f"{self.prerequis.titre} → {self.cours.titre}"
+
+
+# ============================================
+# UNITE (EXISTANT)
+# ============================================
 class Unite(models.Model):
     cours = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='unites', verbose_name="Cours")
     titre = models.CharField(max_length=255, verbose_name="Titre")
@@ -118,6 +235,10 @@ class Unite(models.Model):
     def __str__(self):
         return f"{self.cours.titre} - Unité {self.ordre}: {self.titre}"
 
+
+# ============================================
+# MODULE (EXISTANT)
+# ============================================
 class Module(models.Model):
     unite = models.ForeignKey(Unite, on_delete=models.CASCADE, related_name='modules', verbose_name="Unité")
     titre = models.CharField(max_length=255, verbose_name="Titre")
@@ -133,6 +254,10 @@ class Module(models.Model):
     def __str__(self):
         return f"{self.unite} - Module {self.ordre}: {self.titre}"
 
+
+# ============================================
+# LECON (EXISTANT)
+# ============================================
 class Lecon(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE, related_name='lecons', verbose_name="Module")
     titre = models.CharField(max_length=255, verbose_name="Titre")
@@ -150,6 +275,10 @@ class Lecon(models.Model):
     def __str__(self):
         return f"{self.module} - Leçon {self.ordre}: {self.titre}"
 
+
+# ============================================
+# SECTION LECON (EXISTANT)
+# ============================================
 class SectionLecon(models.Model):
     TYPES_SECTION = [
         ('introduction', 'Introduction'),
@@ -172,6 +301,10 @@ class SectionLecon(models.Model):
     def __str__(self):
         return f"{self.lecon} - {self.titre}"
 
+
+# ============================================
+# CONTENU (EXISTANT)
+# ============================================
 class Contenu(models.Model):
     TYPES_CONTENU = [
         ('texte', 'Texte'),

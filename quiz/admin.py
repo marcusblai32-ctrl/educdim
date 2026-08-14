@@ -64,3 +64,4 @@ class TentativeQuizAdmin(admin.ModelAdmin):
 @admin.register(ReponseUtilisateur)
 class ReponseUtilisateurAdmin(admin.ModelAdmin):
     list_display = ('tentative', 'question')
+    readonly_fields = ('audio_reponse', 'video_reponse', 'image_reponse', 'fichier_reponse')

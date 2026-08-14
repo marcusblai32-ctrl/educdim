@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+
+{% block title %}{% trans "Résultat du quiz" %} - {{ tentative.quiz.titre }}{% endblock %}
+
+{% block content %}
+<div style="max-width: 900px; margin: 2rem auto; padding: 0 1.5rem;">
+
+    <!-- ===== HEADER ===== -->
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <h1 style="font-size: 2rem; font-weight: 800;">{{ tentative.quiz.titre }}</h1>
+        <p style="color: var(--text-muted);">{% trans "Résultat du quiz" %}</p>
+    </div>
+
+    <!-- ===== SCORE ===== -->
+    <div style="background: var(--bg-card); border-radius: var(--radius-lg); padding: 2rem; text-align: center; box-shadow: var(--shadow-lg); border: 1px solid var(--border); margin-bottom: 2rem;">
+        <div style="font-size: 4rem; font-weight: 900; color: var(--primary);">
+            {{ tentative.score|floatformat:0 }}%
+        </div>
+        <div style="font-size: 1.2rem; font-weight: 600; margin-top: 0.5rem;">
+            {% if tentative.reussi %}
+            <span style="color: var(--success);">
+                <i class="fas fa-check-circle"></i> {% trans "Félicitations ! Vous avez réussi !" %}
+            </span>
+            {% else %}
+            <span style="color: var(--danger);">
+                <i class="fas fa-times-circle"></i> {% trans "Pas encore réussi. Réessayez !" %}
+            </span>
+            {% endif %}
+        </div>
+        <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">
+            {% trans "Seuil de réussite" %}: {{ tentative.quiz.pourcentage_reussite }}%
+        </div>
+        <div style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="{% url 'quiz:start' tentative.quiz.pk %}" class="btn btn-primary">
+                <i class="fas fa-redo"></i> {% trans "Réessayer" %}
+            </a>
+            <a href="{% url 'courses:course_detail' tentative.quiz.cours.pk %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> {% trans "Retour au cours" %}
+            </a>
+        </div>
+    </div>
+
+    <!-- ===== DÉTAIL DES RÉPONSES ===== -->
+    <h2 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem;">
+        <i class="fas fa-list-ul"></i> {% trans "Détail de vos réponses" %}
+    </h2>
+
+    {% for reponse_utilisateur in reponses_utilisateur %}
+    <div style="background: var(--bg-card); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1rem; box-shadow: var(--shadow); border: 1px solid var(--border);">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem;">
+            <h4 style="font-size: 1rem; font-weight: 600; margin: 0;">
+                {% trans "Question" %} {{ forloop.counter }}
+            </h4>
+            <span class="badge badge-secondary">{{ reponse_utilisateur.question.get_type_question_display }}</span>
+        </div>
+
+        <p style="margin-bottom: 0.5rem;">{{ reponse_utilisateur.question.texte }}</p>
+
+        <!-- ===== RÉPONSE DE L'UTILISATEUR ===== -->
+        <div style="background: var(--bg); padding: 0.8rem 1rem; border-radius: var(--radius-sm); margin-top: 0.5rem;">
+            <strong style="color: var(--text-muted);">{% trans "Votre réponse" %}:</strong>
+
+            {% if reponse_utilisateur.question.type_question in 'single,vrai_faux,multiple' %}
+            {% for reponse in reponse_utilisateur.reponses_selectionnees.all %}
+            <span class="badge {% if reponse.est_correcte %}badge-success{% else %}badge-danger{% endif %}" style="margin-right: 0.3rem;">
+                    {{ reponse.texte }}
+                    {% if reponse.est_correcte %}
+                    <i class="fas fa-check"></i>
+                    {% else %}
+                    <i class="fas fa-times"></i>
+                    {% endif %}
+                </span>
+            {% empty %}
+            <span style="color: var(--text-muted);">{% trans "Aucune réponse sélectionnée" %}</span>
+            {% endfor %}
+
+            {% elif reponse_utilisateur.question.type_question == 'texte_trous' %}
+            <span>{{ reponse_utilisateur.texte_reponse|default:"-" }}</span>
+
+            {% elif reponse_utilisateur.question.type_question == 'texte_libre' %}
+            <div style="white-space: pre-wrap; font-style: italic; color: var(--text-muted);">
+                {{ reponse_utilisateur.texte_reponse|default:"-" }}
+            </div>
+
+            <!-- ===== UPLOAD TYPES ===== -->
+            {% elif reponse_utilisateur.question.type_question == 'audio_reponse' %}
+            {% if reponse_utilisateur.audio_reponse %}
+            <audio controls style="max-width: 100%; margin-top: 0.3rem;">
+                <source src="{{ reponse_utilisateur.audio_reponse.url }}" type="audio/mpeg">
+            </audio>
+            <br><a href="{{ reponse_utilisateur.audio_reponse.url }}" target="_blank" style="font-size: 0.85rem;">
+            <i class="fas fa-download"></i> {% trans "Télécharger" %}
+        </a>
+            {% else %}
+            <span style="color: var(--text-muted);">{% trans "Aucun fichier téléchargé" %}</span>
+            {% endif %}
+
+            {% elif reponse_utilisateur.question.type_question == 'video_reponse' %}
+            {% if reponse_utilisateur.video_reponse %}
+            <video controls style="max-width: 100%; max-height: 300px; margin-top: 0.3rem;">
+                <source src="{{ reponse_utilisateur.video_reponse.url }}" type="video/mp4">
+            </video>
+            <br><a href="{{ reponse_utilisateur.video_reponse.url }}" target="_blank" style="font-size: 0.85rem;">
+            <i class="fas fa-download"></i> {% trans "Télécharger" %}
+        </a>
+            {% else %}
+            <span style="color: var(--text-muted);">{% trans "Aucun fichier téléchargé" %}</span>
+            {% endif %}
+
+            {% elif reponse_utilisateur.question.type_question == 'image_reponse' %}
+            {% if reponse_utilisateur.image_reponse %}
+            <img src="{{ reponse_utilisateur.image_reponse.url }}" alt="Réponse image" style="max-width: 100%; max-height: 200px; border-radius: var(--radius-sm); margin-top: 0.3rem;">
+            <br><a href="{{ reponse_utilisateur.image_reponse.url }}" target="_blank" style="font-size: 0.85rem;">
+            <i class="fas fa-download"></i> {% trans "Télécharger" %}
+        </a>
+            {% else %}
+            <span style="color: var(--text-muted);">{% trans "Aucun fichier téléchargé" %}</span>
+            {% endif %}
+
+            {% elif reponse_utilisateur.question.type_question == 'fichier_reponse' %}
+            {% if reponse_utilisateur.fichier_reponse %}
+            <a href="{{ reponse_utilisateur.fichier_reponse.url }}" target="_blank" style="font-size: 0.95rem;">
+                <i class="fas fa-file"></i> {{ reponse_utilisateur.fichier_reponse.name|cut:"quiz/reponses/fichiers/" }}
+            </a>
+            {% else %}
+            <span style="color: var(--text-muted);">{% trans "Aucun fichier téléchargé" %}</span>
+            {% endif %}
+
+            {% endif %}
+        </div>
+
+        <!-- ===== BONNE RÉPONSE (si applicable) ===== -->
+        {% if reponse_utilisateur.question.type_question in 'single,vrai_faux,multiple' %}
+        <div style="background: rgba(34, 197, 94, 0.05); padding: 0.5rem 1rem; border-radius: var(--radius-sm); margin-top: 0.5rem; border-left: 3px solid var(--success);">
+            <strong style="color: var(--success);">{% trans "Bonne réponse" %}:</strong>
+            {% for reponse in reponse_utilisateur.question.reponses.all %}
+            {% if reponse.est_correcte %}
+            <span class="badge badge-success" style="margin-right: 0.3rem;">{{ reponse.texte }}</span>
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- ===== EXPLICATION ===== -->
+        {% if reponse_utilisateur.question.explication %}
+        <div style="background: rgba(59, 130, 246, 0.05); padding: 0.5rem 1rem; border-radius: var(--radius-sm); margin-top: 0.5rem; border-left: 3px solid var(--info);">
+            <strong style="color: var(--info);">{% trans "Explication" %}:</strong>
+            <span style="color: var(--text-muted);">{{ reponse_utilisateur.question.explication }}</span>
+        </div>
+        {% endif %}
+    </div>
+    {% empty %}
+    <p style="color: var(--text-muted);">{% trans "Aucune réponse enregistrée." %}</p>
+    {% endfor %}
+</div>
+{% endblock %}

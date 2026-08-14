@@ -8,11 +8,12 @@ class CourseForm(forms.ModelForm):
             'titre', 'description', 'image_url', 'image',
             'prix', 'publie', 'categorie', 'nivo',
             'duree', 'date_debut_inscription', 'date_fin_inscription',
-            'inscription_ouverte'
+            'inscription_ouverte', 'learning_path', 'position'
         ]
         widgets = {
             'date_debut_inscription': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'date_fin_inscription': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'duree': forms.NumberInput(attrs={'min': 0}),
             'description': forms.Textarea(attrs={'rows': 5}),
+            'position': forms.NumberInput(attrs={'min': 0}),
         }

@@ -36,6 +36,7 @@ class Quiz(models.Model):
             self.media_texte
         ])
 
+
 class Question(models.Model):
     TYPES_QUESTION = [
         ('single', 'Choix unique'),
@@ -44,6 +45,11 @@ class Question(models.Model):
         ('texte_trous', 'Texte à trous'),
         ('audio_comprehension', 'Compréhension audio'),
         ('video_comprehension', 'Compréhension vidéo'),
+        ('audio_reponse', 'Réponse audio (enregistrement)'),
+        ('video_reponse', 'Réponse vidéo (enregistrement)'),
+        ('image_reponse', 'Réponse image (téléchargement)'),
+        ('fichier_reponse', 'Réponse fichier (téléchargement)'),
+        ('texte_libre', 'Réponse texte libre'),
     ]
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='questions')
     type_question = models.CharField(max_length=25, choices=TYPES_QUESTION)
@@ -78,6 +84,11 @@ class Question(models.Model):
             self.q_media_texte
         ])
 
+    def is_upload_type(self):
+        """Vérifie si c'est un type de question qui nécessite un upload"""
+        return self.type_question in ['audio_reponse', 'video_reponse', 'image_reponse', 'fichier_reponse']
+
+
 class Reponse(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='reponses')
     texte = models.CharField(max_length=500)
@@ -91,6 +102,7 @@ class Reponse(models.Model):
 
     def __str__(self):
         return f"{self.question.texte[:30]} -> {self.texte}"
+
 
 class TentativeQuiz(models.Model):
     utilisateur = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='tentatives_quiz')
@@ -107,11 +119,18 @@ class TentativeQuiz(models.Model):
     def __str__(self):
         return f"{self.utilisateur.get_full_name()} - {self.quiz.titre} ({self.score}%)"
 
+
 class ReponseUtilisateur(models.Model):
     tentative = models.ForeignKey(TentativeQuiz, on_delete=models.CASCADE, related_name='reponses_utilisateur')
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     reponses_selectionnees = models.ManyToManyField(Reponse, blank=True)
     texte_reponse = models.TextField(blank=True)
+
+    # ===== NOUVEAUX CHAMPS POUR UPLOAD =====
+    audio_reponse = models.FileField(upload_to='quiz/reponses/audio/', blank=True, null=True, verbose_name="Réponse audio")
+    video_reponse = models.FileField(upload_to='quiz/reponses/video/', blank=True, null=True, verbose_name="Réponse vidéo")
+    image_reponse = models.ImageField(upload_to='quiz/reponses/images/', blank=True, null=True, verbose_name="Réponse image")
+    fichier_reponse = models.FileField(upload_to='quiz/reponses/fichiers/', blank=True, null=True, verbose_name="Réponse fichier")
 
     class Meta:
         unique_together = ('tentative', 'question')
