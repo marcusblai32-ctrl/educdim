@@ -20,7 +20,7 @@ DEBUG = env.bool('DEBUG', default=False)
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    '.onrender.com',  # Render domain
+    '.onrender.com',
     'educdim.onrender.com',
 ]
 
@@ -66,7 +66,7 @@ TELERIVET_API_KEY = env('TELERIVET_API_KEY', default='')
 TELERIVET_PROJECT_ID = env('TELERIVET_PROJECT_ID', default='')
 
 # ============================================
-# SECURE SETTINGS
+# SECURE SETTINGS (Production)
 # ============================================
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
@@ -80,10 +80,10 @@ if not DEBUG:
     CSRF_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = 'Lax'
     CSRF_COOKIE_SAMESITE = 'Lax'
-    SECURE_BROWSER_XSS_FILTER = True
-    SECURE_CONTENT_TYPE_NOSNIFF = True
-    X_FRAME_OPTIONS = 'DENY'
-    SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
+else:
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
 
 # ============================================
 # LANGUAGE & TIMEZONE
@@ -99,7 +99,7 @@ USE_I18N = True
 USE_TZ = True
 
 # ============================================
-# INSTALLED APPS
+# INSTALLED APPS (LÒD ENPÒTAN)
 # ============================================
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -108,7 +108,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts.apps.AccountsConfig',
+    'accounts.apps.AccountsConfig',          # <--- PREMYE
     'courses.apps.CoursesConfig',
     'enrollments.apps.EnrollmentsConfig',
     'progress.apps.ProgressConfig',
@@ -129,7 +129,7 @@ INSTALLED_APPS = [
 # ============================================
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # AJOUTE
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -206,55 +206,3 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# ============================================
-# LOGGING
-# ============================================
-if not DEBUG:
-    LOG_DIR = BASE_DIR / 'logs'
-    if not LOG_DIR.exists():
-        LOG_DIR.mkdir(parents=True, exist_ok=True)
-
-    LOGGING = {
-        'version': 1,
-        'disable_existing_loggers': False,
-        'formatters': {
-            'verbose': {
-                'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
-                'style': '{',
-            },
-            'simple': {
-                'format': '{levelname} {message}',
-                'style': '{',
-            },
-        },
-        'handlers': {
-            'file': {
-                'level': 'WARNING',
-                'class': 'logging.FileHandler',
-                'filename': LOG_DIR / 'django.log',
-                'formatter': 'verbose',
-            },
-            'console': {
-                'level': 'INFO',
-                'class': 'logging.StreamHandler',
-                'formatter': 'simple',
-            },
-        },
-        'root': {
-            'handlers': ['console'],
-            'level': 'INFO',
-        },
-        'loggers': {
-            'django': {
-                'handlers': ['file'],
-                'level': 'WARNING',
-                'propagate': True,
-            },
-            'django.request': {
-                'handlers': ['file'],
-                'level': 'ERROR',
-                'propagate': False,
-            },
-        },
-    }
