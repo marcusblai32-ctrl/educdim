@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Mes abonnements" %} - {{ theme.site_name }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1 style="color:var(--text);"><i class="fas fa-crown" style="color:var(--primary);"></i> {% trans "Mes abonnements" %}</h1>
+
+    {% if subscriptions %}
+    <div class="subscriptions-list" style="display:flex; flex-direction:column; gap:1rem; margin-top:1.5rem;">
+        {% for sub in subscriptions %}
+        <div class="subscription-item" style="display:flex; justify-content:space-between; align-items:center; padding:1rem 1.5rem; background:var(--body-bg); border-radius:var(--radius); border-left:4px solid var(--border);">
+            <div class="sub-info">
+                <h3 style="color:var(--text); margin:0 0 0.3rem 0;">{{ sub.plan.nom }}</h3>
+                <p style="margin:0.2rem 0; font-size:0.9rem; color:var(--text-muted);">
+                    {% trans "Statut" %} :
+                    <span class="badge
+                {% if sub.statut == 'active' %}badge-success
+                {% elif sub.statut == 'pending' %}badge-warning
+                {% elif sub.statut == 'expired' %}badge-danger
+                {% else %}badge-secondary{% endif %}"
+                          style="background:{% if sub.statut == 'active' %}var(--success){% elif sub.statut == 'pending' %}var(--warning){% elif sub.statut == 'expired' %}var(--danger){% else %}var(--secondary){% endif %}; color:var(--white);">
+                {{ sub.get_statut_display }}
+              </span>
+                </p>
+                <p style="margin:0.2rem 0; font-size:0.9rem; color:var(--text-muted);">{% trans "Date" %} : {{ sub.date_demande|date:"d/m/Y" }}</p>
+                {% if sub.date_debut and sub.date_fin %}
+                <p style="margin:0.2rem 0; font-size:0.9rem; color:var(--text-muted);">{% trans "Période" %} : {{ sub.date_debut|date:"d/m/Y" }} - {{ sub.date_fin|date:"d/m/Y" }}</p>
+                {% endif %}
+            </div>
+            <div class="sub-actions">
+                <a href="{% url 'subscriptions:detail' sub.pk %}" class="btn btn-sm btn-primary" style="background:var(--primary); color:var(--white);">
+                    <i class="fas fa-eye"></i> {% trans "Détails" %}
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div style="text-align:center; padding:3rem 0;">
+        <i class="fas fa-crown" style="font-size:4rem; color:var(--text-muted);"></i>
+        <p style="color:var(--text-muted); margin:1rem 0;">{% trans "Vous n'avez pas encore d'abonnement." %}</p>
+        <a href="{% url 'subscriptions:list' %}" class="btn btn-primary" style="background:var(--primary); color:var(--white);">
+            <i class="fas fa-search"></i> {% trans "Voir les plans" %}
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

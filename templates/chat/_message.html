@@ -1,0 +1,22 @@
+{% load i18n %}
+
+<div class="message-wrapper {% if msg.user == request.user %}me{% else %}other{% endif %}"
+     data-message-id="{{ msg.id }}">
+    {% if msg.user != request.user %}
+    <div class="msg-avatar">
+        {{ msg.user.get_full_name|slice:":1" }}
+    </div>
+    {% endif %}
+    <div class="message-bubble">
+        {% if msg.user != request.user %}
+        <div class="sender">{{ msg.user.get_full_name }}</div>
+        {% endif %}
+        <div class="text">{{ msg.contenu }}</div>
+        <div class="footer">
+            <span class="time">{{ msg.created_at|date:"H:i" }}</span>
+            {% if msg.user == request.user %}
+            <span class="read delivered">✓</span>
+            {% endif %}
+        </div>
+    </div>
+</div>

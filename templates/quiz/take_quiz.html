@@ -1,0 +1,514 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{{ tentative.quiz.titre }}{% endblock %}
+
+{% block content %}
+<div class="quiz-container">
+    <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom:1rem;">
+            <h1>{{ tentative.quiz.titre }}</h1>
+            <span class="badge badge-secondary">{{ tentative.quiz.questions.count }} {% trans "questions" %}</span>
+        </div>
+
+        <!-- MEDIA DU QUIZ (MILTIP) -->
+        {% if tentative.quiz.has_media %}
+        <div class="quiz-media-container">
+            <h4>{{ tentative.quiz.media_titre|default:"Média du quiz" }}</h4>
+            <div class="media-grid">
+                <!-- Audio -->
+                {% if tentative.quiz.media_audio_url or tentative.quiz.media_audio_file %}
+                <div class="media-item">
+                    {% with url=tentative.quiz.media_audio_url|default:tentative.quiz.media_audio_file.url %}
+                    <audio controls style="width:100%;">
+                        <source src="{{ url }}" type="audio/mpeg">
+                        {% trans "Votre navigateur ne supporte pas l'audio." %}
+                    </audio>
+                    {% endwith %}
+                </div>
+                {% endif %}
+
+                <!-- Vidéo -->
+                {% if tentative.quiz.media_video_url or tentative.quiz.media_video_file %}
+                <div class="media-item">
+                    {% with url=tentative.quiz.media_video_url|default:tentative.quiz.media_video_file.url %}
+                    <video controls style="width:100%; max-height:400px;">
+                        <source src="{{ url }}" type="video/mp4">
+                        {% trans "Votre navigateur ne supporte pas la vidéo." %}
+                    </video>
+                    {% endwith %}
+                </div>
+                {% endif %}
+
+                <!-- Image -->
+                {% if tentative.quiz.media_image_url or tentative.quiz.media_image_file %}
+                <div class="media-item">
+                    {% with url=tentative.quiz.media_image_url|default:tentative.quiz.media_image_file.url %}
+                    <img src="{{ url }}" alt="{{ tentative.quiz.media_titre }}" style="max-width:100%; border-radius:var(--radius);">
+                    {% endwith %}
+                </div>
+                {% endif %}
+
+                <!-- Texte -->
+                {% if tentative.quiz.media_texte %}
+                <div class="media-item">
+                    {{ tentative.quiz.media_texte|safe }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <p>{{ tentative.quiz.description }}</p>
+
+        <div class="quiz-progress">
+            <div class="step-info">{% trans "Question" %} 1 / {{ questions|length }}</div>
+            <div class="progress-bar">
+                <div class="fill" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <form method="post" action="{% url 'quiz:submit' tentative.pk %}" id="quizForm">
+            {% csrf_token %}
+
+            <div id="quizContainer">
+                {% for question in questions %}
+                <div class="question-card" data-question-id="{{ question.pk }}" style="display: {% if forloop.first %}block{% else %}none{% endif %};">
+                    <span class="question-number">{% trans "Question" %} {{ forloop.counter }}</span>
+
+                    <!-- MEDIA DE LA QUESTION (MILTIP) -->
+                    {% if question.has_media %}
+                    <div class="question-media-container">
+                        <h5>{{ question.q_media_titre|default:"Média" }}</h5>
+                        <div class="media-grid">
+                            <!-- Audio -->
+                            {% if question.q_media_audio_url or question.q_media_audio_file %}
+                            <div class="media-item">
+                                {% with url=question.q_media_audio_url|default:question.q_media_audio_file.url %}
+                                <audio controls style="width:100%;">
+                                    <source src="{{ url }}" type="audio/mpeg">
+                                    {% trans "Votre navigateur ne supporte pas l'audio." %}
+                                </audio>
+                                {% endwith %}
+                            </div>
+                            {% endif %}
+
+                            <!-- Vidéo -->
+                            {% if question.q_media_video_url or question.q_media_video_file %}
+                            <div class="media-item">
+                                {% with url=question.q_media_video_url|default:question.q_media_video_file.url %}
+                                <video controls style="width:100%; max-height:300px;">
+                                    <source src="{{ url }}" type="video/mp4">
+                                    {% trans "Votre navigateur ne supporte pas la vidéo." %}
+                                </video>
+                                {% endwith %}
+                            </div>
+                            {% endif %}
+
+                            <!-- Image -->
+                            {% if question.q_media_image_url or question.q_media_image_file %}
+                            <div class="media-item">
+                                {% with url=question.q_media_image_url|default:question.q_media_image_file.url %}
+                                <img src="{{ url }}" alt="{{ question.q_media_titre }}" style="max-width:100%; border-radius:var(--radius);">
+                                {% endwith %}
+                            </div>
+                            {% endif %}
+
+                            <!-- Texte -->
+                            {% if question.q_media_texte %}
+                            <div class="media-item">
+                                {{ question.q_media_texte|safe }}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <h3>{{ question.texte }}</h3>
+                    <p><small>{% trans "Points" %} : {{ question.points }}</small></p>
+
+                    <div class="options-grid">
+                        {% if question.type_question == 'single' or question.type_question == 'vrai_faux' %}
+                        {% for reponse in question.reponses.all %}
+                        <label class="option-label">
+                            <input type="radio" name="question_{{ question.pk }}" value="{{ reponse.pk }}">
+                            <span class="option-text">{{ reponse.texte }}</span>
+                        </label>
+                        {% endfor %}
+                        {% elif question.type_question == 'multiple' %}
+                        {% for reponse in question.reponses.all %}
+                        <label class="option-label">
+                            <input type="checkbox" name="question_{{ question.pk }}" value="{{ reponse.pk }}">
+                            <span class="option-text">{{ reponse.texte }}</span>
+                        </label>
+                        {% endfor %}
+                        {% elif question.type_question == 'texte_trous' %}
+                        <input type="text" name="question_{{ question.pk }}" class="form-control" placeholder="{% trans 'Votre réponse...' %}" style="width:100%;">
+                        {% elif question.type_question == 'audio_comprehension' or question.type_question == 'video_comprehension' %}
+                        {% for reponse in question.reponses.all %}
+                        <label class="option-label">
+                            <input type="radio" name="question_{{ question.pk }}" value="{{ reponse.pk }}">
+                            <span class="option-text">{{ reponse.texte }}</span>
+                        </label>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="quiz-navigation">
+                <button type="button" class="btn btn-secondary btn-prev" style="display:none;">
+                    <i class="fas fa-arrow-left"></i> {% trans "Précédent" %}
+                </button>
+
+                <div class="dots"></div>
+
+                <button type="button" class="btn btn-primary btn-next">
+                    {% trans "Suivant" %} <i class="fas fa-arrow-right"></i>
+                </button>
+
+                <button type="submit" class="btn btn-success btn-submit" style="display:none;">
+                    <i class="fas fa-check"></i> {% trans "Soumettre" %}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .quiz-media-container {
+        margin: 1rem 0 2rem;
+        padding: 1.5rem;
+        background: var(--body-bg);
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+    }
+
+    .quiz-media-container h4 {
+        margin-top: 0;
+        margin-bottom: 0.75rem;
+        color: var(--text);
+    }
+
+    .question-media-container {
+        margin: 1rem 0;
+        padding: 1rem;
+        background: var(--body-bg);
+        border-radius: var(--radius);
+    }
+
+    .question-media-container h5 {
+        margin-top: 0;
+        margin-bottom: 0.75rem;
+        color: var(--text);
+    }
+
+    .media-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .media-item {
+        width: 100%;
+    }
+
+    .media-item audio,
+    .media-item video {
+        width: 100%;
+        border-radius: var(--radius);
+    }
+
+    .media-item img {
+        max-width: 100%;
+        max-height: 400px;
+        object-fit: contain;
+        border-radius: var(--radius);
+    }
+
+    .quiz-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 1rem;
+    }
+
+    .quiz-progress {
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .quiz-progress .progress-bar {
+        width: 100%;
+        height: 8px;
+        background: var(--border);
+        border-radius: 10px;
+        overflow: hidden;
+        margin-top: 0.5rem;
+    }
+
+    .quiz-progress .progress-bar .fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--primary), var(--info));
+        border-radius: 10px;
+        transition: width 0.6s ease;
+    }
+
+    .question-card {
+        background: var(--white);
+        padding: 2rem;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        margin-bottom: 1.5rem;
+        animation: slideUp 0.5s ease;
+        border: 1px solid var(--border);
+    }
+
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .question-card .question-number {
+        display: inline-block;
+        background: var(--primary);
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .options-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .option-label {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        background: var(--body-bg);
+        border-radius: var(--radius);
+        border: 2px solid transparent;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .option-label:hover {
+        border-color: var(--primary);
+        background: var(--white);
+        transform: translateX(5px);
+    }
+
+    .option-label input {
+        margin-right: 0.75rem;
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+    }
+
+    .option-label.selected {
+        border-color: var(--primary);
+        background: rgba(37, 99, 235, 0.05);
+    }
+
+    .quiz-navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1.5rem;
+        gap: 1rem;
+    }
+
+    .quiz-navigation .dots {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .quiz-navigation .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--border);
+        transition: all 0.3s ease;
+    }
+
+    .quiz-navigation .dot.active {
+        background: var(--primary);
+        transform: scale(1.2);
+    }
+
+    .quiz-navigation .dot.answered {
+        background: var(--success);
+    }
+
+    @media (max-width: 480px) {
+        .quiz-navigation {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .quiz-navigation .btn {
+            flex: 1;
+            min-width: 80px;
+        }
+        .question-card {
+            padding: 1rem;
+        }
+        .quiz-media-container {
+            padding: 1rem;
+        }
+        .media-grid {
+            gap: 0.75rem;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var quizContainer = document.getElementById('quizContainer');
+
+        if (quizContainer) {
+            var questions = quizContainer.querySelectorAll('.question-card');
+            var totalQuestions = questions.length;
+            var currentQuestion = 0;
+            var answers = {};
+
+            var dotsContainer = document.querySelector('.quiz-navigation .dots');
+            if (dotsContainer) {
+                for (var i = 0; i < totalQuestions; i++) {
+                    var dot = document.createElement('span');
+                    dot.className = 'dot' + (i === 0 ? ' active' : '');
+                    dot.dataset.index = i;
+                    dot.addEventListener('click', function() {
+                        goToQuestion(parseInt(this.dataset.index));
+                    });
+                    dotsContainer.appendChild(dot);
+                }
+            }
+
+            function showQuestion(index) {
+                questions.forEach(function(q, i) {
+                    q.style.display = i === index ? 'block' : 'none';
+                });
+
+                var dots = document.querySelectorAll('.dot');
+                dots.forEach(function(dot, i) {
+                    dot.classList.remove('active');
+                    if (i === index) {
+                        dot.classList.add('active');
+                    }
+                    if (answers[i] !== undefined) {
+                        dot.classList.add('answered');
+                    } else {
+                        dot.classList.remove('answered');
+                    }
+                });
+
+                var progressFill = document.querySelector('.progress-bar .fill');
+                var stepInfo = document.querySelector('.step-info');
+                if (progressFill) {
+                    var progress = ((index + 1) / totalQuestions) * 100;
+                    progressFill.style.width = progress + '%';
+                }
+                if (stepInfo) {
+                    stepInfo.textContent = 'Question ' + (index + 1) + ' / ' + totalQuestions;
+                }
+
+                var prevBtn = document.querySelector('.quiz-navigation .btn-prev');
+                var nextBtn = document.querySelector('.quiz-navigation .btn-next');
+                var submitBtn = document.querySelector('.quiz-navigation .btn-submit');
+
+                if (prevBtn) {
+                    prevBtn.style.display = index === 0 ? 'none' : 'inline-flex';
+                }
+                if (nextBtn) {
+                    nextBtn.style.display = index === totalQuestions - 1 ? 'none' : 'inline-flex';
+                }
+                if (submitBtn) {
+                    submitBtn.style.display = index === totalQuestions - 1 ? 'inline-flex' : 'none';
+                }
+
+                var currentQuestionEl = questions[index];
+                currentQuestionEl.style.animation = 'none';
+                setTimeout(function() {
+                    currentQuestionEl.style.animation = 'slideUp 0.5s ease';
+                }, 10);
+            }
+
+            function goToQuestion(index) {
+                if (index >= 0 && index < totalQuestions) {
+                    currentQuestion = index;
+                    showQuestion(currentQuestion);
+                }
+            }
+
+            document.querySelectorAll('.option-label input').forEach(function(input) {
+                input.addEventListener('change', function() {
+                    var questionId = this.closest('.question-card').dataset.questionId;
+                    var value = this.value;
+                    var isCheckbox = this.type === 'checkbox';
+
+                    if (!answers[questionId]) {
+                        answers[questionId] = [];
+                    }
+
+                    if (isCheckbox) {
+                        if (this.checked) {
+                            answers[questionId].push(value);
+                        } else {
+                            answers[questionId] = answers[questionId].filter(function(v) { return v !== value; });
+                        }
+                    } else {
+                        answers[questionId] = [value];
+                    }
+
+                    var dot = document.querySelectorAll('.dot')[currentQuestion];
+                    if (dot) {
+                        dot.classList.add('answered');
+                    }
+
+                    var labels = this.closest('.options-grid').querySelectorAll('.option-label');
+                    labels.forEach(function(label) {
+                        label.classList.remove('selected');
+                    });
+                    if (this.checked) {
+                        this.closest('.option-label').classList.add('selected');
+                    }
+                });
+            });
+
+            var prevBtn = document.querySelector('.quiz-navigation .btn-prev');
+            if (prevBtn) {
+                prevBtn.addEventListener('click', function() {
+                    goToQuestion(currentQuestion - 1);
+                });
+            }
+
+            var nextBtn = document.querySelector('.quiz-navigation .btn-next');
+            if (nextBtn) {
+                nextBtn.addEventListener('click', function() {
+                    goToQuestion(currentQuestion + 1);
+                });
+            }
+
+            var submitBtn = document.querySelector('.quiz-navigation .btn-submit');
+            if (submitBtn) {
+                submitBtn.addEventListener('click', function() {
+                    var totalAnswered = Object.keys(answers).length;
+                    if (totalAnswered < totalQuestions) {
+                        if (!confirm('Vous avez répondu à ' + totalAnswered + ' / ' + totalQuestions + ' questions. Voulez-vous vraiment soumettre ?')) {
+                            return;
+                        }
+                    }
+                    this.closest('form').submit();
+                });
+            }
+
+            showQuestion(0);
+        }
+    });
+</script>
+{% endblock %}

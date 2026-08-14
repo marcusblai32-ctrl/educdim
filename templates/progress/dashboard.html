@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Ma progression" %}{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h1><i class="fas fa-chart-line" style="color:var(--primary);"></i> {% trans "Ma progression" %}</h1>
+  {% if progres_cours %}
+  <div style="display:grid; gap:1.5rem; margin-top:1.5rem;">
+    {% for pc in progres_cours %}
+    <div style="background:var(--body-bg); padding:1.5rem; border-radius:var(--radius);">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+        <h3 style="margin-bottom:0.5rem;"><a href="{% url 'progress:course_progress' pc.cours.pk %}" style="color:var(--text);">{{ pc.cours.titre }}</a></h3>
+        <span style="font-weight:700; color:var(--primary);">{{ pc.pourcentage|floatformat:0 }}%</span>
+      </div>
+      <div style="width:100%; height:8px; background:var(--border); border-radius:10px; overflow:hidden;">
+        <div style="height:100%; width:{{ pc.pourcentage|floatformat:0 }}%; background:linear-gradient(90deg, var(--primary), var(--info)); border-radius:10px; transition:width 0.5s;"></div>
+      </div>
+      <div style="margin-top:0.8rem; display:flex; gap:0.5rem; flex-wrap:wrap;">
+        <a href="{% url 'progress:course_progress' pc.cours.pk %}" class="btn btn-sm btn-primary"><i class="fas fa-eye"></i> {% trans "Voir détails" %}</a>
+        <a href="{% url 'courses:course_detail' pc.cours.pk %}" class="btn btn-sm btn-outline"><i class="fas fa-play"></i> {% trans "Continuer" %}</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div style="text-align:center; padding:3rem 0;">
+    <i class="fas fa-book" style="font-size:4rem; color:var(--text-muted);"></i>
+    <p style="color:var(--text-muted); margin:1rem 0;">{% trans "Vous n'avez pas encore commencé de cours." %}</p>
+    <a href="{% url 'courses:course_list' %}" class="btn btn-primary"><i class="fas fa-search"></i> {% trans "Explorer les cours" %}</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

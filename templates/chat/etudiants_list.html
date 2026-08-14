@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Etudiants" %} - {% trans "Chat prive" %}{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom:1.5rem;">
+    <h1><i class="fas fa-user-friends" style="color:var(--primary);"></i> {% trans "Etudiants dans vos cours" %}</h1>
+    <a href="{% url 'chat:liste_salons' %}" class="btn btn-secondary btn-sm">
+      <i class="fas fa-arrow-left"></i> {% trans "Retour aux salons" %}
+    </a>
+  </div>
+
+  <p style="color:var(--text-muted); margin-bottom:1.5rem;">
+    {% trans "Voici la liste des etudiants qui partagent au moins un cours avec vous. Cliquez sur un etudiant pour creer un chat prive." %}
+  </p>
+
+  <!-- SEARCH -->
+  <div class="search-box" style="margin-bottom:1.5rem;">
+    <form method="get" style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+      <input type="text" name="search" placeholder="{% trans 'Rechercher un etudiant...' %}"
+             value="{{ search_query }}" class="form-control" style="flex:1; min-width:200px;">
+      <button type="submit" class="btn btn-primary">
+        <i class="fas fa-search"></i> {% trans "Rechercher" %}
+      </button>
+      {% if search_query %}
+      <a href="{% url 'chat:liste_etudiants' %}" class="btn btn-secondary">
+        <i class="fas fa-times"></i> {% trans "Effacer" %}
+      </a>
+      {% endif %}
+    </form>
+  </div>
+
+  {% if etudiants %}
+  <div class="etudiants-grid">
+    {% for etudiant in etudiants %}
+    <div class="etudiant-card {% if etudiant.chat_existe %}chat-existe{% endif %}">
+      <div class="etudiant-avatar">
+        <span>{{ etudiant.first_name|slice:":1" }}{{ etudiant.last_name|slice:":1" }}</span>
+      </div>
+      <div class="etudiant-info">
+        <h3>{{ etudiant.get_full_name }}</h3>
+        <p>{{ etudiant.email }}</p>
+      </div>
+      <div class="etudiant-action">
+        {% if etudiant.chat_existe %}
+        <a href="{% url 'chat:detail_salon' etudiant.chat_id %}" class="btn btn-sm btn-success">
+          <i class="fas fa-comment"></i> {% trans "Chat" %}
+        </a>
+        {% else %}
+        <a href="{% url 'chat:creer_prive' etudiant.id %}" class="btn btn-sm btn-primary">
+          <i class="fas fa-plus"></i> {% trans "Creer" %}
+        </a>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div style="text-align:center; padding:3rem 0;">
+    <i class="fas fa-users" style="font-size:4rem; color:var(--text-muted);"></i>
+    <p style="color:var(--text-muted); margin:1rem 0;">
+      {% if search_query %}
+      {% trans "Aucun etudiant ne correspond a votre recherche." %}
+      {% else %}
+      {% trans "Vous n'etes dans aucun cours avec d'autres etudiants pour le moment." %}
+      {% endif %}
+    </p>
+    {% if not search_query %}
+    <a href="{% url 'courses:course_list' %}" class="btn btn-primary">
+      <i class="fas fa-search"></i> {% trans "Explorer les cours" %}
+    </a>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+
+<style>
+  .etudiants-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+
+  .etudiant-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    background: var(--white);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+  }
+
+  .etudiant-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+  }
+
+  .etudiant-card.chat-existe {
+    border-left: 4px solid var(--success);
+  }
+
+  .etudiant-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .etudiant-info {
+    flex: 1;
+  }
+
+  .etudiant-info h3 {
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  .etudiant-info p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  .etudiant-action {
+    flex-shrink: 0;
+  }
+
+  .etudiant-action .btn {
+    white-space: nowrap;
+  }
+
+  .search-box .form-control {
+    padding: 0.6rem 1rem;
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 0.95rem;
+  }
+
+  .search-box .form-control:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+
+  @media (max-width: 480px) {
+    .etudiants-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .etudiant-card {
+      flex-wrap: wrap;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .etudiant-action {
+      width: 100%;
+    }
+
+    .etudiant-action .btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .search-box form {
+      flex-direction: column;
+    }
+
+    .search-box .form-control {
+      width: 100%;
+    }
+  }
+</style>
+{% endblock %}

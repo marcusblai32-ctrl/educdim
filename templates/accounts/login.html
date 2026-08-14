@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Connexion" %} - {{ theme.site_name }}{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="card">
+        <div class="text-center" style="margin-bottom:2rem;">
+            <h1 style="font-size:2rem; font-weight:800;"><i class="fas fa-sign-in-alt" style="color:var(--primary);"></i> {% trans "Connexion" %}</h1>
+            <p style="color:var(--text-muted);">{% trans "Connectez-vous pour acceder a vos cours" %}</p>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_username">{% trans "Email ou ID utilisateur" %}</label>
+                <input type="text" name="username" id="id_username" class="form-control" placeholder="exemple@email.com" required>
+            </div>
+            <div class="form-group">
+                <label for="id_password">{% trans "Mot de passe" %}</label>
+                <input type="password" name="password" id="id_password" class="form-control" placeholder="{% trans 'Votre mot de passe' %}" required>
+            </div>
+            <div style="text-align:right; margin-bottom:1rem;">
+                <a href="{% url 'accounts:password_reset' %}" style="font-size:0.85rem; color:var(--text-muted);">
+                    {% trans "Mot de passe oublie ?" %}
+                </a>
+            </div>
+            {% if form.errors %}
+            <div class="alert alert-error"><i class="fas fa-exclamation-circle"></i> {% trans "Email/ID ou mot de passe incorrect." %}</div>
+            {% endif %}
+            <button type="submit" class="btn btn-primary btn-block btn-lg"><i class="fas fa-arrow-right"></i> {% trans "Se connecter" %}</button>
+        </form>
+        <div style="margin-top:1.5rem; text-align:center; border-top:1px solid var(--border); padding-top:1.5rem;">
+            <p style="color:var(--text-muted);">{% trans "Pas encore de compte ?" %} <a href="{% url 'accounts:signup' %}" style="font-weight:600;"><i class="fas fa-user-plus"></i> {% trans "Creer un compte" %}</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Mes présences" %}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>{% trans "Mes présences" %}</h1>
+    {% if fiches %}
+    <div class="table-responsive">
+        <table>
+            <thead>
+            <tr>
+                <th>{% trans "Date" %}</th>
+                <th>{% trans "Cours" %}</th>
+                <th>{% trans "Session" %}</th>
+                <th>{% trans "Statut" %}</th>
+                <th>{% trans "Actions" %}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for fiche in fiches %}
+            <tr>
+                <td>{{ fiche.session.date|date:"d/m/Y" }}</td>
+                <td>{{ fiche.session.cours.titre }}</td>
+                <td>{{ fiche.session.titre }}</td>
+                <td><span class="badge {% if fiche.statut == 'present' %}badge-success{% elif fiche.statut == 'retard' %}badge-warning{% else %}badge-danger{% endif %}">{{ fiche.get_statut_display }}</span></td>
+                <td>
+                    <a href="{% url 'attendance:session_detail' fiche.session.pk %}" class="btn btn-sm btn-outline">{% trans "Détails" %}</a>
+                    {% if fiche.statut in 'absent retard' and not fiche.justification %}
+                    <a href="{% url 'attendance:submit_justification' fiche.pk %}" class="btn btn-sm btn-warning">{% trans "Justifier" %}</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p>{% trans "Aucune session de présence enregistrée." %}</p>
+    {% endif %}
+</div>
+{% endblock %}

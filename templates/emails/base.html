@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ site_name }}</title>
+    <style>
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #2563eb, #06b6d4);
+            padding: 20px 30px;
+            text-align: center;
+        }
+        .header h1 {
+            color: white;
+            margin: 0;
+            font-size: 24px;
+        }
+        .header h1 span {
+            color: #fcd34d;
+        }
+        .content {
+            padding: 30px;
+        }
+        .content p {
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        .btn:hover {
+            background: #1d4ed8;
+        }
+        .footer {
+            background: #f4f4f4;
+            padding: 15px 30px;
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+        }
+        .footer a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        .user-info {
+            background: #f0f7ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #2563eb;
+        }
+        .user-info p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        .user-info strong {
+            color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>{{ site_name }}</h1>
+    </div>
+    <div class="content">
+        <div class="user-info">
+            <p><strong>👤 Utilisateur:</strong> {{ full_name|default:username }}</p>
+            <p><strong>📧 Email:</strong> {{ email }}</p>
+        </div>
+        {% block content %}{% endblock %}
+    </div>
+    <div class="footer">
+        &copy; {{ site_name }} - Tous droits réservés<br>
+        <a href="{{ site_url }}">{{ site_url }}</a>
+    </div>
+</div>
+</body>
+</html>

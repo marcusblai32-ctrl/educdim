@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Justifier mon absence" %}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>{% trans "Justification d'absence / retard" %}</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="raison">{% trans "Raison" %}</label>
+            <textarea name="raison" id="raison" class="form-control" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">{% trans "Soumettre" %}</button>
+        <a href="javascript:history.back()" class="btn btn-secondary">{% trans "Annuler" %}</a>
+    </form>
+</div>
+{% endblock %}

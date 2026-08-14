@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="card">
+    <div class="course-header">
+        <h1>{{ cours.titre }}</h1>
+        <div class="course-badges">
+            {% if cours.nivo %}<span class="badge badge-secondary">{{ cours.nivo.get_nom_display }}</span>{% endif %}
+            {% if cours.categorie %}<span class="badge badge-primary">{{ cours.categorie.nom }}</span>{% endif %}
+            {% if cours.est_payant %}<span class="badge badge-warning">{% trans "Payant" %}</span>{% else %}<span class="badge badge-success">{% trans "Gratuit" %}</span>{% endif %}
+        </div>
+    </div>
+
+    <p>{{ cours.description }}</p>
+
+    <div class="course-info-grid">
+        <div class="info-item"><i class="fas fa-clock"></i><span>{% if cours.duree > 0 %}{{ cours.duree }}h{% else %}{% trans "Durée variable" %}{% endif %}</span></div>
+        <div class="info-item"><i class="fas fa-tag"></i><span>{% if cours.est_payant %}{{ cours.prix }} HTG{% else %}{% trans "Gratuit" %}{% endif %}</span></div>
+        {% if cours.promotion %}<div class="info-item"><i class="fas fa-users"></i><span>{% trans "Promotion" %} : {{ cours.promotion.nom }}</span></div>{% endif %}
+        <div class="info-item"><i class="fas fa-calendar-alt"></i><span>{% if cours.inscription_possible %}{% trans "Inscriptions ouvertes" %}{% else %}{% trans "Inscriptions fermées" %}{% endif %}</span></div>
+    </div>
+
+    {% if not est_inscrit %}
+    {% if cours.inscription_possible %}
+    <a href="{% url 'enrollments:enroll' cours.pk %}" class="btn btn-primary">{% trans "S'inscrire au cours" %}</a>
+    {% else %}
+    <div class="alert alert-warning">{% trans "Les inscriptions pour ce cours sont fermées." %}</div>
+    {% endif %}
+    {% elif not inscription_approuvee %}
+    <div class="alert alert-warning">{% trans "Votre inscription est en attente de validation par l'administrateur." %}</div>
+    {% else %}
+    <div class="alert alert-success">{% trans "Vous êtes inscrit et approuvé !" %}</div>
+    {% endif %}
+
+    {% if user.is_staff %}
+    <div style="margin:1rem; justify-content: center; display:flex; gap:0.5rem; flex-wrap:wrap;">
+        <a href="{% url 'courses:course_edit' cours.pk %}" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i> {% trans "Modifier" %}</a>
+        <a href="{% url 'courses:toggle_inscription' cours.pk %}" class="btn btn-sm btn-warning">
+            <i class="fas fa-toggle-on"></i>
+            {% if cours.inscription_ouverte %}{% trans "Fermer les inscriptions" %}{% else %}{% trans "Ouvrir les inscriptions" %}{% endif %}
+        </a>
+        <a href="{% url 'courses:course_delete' cours.pk %}" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> {% trans "Supprimer" %}</a>
+    </div>
+    {% endif %}
+
+    <hr>
+
+    {% if inscription_approuvee or request.user.is_staff %}
+
+    <h2>{% trans "Contenu du cours" %}</h2>
+    <div class="course-pagination">
+        <div class="pagination-nav">
+            <button class="btn btn-sm btn-outline" id="prevUnit" disabled><i class="fas fa-arrow-left"></i> {% trans "Précédent" %}</button>
+            <span id="unitCounter">Unité 1 / {{ unites|length }}</span>
+            <button class="btn btn-sm btn-outline" id="nextUnit">{% trans "Suivant" %} <i class="fas fa-arrow-right"></i></button>
+        </div>
+        <div class="unit-container">
+            {% for unite in unites %}
+            <div class="unit-content" data-unit-index="{{ forloop.counter0 }}" style="display: {% if forloop.first %}block{% else %}none{% endif %};">
+                <h3>{{ unite.titre }}</h3>
+                <p>{{ unite.description }}</p>
+                <div class="modules-list">
+                    {% for module in unite.modules.all %}
+                    <div class="module-item">
+                        <div class="module-header" onclick="toggleModule(this)">
+                            <h4>{{ module.titre }}</h4>
+                            <span><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="module-body" style="display:block;">
+                            {% for lecon in module.lecons.all %}
+                            <div class="lecon-item">
+                                <a href="{% url 'courses:lesson_detail' lecon.pk %}"><i class="fas fa-file-alt"></i> {{ lecon.titre }}</a>
+                                <div class="lecon-status">
+                                    {% if lecon.quiz %}
+                                    {% with prog=lecon.progreslecon_set.all|first %}
+                                    {% if prog.statut == 'termine' %}<span class="badge badge-success"><i class="fas fa-check"></i> {% trans "Terminé" %}</span>{% else %}<span class="badge badge-warning"><i class="fas fa-exclamation-triangle"></i> {% trans "Quiz requis" %}</span>{% endif %}
+                                    {% endwith %}
+                                    {% else %}
+                                    {% with prog=lecon.progreslecon_set.all|first %}
+                                    <span class="badge {% if prog.statut == 'termine' %}badge-success{% else %}badge-secondary{% endif %}">{{ prog.get_statut_display|default:"Non commencé" }}</span>
+                                    {% endwith %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% empty %}<p style="padding:0.5rem; color:var(--text-muted);">{% trans "Aucune leçon." %}</p>{% endfor %}
+                        </div>
+                    </div>
+                    {% empty %}<p style="color:var(--text-muted);">{% trans "Aucun module." %}</p>{% endfor %}
+                </div>
+            </div>
+            {% empty %}<p>{% trans "Aucune unité disponible." %}</p>{% endfor %}
+        </div>
+    </div>
+
+    {% else %}
+    <div class="alert alert-danger">{% trans "Le contenu de ce cours est verrouillé. Vous devez être inscrit et approuvé pour y avoir accès." %}</div>
+    {% endif %}
+    <hr>
+    <div class="quiz-section">
+        <h2><i class="fas fa-question-circle" style="color:var(--primary);"></i> {% trans "Quiz du cours" %}</h2>
+        {% if cours.quiz.all %}
+        <div class="quiz-list">
+            {% for quiz in cours.quiz.all %}
+            <div class="quiz-item {% if quiz.id in quizzes_reussi %}reussi{% endif %}">
+                <div class="quiz-info">
+                    <h4>{{ quiz.titre }}</h4>
+                    <p>{{ quiz.description|truncatechars:80 }}</p>
+                    <small>{% trans "Score requis" %} : {{ quiz.pourcentage_reussite }}%</small>
+                </div>
+                <div class="quiz-status">
+                    {% if quiz.id in quizzes_reussi %}
+                    <span class="badge badge-success"><i class="fas fa-check-circle"></i> {% trans "Réussi" %}</span>
+                    {% else %}
+                    {% for tentative in tentatives_quiz %}
+                    {% if tentative.quiz == quiz and not tentative.reussi %}
+                    <span class="badge badge-danger"><i class="fas fa-times-circle"></i> {% trans "Échoué" %} ({{ tentative.score|floatformat:0 }}%)</span>
+                    {% endif %}
+                    {% empty %}
+                    <span class="badge badge-secondary">{% trans "Non commencé" %}</span>
+                    {% endfor %}
+                    {% endif %}
+                    <a href="{% url 'quiz:detail' quiz.pk %}" class="btn btn-sm btn-primary"><i class="fas fa-play"></i> {% trans "Voir" %}</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>{% trans "Aucun quiz disponible pour ce cours." %}</p>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .course-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem; }
+    .course-header h1 { margin: 0; }
+    .course-badges { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+    .course-badges .badge { font-size: 0.75rem; padding: 0.25rem 0.75rem; }
+    .course-info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 1.5rem 0; padding: 1rem; background: var(--body-bg); border-radius: var(--radius); }
+    .info-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; color: var(--text); }
+    .info-item i { color: var(--primary); font-size: 1.1rem; }
+    .quiz-section { margin: 1.5rem 0; }
+    .quiz-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; margin-top: 1rem; }
+    .quiz-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; background: var(--body-bg); border-radius: var(--radius); border-left: 4px solid var(--border); transition: all 0.3s ease; }
+    .quiz-item:hover { transform: translateX(5px); box-shadow: var(--shadow); }
+    .quiz-item.reussi { border-left-color: var(--success); }
+    .quiz-info { flex: 1; }
+    .quiz-info h4 { margin: 0; font-size: 1rem; }
+    .quiz-info p { margin: 0.2rem 0; font-size: 0.85rem; color: var(--text-muted); }
+    .quiz-info small { font-size: 0.75rem; color: var(--text-muted); }
+    .quiz-status { display: flex; flex-direction: column; align-items: flex-end; gap: 0.3rem; flex-shrink: 0; margin-left: 1rem; }
+    .quiz-status .badge { font-size: 0.7rem; }
+    .quiz-status .btn { font-size: 0.7rem; padding: 0.2rem 0.6rem; }
+    .pagination-nav { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; background: var(--body-bg); border-radius: var(--radius); margin-bottom: 1.5rem; }
+    .pagination-nav #unitCounter { font-weight: 600; color: var(--text); }
+    .unit-content { animation: slideUp 0.5s ease; }
+    .module-item { background: var(--white); border-radius: var(--radius); margin-top: 0.75rem; overflow: hidden; border: 1px solid var(--border); }
+    .module-header { padding: 0.75rem 1rem; background: var(--body-bg); cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.3s ease; }
+    .module-header:hover { background: var(--border); }
+    .module-header h4 { margin: 0; font-size: 1rem; }
+    .module-body { padding: 0.5rem 1rem 1rem; }
+    .lecon-item { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .lecon-item:last-child { border-bottom: none; }
+    .lecon-status { display: flex; align-items: center; gap: 0.5rem; }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 480px) {
+        .quiz-item { flex-direction: column; align-items: stretch; text-align: center; }
+        .quiz-status { flex-direction: row; justify-content: center; margin-left: 0; margin-top: 0.5rem; flex-wrap: wrap; }
+        .lecon-item { flex-direction: column; gap: 0.3rem; }
+        .pagination-nav { flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
+        .course-info-grid { grid-template-columns: 1fr 1fr; }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var units = document.querySelectorAll('.unit-content');
+        var totalUnits = units.length;
+        var currentUnit = 0;
+        var prevBtn = document.getElementById('prevUnit');
+        var nextBtn = document.getElementById('nextUnit');
+        var counter = document.getElementById('unitCounter');
+
+        function showUnit(index) {
+            units.forEach(function(u, i) { u.style.display = i === index ? 'block' : 'none'; });
+            counter.textContent = 'Unité ' + (index + 1) + ' / ' + totalUnits;
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === totalUnits - 1;
+            currentUnit = index;
+        }
+
+        if (prevBtn) { prevBtn.addEventListener('click', function() { if (currentUnit > 0) showUnit(currentUnit - 1); }); }
+        if (nextBtn) { nextBtn.addEventListener('click', function() { if (currentUnit < totalUnits - 1) showUnit(currentUnit + 1); }); }
+
+        window.toggleModule = function(el) {
+            var body = el.nextElementSibling;
+            var icon = el.querySelector('i');
+            if (body.style.display === 'none') { body.style.display = 'block'; icon.className = 'fas fa-chevron-down'; }
+            else { body.style.display = 'none'; icon.className = 'fas fa-chevron-right'; }
+        };
+    });
+</script>
+{% endblock %}

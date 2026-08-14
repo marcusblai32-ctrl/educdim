@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Quiz disponibles" %}{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h1><i class="fas fa-question-circle" style="color:var(--primary);"></i> {% trans "Quiz" %}</h1>
+
+  {% if quiz_list %}
+  <div class="quiz-grid">
+    {% for quiz in quiz_list %}
+    <div class="quiz-card">
+      <div class="quiz-card-header">
+        <h3>{{ quiz.titre }}</h3>
+        <span class="badge {% if quiz.id in quizzes_reussi %}badge-success{% else %}badge-secondary{% endif %}">
+              {% if quiz.id in quizzes_reussi %}
+                <i class="fas fa-check-circle"></i> {% trans "Réussi" %}
+              {% else %}
+                {% trans "À faire" %}
+              {% endif %}
+            </span>
+      </div>
+      <p><strong>{% trans "Cours" %} :</strong> {{ quiz.cours.titre }}</p>
+      <p>{% trans "Score requis" %} : {{ quiz.pourcentage_reussite }}%</p>
+      <p><small>{{ quiz.questions.count }} {% trans "questions" %}</small></p>
+      <a href="{% url 'quiz:detail' quiz.pk %}" class="btn btn-primary">
+        <i class="fas fa-play"></i> {% trans "Voir détails" %}
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div style="text-align:center; padding:3rem 0;">
+    <i class="fas fa-question-circle" style="font-size:4rem; color:var(--text-muted);"></i>
+    <p style="color:var(--text-muted); margin:1rem 0;">{% trans "Aucun quiz disponible pour le moment." %}</p>
+    <a href="{% url 'courses:course_list' %}" class="btn btn-primary">
+      <i class="fas fa-book"></i> {% trans "Explorer les cours" %}
+    </a>
+  </div>
+  {% endif %}
+</div>
+
+<style>
+  .quiz-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .quiz-card-header h3 {
+    margin: 0;
+  }
+
+  .quiz-card .badge {
+    font-size: 0.7rem;
+  }
+
+  .quiz-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+
+  .quiz-card {
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    transition: transform 0.3s;
+    border: 1px solid var(--border);
+  }
+
+  .quiz-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  }
+
+  @media (max-width: 480px) {
+    .quiz-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+{% endblock %}

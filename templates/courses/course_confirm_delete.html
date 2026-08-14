@@ -1,0 +1,16 @@
+<link rel="stylesheet" href="../../static/css/style.css">{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Supprimer" %} {{ course.titre }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>{% trans "Confirmation de suppression" %}</h1>
+    <p>{% trans "Voulez-vous vraiment supprimer le cours" %} "{{ course.titre }}" ?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">{% trans "Oui, supprimer" %}</button>
+        <a href="{% url 'courses:course_detail' course.pk %}" class="btn btn-secondary">{% trans "Annuler" %}</a>
+    </form>
+</div>
+{% endblock %}

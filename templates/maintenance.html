@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Maintenance" %} - {{ theme.site_name }}{% endblock %}
+
+{% block content %}
+<div class="maintenance-container">
+    <div class="card text-center" style="max-width:600px; margin:3rem auto; padding:3rem;">
+        <i class="fas fa-tools" style="font-size:5rem; color:var(--warning);"></i>
+        <h1 style="margin-top:1.5rem;">{% trans "Site en maintenance" %}</h1>
+        <p style="color:var(--text-muted); font-size:1.1rem; margin:1.5rem 0;">
+            {{ message|default:"L'équipe travaille sur le site. Veuillez patienter, nous revenons bientôt !" }}
+        </p>
+        {% if theme.whatsapp_group %}
+        <div style="margin-top:1rem; padding:1rem; background:var(--body-bg); border-radius:var(--radius);">
+            <i class="fab fa-whatsapp" style="color:#25D366; font-size:1.5rem;"></i>
+            <p style="margin:0.5rem 0 0; font-size:0.9rem;">
+                <a href="https://wa.me/{{ theme.whatsapp_group }}" target="_blank" style="font-weight:600;">
+                    {% trans "Rejoindre le groupe WhatsApp" %}
+                </a>
+            </p>
+        </div>
+        {% endif %}
+        {% if theme.whatsapp_contact %}
+        <div style="margin-top:0.5rem;">
+            <small style="color:var(--text-muted);">
+                {% trans "Contact" %} : <a href="https://wa.me/{{ theme.whatsapp_contact }}" target="_blank">{{ theme.whatsapp_contact }}</a>
+            </small>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

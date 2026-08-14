@@ -1,0 +1,295 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block title %}{% trans "Tableau de bord" %}{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+  /* ===== LOADING SPINNER ===== */
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--border, #e2e8f0);
+    border-top: 4px solid var(--primary, #2563eb);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 2rem auto;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* ===== DASHBOARD STYLES ===== */
+  .dashboard-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem 0;
+  }
+
+  .dashboard-card {
+    background: var(--white, #ffffff);
+    border-radius: var(--radius, 12px);
+    padding: 1.5rem;
+    box-shadow: var(--shadow, 0 4px 6px -1px rgba(0,0,0,0.1));
+    border: 1px solid var(--border, #e2e8f0);
+    transition: all 0.3s ease;
+    text-align: center;
+  }
+
+  .dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  }
+
+  .dashboard-card .icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .dashboard-card .number {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text, #1e293b);
+    display: block;
+  }
+
+  .dashboard-card .label {
+    font-size: 0.85rem;
+    color: var(--text-muted, #64748b);
+  }
+
+  .dashboard-card.primary .icon { color: var(--primary); }
+  .dashboard-card.success .icon { color: var(--success); }
+  .dashboard-card.warning .icon { color: var(--warning); }
+  .dashboard-card.danger .icon { color: var(--danger); }
+  .dashboard-card.info .icon { color: var(--info); }
+
+  .dashboard-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .dashboard-row .chart-container {
+    background: var(--white, #ffffff);
+    border-radius: var(--radius, 12px);
+    padding: 1.5rem;
+    border: 1px solid var(--border, #e2e8f0);
+  }
+
+  .dashboard-row .chart-container h3 {
+    margin-top: 0;
+    color: var(--text, #1e293b);
+    font-size: 1.1rem;
+  }
+
+  .last-updated {
+    text-align: right;
+    color: var(--text-muted, #64748b);
+    font-size: 0.85rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border, #e2e8f0);
+  }
+
+  /* Loading overlay */
+  .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .loading-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  @media (max-width: 768px) {
+    .dashboard-row {
+      grid-template-columns: 1fr;
+    }
+    .dashboard-container {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="loadingOverlay" class="loading-overlay">
+  <div class="loading-spinner"></div>
+</div>
+
+<div class="dashboard-container">
+  <!-- Utilisateurs -->
+  <div class="dashboard-card primary">
+    <div class="icon">👥</div>
+    <span class="number">{{ dashboard.total_users }}</span>
+    <span class="label">{% trans "Utilisateurs" %}</span>
+    <small style="color:var(--success); display:block; margin-top:0.3rem;">
+      +{{ dashboard.new_users_today }} {% trans "aujourd'hui" %}
+    </small>
+  </div>
+
+  <!-- Cours -->
+  <div class="dashboard-card info">
+    <div class="icon">📚</div>
+    <span class="number">{{ dashboard.total_courses }}</span>
+    <span class="label">{% trans "Cours" %}</span>
+    <small style="color:var(--text-muted); display:block; margin-top:0.3rem;">
+      {{ dashboard.total_lessons }} {% trans "leçons" %}
+    </small>
+  </div>
+
+  <!-- Revenus -->
+  <div class="dashboard-card success">
+    <div class="icon">💰</div>
+    <span class="number">{{ dashboard.total_revenue }} $</span>
+    <span class="label">{% trans "Revenu total" %}</span>
+    <small style="color:var(--text-muted); display:block; margin-top:0.3rem;">
+      {{ dashboard.revenue_this_month }} $ {% trans "ce mois" %}
+    </small>
+  </div>
+
+  <!-- Abonnements -->
+  <div class="dashboard-card warning">
+    <div class="icon">👑</div>
+    <span class="number">{{ dashboard.active_subscriptions }}</span>
+    <span class="label">{% trans "Abonnements actifs" %}</span>
+    <small style="color:var(--text-muted); display:block; margin-top:0.3rem;">
+      {{ dashboard.growth_percentage }}% {% trans "croissance" %}
+    </small>
+  </div>
+
+  <!-- Inscriptions -->
+  <div class="dashboard-card primary">
+    <div class="icon">📝</div>
+    <span class="number">{{ dashboard.total_enrollments }}</span>
+    <span class="label">{% trans "Inscriptions" %}</span>
+  </div>
+
+  <!-- Paiements en attente -->
+  <div class="dashboard-card danger">
+    <div class="icon">⏳</div>
+    <span class="number">{{ dashboard.pending_payments }}</span>
+    <span class="label">{% trans "Paiements en attente" %}</span>
+  </div>
+
+  <!-- Enseignants -->
+  <div class="dashboard-card info">
+    <div class="icon">👨‍🏫</div>
+    <span class="number">{{ dashboard.total_teachers }}</span>
+    <span class="label">{% trans "Enseignants" %}</span>
+  </div>
+
+  <!-- Utilisateurs actifs -->
+  <div class="dashboard-card success">
+    <div class="icon">🟢</div>
+    <span class="number">{{ dashboard.active_users_today }}</span>
+    <span class="label">{% trans "Actifs aujourd'hui" %}</span>
+  </div>
+</div>
+
+<div class="dashboard-row">
+  <div class="chart-container">
+    <h3>📊 {% trans "Répartition des cours" %}</h3>
+    <canvas id="courseChart" style="max-height:200px;"></canvas>
+  </div>
+  <div class="chart-container">
+    <h3>📈 {% trans "Évolution des utilisateurs" %}</h3>
+    <canvas id="userChart" style="max-height:200px;"></canvas>
+  </div>
+</div>
+
+<div class="last-updated">
+  {% trans "Dernière mise à jour" %}: {{ dashboard.last_updated|date:"d/m/Y H:i" }}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Loading spinner
+    window.addEventListener('beforeunload', function() {
+      document.getElementById('loadingOverlay').classList.add('active');
+    });
+
+    // Chart.js - Cours
+    var ctx1 = document.getElementById('courseChart').getContext('2d');
+    new Chart(ctx1, {
+      type: 'doughnut',
+      data: {
+        labels: ['Publiés', 'En attente', 'Brouillons'],
+        datasets: [{
+          data: [
+            {{ dashboard.total_courses }},
+          {{ dashboard.total_enrollments|default:0 }},
+    {{ dashboard.total_quizzes|default:0 }}
+  ],
+    backgroundColor: ['#2563eb', '#f59e0b', '#64748b'],
+            borderWidth: 0
+  }]
+  },
+    options: {
+      responsive: true,
+              plugins: {
+        legend: {
+          position: 'bottom'
+        }
+      }
+    }
+  });
+
+    // Chart.js - Utilisateurs
+    var ctx2 = document.getElementById('userChart').getContext('2d');
+    new Chart(ctx2, {
+      type: 'bar',
+      data: {
+        labels: ['Total', 'Actifs', 'Nouveaux'],
+        datasets: [{
+          label: 'Utilisateurs',
+          data: [
+            {{ dashboard.total_users }},
+          {{ dashboard.active_users_today }},
+    {{ dashboard.new_users_today }}
+  ],
+    backgroundColor: ['#2563eb', '#10b981', '#f59e0b'],
+            borderRadius: 8
+  }]
+  },
+    options: {
+      responsive: true,
+              plugins: {
+        legend: {
+          display: false
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+  });
+
+  // Fonksyon pou refresh dashboard
+  function refreshDashboard() {
+    window.location.reload();
+  }
+</script>
+{% endblock %}

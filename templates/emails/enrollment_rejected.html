@@ -1,0 +1,69 @@
+{% extends 'emails/base.html' %}
+{% block content %}
+<h2>❌ Inscription refusée</h2>
+
+<p>Bonjour <strong>{{ first_name }}</strong>,</p>
+
+<p>Nous regrettons de vous informer que votre inscription au cours <strong>{{ course_name }}</strong> a été <strong>refusée</strong>.</p>
+
+<div style="background: #fef2f2; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid #ef4444;">
+    <p style="margin: 5px 0;"><strong>📚 Détails:</strong></p>
+    <p style="margin: 5px 0;">📖 Cours: <strong>{{ course_name }}</strong></p>
+    <p style="margin: 5px 0;">📅 Date de demande: <strong>{{ enrollment_date }}</strong></p>
+    <p style="margin: 5px 0;">💳 Méthode: <strong>{{ payment_method }}</strong></p>
+</div>
+
+{% if admin_note %}
+<div style="background: #fffbeb; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid #f59e0b;">
+    <p style="margin: 0;"><strong>📝 Raison:</strong></p>
+    <p style="margin: 5px 0;">{{ admin_note }}</p>
+</div>
+{% endif %}
+
+<p>Si vous pensez qu'il s'agit d'une erreur, veuillez contacter l'administrateur.</p>
+
+<a href="{{ site_url }}" class="btn">Contacter le support</a>
+
+<p>L'équipe {{ site_name }}</p>
+{% endblock %}
+```
+
+### **G. `templates/emails/subscription_confirmed.html`**
+
+```html
+{% extends 'emails/base.html' %}
+{% block content %}
+<h2>📦 Abonnement confirmé!</h2>
+
+<p>Bonjour <strong>{{ first_name }}</strong>,</p>
+
+<p>Votre abonnement <strong>{{ plan_name }}</strong> a été confirmé avec succès.</p>
+
+<div style="background: #f0f7ff; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid #8b5cf6;">
+    <p style="margin: 5px 0;"><strong>📋 Détails de l'abonnement:</strong></p>
+    <p style="margin: 5px 0;">📦 Plan: <strong>{{ plan_name }}</strong></p>
+    <p style="margin: 5px 0;">💰 Prix: <strong>{{ plan_price }} HTG</strong></p>
+    <p style="margin: 5px 0;">⏱️ Durée: <strong>{{ plan_duration }} jours</strong></p>
+    <p style="margin: 5px 0;">📅 Date de début: <strong>{{ start_date }}</strong></p>
+    <p style="margin: 5px 0;">📅 Date de fin: <strong>{{ end_date }}</strong></p>
+    <p style="margin: 5px 0;">💳 Paiement: <strong>{{ payment_method }}</strong></p>
+    <p style="margin: 5px 0;">📌 Statut: <strong>{{ status }}</strong></p>
+</div>
+
+<div style="background: #f0fdf4; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid #10b981;">
+    <p style="margin: 5px 0;"><strong>📚 Cours inclus:</strong></p>
+    <ul style="margin: 5px 0; padding-left: 20px;">
+        {% for course in courses %}
+        <li>{{ course.titre }}</li>
+        {% empty %}
+        <li>Aucun cours associé</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<p>Vous pouvez maintenant accéder à tous vos cours.</p>
+
+<a href="{{ site_url }}" class="btn">Accéder à mes cours</a>
+
+<p>L'équipe {{ site_name }}</p>
+{% endblock %}

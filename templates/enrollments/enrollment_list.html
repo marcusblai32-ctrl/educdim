@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Mes inscriptions" %} - {{ theme.site_name }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+        <h1 style="color:var(--text);"><i class="fas fa-list-check" style="color:var(--primary);"></i> {% trans "Mes inscriptions" %}</h1>
+        <a href="{% url 'courses:course_list' %}" class="btn btn-primary btn-sm" style="background:var(--primary); color:var(--white);">
+            <i class="fas fa-plus"></i> {% trans "Explorer les cours" %}
+        </a>
+    </div>
+
+    {% if inscriptions %}
+    <div style="display:grid; gap:1rem; margin-top:1.5rem;">
+        {% for inscription in inscriptions %}
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:1rem; border:1px solid var(--border); border-radius:var(--radius); background:var(--white); transition:all 0.3s;"
+             onmouseover="this.style.transform='translateX(5px)'" onmouseout="this.style.transform='translateX(0)'">
+            <div>
+                <h3 style="margin-bottom:0.2rem; color:var(--text);">{{ inscription.cours.titre }}</h3>
+                <p style="color:var(--text-muted); font-size:0.9rem;"><i class="fas fa-calendar"></i> {{ inscription.date_demande|date:"d/m/Y" }}</p>
+            </div>
+            <div style="display:flex; align-items:center; gap:1rem;">
+            <span class="badge
+              {% if inscription.statut == 'active' %}badge-success
+              {% elif inscription.statut == 'pending' %}badge-warning
+              {% else %}badge-danger{% endif %}"
+                  style="background:{% if inscription.statut == 'active' %}var(--success){% elif inscription.statut == 'pending' %}var(--warning){% else %}var(--danger){% endif %}; color:var(--white);">
+              {{ inscription.get_statut_display }}
+            </span>
+                <a href="{% url 'enrollments:detail' inscription.pk %}" class="btn btn-sm btn-outline" style="border-color:var(--primary); color:var(--primary);">
+                    {% trans "Détails" %} <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div style="text-align:center; padding:3rem 0;">
+        <i class="fas fa-book-open" style="font-size:4rem; color:var(--text-muted);"></i>
+        <p style="color:var(--text-muted); margin:1rem 0;">{% trans "Vous n'êtes inscrit à aucun cours." %}</p>
+        <a href="{% url 'courses:course_list' %}" class="btn btn-primary" style="background:var(--primary); color:var(--white);">
+            <i class="fas fa-search"></i> {% trans "Explorer les cours" %}
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

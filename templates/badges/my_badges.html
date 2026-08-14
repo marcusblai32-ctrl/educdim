@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Mes badges" %}{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h1>{% trans "Mes badges" %}</h1>
+  {% if badges_utilisateur %}
+  <div class="badges-grid">
+    {% for bu in badges_utilisateur %}
+    <div class="badge-card earned">
+      {% if bu.badge.image %}<img src="{{ bu.badge.image.url }}" alt="{{ bu.badge.nom }}" class="badge-img">{% else %}<div class="badge-icon"><i class="fas fa-medal fa-3x"></i></div>{% endif %}
+      <h3>{{ bu.badge.nom }}</h3>
+      <p>{% trans "Obtenu le" %} {{ bu.date_attribution|date:"d/m/Y" }}</p>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p>{% trans "Vous n'avez pas encore gagné de badge." %}</p>
+  <a href="{% url 'badges:list' %}" class="btn btn-primary">{% trans "Voir les badges disponibles" %}</a>
+  {% endif %}
+</div>
+{% endblock %}

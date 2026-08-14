@@ -1,0 +1,30 @@
+{% extends 'emails/base.html' %}
+{% block content %}
+<h2>✅ Inscription approuvée!</h2>
+
+<p>Bonjour <strong>{{ first_name }}</strong>,</p>
+
+<p>Nous avons le plaisir de vous informer que votre inscription au cours <strong>{{ course_name }}</strong> a été <strong>approuvée</strong> par l'administrateur.</p>
+
+<div style="background: #f0fdf4; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid #10b981;">
+    <p style="margin: 5px 0;"><strong>📚 Détails:</strong></p>
+    <p style="margin: 5px 0;">📖 Cours: <strong>{{ course_name }}</strong></p>
+    <p style="margin: 5px 0;">👨‍🏫 Formateur: <strong>{{ instructor }}</strong></p>
+    <p style="margin: 5px 0;">📅 Date de début: <strong>{{ start_date }}</strong></p>
+    <p style="margin: 5px 0;">✅ Vérifié par: <strong>{{ verified_by }}</strong></p>
+    <p style="margin: 5px 0;">📅 Vérifié le: <strong>{{ verification_date }}</strong></p>
+</div>
+
+{% if admin_note %}
+<div style="background: #fffbeb; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid #f59e0b;">
+    <p style="margin: 0;"><strong>📝 Note de l'admin:</strong></p>
+    <p style="margin: 5px 0;">{{ admin_note }}</p>
+</div>
+{% endif %}
+
+<p>Vous pouvez maintenant accéder à votre cours.</p>
+
+<a href="{{ course_link|default:site_url }}" class="btn">Accéder au cours</a>
+
+<p>L'équipe {{ site_name }}</p>
+{% endblock %}

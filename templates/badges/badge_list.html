@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Badges disponibles" %}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>{% trans "Badges disponibles" %}</h1>
+    {% if badges %}
+    <div class="badges-grid">
+        {% for badge in badges %}
+        <div class="badge-card">
+            {% if badge.image %}<img src="{{ badge.image.url }}" alt="{{ badge.nom }}" class="badge-img">{% else %}<div class="badge-icon"><i class="fas fa-medal fa-3x"></i></div>{% endif %}
+            <h3>{{ badge.nom }}</h3>
+            <p>{{ badge.description|truncatechars:80 }}</p>
+            <a href="{% url 'badges:detail' badge.pk %}" class="btn btn-sm btn-outline">{% trans "Détails" %}</a>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>{% trans "Aucun badge disponible." %}</p>
+    {% endif %}
+</div>
+{% endblock %}

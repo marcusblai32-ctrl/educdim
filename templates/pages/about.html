@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{{ theme.about_title|default:_("À propos") }} - {{ theme.site_name }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>{{ theme.about_title|default:_("À propos de nous") }}</h1>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:2rem; margin-top:1.5rem;">
+        <div>
+            {{ theme.about_content|default:"<p>EduPlatform se yon platform e-learning ki fèt pou ede moun aprann san limit.</p><p>Misyon nou se bay tout moun aksè a edikasyon kalite.</p>"|safe }}
+        </div>
+        {% if theme.about_image %}
+        <div>
+            <img src="{{ theme.about_image.url }}" alt="{{ theme.about_title }}" style="width:100%; border-radius:var(--radius);">
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

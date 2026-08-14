@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Résultat" %} - {{ tentative.quiz.titre }}{% endblock %}
+
+{% block content %}
+<div class="card text-center">
+    <h1>{{ tentative.quiz.titre }}</h1>
+
+    <div class="result-circle {% if tentative.reussi %}success{% else %}fail{% endif %}">
+        <span class="score">{{ tentative.score|floatformat:0 }}%</span>
+    </div>
+
+    <h2>
+        {% if tentative.reussi %}
+        <span class="text-success"><i class="fas fa-check-circle"></i> {% trans "Félicitations ! Vous avez réussi !" %}</span>
+        {% else %}
+        <span class="text-danger"><i class="fas fa-times-circle"></i> {% trans "Vous n'avez pas atteint le score requis." %}</span>
+        {% endif %}
+    </h2>
+
+    <div class="score-detail">
+        <div class="stat">
+            <span class="number">{{ tentative.score|floatformat:0 }}%</span>
+            <span class="label">{% trans "Votre score" %}</span>
+        </div>
+        <div class="stat">
+            <span class="number">{{ tentative.quiz.pourcentage_reussite }}%</span>
+            <span class="label">{% trans "Score requis" %}</span>
+        </div>
+        <div class="stat">
+            <span class="number">{{ tentative.quiz.questions.count }}</span>
+            <span class="label">{% trans "Questions" %}</span>
+        </div>
+    </div>
+
+    <p>{% trans "Date" %} : {{ tentative.date_soumission|date:"d/m/Y H:i" }}</p>
+
+    <div class="result-actions">
+        {% if tentative.reussi %}
+        <a href="{% url 'quiz:detail' tentative.quiz.pk %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> {% trans "Retour au quiz" %}
+        </a>
+        {% if lecon %}
+        <a href="{% url 'courses:lesson_detail' lecon.pk %}" class="btn btn-success">
+            <i class="fas fa-arrow-right"></i> {% trans "Continuer la leçon" %}
+        </a>
+        {% endif %}
+        {% else %}
+        <a href="{% url 'quiz:start' tentative.quiz.pk %}" class="btn btn-primary">
+            <i class="fas fa-redo"></i> {% trans "Réessayer" %}
+        </a>
+        {% endif %}
+        <a href="{% url 'courses:course_detail' tentative.quiz.cours.pk %}" class="btn btn-secondary">
+            <i class="fas fa-book"></i> {% trans "Retour au cours" %}
+        </a>
+    </div>
+</div>
+
+<style>
+    .result-circle {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 2rem;
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: white;
+    }
+
+    .result-circle.success {
+        background: linear-gradient(135deg, var(--success), var(--info));
+    }
+
+    .result-circle.fail {
+        background: linear-gradient(135deg, var(--danger), var(--warning));
+    }
+
+    .score-detail {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 1rem;
+        margin: 2rem 0;
+    }
+
+    .score-detail .stat {
+        background: var(--body-bg);
+        padding: 1rem;
+        border-radius: var(--radius);
+    }
+
+    .score-detail .stat .number {
+        display: block;
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--primary);
+    }
+
+    .score-detail .stat .label {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
+
+    .text-success {
+        color: var(--success);
+    }
+
+    .text-danger {
+        color: var(--danger);
+    }
+
+    .result-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 1.5rem;
+    }
+
+    @media (max-width: 480px) {
+        .score-detail {
+            grid-template-columns: 1fr;
+        }
+        .result-circle {
+            width: 120px;
+            height: 120px;
+            font-size: 2rem;
+        }
+        .result-actions .btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+{% endblock %}

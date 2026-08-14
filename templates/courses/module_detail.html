@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{{ module.titre }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <nav class="breadcrumb">
+        <a href="{% url 'courses:course_list' %}">{% trans "Cours" %}</a> &gt;
+        <a href="{% url 'courses:course_detail' module.unite.cours.pk %}">{{ module.unite.cours.titre }}</a> &gt;
+        <a href="{% url 'courses:unit_detail' module.unite.pk %}">{{ module.unite.titre }}</a> &gt;
+        <span>{{ module.titre }}</span>
+    </nav>
+    <h1>{{ module.titre }} ({% trans "Module" %} {{ module.ordre }})</h1>
+    <p>{{ module.description }}</p>
+    <h2>{% trans "Leçons" %}</h2>
+    <ul class="lecon-list">
+        {% for lecon in lecons %}
+        <li><a href="{% url 'courses:lesson_detail' lecon.pk %}">{{ lecon.titre }} ({% trans "Leçon" %} {{ lecon.ordre }})</a></li>
+        {% empty %}
+        <li>{% trans "Aucune leçon dans ce module." %}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

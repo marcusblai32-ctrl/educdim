@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Supprimer mon compte" %} - {{ theme.site_name }}{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="card">
+        <div class="text-center" style="margin-bottom:2rem;">
+            <h1 style="font-size:2rem; font-weight:800; color:var(--danger);">
+                <i class="fas fa-exclamation-triangle"></i> {% trans "Supprimer mon compte" %}
+            </h1>
+            <p style="color:var(--text-muted);">
+                {% trans "Cette action est irréversible. Toutes vos données seront supprimées." %}
+            </p>
+        </div>
+
+        <div class="alert alert-danger">
+            <i class="fas fa-info-circle"></i>
+            {% trans "En supprimant votre compte, vous perdrez :" %}
+            <ul style="margin-top:0.5rem; padding-left:1.5rem;">
+                <li>{% trans "Tous vos cours et inscriptions" %}</li>
+                <li>{% trans "Votre progression" %}</li>
+                <li>{% trans "Vos badges et points" %}</li>
+                <li>{% trans "Tous vos messages" %}</li>
+            </ul>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="password">{% trans "Entrez votre mot de passe pour confirmer" %}</label>
+                <input type="password" name="password" id="password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-danger btn-block btn-lg" onclick="return confirm('{% trans "Êtes-vous sûr de vouloir supprimer votre compte ?" %}')">
+            <i class="fas fa-trash-alt"></i> {% trans "Supprimer définitivement" %}
+            </button>
+            <a href="{% url 'accounts:profile' %}" class="btn btn-secondary btn-block" style="margin-top:0.5rem;">
+                <i class="fas fa-arrow-left"></i> {% trans "Annuler" %}
+            </a>
+        </form>
+    </div>
+</div>
+{% endblock %}

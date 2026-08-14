@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Aperçu du thème" %}{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h1>{% trans "Aperçu du thème" %} : {{ theme.nom }}</h1>
+  <div class="color-palette">
+    <h3>{% trans "Couleurs principales" %}</h3>
+    <div class="color-grid">
+      <div class="color-item"><div class="color-box" style="background:{{ theme.primary }}"></div>Primaire</div>
+      <div class="color-item"><div class="color-box" style="background:{{ theme.secondary }}"></div>Secondaire</div>
+      <div class="color-item"><div class="color-box" style="background:{{ theme.success }}"></div>Succès</div>
+      <div class="color-item"><div class="color-box" style="background:{{ theme.danger }}"></div>Danger</div>
+      <div class="color-item"><div class="color-box" style="background:{{ theme.warning }}"></div>Warning</div>
+      <div class="color-item"><div class="color-box" style="background:{{ theme.info }}"></div>Info</div>
+    </div>
+  </div>
+  <div class="component-preview">
+    <h3>{% trans "Boutons" %}</h3>
+    <button class="btn btn-primary">Primaire</button>
+    <button class="btn btn-secondary">Secondaire</button>
+    <button class="btn btn-success">Succès</button>
+    <button class="btn btn-danger">Danger</button>
+    <button class="btn btn-outline">Outline</button>
+  </div>
+  <div class="component-preview">
+    <h3>{% trans "Badges" %}</h3>
+    <span class="badge badge-primary">Primaire</span>
+    <span class="badge badge-success">Succès</span>
+    <span class="badge badge-danger">Danger</span>
+    <span class="badge badge-warning">Warning</span>
+  </div>
+  <a href="{% url 'admin:theme_manager_theme_changelist' %}" class="btn btn-primary">{% trans "Gérer les thèmes" %}</a>
+</div>
+{% endblock %}

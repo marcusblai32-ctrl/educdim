@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Notifications" %}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom:1.5rem;">
+        <h1>{% trans "Notifications" %}</h1>
+        {% if notifications %}
+        <form method="post" action="{% url 'notifications:delete_all' %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('{% trans "Supprimer toutes les notifications ?" %}')">
+            <i class="fas fa-trash-alt"></i> {% trans "Tout supprimer" %}
+            </button>
+        </form>
+        {% endif %}
+    </div>
+
+    {% if notifications %}
+    <div class="notifications-list">
+        {% for notif in notifications %}
+        <div class="notification-item {% if not notif.lue %}unread{% endif %}"
+             data-notif-id="{{ notif.pk }}"
+             onclick="markAsRead({{ notif.pk }})">
+            <div class="notification-content">
+                <h3>{{ notif.titre }}</h3>
+                <p>{{ notif.message }}</p>
+                <span class="notification-date">{{ notif.date|date:"d/m/Y H:i" }}</span>
+                <span class="badge badge-secondary">{{ notif.get_type_notif_display }}</span>
+                {% if notif.lien %}
+                <a href="{{ notif.lien }}" class="notification-link" onclick="event.stopPropagation();">{% trans "Voir" %}</a>
+                {% endif %}
+            </div>
+            <div class="notification-actions">
+                <form method="post" action="{% url 'notifications:delete' notif.pk %}" style="display:inline;" onclick="event.stopPropagation();">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-danger" title="{% trans 'Supprimer' %}">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>{% trans "Aucune notification." %}</p>
+    {% endif %}
+</div>
+
+<script>
+    function markAsRead(notifId) {
+        const item = document.querySelector(`.notification-item[data-notif-id="${notifId}"]`);
+        if (item && item.classList.contains('unread')) {
+            fetch(`/notifications/marquer-lue/${notifId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    'Content-Type': 'application/json',
+                },
+            });
+            item.classList.remove('unread');
+        }
+    }
+
+    document.querySelectorAll('.notification-actions form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.stopPropagation();
+        });
+    });
+</script>
+{% endblock %}

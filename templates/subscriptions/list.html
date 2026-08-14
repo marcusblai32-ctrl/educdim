@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Abonnements" %} - {{ theme.site_name }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1 style="color:var(--text);"><i class="fas fa-crown" style="color:var(--primary);"></i> {% trans "Plans d'abonnement" %}</h1>
+
+    {% if active_sub %}
+    <div class="alert alert-success" style="background:rgba(16,185,129,0.1); color:var(--success); padding:1rem; border-radius:var(--radius); border-left:4px solid var(--success);">
+        <i class="fas fa-check-circle"></i>
+        {% trans "Vous avez un abonnement actif" %} : <strong>{{ active_sub.plan.nom }}</strong>
+        {% if active_sub.jours_restants > 0 %}
+        ({{ active_sub.jours_restants }} {% trans "jours restants" %})
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <div class="plans-grid">
+        {% for plan in plans %}
+        <div class="plan-card" style="background:var(--white); border:1px solid var(--border); border-radius:var(--radius); padding:2rem; text-align:center; transition:all 0.3s;">
+            <h3 style="color:var(--text);">{{ plan.nom }}</h3>
+            <div class="price" style="font-size:2.5rem; font-weight:800; color:var(--primary); margin:1rem 0;">
+                <span>{{ plan.prix }} HTG</span>
+                <small style="font-size:1rem; font-weight:400; color:var(--text-muted);">/ {{ plan.duree_jours }} {% trans "jours" %}</small>
+            </div>
+            <p style="color:var(--text-muted);">{{ plan.description }}</p>
+            <ul class="plan-courses" style="list-style:none; padding:0; text-align:left; margin:1rem 0;">
+                {% for cours in plan.cours.all %}
+                <li style="padding:0.3rem 0; display:flex; align-items:center; gap:0.5rem; color:var(--text);">
+                    <i class="fas fa-check-circle" style="color:var(--success);"></i> {{ cours.titre }}
+                </li>
+                {% empty %}
+                <li style="color:var(--text-muted);">{% trans "Aucun cours inclus" %}</li>
+                {% endfor %}
+            </ul>
+
+            {% if active_sub and active_sub.plan == plan %}
+            <button class="btn btn-success" disabled style="background:var(--success); color:var(--white); opacity:0.6; cursor:not-allowed;">{% trans "Déjà abonné" %}</button>
+            {% else %}
+            <a href="{% url 'subscriptions:subscribe' plan.pk %}" class="btn btn-primary" style="background:var(--primary); color:var(--white);">
+                {% trans "S'abonner" %}
+            </a>
+            {% endif %}
+        </div>
+        {% empty %}
+        <p style="color:var(--text-muted);">{% trans "Aucun plan d'abonnement disponible." %}</p>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .plans-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 1.5rem;
+    }
+    .plan-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow);
+    }
+    @media (max-width: 480px) {
+        .plans-grid { grid-template-columns: 1fr; }
+    }
+</style>
+{% endblock %}

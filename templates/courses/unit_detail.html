@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{{ unite.titre }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <nav class="breadcrumb">
+        <a href="{% url 'courses:course_list' %}">{% trans "Cours" %}</a> &gt;
+        <a href="{% url 'courses:course_detail' unite.cours.pk %}">{{ unite.cours.titre }}</a> &gt;
+        <span>{{ unite.titre }}</span>
+    </nav>
+    <h1>{{ unite.titre }} ({% trans "Unité" %} {{ unite.ordre }})</h1>
+    <p>{{ unite.description }}</p>
+    <h2>{% trans "Modules" %}</h2>
+    <ul class="module-list">
+        {% for module in modules %}
+        <li><a href="{% url 'courses:module_detail' module.pk %}">{{ module.titre }} ({% trans "Module" %} {{ module.ordre }})</a></li>
+        {% empty %}
+        <li>{% trans "Aucun module dans cette unité." %}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

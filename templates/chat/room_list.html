@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Salons de discussion" %}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom:1.5rem;">
+        <h1><i class="fas fa-comments" style="color:var(--primary);"></i> {% trans "Salons de chat" %}</h1>
+        <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+            <a href="{% url 'chat:liste_etudiants' %}" class="btn btn-primary btn-sm">
+                <i class="fas fa-user-plus"></i> {% trans "Nouveau chat" %}
+            </a>
+        </div>
+    </div>
+
+    {% if salons %}
+    <div class="room-grid">
+        {% for salon in salons %}
+        <a href="{% url 'chat:detail_salon' salon.pk %}" class="room-card">
+            <div class="room-icon">
+                {% if salon.type == 'private' %}
+                <i class="fas fa-user-circle fa-2x"></i>
+                {% elif salon.type == 'group' %}
+                <i class="fas fa-users fa-2x"></i>
+                {% else %}
+                <i class="fas fa-comment-dots fa-2x"></i>
+                {% endif %}
+            </div>
+            <div class="room-info">
+                <h3>{{ salon.nom|default:salon.get_type_display }}</h3>
+                <p>{{ salon.participants.count }} {% trans "participants" %}</p>
+                <small>{{ salon.created_at|date:"d/m/Y H:i" }}</small>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div style="text-align:center; padding:3rem 0;">
+        <i class="fas fa-comments" style="font-size:4rem; color:var(--text-muted);"></i>
+        <p style="color:var(--text-muted); margin:1rem 0;">{% trans "Aucun salon disponible." %}</p>
+        <a href="{% url 'chat:liste_etudiants' %}" class="btn btn-primary">
+            <i class="fas fa-user-plus"></i> {% trans "Commencer un chat" %}
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .room-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1.5rem;
+        margin-top: 0.5rem;
+    }
+
+    .room-card {
+        background: var(--white);
+        padding: 1.5rem;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        text-align: center;
+        transition: all 0.3s ease;
+        color: var(--text);
+        border: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+    }
+
+    .room-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        border-color: var(--primary);
+        text-decoration: none;
+    }
+
+    .room-icon {
+        margin-bottom: 0.5rem;
+    }
+
+    .room-icon i {
+        color: var(--primary);
+    }
+
+    .room-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .room-info h3 {
+        font-size: 1rem;
+        margin: 0 0 0.2rem 0;
+        color: var(--text);
+    }
+
+    .room-info p {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin: 0.2rem 0;
+    }
+
+    .room-info small {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+    }
+
+    @media (max-width: 480px) {
+        .room-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}

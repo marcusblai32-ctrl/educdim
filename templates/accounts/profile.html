@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Mon profil" %} - {{ theme.site_name }}{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div style="display:flex; align-items:center; gap:2rem; flex-wrap:wrap;">
+    <div style="text-align:center;">
+      <div style="width:120px; height:120px; border-radius:50%; background:var(--primary); display:flex; align-items:center; justify-content:center; margin:0 auto;">
+        <span style="font-size:3rem; color:white; font-weight:700;">{{ user.first_name|slice:":1" }}{{ user.last_name|slice:":1" }}</span>
+      </div>
+      <span class="badge badge-primary" style="margin-top:0.5rem;"><i class="fas fa-id-card"></i> {{ user.user_id }}</span>
+    </div>
+    <div style="flex:1;">
+      <h1>{{ user.get_full_name }}</h1>
+      <p><i class="fas fa-envelope" style="color:var(--primary);"></i> {{ user.email }}</p>
+      <p><i class="fas fa-calendar-alt" style="color:var(--primary);"></i> {% trans "Annee de naissance" %}: {{ user.birth_year }}</p>
+      <p><i class="fas fa-clock" style="color:var(--primary);"></i> {% trans "Membre depuis" %}: {{ user.date_joined|date:"d/m/Y" }}</p>
+    </div>
+  </div>
+  <hr>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:1rem; margin-top:1.5rem;">
+    <a href="{% url 'progress:dashboard' %}" class="btn btn-primary btn-block"><i class="fas fa-chart-line"></i> {% trans "Ma progression" %}</a>
+    <a href="{% url 'enrollments:list' %}" class="btn btn-secondary btn-block"><i class="fas fa-list-check"></i> {% trans "Mes inscriptions" %}</a>
+    <a href="{% url 'ranking:my_rank' %}" class="btn btn-success btn-block"><i class="fas fa-trophy"></i> {% trans "Mon classement" %}</a>
+    <a href="{% url 'badges:my_badges' %}" class="btn btn-warning btn-block"><i class="fas fa-medal"></i> {% trans "Mes badges" %}</a>
+  </div>
+
+  <hr>
+  <div style="margin-top:1rem;">
+    <a href="{% url 'accounts:delete_account' %}" class="btn btn-danger btn-sm" style="float:right;">
+      <i class="fas fa-trash-alt"></i> {% trans "Supprimer mon compte" %}
+    </a>
+  </div>
+</div>
+{% endblock %}

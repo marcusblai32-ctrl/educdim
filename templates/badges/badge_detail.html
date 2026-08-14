@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{{ badge.nom }}{% endblock %}
+
+{% block content %}
+<div class="card text-center">
+  {% if badge.image %}<img src="{{ badge.image.url }}" alt="{{ badge.nom }}" class="badge-large">{% else %}<div class="badge-icon-large"><i class="fas fa-medal fa-5x"></i></div>{% endif %}
+  <h1>{{ badge.nom }}</h1>
+  <p>{{ badge.description }}</p>
+  <p><strong>{% trans "Condition" %} :</strong> {{ badge.get_condition_type_display }}</p>
+  {% if badge.valeur_cible %}<p><strong>{% trans "Objectif" %} :</strong> {{ badge.valeur_cible }}</p>{% endif %}
+  {% if badge.cours %}<p><strong>{% trans "Cours" %} :</strong> {{ badge.cours.titre }}</p>{% endif %}
+  <a href="{% url 'badges:list' %}" class="btn btn-secondary">{% trans "Retour aux badges" %}</a>
+</div>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "S'abonner" %} - {{ plan.nom }}{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width:600px; margin:0 auto;">
+    <h1 style="color:var(--text);"><i class="fas fa-crown" style="color:var(--primary);"></i> {% trans "S'abonner" %} : {{ plan.nom }}</h1>
+
+    <div class="plan-summary" style="background:var(--body-bg); padding:1rem; border-radius:var(--radius); margin-bottom:1.5rem;">
+        <p style="color:var(--text);"><strong>{% trans "Prix" %} :</strong> {{ plan.prix }} HTG</p>
+        <p style="color:var(--text);"><strong>{% trans "Durée" %} :</strong> {{ plan.duree_jours }} {% trans "jours" %}</p>
+        <p style="color:var(--text);"><strong>{% trans "Cours inclus" %} :</strong></p>
+        <ul style="color:var(--text-muted); padding-left:1.5rem;">
+            {% for cours in plan.cours.all %}
+            <li>{{ cours.titre }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <hr style="border-color:var(--border);">
+
+    {% if plan.prix > 0 %}
+    <div class="alert alert-info" style="background:rgba(6,182,212,0.1); color:var(--info); padding:1rem; border-radius:var(--radius); border-left:4px solid var(--info);">
+        <i class="fas fa-info-circle"></i>
+        {% trans "Effectuez le paiement via MonCash ou NatCash, puis remplissez le formulaire ci-dessous." %}
+    </div>
+    {% else %}
+    <div class="alert alert-success" style="background:rgba(16,185,129,0.1); color:var(--success); padding:1rem; border-radius:var(--radius); border-left:4px solid var(--success);">
+        <i class="fas fa-gift"></i>
+        {% trans "Ce plan est gratuit. Cliquez sur le bouton pour vous abonner." %}
+    </div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="id_methode_paiement" style="color:var(--text); font-weight:600;">{% trans "Méthode de paiement" %}</label>
+            {{ form.methode_paiement }}
+            {{ form.methode_paiement.errors }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_nom_compte" style="color:var(--text); font-weight:600;">{% trans "Nom sur le compte" %}</label>
+            {{ form.nom_compte }}
+            {{ form.nom_compte.errors }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_telephone" style="color:var(--text); font-weight:600;">{% trans "Téléphone" %}</label>
+            {{ form.telephone }}
+            {{ form.telephone.errors }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_id_transaction" style="color:var(--text); font-weight:600;">{% trans "ID de transaction" %}</label>
+            {{ form.id_transaction }}
+            {{ form.id_transaction.errors }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_photo_paiement" style="color:var(--text); font-weight:600;">{% trans "Photo du paiement (facultatif)" %}</label>
+            {{ form.photo_paiement }}
+            {{ form.photo_paiement.errors }}
+            <small style="color:var(--text-muted);">{% trans "Prenez une photo de votre reçu MonCash/NatCash." %}</small>
+        </div>
+
+        {{ form.non_field_errors }}
+
+        <button type="submit" class="btn btn-primary btn-block btn-lg" style="background:var(--primary); color:var(--white);">
+            <i class="fas fa-check"></i> {% trans "Confirmer l'abonnement" %}
+        </button>
+
+        <a href="{% url 'subscriptions:list' %}" class="btn btn-secondary btn-block" style="margin-top:0.5rem; background:var(--secondary); color:var(--white);">
+            <i class="fas fa-arrow-left"></i> {% trans "Retour" %}
+        </a>
+    </form>
+</div>
+{% endblock %}

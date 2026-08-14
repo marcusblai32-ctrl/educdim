@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Inscriptions en attente" %} - {{ theme.site_name }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h1 style="color:var(--text);"><i class="fas fa-clock" style="color:var(--warning);"></i> {% trans "Inscriptions en attente" %}</h1>
+        <span class="badge badge-warning" style="background:var(--warning); color:var(--dark); font-size:1rem;">{{ inscriptions|length }} {% trans "en attente" %}</span>
+    </div>
+
+    {% if inscriptions %}
+    <div style="overflow-x:auto; margin-top:1.5rem;">
+        <table style="width:100%; border-collapse:collapse;">
+            <thead>
+            <tr style="background:var(--body-bg);">
+                <th style="padding:0.8rem; text-align:left; color:var(--text);">{% trans "Utilisateur" %}</th>
+                <th style="padding:0.8rem; text-align:left; color:var(--text);">{% trans "Cours" %}</th>
+                <th style="padding:0.8rem; text-align:left; color:var(--text);">{% trans "Méthode" %}</th>
+                <th style="padding:0.8rem; text-align:left; color:var(--text);">{% trans "ID transaction" %}</th>
+                <th style="padding:0.8rem; text-align:left; color:var(--text);">{% trans "Photo" %}</th>
+                <th style="padding:0.8rem; text-align:left; color:var(--text);">{% trans "Date" %}</th>
+                <th style="padding:0.8rem; text-align:center; color:var(--text);">{% trans "Action" %}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for inscription in inscriptions %}
+            <tr style="border-bottom:1px solid var(--border);">
+                <td style="padding:0.8rem; color:var(--text);">
+                    <strong>{{ inscription.utilisateur.get_full_name }}</strong><br>
+                    <small style="color:var(--text-muted);">{{ inscription.utilisateur.email }}</small>
+                </td>
+                <td style="padding:0.8rem; color:var(--text);">{{ inscription.cours.titre }}</td>
+                <td style="padding:0.8rem; color:var(--text);">{{ inscription.get_methode_paiement_display }}</td>
+                <td style="padding:0.8rem; color:var(--text);"><code style="background:var(--body-bg); padding:0.2rem 0.5rem; border-radius:4px;">{{ inscription.id_transaction }}</code></td>
+                <td style="padding:0.8rem; color:var(--text);">
+                    {% if inscription.photo_paiement %}
+                    <a href="{{ inscription.photo_paiement.url }}" target="_blank">
+                        <img src="{{ inscription.photo_paiement.url }}" width="50" height="50" style="object-fit:cover; border-radius:4px; border:2px solid var(--border);">
+                    </a>
+                    {% else %}
+                    <span class="badge badge-secondary" style="background:var(--secondary); color:var(--white);">{% trans "Aucune" %}</span>
+                    {% endif %}
+                </td>
+                <td style="padding:0.8rem; color:var(--text);">{{ inscription.date_demande|date:"d/m/Y H:i" }}</td>
+                <td style="padding:0.8rem; text-align:center;">
+                    <div style="display:flex; gap:0.3rem; justify-content:center;">
+                        <a href="{% url 'enrollments:admin_approve' inscription.pk %}" class="btn btn-sm btn-success" style="background:var(--success); color:var(--white);" onclick="return confirm('{% trans "Approuver cette inscription ?" %}')">
+                        <i class="fas fa-check"></i>
+                        </a>
+                        <a href="{% url 'enrollments:admin_reject' inscription.pk %}" class="btn btn-sm btn-danger" style="background:var(--danger); color:var(--white);" onclick="return confirm('{% trans "Refuser cette inscription ?" %}')">
+                        <i class="fas fa-times"></i>
+                        </a>
+                        <a href="{% url 'admin:enrollments_enrollment_change' inscription.pk %}" class="btn btn-sm btn-primary" style="background:var(--primary); color:var(--white);">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div style="text-align:center; padding:3rem 0;">
+        <i class="fas fa-check-circle" style="font-size:4rem; color:var(--success);"></i>
+        <p style="color:var(--text-muted); margin-top:1rem;">{% trans "Aucune inscription en attente." %}</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Détail de l'inscription" %} - {{ theme.site_name }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display:flex; justify-content:space-between; align-items:start; flex-wrap:wrap;">
+        <div>
+            <h1 style="color:var(--text);">{{ inscription.cours.titre }}</h1>
+            <p style="color:var(--text-muted);"><i class="fas fa-calendar"></i> {% trans "Demande" %}: {{ inscription.date_demande|date:"d/m/Y H:i" }}</p>
+        </div>
+        <span class="badge
+      {% if inscription.statut == 'active' %}badge-success
+      {% elif inscription.statut == 'pending' %}badge-warning
+      {% else %}badge-danger{% endif %}"
+              style="font-size:1.1rem; padding:0.5rem 1.5rem; background:{% if inscription.statut == 'active' %}var(--success){% elif inscription.statut == 'pending' %}var(--warning){% else %}var(--danger){% endif %}; color:var(--white);">
+      {{ inscription.get_statut_display }}
+    </span>
+    </div>
+    <hr style="border-color:var(--border);">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:2rem;">
+        <div>
+            <h3 style="color:var(--text);"><i class="fas fa-info-circle" style="color:var(--primary);"></i> {% trans "Détails" %}</h3>
+            <p style="color:var(--text);"><strong>{% trans "Méthode de paiement" %} :</strong> {{ inscription.get_methode_paiement_display }}</p>
+            {% if inscription.id_transaction %}<p style="color:var(--text);"><strong>{% trans "ID transaction" %} :</strong> <code style="background:var(--body-bg); padding:0.2rem 0.5rem; border-radius:4px;">{{ inscription.id_transaction }}</code></p>{% endif %}
+            {% if inscription.nom_compte %}<p style="color:var(--text);"><strong>{% trans "Nom sur le compte" %} :</strong> {{ inscription.nom_compte }}</p>{% endif %}
+            {% if inscription.telephone %}<p style="color:var(--text);"><strong>{% trans "Téléphone" %} :</strong> {{ inscription.telephone }}</p>{% endif %}
+            {% if inscription.photo_paiement %}
+            <p style="color:var(--text);"><strong>{% trans "Photo paiement" %} :</strong></p>
+            <img src="{{ inscription.photo_paiement.url }}" alt="Photo paiement" style="max-width:200px; border-radius:var(--radius); border:2px solid var(--border);">
+            {% endif %}
+        </div>
+        <div>
+            <h3 style="color:var(--text);"><i class="fas fa-cogs" style="color:var(--primary);"></i> {% trans "Actions" %}</h3>
+            {% if inscription.statut == 'active' %}
+            <p style="color:var(--success);"><i class="fas fa-check-circle" style="color:var(--success);"></i> {% trans "Vous avez accès à ce cours." %}</p>
+            <a href="{% url 'courses:course_detail' inscription.cours.pk %}" class="btn btn-primary btn-block" style="background:var(--primary); color:var(--white);">
+                <i class="fas fa-play"></i> {% trans "Accéder au cours" %}
+            </a>
+            {% elif inscription.statut == 'pending' %}
+            <p style="color:var(--warning);"><i class="fas fa-clock" style="color:var(--warning);"></i> {% trans "Votre paiement est en cours de vérification." %}</p>
+            {% elif inscription.statut == 'rejected' %}
+            <p style="color:var(--danger);"><i class="fas fa-times-circle" style="color:var(--danger);"></i> {% trans "Votre inscription a été refusée." %}</p>
+            {% if inscription.note_admin %}
+            <div class="alert alert-error" style="background:#fee2e2; color:#991b1b; padding:1rem; border-radius:var(--radius); border-left:4px solid var(--danger);">
+                <strong>{% trans "Raison" %} :</strong> {{ inscription.note_admin }}
+            </div>
+            {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

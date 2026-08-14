@@ -1,0 +1,68 @@
+msgid "Connexion"
+msgstr "Koneksyon"
+
+msgid "Inscription"
+msgstr "Enskripsyon"
+
+msgid "Créer un compte"
+msgstr "Kreye yon kont"
+
+msgid "Email"
+msgstr "Imel"
+
+msgid "Mot de passe"
+msgstr "Modpas"
+
+msgid "Se connecter"
+msgstr "Konekte"
+
+msgid "Se déconnecter"
+msgstr "Dekonekte"
+
+msgid "Profil"
+msgstr "Pwofil"
+
+msgid "Tableau de bord"
+msgstr "Tablo de bòd"
+
+msgid "Cours"
+msgstr "Kou"
+
+msgid "Explorer"
+msgstr "Eksplore"
+
+msgid "Progression"
+msgstr "Pwogresyon"
+
+msgid "Notifications"
+msgstr "Notifikasyon"
+
+msgid "Voir détails"
+msgstr "Wè detay"
+
+msgid "Modifier"
+msgstr "Modifye"
+
+msgid "Supprimer"
+msgstr "Efase"
+
+msgid "Annuler"
+msgstr "Anile"
+
+msgid "Enregistrer"
+msgstr "Anrejistre"
+
+msgid "Gratuit"
+msgstr "Gratis"
+
+msgid "Prix"
+msgstr "Pri"
+
+msgid "S'inscrire"
+msgstr "Enskri"
+
+msgid "Inscription"
+msgstr "Enskripsyon"
+
+msgid "Confirmation"
+msgstr "Konfimasyon"

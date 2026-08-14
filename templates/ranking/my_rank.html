@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Mon classement" %}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>{% trans "Mon classement" %}</h1>
+    <div class="rank-summary">
+        <div class="rank-card"><h3>{% trans "Points totaux" %}</h3><span class="big-number">{{ points.total }}</span></div>
+        <div class="rank-card"><h3>{% trans "Cette semaine" %}</h3><span class="big-number">{{ points.semaine }}</span></div>
+        <div class="rank-card"><h3>{% trans "Ce mois" %}</h3><span class="big-number">{{ points.mois }}</span></div>
+    </div>
+    {% if niveau_actuel %}
+    <div class="current-tier">
+        <h2>{% trans "Niveau actuel" %} : {{ niveau_actuel.nom }}</h2>
+        {% if niveau_actuel.icone %}<img src="{{ niveau_actuel.icone.url }}" alt="{{ niveau_actuel.nom }}">{% endif %}
+        {% if prochain_niveau %}
+        <p>{% trans "Prochain niveau" %} : {{ prochain_niveau.nom }} ({{ prochain_niveau.points_min }} {% trans "points requis" %})</p>
+        <progress value="{{ points.total }}" max="{{ prochain_niveau.points_min }}"></progress>
+        {% endif %}
+    </div>
+    {% endif %}
+    <h3>{% trans "Historique récent" %}</h3>
+    {% if historique %}
+    <ul class="history-list">
+        {% for entry in historique %}
+        <li>{{ entry.date|date:"d/m/Y H:i" }} - +{{ entry.points }} pts ({{ entry.raison }})</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>{% trans "Aucune activité récente." %}</p>
+    {% endif %}
+</div>
+{% endblock %}

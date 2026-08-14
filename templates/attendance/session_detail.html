@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Session" %} - {{ session.titre }}{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h1>{{ session.titre }}</h1>
+  <p><strong>{% trans "Cours" %} :</strong> {{ session.cours.titre }}</p>
+  <p><strong>{% trans "Date" %} :</strong> {{ session.date|date:"d/m/Y" }}</p>
+  <p><strong>{% trans "Horaire" %} :</strong> {{ session.heure_debut }} - {{ session.heure_fin|default:_("Fin") }}</p>
+
+  {% if user.is_staff %}
+  <h2>{% trans "Liste des présences" %}</h2>
+  <div class="table-responsive">
+    <table>
+      <thead><tr><th>{% trans "Étudiant" %}</th><th>{% trans "Statut" %}</th><th>{% trans "Justification" %}</th></tr></thead>
+      <tbody>
+      {% for fiche in fiches %}
+      <tr>
+        <td>{{ fiche.utilisateur.get_full_name }}</td>
+        <td>{{ fiche.get_statut_display }}</td>
+        <td>
+          {% if fiche.justification %}
+          <a href="{% url 'attendance:review_justification' fiche.justification.pk %}" class="btn btn-sm btn-outline">{% trans "Voir" %}</a>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  {% if ma_fiche %}
+  <h2>{% trans "Mon statut" %}</h2>
+  <p>{% trans "Statut" %} : <span class="badge {% if ma_fiche.statut == 'present' %}badge-success{% elif ma_fiche.statut == 'retard' %}badge-warning{% else %}badge-danger{% endif %}">{{ ma_fiche.get_statut_display }}</span></p>
+  {% if ma_fiche.statut in 'absent retard' %}
+  {% if justification %}
+  <p>{% trans "Justification soumise le" %} {{ justification.date_soumission|date:"d/m/Y" }}</p>
+  <p>{% trans "Statut" %} : {% if justification.examinee %}{% if justification.approuvee %}{% trans "Approuvée" %}{% else %}{% trans "Refusée" %}{% endif %}{% else %}{% trans "En attente" %}{% endif %}</p>
+  {% else %}
+  <a href="{% url 'attendance:submit_justification' ma_fiche.pk %}" class="btn btn-warning">{% trans "Soumettre une justification" %}</a>
+  {% endif %}
+  {% endif %}
+  {% else %}
+  <p>{% trans "Vous n'êtes pas enregistré dans cette session." %}</p>
+  {% endif %}
+  {% endif %}
+</div>
+{% endblock %}

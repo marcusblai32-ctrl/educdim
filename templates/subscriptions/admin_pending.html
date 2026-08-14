@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Abonnements en attente" %} - {{ theme.site_name }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+        <h1 style="color:var(--text);"><i class="fas fa-clock" style="color:var(--warning);"></i> {% trans "Abonnements en attente" %}</h1>
+        <span class="badge badge-warning" style="background:var(--warning); color:var(--dark); font-size:1rem;">{{ pending|length }} {% trans "en attente" %}</span>
+    </div>
+
+    {% if pending %}
+    <div style="overflow-x:auto; margin-top:1.5rem;">
+        <table style="width:100%; border-collapse:collapse;">
+            <thead>
+            <tr style="background:var(--body-bg);">
+                <th style="padding:0.8rem; text-align:left; color:var(--text);">{% trans "Utilisateur" %}</th>
+                <th style="padding:0.8rem; text-align:left; color:var(--text);">{% trans "Plan" %}</th>
+                <th style="padding:0.8rem; text-align:left; color:var(--text);">{% trans "Méthode" %}</th>
+                <th style="padding:0.8rem; text-align:left; color:var(--text);">{% trans "ID transaction" %}</th>
+                <th style="padding:0.8rem; text-align:left; color:var(--text);">{% trans "Photo" %}</th>
+                <th style="padding:0.8rem; text-align:left; color:var(--text);">{% trans "Date" %}</th>
+                <th style="padding:0.8rem; text-align:center; color:var(--text);">{% trans "Action" %}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for sub in pending %}
+            <tr style="border-bottom:1px solid var(--border);">
+                <td style="padding:0.8rem; color:var(--text);">
+                    <strong>{{ sub.utilisateur.get_full_name }}</strong><br>
+                    <small style="color:var(--text-muted);">{{ sub.utilisateur.email }}</small>
+                </td>
+                <td style="padding:0.8rem; color:var(--text);">{{ sub.plan.nom }}</td>
+                <td style="padding:0.8rem; color:var(--text);">{{ sub.get_methode_paiement_display }}</td>
+                <td style="padding:0.8rem; color:var(--text);"><code style="background:var(--body-bg); padding:0.2rem 0.5rem; border-radius:4px;">{{ sub.id_transaction }}</code></td>
+                <td style="padding:0.8rem; color:var(--text);">
+                    {% if sub.photo_paiement %}
+                    <a href="{{ sub.photo_paiement.url }}" target="_blank">
+                        <img src="{{ sub.photo_paiement.url }}" width="50" height="50" style="object-fit:cover; border-radius:4px; border:2px solid var(--border);">
+                    </a>
+                    {% else %}
+                    <span class="badge badge-secondary" style="background:var(--secondary); color:var(--white);">{% trans "Aucune" %}</span>
+                    {% endif %}
+                </td>
+                <td style="padding:0.8rem; color:var(--text);">{{ sub.date_demande|date:"d/m/Y H:i" }}</td>
+                <td style="padding:0.8rem; text-align:center;">
+                    <a href="{% url 'admin:subscriptions_subscription_change' sub.pk %}" class="btn btn-sm btn-primary" style="background:var(--primary); color:var(--white);">
+                        <i class="fas fa-edit"></i> {% trans "Gérer" %}
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div style="text-align:center; padding:3rem 0;">
+        <i class="fas fa-check-circle" style="font-size:4rem; color:var(--success);"></i>
+        <p style="color:var(--text-muted); margin-top:1rem;">{% trans "Aucun abonnement en attente." %}</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

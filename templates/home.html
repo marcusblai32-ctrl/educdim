@@ -1,0 +1,226 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+
+{% block title %}{% trans "Accueil" %} - {{ theme.site_name|default:'EducDim' }}{% endblock %}
+
+{% block content %}
+<!-- ===== HERO SECTION ===== -->
+<section class="hero animate-on-scroll" style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; max-width: 1200px; margin: 2rem auto; padding: 0 2rem; align-items: center;">
+    <div class="hero-content">
+        <!-- Badge -->
+        <div class="hero-badge" style="display: inline-block; background: var(--primary); color: var(--white); padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.9rem; margin-bottom: 1rem;">
+            <i class="fas fa-rocket"></i> {{ theme.hero_badge|default:_("Plateforme e-learning") }}
+        </div>
+
+        <!-- Titre -->
+        <h1 style="font-size: 3rem; line-height: 1.2; margin-bottom: 1rem;">
+            {{ theme.hero_title|default:_("Apprenez sans limites") }}<br>
+            <span class="highlight" style="color: var(--primary);">{{ theme.hero_subtitle_line2|default:_("Où que vous soyez") }}</span>
+        </h1>
+
+        <!-- Sous-titre -->
+        <p class="hero-description" style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 2rem;">
+            {{ theme.hero_subtitle|default:_("Des cours de qualité pour développer vos compétences à votre rythme.") }}
+        </p>
+
+        <!-- Boutons -->
+        <div class="hero-actions" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <a href="{% url 'courses:course_list' %}" class="btn btn-primary btn-lg" style="display: inline-block; background: var(--primary); color: var(--white); padding: 0.8rem 2rem; border-radius: var(--radius); text-decoration: none; transition: background 0.3s;">
+                <i class="fas fa-graduation-cap"></i> {{ theme.btn_explore|default:_("Explorer les cours") }}
+            </a>
+            {% if not user.is_authenticated %}
+            <a href="{% url 'accounts:signup' %}" class="btn btn-outline btn-lg" style="display: inline-block; border: 2px solid var(--primary); color: var(--primary); padding: 0.8rem 2rem; border-radius: var(--radius); text-decoration: none; transition: all 0.3s;">
+                <i class="fas fa-user-plus"></i> {{ theme.btn_start|default:_("Commencer gratuitement") }}
+            </a>
+            {% endif %}
+        </div>
+
+        <!-- ===== STATS ===== -->
+        <div class="hero-stats" style="display: flex; gap: 3rem; margin-top: 2rem;">
+            <div class="stat-item">
+                <span class="stat-number" style="font-size: 2rem; font-weight: 700; color: var(--primary); display: block;">
+                    {{ theme.stats_cours|default:50 }}
+                </span>
+                <span class="stat-label" style="color: var(--text-muted);">{% trans "Cours" %}</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" style="font-size: 2rem; font-weight: 700; color: var(--primary); display: block;">
+                    {{ theme.stats_etudiants|default:1200 }}
+                </span>
+                <span class="stat-label" style="color: var(--text-muted);">{% trans "Étudiants" %}</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" style="font-size: 2rem; font-weight: 700; color: var(--primary); display: block;">
+                    {{ theme.stats_satisfaction|default:95 }}%
+                </span>
+                <span class="stat-label" style="color: var(--text-muted);">{% trans "Satisfaction" %}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== HERO VISUAL ===== -->
+    <div class="hero-visual" style="position: relative;">
+        {% if theme.hero_image %}
+        <img src="{{ theme.hero_image.url }}" alt="{{ theme.hero_title }}" style="max-width:100%; border-radius:var(--radius); box-shadow: var(--shadow);">
+        {% else %}
+        <!-- Carte 1 -->
+        <div class="hero-card animate-float" style="background: var(--white); padding: 2rem; border-radius: var(--radius); box-shadow: var(--shadow); text-align: center; margin-bottom: 1rem;">
+            <i class="{{ theme.hero_card1_icon|default:'fas fa-laptop-code' }}" style="font-size: 3rem; color: var(--primary);"></i>
+            <h3 style="margin: 0.5rem 0;">{{ theme.hero_card1_title|default:_("Formation en ligne") }}</h3>
+            <p style="color: var(--text-muted); margin: 0;">{{ theme.hero_card1_desc|default:_("+1000 étudiants") }}</p>
+        </div>
+        <!-- Carte 2 -->
+        <div class="hero-card animate-float delay-1" style="background: var(--white); padding: 2rem; border-radius: var(--radius); box-shadow: var(--shadow); text-align: center; margin-bottom: 1rem;">
+            <i class="{{ theme.hero_card2_icon|default:'fas fa-certificate' }}" style="font-size: 3rem; color: var(--primary);"></i>
+            <h3 style="margin: 0.5rem 0;">{{ theme.hero_card2_title|default:_("Certifiés") }}</h3>
+            <p style="color: var(--text-muted); margin: 0;">{{ theme.hero_card2_desc|default:_("Reconnus par l'État") }}</p>
+        </div>
+        <!-- Carte 3 -->
+        <div class="hero-card animate-float delay-2" style="background: var(--white); padding: 2rem; border-radius: var(--radius); box-shadow: var(--shadow); text-align: center;">
+            <i class="{{ theme.hero_card3_icon|default:'fas fa-users' }}" style="font-size: 3rem; color: var(--primary);"></i>
+            <h3 style="margin: 0.5rem 0;">{{ theme.hero_card3_title|default:_("+50 cours") }}</h3>
+            <p style="color: var(--text-muted); margin: 0;">{{ theme.hero_card3_desc|default:_("Disponibles") }}</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- ===== FEATURES SECTION ===== -->
+<section class="features-section animate-on-scroll" style="max-width: 1200px; margin: 4rem auto; padding: 0 2rem;">
+    <div class="section-header" style="text-align: center; margin-bottom: 3rem;">
+        <span class="section-tag" style="display: inline-block; background: var(--primary); color: var(--white); padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.9rem; margin-bottom: 0.5rem;">
+            {{ theme.features_tag|default:_("Pourquoi nous choisir ?") }}
+        </span>
+        <h2 style="font-size: 2.5rem; margin: 0.5rem 0;">
+            {{ theme.features_title|default:_("Une expérience d'apprentissage") }}
+            <span class="highlight" style="color: var(--primary);">{{ theme.features_highlight|default:_("unique") }}</span>
+        </h2>
+    </div>
+
+    <div class="features-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+        <!-- Feature 1 -->
+        <div class="feature-card animate-on-scroll" style="background: var(--white); padding: 2rem; border-radius: var(--radius); box-shadow: var(--shadow); text-align: center; transition: transform 0.3s;">
+            <div class="feature-icon-wrapper" style="background: var(--{{ theme.feature1_color|default:'primary' }}); width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                <i class="{{ theme.feature1_icon|default:'fas fa-laptop-code' }} feature-icon" style="color: var(--white); font-size: 2rem;"></i>
+            </div>
+            <h3 style="margin: 1rem 0 0.5rem;">{{ theme.feature1_title|default:_("Cours interactifs") }}</h3>
+            <p style="color: var(--text-muted); line-height: 1.6;">{{ theme.feature1_desc|default:_("Apprenez avec des vidéos, quiz et exercices pratiques conçus pour vous.") }}</p>
+            <a href="#" class="feature-link" style="color: var(--{{ theme.feature1_color|default:'primary' }}); text-decoration: none; display: inline-block; margin-top: 1rem;">
+                {{ theme.feature_link_text|default:_("En savoir plus") }} <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="feature-card animate-on-scroll delay-1" style="background: var(--white); padding: 2rem; border-radius: var(--radius); box-shadow: var(--shadow); text-align: center; transition: transform 0.3s;">
+            <div class="feature-icon-wrapper" style="background: var(--{{ theme.feature2_color|default:'success' }}); width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                <i class="{{ theme.feature2_icon|default:'fas fa-certificate' }} feature-icon" style="color: var(--white); font-size: 2rem;"></i>
+            </div>
+            <h3 style="margin: 1rem 0 0.5rem;">{{ theme.feature2_title|default:_("Certificats vérifiés") }}</h3>
+            <p style="color: var(--text-muted); line-height: 1.6;">{{ theme.feature2_desc|default:_("Recevez des certificats reconnus après chaque cours complété avec succès.") }}</p>
+            <a href="#" class="feature-link" style="color: var(--{{ theme.feature2_color|default:'success' }}); text-decoration: none; display: inline-block; margin-top: 1rem;">
+                {{ theme.feature_link_text|default:_("En savoir plus") }} <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="feature-card animate-on-scroll delay-2" style="background: var(--white); padding: 2rem; border-radius: var(--radius); box-shadow: var(--shadow); text-align: center; transition: transform 0.3s;">
+            <div class="feature-icon-wrapper" style="background: var(--{{ theme.feature3_color|default:'warning' }}); width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                <i class="{{ theme.feature3_icon|default:'fas fa-trophy' }} feature-icon" style="color: var(--white); font-size: 2rem;"></i>
+            </div>
+            <h3 style="margin: 1rem 0 0.5rem;">{{ theme.feature3_title|default:_("Classement & Badges") }}</h3>
+            <p style="color: var(--text-muted); line-height: 1.6;">{{ theme.feature3_desc|default:_("Gagnez des points, débloquez des badges et grimpez dans le classement.") }}</p>
+            <a href="#" class="feature-link" style="color: var(--{{ theme.feature3_color|default:'warning' }}); text-decoration: none; display: inline-block; margin-top: 1rem;">
+                {{ theme.feature_link_text|default:_("En savoir plus") }} <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ===== CTA SECTION ===== -->
+<section class="cta-section animate-on-scroll" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: var(--white); padding: 4rem 2rem; text-align: center; border-radius: var(--radius); max-width: 1200px; margin: 4rem auto;">
+    <div class="cta-content">
+        <h2 style="font-size: 2.5rem; margin: 0 0 1rem;">
+            {{ theme.cta_title|default:_("Prêt à commencer votre") }}
+            <span class="highlight" style="color: var(--warning);">{{ theme.cta_highlight|default:_("aventure") }}</span> ?
+        </h2>
+        <p style="font-size: 1.1rem; opacity: 0.95; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+            {{ theme.cta_desc|default:_("Rejoignez des milliers d'apprenants et transformez votre avenir dès aujourd'hui.") }}
+        </p>
+        <div class="cta-actions">
+            <a href="{% url 'accounts:signup' %}" class="btn btn-success btn-lg" style="display: inline-block; background: var(--success); color: var(--white); padding: 0.8rem 2rem; border-radius: var(--radius); text-decoration: none; font-size: 1.1rem; transition: background 0.3s;">
+                <i class="fas fa-rocket"></i> {{ theme.cta_btn|default:_("Créer un compte gratuit") }}
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ===== TESTIMONIALS SECTION ===== -->
+<section class="testimonials-section animate-on-scroll" style="max-width: 1200px; margin: 4rem auto; padding: 0 2rem;">
+    <div class="section-header" style="text-align: center; margin-bottom: 3rem;">
+        <span class="section-tag" style="display: inline-block; background: var(--primary); color: var(--white); padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.9rem; margin-bottom: 0.5rem;">
+            {{ theme.testimonials_tag|default:_("Ce que nos étudiants disent") }}
+        </span>
+        <h2 style="font-size: 2.5rem; margin: 0.5rem 0;">
+            {{ theme.testimonials_title|default:_("Ils ont") }}
+            <span class="highlight" style="color: var(--primary);">{{ theme.testimonials_highlight|default:_("réussi") }}</span>
+            {{ theme.testimonials_end|default:_("grâce à nous") }}
+        </h2>
+    </div>
+
+    <div class="testimonials-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;">
+        <!-- Témoignage 1 -->
+        <div class="testimonial-card" style="background: var(--white); padding: 2rem; border-radius: var(--radius); box-shadow: var(--shadow);">
+            <div class="stars" style="color: var(--warning); margin-bottom: 1rem;">
+                {% for i in "12345"|make_list %}
+                {% if forloop.counter <= theme.testimonial1_stars|default:5 %}
+                <i class="fas fa-star"></i>
+                {% else %}
+                <i class="far fa-star"></i>
+                {% endif %}
+                {% endfor %}
+            </div>
+            <p style="font-style: italic; color: var(--text); line-height: 1.6; margin-bottom: 1.5rem;">
+                "{{ theme.testimonial1_text|default:_("Grâce à EduPlatform, j'ai appris le développement web en 3 mois. Aujourd'hui je travaille comme freelance.") }}"
+            </p>
+            <div class="testimonial-author" style="display: flex; align-items: center; gap: 1rem;">
+                {% if theme.testimonial1_avatar %}
+                <img src="{{ theme.testimonial1_avatar }}" alt="{{ theme.testimonial1_name|default:'Jean Dupont' }}" style="width: 50px; height: 50px; border-radius: 50%;">
+                {% else %}
+                <img src="https://ui-avatars.com/api/?name={{ theme.testimonial1_name|default:'Jean+Dupont' }}&background=2563eb&color=fff&size=50" alt="{{ theme.testimonial1_name|default:'Jean Dupont' }}" style="width: 50px; height: 50px; border-radius: 50%;">
+                {% endif %}
+                <div>
+                    <h4 style="margin: 0; font-size: 1rem;">{{ theme.testimonial1_name|default:"Jean Dupont" }}</h4>
+                    <span style="color: var(--text-muted); font-size: 0.9rem;">{{ theme.testimonial1_job|default:_("Développeur Web") }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Témoignage 2 -->
+        <div class="testimonial-card" style="background: var(--white); padding: 2rem; border-radius: var(--radius); box-shadow: var(--shadow);">
+            <div class="stars" style="color: var(--warning); margin-bottom: 1rem;">
+                {% for i in "12345"|make_list %}
+                {% if forloop.counter <= theme.testimonial2_stars|default:5 %}
+                <i class="fas fa-star"></i>
+                {% else %}
+                <i class="far fa-star"></i>
+                {% endif %}
+                {% endfor %}
+            </div>
+            <p style="font-style: italic; color: var(--text); line-height: 1.6; margin-bottom: 1.5rem;">
+                "{{ theme.testimonial2_text|default:_("Les cours sont bien structurés et les professeurs sont très compétents. Je recommande à 100%.") }}"
+            </p>
+            <div class="testimonial-author" style="display: flex; align-items: center; gap: 1rem;">
+                {% if theme.testimonial2_avatar %}
+                <img src="{{ theme.testimonial2_avatar }}" alt="{{ theme.testimonial2_name|default:'Marie Paul' }}" style="width: 50px; height: 50px; border-radius: 50%;">
+                {% else %}
+                <img src="https://ui-avatars.com/api/?name={{ theme.testimonial2_name|default:'Marie+Paul' }}&background=10b981&color=fff&size=50" alt="{{ theme.testimonial2_name|default:'Marie Paul' }}" style="width: 50px; height: 50px; border-radius: 50%;">
+                {% endif %}
+                <div>
+                    <h4 style="margin: 0; font-size: 1rem;">{{ theme.testimonial2_name|default:"Marie Paul" }}</h4>
+                    <span style="color: var(--text-muted); font-size: 0.9rem;">{{ theme.testimonial2_job|default:_("Data Analyst") }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

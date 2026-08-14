@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Réviser la justification" %}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>{% trans "Justification de" %} {{ justification.fiche.utilisateur.get_full_name }}</h1>
+    <p><strong>{% trans "Session" %} :</strong> {{ justification.fiche.session.titre }}</p>
+    <p><strong>{% trans "Date" %} :</strong> {{ justification.fiche.session.date|date:"d/m/Y" }}</p>
+    <p><strong>{% trans "Raison" %} :</strong> {{ justification.raison }}</p>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="note_admin">{% trans "Note admin" %}</label>
+            <textarea name="note_admin" id="note_admin" class="form-control" rows="3">{{ justification.note_admin }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="approuvee">
+                <input type="checkbox" name="approuvee" id="approuvee" {% if justification.approuvee %}checked{% endif %}>
+                {% trans "Approuver" %}
+            </label>
+        </div>
+        <button type="submit" class="btn btn-primary">{% trans "Enregistrer" %}</button>
+        <a href="javascript:history.back()" class="btn btn-secondary">{% trans "Annuler" %}</a>
+    </form>
+</div>
+{% endblock %}

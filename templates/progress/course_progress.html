@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Progression" %} - {{ cours.titre }}{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h1>{{ cours.titre }}</h1>
+  {% if progres_global %}
+  <div class="overall-progress">
+    <h3>{% trans "Progression globale" %}</h3>
+    <progress value="{{ progres_global.pourcentage }}" max="100"></progress>
+    <span>{{ progres_global.pourcentage|floatformat:0 }}%</span>
+  </div>
+  {% endif %}
+  <h2>{% trans "Leçons" %}</h2>
+  <div class="lessons-progress">
+    {% for item in lecons_data %}
+    <div class="lesson-item {% if item.progres.statut == 'termine' %}completed{% elif item.progres.statut == 'en_cours' %}in-progress{% endif %}">
+      <div class="lesson-info">
+        <h4>{{ item.lecon.titre }}</h4>
+        <span class="badge {% if item.progres.statut == 'termine' %}badge-success{% elif item.progres.statut == 'en_cours' %}badge-warning{% else %}badge-secondary{% endif %}">{{ item.progres.get_statut_display }}</span>
+      </div>
+      <div class="lesson-actions">
+        <a href="{% url 'courses:lesson_detail' item.lecon.pk %}" class="btn btn-sm btn-outline">{% trans "Voir" %}</a>
+        {% if item.progres.statut != 'termine' %}
+        <form method="post" action="{% url 'progress:mark_lecon_complete' item.lecon.pk %}" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-sm btn-success">{% trans "Marquer terminée" %}</button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

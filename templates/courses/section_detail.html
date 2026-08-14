@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{{ section.titre }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <nav class="breadcrumb">
+        <a href="{% url 'courses:course_list' %}">{% trans "Cours" %}</a> &gt;
+        <a href="{% url 'courses:course_detail' section.lecon.module.unite.cours.pk %}">{{ section.lecon.module.unite.cours.titre }}</a> &gt;
+        <a href="{% url 'courses:unit_detail' section.lecon.module.unite.pk %}">{{ section.lecon.module.unite.titre }}</a> &gt;
+        <a href="{% url 'courses:module_detail' section.lecon.module.pk %}">{{ section.lecon.module.titre }}</a> &gt;
+        <a href="{% url 'courses:lesson_detail' section.lecon.pk %}">{{ section.lecon.titre }}</a> &gt;
+        <span>{{ section.titre }}</span>
+    </nav>
+    <h1>{{ section.titre }} ({{ section.get_type_section_display }})</h1>
+    <h2>{% trans "Contenus" %}</h2>
+    {% for contenu in contenus %}
+    <div class="content-block">
+        <h3>{{ contenu.get_type_contenu_display }} : {{ contenu.get_titre }}</h3>
+        {% if contenu.type_contenu == 'texte' %}
+        <p>{{ contenu.get_texte|linebreaks }}</p>
+        {% elif contenu.type_contenu == 'video' %}
+        {% with url=contenu.get_video_url %}
+        {% if url %}
+        <video controls style="max-width:100%;"><source src="{{ url }}" type="video/mp4">{% trans "Votre navigateur ne supporte pas la lecture de vidéos." %}</video>
+        {% else %}<p>{% trans "Aucune vidéo disponible dans cette langue." %}</p>{% endif %}
+        {% endwith %}
+        {% elif contenu.type_contenu == 'image' %}
+        {% with url=contenu.get_image_url %}
+        {% if url %}<img src="{{ url }}" alt="{{ contenu.get_titre }}" style="max-width:100%;">{% else %}<p>{% trans "Aucune image disponible dans cette langue." %}</p>{% endif %}
+        {% endwith %}
+        {% elif contenu.type_contenu == 'audio' %}
+        {% with url=contenu.get_audio_url %}
+        {% if url %}<audio controls><source src="{{ url }}" type="audio/mpeg">{% trans "Votre navigateur ne supporte pas l'audio." %}</audio>{% else %}<p>{% trans "Aucun fichier audio disponible dans cette langue." %}</p>{% endif %}
+        {% endwith %}
+        {% elif contenu.type_contenu == 'pdf' %}
+        {% with url=contenu.get_pdf_url %}
+        {% if url %}<a href="{{ url }}" target="_blank">{% trans "Télécharger le PDF" %}</a>{% else %}<p>{% trans "Aucun PDF disponible dans cette langue." %}</p>{% endif %}
+        {% endwith %}
+        {% elif contenu.type_contenu == 'lien' %}
+        {% with url=contenu.get_lien_url %}
+        {% if url %}<a href="{{ url }}" target="_blank">{{ url }}</a>{% else %}<p>{% trans "Aucun lien disponible dans cette langue." %}</p>{% endif %}
+        {% endwith %}
+        {% elif contenu.type_contenu == 'fichier' and contenu.fichier %}
+        <a href="{{ contenu.fichier.url }}">{% trans "Télécharger le fichier" %}</a>
+        {% else %}
+        <p>{% trans "Type de contenu non pris en charge ou non disponible." %}</p>
+        {% endif %}
+    </div>
+    {% empty %}<p>{% trans "Aucun contenu dans cette section." %}</p>{% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Classement" %}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>{% trans "Classement général" %}</h1>
+    <div class="leaderboard-tabs">
+        <button class="tab-btn active" onclick="showTab('total')">{% trans "Général" %}</button>
+        <button class="tab-btn" onclick="showTab('semaine')">{% trans "Cette semaine" %}</button>
+        <button class="tab-btn" onclick="showTab('mois')">{% trans "Ce mois" %}</button>
+    </div>
+    <div id="tab-total" class="tab-content active">
+        <ol class="leaderboard-list">
+            {% for up in top_total %}
+            <li><span class="rank">#{{ forloop.counter }}</span><span class="name">{{ up.utilisateur.get_full_name }}</span><span class="points">{{ up.total }} pts</span></li>
+            {% empty %}<li>{% trans "Aucun joueur." %}</li>{% endfor %}
+        </ol>
+    </div>
+    <div id="tab-semaine" class="tab-content">
+        <ol class="leaderboard-list">
+            {% for up in top_semaine %}
+            <li><span class="rank">#{{ forloop.counter }}</span><span class="name">{{ up.utilisateur.get_full_name }}</span><span class="points">{{ up.semaine }} pts</span></li>
+            {% empty %}<li>{% trans "Aucun joueur cette semaine." %}</li>{% endfor %}
+        </ol>
+    </div>
+    <div id="tab-mois" class="tab-content">
+        <ol class="leaderboard-list">
+            {% for up in top_mois %}
+            <li><span class="rank">#{{ forloop.counter }}</span><span class="name">{{ up.utilisateur.get_full_name }}</span><span class="points">{{ up.mois }} pts</span></li>
+            {% empty %}<li>{% trans "Aucun joueur ce mois." %}</li>{% endfor %}
+        </ol>
+    </div>
+</div>
+<script>
+    function showTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById('tab-' + tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+{% endblock %}

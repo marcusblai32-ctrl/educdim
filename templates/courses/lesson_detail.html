@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{{ lecon.titre }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <nav class="breadcrumb">
+        <a href="{% url 'courses:course_list' %}">{% trans "Cours" %}</a> &gt;
+        <a href="{% url 'courses:course_detail' lecon.module.unite.cours.pk %}">{{ lecon.module.unite.cours.titre }}</a> &gt;
+        <a href="{% url 'courses:unit_detail' lecon.module.unite.pk %}">{{ lecon.module.unite.titre }}</a> &gt;
+        <a href="{% url 'courses:module_detail' lecon.module.pk %}">{{ lecon.module.titre }}</a> &gt;
+        <span>{{ lecon.titre }}</span>
+    </nav>
+
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom:1rem;">
+        <h1>{{ lecon.titre }} ({% trans "Leçon" %} {{ lecon.ordre }})</h1>
+        {% if lecon.quiz %}
+        <a href="{% url 'quiz:detail' lecon.quiz.pk %}" class="btn btn-sm btn-primary">
+            <i class="fas fa-question-circle"></i> {% trans "Voir le quiz" %}
+        </a>
+        {% endif %}
+    </div>
+
+    <p>{{ lecon.description }}</p>
+    <div class="lecon-content">{{ lecon.contenu|linebreaks }}</div>
+
+    <h2>{% trans "Sections" %}</h2>
+    <ul class="section-list">
+        {% for section in sections %}
+        <li><a href="{% url 'courses:section_detail' section.pk %}">{{ section.titre }} ({{ section.get_type_section_display }})</a></li>
+        {% empty %}
+        <li>{% trans "Aucune section dans cette leçon." %}</li>
+        {% endfor %}
+    </ul>
+
+    <div style="margin-top:2rem; padding-top:1.5rem; border-top:1px solid var(--border);">
+        <form method="post" action="{% url 'progress:mark_lecon_complete' lecon.pk %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-check"></i> {% trans "Marquer cette leçon comme terminée" %}
+            </button>
+        </form>
+    </div>
+</div>
+
+<style>
+    .breadcrumb { margin-bottom: 1rem; padding: 0.5rem 1rem; background: var(--body-bg); border-radius: var(--radius); font-size: 0.9rem; }
+    .breadcrumb a { color: var(--primary); }
+    .breadcrumb .separator { margin: 0 0.3rem; color: var(--text-muted); }
+    .breadcrumb span { color: var(--text-muted); }
+    .section-list { list-style: none; padding: 0; }
+    .section-list li { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); }
+    .section-list li:last-child { border-bottom: none; }
+    .section-list li a { display: flex; align-items: center; gap: 0.5rem; color: var(--text); }
+    .section-list li a:hover { color: var(--primary); }
+    .lecon-content { margin: 1.5rem 0; padding: 1rem; background: var(--body-bg); border-radius: var(--radius); }
+</style>
+{% endblock %}
