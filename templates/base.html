@@ -1,325 +1,336 @@
 {% load static i18n ads_tags %}
+
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE|default:'fr' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{{ theme.site_name|default:'EducDim' }}{% endblock %}</title>
-
     <meta name="description" content="{{ meta_description|default:theme.site_description }}">
     <meta name="keywords" content="{{ meta_keywords|default:'e-learning, cours en ligne, éducation' }}">
 
-    {% if theme.favicon %}
-    <link rel="icon" type="image/x-icon" href="{{ theme.favicon.url }}">
-    <link rel="shortcut icon" type="image/x-icon" href="{{ theme.favicon.url }}">
+    {# ===== FAVICON ===== #}
+    {% if theme.get_favicon %}
+        <link rel="icon" type="image/x-icon" href="{{ theme.get_favicon }}">
+        <link rel="shortcut icon" type="image/x-icon" href="{{ theme.get_favicon }}">
+    {% elif theme.favicon %}
+        <link rel="icon" type="image/x-icon" href="{{ theme.favicon.url }}">
+        <link rel="shortcut icon" type="image/x-icon" href="{{ theme.favicon.url }}">
     {% endif %}
 
-    <!-- CSS -->
+    {# ===== CSS ===== #}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% url 'theme_manager:dynamic_css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- ========================================== -->
-    <!-- DROPDOWN JAVASCRIPT - PRIORITY (anvan tout) -->
-    <!-- ========================================== -->
+    {# ========================================== #}
+    {# DROPDOWN JAVASCRIPT - PRIORITY (anvan tout) #}
+    {# ========================================== #}
     <script>
-        (function() {
-            function initDropdowns() {
-                // ============================================
-                // USER DROPDOWN
-                // ============================================
-                var userDropdownBtn = document.getElementById('userDropdownBtn');
-
-                if (userDropdownBtn) {
-                    userDropdownBtn.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        var parent = this.closest('.user-dropdown');
-                        if (parent) {
-                            parent.classList.toggle('open');
+    (function() {
+        function initDropdowns() {
+            // ============================================
+            // USER DROPDOWN
+            // ============================================
+            var userDropdownBtn = document.getElementById('userDropdownBtn');
+            if (userDropdownBtn) {
+                userDropdownBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    var parent = this.closest('.user-dropdown');
+                    if (parent) {
+                        parent.classList.toggle('open');
+                    }
+                });
+                document.addEventListener('click', function(e) {
+                    if (!e.target.closest('.user-dropdown')) {
+                        var dropdown = document.querySelector('.user-dropdown');
+                        if (dropdown) {
+                            dropdown.classList.remove('open');
                         }
-                    });
-
-                    document.addEventListener('click', function(e) {
-                        if (!e.target.closest('.user-dropdown')) {
-                            var dropdown = document.querySelector('.user-dropdown');
-                            if (dropdown) {
-                                dropdown.classList.remove('open');
-                            }
-                        }
-                    });
-                }
-
-                // ============================================
-                // CHAT DROPDOWN
-                // ============================================
-                var chatDropdownBtn = document.getElementById('chatDropdownBtn');
-
-                if (chatDropdownBtn) {
-                    chatDropdownBtn.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        var parent = this.closest('.nav-dropdown');
-                        if (parent) {
-                            parent.classList.toggle('open');
-                        }
-                    });
-
-                    document.addEventListener('click', function(e) {
-                        if (!e.target.closest('.nav-dropdown')) {
-                            var dropdowns = document.querySelectorAll('.nav-dropdown');
-                            dropdowns.forEach(function(dropdown) {
-                                dropdown.classList.remove('open');
-                            });
-                        }
-                    });
-                }
+                    }
+                });
             }
 
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', initDropdowns);
-            } else {
-                initDropdowns();
+            // ============================================
+            // CHAT DROPDOWN
+            // ============================================
+            var chatDropdownBtn = document.getElementById('chatDropdownBtn');
+            if (chatDropdownBtn) {
+                chatDropdownBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    var parent = this.closest('.nav-dropdown');
+                    if (parent) {
+                        parent.classList.toggle('open');
+                    }
+                });
+                document.addEventListener('click', function(e) {
+                    if (!e.target.closest('.nav-dropdown')) {
+                        var dropdowns = document.querySelectorAll('.nav-dropdown');
+                        dropdowns.forEach(function(dropdown) {
+                            dropdown.classList.remove('open');
+                        });
+                    }
+                });
             }
-        })();
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initDropdowns);
+        } else {
+            initDropdowns();
+        }
+    })();
     </script>
 
     {% block extra_head %}{% endblock %}
 </head>
 <body>
 
-<!-- ===== LOADING OVERLAY ===== -->
-<div id="loadingOverlay" class="loading-overlay">
-    <div class="loading-spinner"></div>
-</div>
+    {# ===== LOADING OVERLAY ===== #}
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
 
-<!-- ===== HEADER ===== -->
-<header class="main-header" id="mainHeader">
-    <div class="header-container">
-        <a href="{% url 'home' %}" class="logo">
-            {% if theme.logo %}
-            <img src="{{ theme.logo.url }}" alt="{{ theme.site_name|default:'EducDim' }}">
-            <span>{{ theme.site_name|default:'EducDim' }}</span>
-            {% else %}
-            <span>{{ theme.site_name|default:'EducDim' }}</span>
-            {% endif %}
-        </a>
-
-        <button class="menu-toggle" id="menuToggle" aria-label="Menu">
-            <i class="fas fa-bars"></i>
-        </button>
-
-        <nav id="mainNav" class="main-nav">
-            <a href="{% url 'courses:course_list' %}" class="nav-link">
-                <i class="fas fa-book"></i>
-                <span>{% trans "Explorer" %}</span>
-            </a>
-
-            {% if user.is_authenticated %}
-            <a href="{% url 'progress:dashboard' %}" class="nav-link">
-                <i class="fas fa-chart-line"></i>
-                <span>{% trans "Progression" %}</span>
-            </a>
-
-            <!-- Chat Dropdown -->
-            <div class="nav-dropdown">
-                <button type="button" class="nav-dropdown-btn" id="chatDropdownBtn">
-                    <i class="fas fa-comments"></i>
-                    <span>{% trans "Chat" %}</span>
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-                <div class="nav-dropdown-content" id="chatDropdownContent">
-                    <a href="{% url 'chat:liste_salons' %}">
-                        <i class="fas fa-comment-dots"></i> {% trans "Mes salons" %}
-                    </a>
-                    <a href="{% url 'chat:liste_etudiants' %}">
-                        <i class="fas fa-user-friends"></i> {% trans "Étudiants" %}
-                    </a>
-                </div>
-            </div>
-
-            <!-- Notifications -->
-            <a href="{% url 'notifications:list' %}" class="nav-link notification-link">
-                <i class="fas fa-bell"></i>
-                <span>{% trans "Notifications" %}</span>
-                {% if unread_notifications > 0 %}
-                <span class="badge badge-danger badge-pulse">{{ unread_notifications }}</span>
+    {# ===== HEADER ===== #}
+    <header class="main-header" id="mainHeader">
+        <div class="header-container">
+            <a href="{% url 'home' %}" class="logo">
+                {% if theme.get_logo %}
+                    <img src="{{ theme.get_logo }}" alt="{{ theme.site_name|default:'EducDim' }}">
+                    <span>{{ theme.site_name|default:'EducDim' }}</span>
+                {% elif theme.logo %}
+                    <img src="{{ theme.logo.url }}" alt="{{ theme.site_name|default:'EducDim' }}">
+                    <span>{{ theme.site_name|default:'EducDim' }}</span>
+                {% else %}
+                    <span>{{ theme.site_name|default:'EducDim' }}</span>
                 {% endif %}
             </a>
 
-            {% if user.is_staff %}
-            <a href="{% url 'dashboard:admin_dashboard' %}" class="nav-link">
-                <i class="fas fa-chart-pie"></i>
-                <span>{% trans "Dashboard" %}</span>
-            </a>
-            <a href="{% url 'admin:index' %}" class="nav-link">
-                <i class="fas fa-cog"></i>
-                <span>{% trans "Admin" %}</span>
-            </a>
-            {% endif %}
-
-            <!-- User Dropdown -->
-            <div class="user-dropdown">
-                <button type="button" class="dropbtn" id="userDropdownBtn">
-                    <i class="fas fa-user-circle"></i>
-                    <span>{{ user.first_name|default:user.email }}</span>
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-                <div class="dropdown-content" id="userDropdownContent">
-                    <a href="{% url 'accounts:profile' %}">
-                        <i class="fas fa-id-card"></i> {% trans "Profil" %}
-                    </a>
-                    <a href="{% url 'subscriptions:my_subscriptions' %}">
-                        <i class="fas fa-crown"></i> {% trans "Abonnements" %}
-                    </a>
-                    <a href="{% url 'enrollments:list' %}">
-                        <i class="fas fa-list-check"></i> {% trans "Inscriptions" %}
-                    </a>
-                    <a href="{% url 'ranking:my_rank' %}">
-                        <i class="fas fa-trophy"></i> {% trans "Classement" %}
-                    </a>
-                    <a href="{% url 'badges:my_badges' %}">
-                        <i class="fas fa-medal"></i> {% trans "Badges" %}
-                    </a>
-                    <hr>
-                    <form method="post" action="{% url 'accounts:logout' %}" id="logoutForm">
-                        {% csrf_token %}
-                        <button type="submit" class="logout-btn">
-                            <i class="fas fa-sign-out-alt"></i> {% trans "Déconnexion" %}
-                        </button>
-                    </form>
-                </div>
-            </div>
-            {% else %}
-            <a href="{% url 'accounts:login' %}" class="nav-link">
-                <i class="fas fa-sign-in-alt"></i>
-                <span>{% trans "Connexion" %}</span>
-            </a>
-            <a href="{% url 'accounts:signup' %}" class="nav-link btn-nav-primary">
-                <i class="fas fa-user-plus"></i>
-                <span>{% trans "S'inscrire" %}</span>
-            </a>
-            {% endif %}
-        </nav>
-
-        <div class="lang-switcher">
-            <form action="{% url 'set_language' %}" method="post">
-                {% csrf_token %}
-                <input name="next" type="hidden" value="{{ request.path }}">
-                <select name="language" onchange="this.form.submit()">
-                    {% get_current_language as LANGUAGE_CODE %}
-                    {% get_available_languages as LANGUAGES %}
-                    {% for lang in LANGUAGES %}
-                    <option value="{{ lang.0 }}" {% if lang.0 == LANGUAGE_CODE %}selected{% endif %}>
-                        {{ lang.1 }}
-                    </option>
-                    {% endfor %}
-                </select>
-            </form>
-        </div>
-    </div>
-
-    {% if banners_header %}
-    <div style="padding:0 2rem;">
-        {% render_banner_carousel banners_header %}
-    </div>
-    {% endif %}
-</header>
-
-<!-- ===== EVENEMENT BANNER ===== -->
-{% if theme.evenement_actif %}
-<div class="evenement-banner">
-    {% if theme.evenement_banner %}
-    <img src="{{ theme.evenement_banner.url }}" alt="{{ theme.evenement_nom }}">
-    {% endif %}
-    <h2 class="evenement-glow">
-        {% if theme.evenement_logo %}
-        <img src="{{ theme.evenement_logo.url }}" alt="{{ theme.evenement_nom }}">
-        {% endif %}
-        {{ theme.evenement_nom }}
-    </h2>
-    <p>{{ theme.evenement_message }}</p>
-    {% if theme.evenement_hashtag %}
-    <div class="hashtag">#{{ theme.evenement_hashtag }}</div>
-    {% endif %}
-</div>
-{% endif %}
-
-<!-- ===== BREADCRUMB ===== -->
-{% if request.path != '/' and request.path != '/fr/' and request.path != '/ht/' %}
-<nav class="breadcrumb">
-    <div>
-        <a href="{% url 'home' %}"><i class="fas fa-home"></i> {% trans "Accueil" %}</a>
-        {% for crumb in breadcrumbs %}
-        <span class="separator"> &gt; </span>
-        {% if crumb.url and not forloop.last %}
-        <a href="{{ crumb.url }}">{{ crumb.name }}</a>
-        {% else %}
-        <span>{{ crumb.name }}</span>
-        {% endif %}
-        {% endfor %}
-    </div>
-</nav>
-{% endif %}
-
-<!-- ===== MAIN ===== -->
-<main>
-    <!-- MESSAGES SEULEMENT SI BLOCK MESSAGES PA VID -->
-    {% block messages %}
-    {% if messages %}
-    <div class="messages-container">
-        {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
-            <span>{{ message }}</span>
-            <button type="button" class="close-alert" aria-label="Close">
-                <i class="fas fa-times"></i>
+            <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+                <i class="fas fa-bars"></i>
             </button>
+
+            <nav id="mainNav" class="main-nav">
+                <a href="{% url 'courses:course_list' %}" class="nav-link">
+                    <i class="fas fa-book"></i>
+                    <span>{% trans "Explorer" %}</span>
+                </a>
+
+                {% if user.is_authenticated %}
+                    <a href="{% url 'progress:dashboard' %}" class="nav-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>{% trans "Progression" %}</span>
+                    </a>
+
+                    {# ===== CHAT DROPDOWN ===== #}
+                    <div class="nav-dropdown">
+                        <button type="button" class="nav-dropdown-btn" id="chatDropdownBtn">
+                            <i class="fas fa-comments"></i>
+                            <span>{% trans "Chat" %}</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="nav-dropdown-content" id="chatDropdownContent">
+                            <a href="{% url 'chat:liste_salons' %}">
+                                <i class="fas fa-comment-dots"></i> {% trans "Mes salons" %}
+                            </a>
+                            <a href="{% url 'chat:liste_etudiants' %}">
+                                <i class="fas fa-user-friends"></i> {% trans "Étudiants" %}
+                            </a>
+                        </div>
+                    </div>
+
+                    {# ===== NOTIFICATIONS ===== #}
+                    <a href="{% url 'notifications:list' %}" class="nav-link notification-link">
+                        <i class="fas fa-bell"></i>
+                        <span>{% trans "Notifications" %}</span>
+                        {% if unread_notifications > 0 %}
+                            <span class="badge badge-danger badge-pulse">{{ unread_notifications }}</span>
+                        {% endif %}
+                    </a>
+
+                    {% if user.is_staff %}
+                        <a href="{% url 'dashboard:admin_dashboard' %}" class="nav-link">
+                            <i class="fas fa-chart-pie"></i>
+                            <span>{% trans "Dashboard" %}</span>
+                        </a>
+                        <a href="{% url 'admin:index' %}" class="nav-link">
+                            <i class="fas fa-cog"></i>
+                            <span>{% trans "Admin" %}</span>
+                        </a>
+                    {% endif %}
+
+                    {# ===== USER DROPDOWN ===== #}
+                    <div class="user-dropdown">
+                        <button type="button" class="dropbtn" id="userDropdownBtn">
+                            <i class="fas fa-user-circle"></i>
+                            <span>{{ user.first_name|default:user.email }}</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-content" id="userDropdownContent">
+                            <a href="{% url 'accounts:profile' %}">
+                                <i class="fas fa-id-card"></i> {% trans "Profil" %}
+                            </a>
+                            <a href="{% url 'subscriptions:my_subscriptions' %}">
+                                <i class="fas fa-crown"></i> {% trans "Abonnements" %}
+                            </a>
+                            <a href="{% url 'enrollments:list' %}">
+                                <i class="fas fa-list-check"></i> {% trans "Inscriptions" %}
+                            </a>
+                            <a href="{% url 'ranking:my_rank' %}">
+                                <i class="fas fa-trophy"></i> {% trans "Classement" %}
+                            </a>
+                            <a href="{% url 'badges:my_badges' %}">
+                                <i class="fas fa-medal"></i> {% trans "Badges" %}
+                            </a>
+                            <hr>
+                            <form method="post" action="{% url 'accounts:logout' %}" id="logoutForm">
+                                {% csrf_token %}
+                                <button type="submit" class="logout-btn">
+                                    <i class="fas fa-sign-out-alt"></i> {% trans "Déconnexion" %}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                {% else %}
+                    <a href="{% url 'accounts:login' %}" class="nav-link">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>{% trans "Connexion" %}</span>
+                    </a>
+                    <a href="{% url 'accounts:signup' %}" class="nav-link btn-nav-primary">
+                        <i class="fas fa-user-plus"></i>
+                        <span>{% trans "S'inscrire" %}</span>
+                    </a>
+                {% endif %}
+            </nav>
+
+            {# ===== LANG SWITCHER ===== #}
+            <div class="lang-switcher">
+                <form action="{% url 'set_language' %}" method="post">
+                    {% csrf_token %}
+                    <input name="next" type="hidden" value="{{ request.path }}">
+                    <select name="language" onchange="this.form.submit()">
+                        {% get_current_language as LANGUAGE_CODE %}
+                        {% get_available_languages as LANGUAGES %}
+                        {% for lang in LANGUAGES %}
+                            <option value="{{ lang.0 }}" {% if lang.0 == LANGUAGE_CODE %}selected{% endif %}>
+                                {{ lang.1 }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
         </div>
-        {% endfor %}
-    </div>
+
+        {# ===== BANNERS HEADER ===== #}
+        {% if banners_header %}
+            <div style="padding:0 2rem;">
+                {% render_banner_carousel banners_header %}
+            </div>
+        {% endif %}
+    </header>
+
+    {# ===== EVENEMENT BANNER ===== #}
+    {% if theme.evenement_actif %}
+        <div class="evenement-banner">
+            {% if theme.get_evenement_banner %}
+                <img src="{{ theme.get_evenement_banner }}" alt="{{ theme.evenement_nom }}">
+            {% elif theme.evenement_banner %}
+                <img src="{{ theme.evenement_banner.url }}" alt="{{ theme.evenement_nom }}">
+            {% endif %}
+            
+            <h2 class="evenement-glow">
+                {% if theme.get_evenement_logo %}
+                    <img src="{{ theme.get_evenement_logo }}" alt="{{ theme.evenement_nom }}">
+                {% elif theme.evenement_logo %}
+                    <img src="{{ theme.evenement_logo.url }}" alt="{{ theme.evenement_nom }}">
+                {% endif %}
+                {{ theme.evenement_nom }}
+            </h2>
+            <p>{{ theme.evenement_message }}</p>
+            {% if theme.evenement_hashtag %}
+                <div class="hashtag">#{{ theme.evenement_hashtag }}</div>
+            {% endif %}
+        </div>
     {% endif %}
-    {% endblock %}
 
-    {% block content %}{% endblock %}
-</main>
-
-<!-- ===== FOOTER ===== -->
-<footer>
-    <div class="footer-container">
-        <p>
-            &copy; {{ theme.site_name|default:'EducDim' }} -
-            {{ theme.footer_text|default:_('Tous droits réservés') }}
-        </p>
-        <nav>
-            <a href="{% url 'about' %}">
-                <i class="fas fa-info-circle"></i> {% trans "À propos" %}
-            </a>
-            <a href="{% url 'contact' %}">
-                <i class="fas fa-envelope"></i> {% trans "Contact" %}
-            </a>
-            <a href="{% url 'privacy' %}">
-                <i class="fas fa-shield-alt"></i> {% trans "Confidentialité" %}
-            </a>
-            <a href="{% url 'conditions' %}">
-                <i class="fas fa-file-contract"></i> {% trans "Conditions" %}
-            </a>
-            <a href="{% url 'faq' %}">
-                <i class="fas fa-question-circle"></i> {% trans "FAQ" %}
-            </a>
+    {# ===== BREADCRUMB ===== #}
+    {% if request.path != '/' and request.path != '/fr/' and request.path != '/ht/' %}
+        <nav class="breadcrumb">
+            <div>
+                <a href="{% url 'home' %}"><i class="fas fa-home"></i> {% trans "Accueil" %}</a>
+                {% for crumb in breadcrumbs %}
+                    <span class="separator"> &gt; </span>
+                    {% if crumb.url and not forloop.last %}
+                        <a href="{{ crumb.url }}">{{ crumb.name }}</a>
+                    {% else %}
+                        <span>{{ crumb.name }}</span>
+                    {% endif %}
+                {% endfor %}
+            </div>
         </nav>
-    </div>
-</footer>
+    {% endif %}
 
-<!-- ========================================== -->
-<!-- JAVASCRIPT                                 -->
-<!-- ========================================== -->
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="{% static 'js/main.js' %}"></script>
+    {# ===== MAIN ===== #}
+    <main>
+        {# ===== MESSAGES ===== #}
+        {% block messages %}
+            {% if messages %}
+                <div class="messages-container">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+                            <span>{{ message }}</span>
+                            <button type="button" class="close-alert" aria-label="Close">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endblock %}
 
-<!-- ========================================== -->
-<!-- RE-INITIALISATION DROPDOWN APRÈ LÒT JS    -->
-<!-- ========================================== -->
-<script>
+        {% block content %}{% endblock %}
+    </main>
+
+    {# ===== FOOTER ===== #}
+    <footer>
+        <div class="footer-container">
+            <p>
+                &copy; {{ theme.site_name|default:'EducDim' }} - 
+                {{ theme.footer_text|default:_('Tous droits réservés') }}
+            </p>
+            <nav>
+                <a href="{% url 'about' %}">
+                    <i class="fas fa-info-circle"></i> {% trans "À propos" %}
+                </a>
+                <a href="{% url 'contact' %}">
+                    <i class="fas fa-envelope"></i> {% trans "Contact" %}
+                </a>
+                <a href="{% url 'privacy' %}">
+                    <i class="fas fa-shield-alt"></i> {% trans "Confidentialité" %}
+                </a>
+                <a href="{% url 'conditions' %}">
+                    <i class="fas fa-file-contract"></i> {% trans "Conditions" %}
+                </a>
+                <a href="{% url 'faq' %}">
+                    <i class="fas fa-question-circle"></i> {% trans "FAQ" %}
+                </a>
+            </nav>
+        </div>
+    </footer>
+
+    {# ========================================== #}
+    {# JAVASCRIPT #}
+    {# ========================================== #}
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+
+    {# ========================================== #}
+    {# RE-INITIALISATION DROPDOWN APRÈ LÒT JS #}
+    {# ========================================== #}
+    <script>
     (function() {
         function reinitDropdowns() {
             // USER DROPDOWN
@@ -327,7 +338,6 @@
             if (userDropdownBtn) {
                 var newBtn = userDropdownBtn.cloneNode(true);
                 userDropdownBtn.parentNode.replaceChild(newBtn, userDropdownBtn);
-
                 newBtn.addEventListener('click', function(e) {
                     e.stopPropagation();
                     var parent = this.closest('.user-dropdown');
@@ -342,7 +352,6 @@
             if (chatDropdownBtn) {
                 var newChatBtn = chatDropdownBtn.cloneNode(true);
                 chatDropdownBtn.parentNode.replaceChild(newChatBtn, chatDropdownBtn);
-
                 newChatBtn.addEventListener('click', function(e) {
                     e.stopPropagation();
                     var parent = this.closest('.nav-dropdown');
@@ -374,8 +383,8 @@
             window.addEventListener('load', reinitDropdowns);
         }
     })();
-</script>
+    </script>
 
-{% block extra_js %}{% endblock %}
+    {% block extra_js %}{% endblock %}
 </body>
 </html>
