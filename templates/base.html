@@ -4,6 +4,28 @@
 <html lang="{{ LANGUAGE_CODE|default:'fr' }}">
 <head>
     <meta charset="UTF-8">
+
+    {# ===== THEME (dark/light) — applied before paint to avoid flash ===== #}
+    {# Manual choice wins (localStorage); otherwise auto by the hour:      #}
+    {# dark from 19:00 to 06:59, light from 07:00 to 18:59.               #}
+    <script>
+    (function() {
+        try {
+            var stored = localStorage.getItem('educdim-theme');
+            var theme;
+            if (stored === 'dark' || stored === 'light') {
+                theme = stored;
+            } else {
+                var h = new Date().getHours();
+                theme = (h >= 19 || h < 7) ? 'dark' : 'light';
+            }
+            document.documentElement.setAttribute('data-theme', theme);
+        } catch (e) {
+            document.documentElement.setAttribute('data-theme', 'light');
+        }
+    })();
+    </script>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{{ theme.site_name|default:'EducDim' }}{% endblock %}</title>
     <meta name="description" content="{{ meta_description|default:theme.site_description }}">
@@ -79,6 +101,44 @@
             document.addEventListener('DOMContentLoaded', initDropdowns);
         } else {
             initDropdowns();
+        }
+    })();
+    </script>
+
+    {# ========================================== #}
+    {# THEME TOGGLE — sync icon + manual override  #}
+    {# ========================================== #}
+    <script>
+    (function() {
+        function currentTheme() {
+            return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+        }
+        function syncIcon() {
+            var icon = document.getElementById('themeToggleIcon');
+            var btn = document.getElementById('themeToggle');
+            var isDark = currentTheme() === 'dark';
+            if (icon) { icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon'; }
+            if (btn) {
+                var label = isDark ? 'Passer en mode clair' : 'Passer en mode sombre';
+                btn.setAttribute('aria-label', label);
+                btn.setAttribute('title', label);
+            }
+        }
+        function initThemeToggle() {
+            syncIcon();
+            var btn = document.getElementById('themeToggle');
+            if (!btn) return;
+            btn.addEventListener('click', function() {
+                var next = currentTheme() === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                try { localStorage.setItem('educdim-theme', next); } catch (e) {}
+                syncIcon();
+            });
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initThemeToggle);
+        } else {
+            initThemeToggle();
         }
     })();
     </script>
@@ -204,6 +264,11 @@
                     </a>
                 {% endif %}
             </nav>
+
+            {# ===== THEME TOGGLE (dark / light) ===== #}
+            <button type="button" class="theme-toggle" id="themeToggle" aria-label="{% trans 'Changer le thème' %}" title="{% trans 'Changer le thème' %}">
+                <i class="fas fa-moon" id="themeToggleIcon" aria-hidden="true"></i>
+            </button>
 
             {# ===== LANG SWITCHER ===== #}
             <div class="lang-switcher">
