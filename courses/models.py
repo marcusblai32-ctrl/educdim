@@ -2,6 +2,8 @@ from django.db import models
 from django.conf import settings
 from django.utils.translation import get_language
 from django.core.validators import MinValueValidator, MaxValueValidator
+from datetime import date  # <--- AJOUTE POUR KOREKSYON
+
 
 # ============================================
 # LEARNING PATH (NOUVEAU)
@@ -70,7 +72,7 @@ class Niveau(models.Model):
 
 
 # ============================================
-# PROMOTIONS (EXISTANT)
+# PROMOTIONS (KORIGE)
 # ============================================
 class Promotions(models.Model):
     nom = models.CharField(max_length=100, verbose_name="Nom de la promotion")
@@ -87,14 +89,15 @@ class Promotions(models.Model):
         ordering = ['-date_debut']
 
     def __str__(self):
-        return f"{self.nom} ({self.date_debut|date:'d/m/Y'})"
+        # KORIGE: itilize strftime olye de |date (filtè template)
+        return f"{self.nom} ({self.date_debut.strftime('%d/%m/%Y')})"
 
     def nombre_etudiants(self):
         return self.etudiants.count()
 
 
 # ============================================
-# COURSE (MODIFIÉ)
+# COURSE
 # ============================================
 class Course(models.Model):
     titre = models.CharField(max_length=255, verbose_name="Titre")
@@ -190,7 +193,7 @@ class Course(models.Model):
 
 
 # ============================================
-# COURSE PREREQUISITE (NOUVEAU)
+# COURSE PREREQUISITE
 # ============================================
 class CoursePrerequisite(models.Model):
     cours = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='prerequis_pour', verbose_name="Cours principal")
@@ -209,7 +212,7 @@ class CoursePrerequisite(models.Model):
 
 
 # ============================================
-# UNITE (EXISTANT)
+# UNITE
 # ============================================
 class Unite(models.Model):
     cours = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='unites', verbose_name="Cours")
@@ -228,7 +231,7 @@ class Unite(models.Model):
 
 
 # ============================================
-# MODULE (EXISTANT)
+# MODULE
 # ============================================
 class Module(models.Model):
     unite = models.ForeignKey(Unite, on_delete=models.CASCADE, related_name='modules', verbose_name="Unité")
@@ -247,7 +250,7 @@ class Module(models.Model):
 
 
 # ============================================
-# LECON (KORIJE - SANS QUIZ)
+# LECON
 # ============================================
 class Lecon(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE, related_name='lecons', verbose_name="Module")
@@ -256,7 +259,6 @@ class Lecon(models.Model):
     contenu = models.TextField(blank=True, verbose_name="Contenu texte")
     ordre = models.PositiveIntegerField(default=1, verbose_name="Ordre")
     actif = models.BooleanField(default=True, verbose_name="Actif")
-    # quiz = models.ForeignKey('quiz.Quiz', on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Quiz associé")  # RETIRE
 
     class Meta:
         verbose_name = "Leçon"
@@ -268,7 +270,7 @@ class Lecon(models.Model):
 
 
 # ============================================
-# SECTION LECON (EXISTANT)
+# SECTION LECON
 # ============================================
 class SectionLecon(models.Model):
     TYPES_SECTION = [
@@ -294,7 +296,7 @@ class SectionLecon(models.Model):
 
 
 # ============================================
-# CONTENU (EXISTANT)
+# CONTENU
 # ============================================
 class Contenu(models.Model):
     TYPES_CONTENU = [
