@@ -87,6 +87,34 @@ else:
     CSRF_COOKIE_SECURE = False
 
 # ============================================
+# SESSIONS - KONFIGIRASYON POU SESYON AN EKSPIRE
+# ============================================
+# Tan sesyon an nan segonn (3600 = 1 èdtan)
+SESSION_COOKIE_AGE = 3600
+
+# Dekonekte lè navigatè a fèmen
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# Mete ajou sesyon an chak reqèt pou renouvle li
+SESSION_SAVE_EVERY_REQUEST = True
+
+# Cookie sesyon an ka itilize sèlman pa HTTP (pa JavaScript)
+SESSION_COOKIE_HTTPONLY = True
+
+# Cookie sesyon an voye sèlman sou menm sit la
+SESSION_COOKIE_SAMESITE = 'Lax'
+
+# Cookie sesyon an voye sèlman an HTTPS (mande pou pwodiksyon)
+SESSION_COOKIE_SECURE = False  # Mete a True lè DEBUG=False
+
+# ============================================
+# CSRF CONFIGURATION
+# ============================================
+CSRF_COOKIE_HTTPONLY = True
+CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SECURE = False  # Mete a True lè DEBUG=False
+
+# ============================================
 # LANGUAGE & TIMEZONE
 # ============================================
 LANGUAGE_CODE = 'fr'
@@ -123,6 +151,7 @@ INSTALLED_APPS = [
     'ads.apps.AdsConfig',
     'subscriptions.apps.SubscriptionsConfig',
     'dashboard.apps.DashboardConfig',
+    'todo.apps.TodoConfig',  # <--- AJOUTE
 ]
 
 # ============================================
