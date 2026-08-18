@@ -1,0 +1,68 @@
+{% load static i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:'fr' }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>{% block title %}Chat{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* Fòse tout espas yo 0 */
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html, body {
+            margin:0 !important;
+            padding:0 !important;
+            width:100% !important;
+            height:100% !important;
+            overflow:hidden !important;
+            background:#ECE5DD !important;
+            font-family:'Inter',sans-serif !important;
+        }
+        main {
+            margin:0 !important;
+            padding:0 !important;
+            width:100% !important;
+            height:100vh !important;
+            height:100dvh !important;
+            display:flex !important;
+            align-items:center !important;
+            justify-content:center !important;
+            background:#ECE5DD !important;
+            overflow:hidden !important;
+        }
+        .chat-fullscreen {
+            width:100% !important;
+            height:100vh !important;
+            height:100dvh !important;
+            margin:0 !important;
+            padding:0 !important;
+            border-radius:0 !important;
+            border:none !important;
+            overflow:hidden !important;
+            display:flex;
+            flex-direction:column;
+            background:#ECE5DD;
+        }
+        /* Kache tout scrollbar inutile */
+        ::-webkit-scrollbar { width:4px; }
+        ::-webkit-scrollbar-track { background:transparent; }
+        ::-webkit-scrollbar-thumb { background:rgba(0,0,0,0.15); border-radius:10px; }
+    </style>
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="{% static 'js/main.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Accès refusé" %} - {{ cours.titre }}{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width:600px; margin:4rem auto; text-align:center;">
+    <div class="card" style="padding:3rem 2rem;">
+        <i class="fas fa-lock" style="font-size:4rem; color:var(--danger); margin-bottom:1.5rem;"></i>
+        <h1 style="font-size:1.8rem; font-weight:800; margin-bottom:0.5rem;">{% trans "Accès restreint" %}</h1>
+        <p style="color:var(--text-muted); font-size:1.1rem; margin-bottom:1.5rem;">
+            {{ message|default:_("Vous n'avez pas encore accès à ce cours.") }}
+        </p>
+        <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+            <a href="{% url 'enrollments:enroll_course' cours.pk %}" class="btn btn-primary">
+                <i class="fas fa-shopping-cart"></i> {% trans "S'inscrire" %}
+            </a>
+            <a href="{% url 'courses:course_list' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> {% trans "Retour aux cours" %}
+            </a>
+        </div>
+        {% if est_inscrit and not inscription_approuvee %}
+        <div style="margin-top:1.5rem; padding:1rem; background:rgba(245,158,11,0.1); border-radius:var(--radius-sm);">
+            <p style="color:var(--warning);">
+                <i class="fas fa-clock"></i> {% trans "Votre inscription est en attente de validation par un administrateur." %}
+            </p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

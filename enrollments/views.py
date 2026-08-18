@@ -41,6 +41,7 @@ def enroll_course(request, cours_pk):
         date_expiration__gt=timezone.now()
     ).exists()
 
+    # Si abonnement actif → inscription automatique
     if has_subscription_access:
         enrollment = Enrollment.objects.create(
             utilisateur=request.user,
@@ -52,7 +53,7 @@ def enroll_course(request, cours_pk):
         messages.success(request, _("Inscription réussie via votre abonnement !"))
         return redirect('courses:course_detail', pk=cours.pk)
 
-    # Si cours gratuit
+    # Si cours gratuit → inscription automatique
     if not cours.est_payant:
         enrollment = Enrollment.objects.create(
             utilisateur=request.user,
@@ -63,14 +64,14 @@ def enroll_course(request, cours_pk):
         messages.success(request, _("Inscription réussie au cours '{}'.").format(cours.titre))
         return redirect('courses:course_detail', pk=cours.pk)
 
-    # Si cours payant
+    # Si cours payant → demande en attente (pending)
     if request.method == 'POST':
         form = EnrollmentPaymentForm(request.POST, request.FILES)
         if form.is_valid():
             enrollment = form.save(commit=False)
             enrollment.utilisateur = request.user
             enrollment.cours = cours
-            enrollment.statut = 'pending'
+            enrollment.statut = 'pending'  # <--- EN ATTENTE DE VALIDATION
             enrollment.save()
 
             # Notifier les admins
@@ -102,11 +103,12 @@ def admin_pending(request):
 def admin_approve_enrollment(request, pk):
     enrollment = get_object_or_404(Enrollment, pk=pk)
     if enrollment.statut == 'pending':
-        enrollment.statut = 'active'
+        enrollment.statut = 'active'  # <--- AKTIVE APRÈ VALIDATION
         enrollment.date_verification = timezone.now()
         enrollment.verifie_par = request.user
         enrollment.save()
 
+        # Efase foto apresa validasyon
         enrollment.delete_photo()
 
         Notification.objects.create(
@@ -128,6 +130,7 @@ def admin_reject_enrollment(request, pk):
         enrollment.verifie_par = request.user
         enrollment.save()
 
+        # Efase foto aprè refi
         enrollment.delete_photo()
 
         Notification.objects.create(

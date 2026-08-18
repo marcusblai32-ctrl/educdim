@@ -65,12 +65,14 @@ def course_detail(request, pk):
     prerequisites = cours.get_prerequisites()
 
     if request.user.is_authenticated:
+        # Vérifier si l'utilisateur a une inscription active
         enrollment = Enrollment.objects.filter(utilisateur=request.user, cours=cours).first()
         if enrollment:
             est_inscrit = True
             if enrollment.statut == 'active':
                 inscription_approuvee = True
 
+        # Vérifier si abonnement actif donne accès
         a_acces_abonnement = SubscriptionAccess.objects.filter(
             subscription__utilisateur=request.user,
             subscription__statut='active',
@@ -81,6 +83,7 @@ def course_detail(request, pk):
         if a_acces_abonnement:
             inscription_approuvee = True
 
+        # Récupérer les tentatives de quiz
         tentatives_quiz = TentativeQuiz.objects.filter(
             utilisateur=request.user,
             quiz__cours=cours
@@ -91,21 +94,28 @@ def course_detail(request, pk):
         if prerequisites:
             prerequis_completed, prerequis_missing = cours.get_prerequisites_completed(request.user)
     else:
-        # Si itilizatè a pa konekte
         prerequis_completed = True
         prerequis_missing = []
 
+    # ===== BLOKÈ: SI ITILIZATÈ PA INSCRIT OU PA APROUVE =====
+    if request.user.is_authenticated and not inscription_approuvee:
+        # Si konekte men pa gen aksè → montre paj enfòmasyon
+        return render(request, 'courses/course_access_denied.html', {
+            'cours': cours,
+            'est_inscrit': est_inscrit,
+            'inscription_approuvee': inscription_approuvee,
+            'a_acces_abonnement': a_acces_abonnement,
+            'message': _("Vous n'avez pas encore accès à ce cours. Veuillez vous inscrire ou attendre la validation de votre paiement.")
+        })
+
+    # ===== SI AKSE OK → montre kontni kou a =====
     unites = cours.unites.filter(actif=True)
 
-    # Cours précédent/suivant
     previous_course = cours.get_previous_course()
     next_course = cours.get_next_course()
     position_display = cours.get_position_display()
 
-    # Récupérer les quizzes du cours
     quizzes = cours.quiz.filter(publie=True)
-
-    # Récupérer les tentatives de l'utilisateur pour chaque quiz
     user_tentatives = {}
     if request.user.is_authenticated:
         for quiz in quizzes:
@@ -200,6 +210,14 @@ def module_detail(request, pk):
 def lesson_detail(request, pk):
     lecon = get_object_or_404(Lecon, pk=pk)
     sections = lecon.sections.all()
+
+    # Vérifier si l'utilisateur a accès au cours parent
+    if request.user.is_authenticated:
+        cours = lecon.module.unite.cours
+        enrollment = Enrollment.objects.filter(utilisateur=request.user, cours=cours, statut='active').first()
+        if not enrollment:
+            messages.warning(request, "Vous devez être inscrit et avoir accès à ce cours pour voir cette leçon.")
+            return redirect('courses:course_detail', pk=cours.pk)
 
     if request.user.is_authenticated and lecon.quiz:
         quiz_termine = TentativeQuiz.objects.filter(
