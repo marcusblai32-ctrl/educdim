@@ -7,11 +7,11 @@ echo "🔧 Installing dependencies..."
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 
-echo "🗄️  Creating accounts migrations..."
-python manage.py makemigrations accounts
+echo "🗄️  Creating theme_manager migrations..."
+python manage.py makemigrations theme_manager
 
-echo "🗄️  Forcing accounts migration..."
-python manage.py migrate accounts --fake-initial
+echo "🗄️  Running theme_manager migrations..."
+python manage.py migrate theme_manager
 
 echo "🗄️  Running all migrations..."
 python manage.py migrate
