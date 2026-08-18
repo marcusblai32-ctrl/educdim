@@ -123,11 +123,11 @@ class ModuleAdmin(admin.ModelAdmin):
 
 
 # ============================================
-# LECON ADMIN (EXISTANT)
+# LECON ADMIN (KORIJE - SANS QUIZ)
 # ============================================
 @admin.register(Lecon)
 class LeconAdmin(admin.ModelAdmin):
-    list_display = ('titre', 'module', 'ordre', 'actif', 'quiz')
+    list_display = ('titre', 'module', 'ordre', 'actif')
     inlines = [SectionInline]
 
 
