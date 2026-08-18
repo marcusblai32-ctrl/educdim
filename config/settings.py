@@ -15,13 +15,14 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 # SECURITY
 # ============================================
 SECRET_KEY = env('SECRET_KEY', default='django-insecure-dev-key')
-DEBUG = env.bool('DEBUG', default=False)
+DEBUG = True
 
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     '.onrender.com',
     'educdim.onrender.com',
+    'educdim.com',
 ]
 
 # ============================================
