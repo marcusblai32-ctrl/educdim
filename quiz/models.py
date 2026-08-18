@@ -57,7 +57,6 @@ class Question(models.Model):
     points = models.PositiveIntegerField(default=1)
     ordre = models.PositiveIntegerField(default=1)
 
-    # Medya miltip pou kesyon
     q_media_audio_url = models.URLField(blank=True, verbose_name="URL Audio")
     q_media_audio_file = models.FileField(upload_to='quiz/questions/audio/', blank=True, null=True, verbose_name="Fichier Audio")
     q_media_video_url = models.URLField(blank=True, verbose_name="URL Vidéo")
@@ -84,7 +83,6 @@ class Question(models.Model):
         ])
 
     def is_upload_type(self):
-        """Vérifie si c'est un type de question qui nécessite un upload"""
         return self.type_question in ['audio_reponse', 'video_reponse', 'image_reponse', 'fichier_reponse']
 
 
@@ -125,7 +123,6 @@ class ReponseUtilisateur(models.Model):
     reponses_selectionnees = models.ManyToManyField(Reponse, blank=True)
     texte_reponse = models.TextField(blank=True)
 
-    # ===== NOUVEAUX CHAMPS POUR UPLOAD =====
     audio_reponse = models.FileField(upload_to='quiz/reponses/audio/', blank=True, null=True, verbose_name="Réponse audio")
     video_reponse = models.FileField(upload_to='quiz/reponses/video/', blank=True, null=True, verbose_name="Réponse vidéo")
     image_reponse = models.ImageField(upload_to='quiz/reponses/images/', blank=True, null=True, verbose_name="Réponse image")
