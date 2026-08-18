@@ -621,3 +621,71 @@
     };
 
 })();
+
+/* ============================================
+   AURORA GLASS — playful interactive polish
+   Pointer-tracked 3D tilt + light spotlight on
+   glass surfaces. Desktop only, respects
+   prefers-reduced-motion. Pure vanilla JS.
+   ============================================ */
+(function() {
+    "use strict";
+
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+    if (reduceMotion || isTouch) return;
+
+    var TILT_SELECTOR = '.course-card, .feature-card, .testimonial-card, .room-card, .badge-card, .plan-card, .quiz-card, .hero-visual .hero-card, .rank-card';
+
+    function bindTilt() {
+        var cards = document.querySelectorAll(TILT_SELECTOR);
+
+        cards.forEach(function(card) {
+            if (card.dataset.tiltBound === '1') return;
+            card.dataset.tiltBound = '1';
+
+            card.style.transformStyle = 'preserve-3d';
+            card.style.willChange = 'transform';
+
+            card.addEventListener('mousemove', function(e) {
+                var rect = card.getBoundingClientRect();
+                var px = (e.clientX - rect.left) / rect.width;   // 0..1
+                var py = (e.clientY - rect.top) / rect.height;   // 0..1
+                var rotY = (px - 0.5) * 9;    // left/right tilt
+                var rotX = (0.5 - py) * 9;    // up/down tilt
+
+                card.style.transition = 'transform 0.08s ease-out';
+                card.style.transform = 'perspective(900px) rotateX(' + rotX.toFixed(2) + 'deg) rotateY(' + rotY.toFixed(2) + 'deg) translateY(-6px)';
+
+                // Moving light spotlight
+                card.style.setProperty('--mx', (px * 100).toFixed(1) + '%');
+                card.style.setProperty('--my', (py * 100).toFixed(1) + '%');
+                if (!card.dataset.spotlight) {
+                    card.dataset.spotlight = '1';
+                    card.style.backgroundImage = 'radial-gradient(220px circle at var(--mx) var(--my), rgba(255,255,255,0.28), transparent 60%)';
+                }
+            });
+
+            card.addEventListener('mouseleave', function() {
+                card.style.transition = 'transform 0.5s cubic-bezier(0.34,1.56,0.64,1)';
+                card.style.transform = '';
+                card.style.backgroundImage = '';
+                delete card.dataset.spotlight;
+            });
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bindTilt);
+    } else {
+        bindTilt();
+    }
+
+    // Re-bind after dynamic navigation, matching main init hooks
+    if (typeof htmx !== 'undefined') {
+        document.addEventListener('htmx:afterSwap', function() { setTimeout(bindTilt, 120); });
+    }
+    if (typeof Turbolinks !== 'undefined') {
+        document.addEventListener('turbolinks:load', function() { setTimeout(bindTilt, 120); });
+    }
+})();
