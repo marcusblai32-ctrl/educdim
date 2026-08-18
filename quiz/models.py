@@ -1,9 +1,8 @@
 from django.db import models
 from django.conf import settings
-from courses.models import Course
 
 class Quiz(models.Model):
-    cours = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='quiz')
+    cours = models.ForeignKey('courses.Course', on_delete=models.CASCADE, related_name='quiz')
     titre = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     publie = models.BooleanField(default=False)
