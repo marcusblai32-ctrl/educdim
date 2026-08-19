@@ -1,6 +1,6 @@
 /* ============================================================
-   EDUCDIM — AURORA GLASSMORPHISM (ORIGINAL RESTORED)
-   + UDEMY COMPACT COURSE CARDS (ADDED)
+   EDUCDIM — AURORA GLASSMORPHISM (FINAL)
+   Tout Santre + Course Card Image Full Width
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
@@ -449,7 +449,7 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     margin: 2rem auto 1.5rem;
     padding: 0 1.5rem;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     gap: 1rem;
     flex-wrap: wrap;
@@ -460,6 +460,7 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     letter-spacing: -0.03em;
     font-family: var(--font-display);
     margin: 0;
+    text-align: center;
 }
 
 .filters-container {
@@ -473,7 +474,7 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     border-radius: var(--radius);
     box-shadow: var(--glass-sh);
 }
-.filters-form { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
+.filters-form { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; justify-content: center; }
 .search-box { display: flex; flex: 1; min-width: 240px; gap: 0.5rem; }
 .search-box input {
     flex: 1;
@@ -534,7 +535,7 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
 }
 .btn-reset:hover { color: var(--danger); border-color: var(--danger); }
 
-/* ============ COURSE GRID ============ */
+/* ============ COURSE GRID - SANTRE ============ */
 .course-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -543,9 +544,10 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     margin: 1rem auto 4rem;
     padding: 0 1.5rem;
     align-items: stretch;
+    justify-items: center;
 }
 
-/* ============ COURSE CARD - UDEMY COMPACT ============ */
+/* ============ COURSE CARD - IMAGE FULL WIDTH ============ */
 .course-card {
     background: #ffffff;
     border: 1px solid #e0e0e0;
@@ -557,21 +559,24 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     height: 100%;
     min-height: 280px;
+    width: 100%;
 }
 .course-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* IMAGE - 100% WIDTH, 130px, NO MARGIN/PADDING */
+/* IMAGE - FULL WIDTH, COVER, 130px */
 .course-card .course-img {
     width: 100%;
     height: 130px;
     object-fit: cover;
+    object-position: center;
     margin: 0;
     padding: 0;
     display: block;
     flex-shrink: 0;
+    border-radius: 0;
 }
 .course-card .no-image {
     width: 100%;
@@ -579,11 +584,12 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #f5f5f5;
+    background: linear-gradient(135deg, #eef1fb, #e0e4f0);
     color: #8c8c8c;
     margin: 0;
     padding: 0;
     flex-shrink: 0;
+    border-radius: 0;
 }
 .course-card .no-image i { font-size: 2rem; opacity: 0.5; }
 
@@ -692,10 +698,11 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
 .section-list, .lecon-list, .module-list {
     list-style: none;
     padding: 0;
-    margin: 0.5rem 0 1.5rem;
+    margin: 0.5rem auto 1.5rem;
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
+    max-width: 800px;
 }
 .section-list li, .lecon-list li, .module-list li {
     padding: 0.8rem 1.1rem;
@@ -732,6 +739,9 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     margin-bottom: 1.5rem;
     border: 1px solid var(--glass-brd-soft);
     transition: var(--transition);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }
 .content-block:hover { border-color: color-mix(in srgb, var(--primary) 25%, transparent); box-shadow: var(--shadow-glass); }
 .content-block h3 { margin-top: 0; color: var(--primary); font-size: 1.1rem; font-family: var(--font-display); }
@@ -755,6 +765,7 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    justify-content: center;
     gap: 0.3rem;
     border: 1px solid var(--glass-brd-soft);
 }
@@ -762,17 +773,18 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
 .breadcrumb .separator { color: var(--text-muted); }
 .breadcrumb span { color: var(--text-muted); font-weight: 500; }
 
-/* ============ HERO ============ */
+/* ============ HERO - SANTRE ============ */
 .hero {
     display: grid;
-    grid-template-columns: 1.1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 3rem;
     max-width: 1200px;
     margin: 3rem auto 4rem;
     padding: 0 2rem;
     align-items: center;
+    justify-items: center;
 }
-.hero-content { display: flex; flex-direction: column; gap: 1.1rem; }
+.hero-content { display: flex; flex-direction: column; gap: 1.1rem; align-items: center; text-align: center; }
 .hero-content h1 { font-size: clamp(2.6rem, 5vw, 4rem); font-weight: 700; font-family: var(--font-display); }
 .hero-content .hero-badge {
     display: inline-block;
@@ -783,16 +795,15 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     border-radius: 50px;
     font-size: 0.85rem;
     font-weight: 600;
-    align-self: flex-start;
 }
 .hero-content .hero-description { font-size: 1.1rem; color: var(--text-muted); max-width: 520px; }
-.hero-content .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem; }
-.hero-content .hero-stats { display: flex; gap: 2.5rem; margin-top: 1.5rem; }
+.hero-content .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-top: 0.5rem; }
+.hero-content .hero-stats { display: flex; gap: 2.5rem; margin-top: 1.5rem; justify-content: center; }
 .hero-content .hero-stats .stat-item { text-align: center; }
 .hero-content .hero-stats .stat-number { font-size: 2rem; font-weight: 800; font-family: var(--font-display); color: var(--primary); display: block; }
 .hero-content .hero-stats .stat-label { font-size: 0.85rem; color: var(--text-muted); }
 
-.hero-visual { display: grid; gap: 1.2rem; position: relative; min-height: 420px; align-content: center; }
+.hero-visual { display: flex; flex-direction: column; gap: 1.2rem; align-items: center; justify-content: center; }
 .hero-visual .hero-card {
     background: var(--glass);
     backdrop-filter: blur(var(--blur)) saturate(160%);
@@ -804,15 +815,13 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     transition: var(--spring);
     width: min(100%, 320px);
     animation: float 6s ease-in-out infinite;
+    text-align: center;
 }
-.hero-visual .hero-card:nth-child(1) { justify-self: start; }
-.hero-visual .hero-card:nth-child(2) { justify-self: end; animation-delay: 1.5s; }
-.hero-visual .hero-card:nth-child(3) { justify-self: center; animation-delay: 3s; }
 .hero-visual .hero-card i { font-size: 2.4rem; color: var(--primary); margin-bottom: 0.5rem; }
 .hero-visual .hero-card h3 { font-size: 1.15rem; margin-bottom: 0.2rem; font-family: var(--font-display); }
 .hero-visual .hero-card p { color: var(--text-muted); margin: 0; font-size: 0.88rem; }
 
-/* ============ FEATURES ============ */
+/* ============ FEATURES - SANTRE ============ */
 .features-section { max-width: 1200px; margin: 5rem auto; padding: 0 2rem; }
 .section-header { text-align: center; margin-bottom: 3rem; }
 .section-header .section-tag {
@@ -827,7 +836,7 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     margin-bottom: 0.6rem;
 }
 .section-header h2 { font-size: clamp(2rem, 4vw, 2.8rem); font-family: var(--font-display); }
-.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6rem; }
+.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6rem; justify-items: center; }
 .feature-card {
     background: var(--glass);
     backdrop-filter: blur(var(--blur)) saturate(150%);
@@ -838,6 +847,7 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     border: 1px solid var(--glass-brd);
     text-align: center;
     transition: var(--spring);
+    width: 100%;
 }
 .feature-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-hover); }
 .feature-card .feature-icon, .feature-card .feature-icon-wrapper {
@@ -855,7 +865,7 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
 .feature-card p { color: var(--text-muted); margin-bottom: 0.8rem; }
 .feature-card .feature-link { color: var(--primary); text-decoration: none; font-weight: 600; }
 
-/* ============ CTA ============ */
+/* ============ CTA - SANTRE ============ */
 .cta-section {
     position: relative;
     overflow: hidden;
@@ -868,14 +878,14 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     background: var(--grad-brand);
     box-shadow: 0 24px 60px color-mix(in srgb, var(--primary) 40%, transparent);
 }
-.cta-content { max-width: 720px; margin: 0 auto; position: relative; }
+.cta-content { max-width: 720px; margin: 0 auto; position: relative; text-align: center; }
 .cta-content h2 { font-size: clamp(2rem, 4vw, 2.8rem); margin-bottom: 0.5rem; color: #fff; font-family: var(--font-display); }
 .cta-content p { font-size: 1.1rem; opacity: 0.92; margin-bottom: 1.6rem; }
 .cta-content .btn { background: #fff; color: var(--primary); }
 
-/* ============ TESTIMONIALS ============ */
+/* ============ TESTIMONIALS - SANTRE ============ */
 .testimonials-section { max-width: 1200px; margin: 5rem auto; padding: 0 2rem; }
-.testimonials-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.6rem; }
+.testimonials-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.6rem; justify-items: center; }
 .testimonial-card {
     background: var(--glass);
     backdrop-filter: blur(var(--blur)) saturate(150%);
@@ -885,11 +895,12 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     box-shadow: var(--glass-sh);
     border: 1px solid var(--glass-brd);
     transition: var(--spring);
+    width: 100%;
 }
 .testimonial-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); }
 .testimonial-card .stars { color: var(--warning); margin-bottom: 0.6rem; }
 .testimonial-card p { font-style: italic; color: var(--text); line-height: 1.7; margin-bottom: 1.1rem; }
-.testimonial-card .testimonial-author { display: flex; align-items: center; gap: 1rem; }
+.testimonial-card .testimonial-author { display: flex; align-items: center; gap: 1rem; justify-content: center; }
 .testimonial-card .testimonial-author img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }
 .testimonial-card .testimonial-author h4 { font-size: 1rem; margin: 0; }
 .testimonial-card .testimonial-author span { font-size: 0.85rem; color: var(--text-muted); }
@@ -903,7 +914,7 @@ footer {
 }
 .footer-container { max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
 .footer-container p { color: rgba(230, 235, 255, 0.65); font-size: 0.9rem; margin: 0; }
-.footer-container nav { display: flex; gap: 1.8rem; flex-wrap: wrap; }
+.footer-container nav { display: flex; gap: 1.8rem; flex-wrap: wrap; justify-content: center; }
 .footer-container nav a { color: rgba(230, 235, 255, 0.7); text-decoration: none; font-size: 0.9rem; }
 .footer-container nav a:hover { color: #fff; }
 
@@ -984,9 +995,9 @@ footer {
     .hero-visual { display: none; }
     .features-grid, .testimonials-grid { grid-template-columns: 1fr; }
     .course-grid { grid-template-columns: 1fr; padding: 0 0.5rem; gap: 1rem; }
-    .course-card { min-height: auto; }
+    .course-card { min-height: auto; width: 100%; }
     .course-card .course-img, .course-card .no-image { height: 120px; }
-    .courses-header { flex-direction: column; align-items: stretch; padding: 0 1rem; }
+    .courses-header { flex-direction: column; align-items: center; padding: 0 1rem; }
     .courses-header h1 { font-size: 1.5rem; text-align: center; }
     .filters-form { flex-direction: column; align-items: stretch; }
     .search-box, .filter-group, .filter-group select, .btn-reset { width: 100%; min-width: unset; }
@@ -1003,4 +1014,15 @@ footer {
     .hero-content h1 { font-size: 2rem; }
     .hero-content .hero-stats { gap: 1rem; }
     .hero-content .hero-stats .stat-number { font-size: 1.5rem; }
+    .course-card .course-body { padding: 0.6rem; }
+    .course-card .course-body h3 { font-size: 0.85rem; }
+    .course-card .course-body .course-description { font-size: 0.7rem; }
+    .course-card .course-body .course-meta .price { font-size: 0.85rem; }
+    .course-card .course-body .course-meta .duration { font-size: 0.7rem; }
+    .course-card .course-body .course-meta .btn,
+    .course-card .course-body .btn-sm,
+    .course-card .course-body a.btn {
+        font-size: 0.7rem;
+        padding: 0.15rem 0.4rem;
+    }
 }
