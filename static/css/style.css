@@ -1,6 +1,7 @@
 /* ============================================================
    EDUCDIM — AURORA GLASSMORPHISM (FINAL)
    Tout Santre + Course Card Image Full Width
+   Icon Koulè Fiks - PA afekte Admin
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
@@ -216,12 +217,13 @@ h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.02em; line
     position: relative;
 }
 .nav-link:hover { color: var(--primary); background: color-mix(in srgb, var(--primary) 9%, transparent); transform: translateY(-2px); }
+.nav-link i { color: var(--primary); }
 .nav-link .badge {
     position: absolute;
     top: -2px; right: -2px;
     font-size: 0.55rem;
     padding: 0.12rem 0.42rem;
-    background: var(--pop);
+    background: var(--danger);
     color: #fff;
     border-radius: 50px;
     animation: pulse-badge 2s infinite;
@@ -245,6 +247,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.02em; line
     font-family: var(--font-body);
     white-space: nowrap;
 }
+.nav-dropdown-btn i, .dropbtn i { color: var(--primary); }
 .nav-dropdown-btn:hover, .dropbtn:hover { color: var(--primary); background: color-mix(in srgb, var(--primary) 9%, transparent); }
 .nav-dropdown-content, .dropdown-content {
     display: none;
@@ -282,6 +285,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.02em; line
     font-family: var(--font-body);
     text-align: left;
 }
+.nav-dropdown-content a i, .dropdown-content a i, .dropdown-content button i { color: var(--primary); width: 20px; text-align: center; }
 .nav-dropdown-content a:hover, .dropdown-content a:hover, .dropdown-content button:hover {
     background: color-mix(in srgb, var(--primary) 12%, transparent);
     color: var(--primary);
@@ -289,6 +293,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.02em; line
 }
 .nav-dropdown-content hr, .dropdown-content hr { margin: 0.35rem 0.5rem; border: none; border-top: 1px solid var(--glass-brd-soft); }
 .logout-btn { color: var(--danger); }
+.logout-btn i { color: var(--danger); }
 .logout-btn:hover { background: color-mix(in srgb, var(--danger) 12%, transparent); color: var(--danger-dark); }
 
 .lang-switcher { flex-shrink: 0; display: flex; align-items: center; margin-left: 1rem; }
@@ -333,6 +338,9 @@ html[data-theme="dark"] {
 html[data-theme="dark"] body { background: #0a0f22; color: var(--text); }
 html[data-theme="dark"] .nav-dropdown-content,
 html[data-theme="dark"] .dropdown-content { background: rgba(30, 38, 66, 0.95); }
+html[data-theme="dark"] .nav-link i,
+html[data-theme="dark"] .nav-dropdown-btn i,
+html[data-theme="dark"] .dropbtn i { color: var(--primary-light); }
 
 /* ============ BUTTONS ============ */
 .btn {
@@ -350,18 +358,25 @@ html[data-theme="dark"] .dropdown-content { background: rgba(30, 38, 66, 0.95); 
     transition: var(--transition);
     text-decoration: none;
 }
+.btn i { color: inherit; }
 .btn:hover { transform: translateY(-3px); }
 .btn-primary { background: var(--grad-brand); color: #fff; box-shadow: 0 8px 24px color-mix(in srgb, var(--primary) 40%, transparent); }
+.btn-primary i { color: #fff; }
 .btn-success { background: linear-gradient(135deg, var(--success), #4ade80); color: #fff; }
+.btn-success i { color: #fff; }
 .btn-danger { background: linear-gradient(135deg, var(--danger), #fb7185); color: #fff; }
+.btn-danger i { color: #fff; }
 .btn-warning { background: var(--grad-pop); color: #fff; }
 .btn-outline { background: var(--glass); border: 1.5px solid var(--primary); color: var(--primary); }
+.btn-outline i { color: var(--primary); }
 .btn-outline:hover { background: var(--primary); color: #fff; }
+.btn-outline:hover i { color: #fff; }
 .btn-secondary { background: var(--glass-2); color: var(--text); border: 1px solid var(--glass-brd); }
 .btn-sm { padding: 0.45rem 1.1rem; font-size: 0.8rem; border-radius: 9px; }
 .btn-lg { padding: 0.95rem 2.3rem; font-size: 1.05rem; }
 .btn-block { width: 100%; }
 .btn-nav-primary { background: var(--grad-brand); color: #fff; border-radius: 50px; }
+.btn-nav-primary i { color: #fff; }
 
 /* ============ BADGES ============ */
 .badge {
@@ -500,6 +515,7 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     flex-shrink: 0;
     font-size: 0.9rem;
 }
+.search-box button i { color: #fff; }
 .search-box button:hover { transform: translateY(-2px); }
 .filter-group { display: flex; align-items: center; }
 .filter-group select {
@@ -533,7 +549,9 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     cursor: pointer;
     font-size: 0.85rem;
 }
+.btn-reset i { color: var(--text-muted); }
 .btn-reset:hover { color: var(--danger); border-color: var(--danger); }
+.btn-reset:hover i { color: var(--danger); }
 
 /* ============ COURSE GRID - SANTRE ============ */
 .course-grid {
@@ -566,7 +584,6 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* IMAGE - FULL WIDTH, COVER, 130px */
 .course-card .course-img {
     width: 100%;
     height: 130px;
@@ -593,7 +610,6 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
 }
 .course-card .no-image i { font-size: 2rem; opacity: 0.5; }
 
-/* BODY */
 .course-card .course-body {
     padding: 0.75rem;
     display: flex;
@@ -660,6 +676,7 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     align-items: center;
     gap: 0.2rem;
 }
+.course-card .course-body .course-meta .duration i { color: #6a6f73; }
 .course-card .course-body .course-meta .btn,
 .course-card .course-body .btn-sm,
 .course-card .course-body a.btn {
@@ -676,6 +693,9 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     transition: background 0.2s ease;
     flex-shrink: 0;
 }
+.course-card .course-body .course-meta .btn i,
+.course-card .course-body .btn-sm i,
+.course-card .course-body a.btn i { color: #fff; }
 .course-card .course-body .course-meta .btn:hover,
 .course-card .course-body .btn-sm:hover,
 .course-card .course-body a.btn:hover {
@@ -727,6 +747,7 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     font-weight: 500;
     transition: var(--transition);
 }
+.section-list li a i, .lecon-list li a i, .module-list li a i { color: var(--primary); }
 .section-list li a:hover, .lecon-list li a:hover, .module-list li a:hover { color: var(--primary); }
 
 /* ============ CONTENT BLOCK ============ */
@@ -770,6 +791,7 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     border: 1px solid var(--glass-brd-soft);
 }
 .breadcrumb a { color: var(--primary); text-decoration: none; font-weight: 500; }
+.breadcrumb a i { color: var(--primary); }
 .breadcrumb .separator { color: var(--text-muted); }
 .breadcrumb span { color: var(--text-muted); font-weight: 500; }
 
@@ -796,6 +818,7 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     font-size: 0.85rem;
     font-weight: 600;
 }
+.hero-content .hero-badge i { color: var(--primary); }
 .hero-content .hero-description { font-size: 1.1rem; color: var(--text-muted); max-width: 520px; }
 .hero-content .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-top: 0.5rem; }
 .hero-content .hero-stats { display: flex; gap: 2.5rem; margin-top: 1.5rem; justify-content: center; }
@@ -864,6 +887,7 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
 .feature-card h3 { font-size: 1.25rem; margin: 0.5rem 0; font-family: var(--font-display); }
 .feature-card p { color: var(--text-muted); margin-bottom: 0.8rem; }
 .feature-card .feature-link { color: var(--primary); text-decoration: none; font-weight: 600; }
+.feature-card .feature-link i { color: var(--primary); }
 
 /* ============ CTA - SANTRE ============ */
 .cta-section {
@@ -882,6 +906,7 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
 .cta-content h2 { font-size: clamp(2rem, 4vw, 2.8rem); margin-bottom: 0.5rem; color: #fff; font-family: var(--font-display); }
 .cta-content p { font-size: 1.1rem; opacity: 0.92; margin-bottom: 1.6rem; }
 .cta-content .btn { background: #fff; color: var(--primary); }
+.cta-content .btn i { color: var(--primary); }
 
 /* ============ TESTIMONIALS - SANTRE ============ */
 .testimonials-section { max-width: 1200px; margin: 5rem auto; padding: 0 2rem; }
@@ -899,6 +924,7 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
 }
 .testimonial-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); }
 .testimonial-card .stars { color: var(--warning); margin-bottom: 0.6rem; }
+.testimonial-card .stars i { color: var(--warning); }
 .testimonial-card p { font-style: italic; color: var(--text); line-height: 1.7; margin-bottom: 1.1rem; }
 .testimonial-card .testimonial-author { display: flex; align-items: center; gap: 1rem; justify-content: center; }
 .testimonial-card .testimonial-author img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }
@@ -916,7 +942,9 @@ footer {
 .footer-container p { color: rgba(230, 235, 255, 0.65); font-size: 0.9rem; margin: 0; }
 .footer-container nav { display: flex; gap: 1.8rem; flex-wrap: wrap; justify-content: center; }
 .footer-container nav a { color: rgba(230, 235, 255, 0.7); text-decoration: none; font-size: 0.9rem; }
+.footer-container nav a i { color: rgba(230, 235, 255, 0.7); }
 .footer-container nav a:hover { color: #fff; }
+.footer-container nav a:hover i { color: #fff; }
 
 /* ============ LOADING ============ */
 .loading-overlay {
