@@ -1,6 +1,6 @@
 /* ============================================================
-   EDUCDIM — AURORA GLASSMORPHISM (FINAL & KONPLÈ)
-   Tout seksyon + Course Card Udemy Style
+   EDUCDIM — AURORA GLASSMORPHISM (FINAL COMPLETE)
+   Tout seksyon + Course Detail santre + Course Card Udemy
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
@@ -112,11 +112,14 @@ body::after {
 @keyframes dropdownSlide { from { opacity: 0; transform: translateY(-10px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
 
 .reveal, .reveal-two, .reveal-three, .animate-on-scroll {
     opacity: 1;
     transform: none;
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
+.reveal.visible, .reveal-two.visible, .reveal-three.visible, .animate-on-scroll.visible { opacity: 1; transform: none; }
 
 .highlight {
     background: var(--grad-brand);
@@ -706,6 +709,285 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
 .empty-courses h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
 .empty-courses p { color: var(--text-muted); }
 
+/* ============ COURSE DETAIL PAGE ============ */
+.course-detail-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+
+.course-detail-header {
+    display: block;
+    width: 100%;
+}
+
+.course-detail-main {
+    width: 100%;
+}
+
+.course-detail-badges {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.2rem;
+    justify-content: center;
+}
+
+.course-detail-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 0.8rem;
+    font-family: var(--font-display);
+    text-align: center;
+}
+
+.course-detail-position {
+    color: var(--text-muted);
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    justify-content: center;
+}
+
+.course-detail-position i {
+    color: var(--primary);
+}
+
+.course-detail-link {
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.course-detail-link:hover {
+    text-decoration: underline;
+}
+
+.course-detail-description {
+    color: var(--text);
+    line-height: 1.8;
+    margin-bottom: 1.8rem;
+    font-size: 1rem;
+    text-align: left;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.prerequisites-box {
+    background: var(--glass-soft);
+    backdrop-filter: blur(10px);
+    padding: 1.2rem 1.5rem;
+    border-radius: var(--radius-sm);
+    margin-bottom: 1.8rem;
+    border: 1px solid var(--glass-brd-soft);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.prerequisites-box h4 {
+    margin-bottom: 0.6rem;
+    font-size: 1.05rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-display);
+    justify-content: center;
+}
+
+.prerequisites-box h4 i {
+    color: var(--primary);
+}
+
+.prerequisites-completed {
+    color: var(--success);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    justify-content: center;
+}
+
+.prerequisites-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.prerequisites-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.3rem 0;
+}
+
+.prereq-missing { color: var(--danger); }
+.prereq-success { color: var(--success); }
+.prereq-title-muted { color: var(--text-muted); }
+.prereq-title { font-weight: 500; }
+
+.prereq-link {
+    color: var(--primary);
+    font-size: 0.85rem;
+    margin-left: 0.5rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.course-navigation {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+    justify-content: center;
+}
+
+.course-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+    justify-content: center;
+}
+
+.section-card-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-display);
+    justify-content: center;
+}
+
+.section-card-title i {
+    color: var(--primary);
+}
+
+.quiz-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.2rem;
+    justify-items: center;
+}
+
+.quiz-card {
+    background: var(--glass-soft);
+    border-radius: var(--radius-sm);
+    padding: 1.2rem;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--glass-brd-soft);
+    transition: var(--transition);
+    width: 100%;
+}
+
+.quiz-card h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+    text-align: center;
+}
+
+.quiz-card h3 a {
+    color: var(--text);
+    text-decoration: none;
+}
+
+.quiz-card h3 a:hover {
+    color: var(--primary);
+}
+
+.quiz-card p {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.8rem;
+    text-align: center;
+}
+
+.quiz-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.8rem;
+    border-top: 1px solid var(--glass-brd-soft);
+    padding-top: 0.6rem;
+}
+
+.quiz-percent {
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.units-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.unit-card {
+    background: var(--glass-soft);
+    border-radius: var(--radius-sm);
+    padding: 1.2rem 1.5rem;
+    border: 1px solid var(--glass-brd-soft);
+    transition: var(--transition);
+}
+
+.unit-card:hover {
+    border-color: color-mix(in srgb, var(--primary) 30%, transparent);
+    background: var(--glass-2);
+}
+
+.unit-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+}
+
+.unit-card h3 a {
+    color: var(--text);
+    text-decoration: none;
+}
+
+.unit-card h3 a:hover {
+    color: var(--primary);
+}
+
+.unit-card p {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    margin-bottom: 0.4rem;
+}
+
+.unit-modules {
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.unit-modules i {
+    color: var(--primary);
+}
+
+.empty-units {
+    color: var(--text-muted);
+    text-align: center;
+    padding: 1rem;
+}
+
 /* ============ LISTS ============ */
 .section-list, .lecon-list, .module-list {
     list-style: none;
@@ -1031,6 +1313,12 @@ footer {
     .cta-section { margin: 3rem 1rem; padding: 2.75rem 1.5rem; }
     .footer-container { flex-direction: column; text-align: center; }
     .footer-container nav { justify-content: center; }
+    .course-detail-title { font-size: 1.6rem; }
+    .course-actions { flex-direction: column; align-items: stretch; }
+    .course-actions .btn { width: 100%; justify-content: center; }
+    .course-navigation { flex-direction: column; align-items: stretch; }
+    .course-navigation .btn { width: 100%; justify-content: center; }
+    .quiz-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 480px) {
