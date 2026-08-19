@@ -24,13 +24,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    {# ========================================== #}
-    {# DROPDOWN JAVASCRIPT - PRIORITY (anvan tout) #}
-    {# ========================================== #}
-    <script>
-    /* Les dropdowns et le menu mobile sont gérés par le script principal en bas de page. */
-    </script>
-
     {% block extra_head %}{% endblock %}
 </head>
 <body>
@@ -170,13 +163,6 @@
                 </form>
             </div>
         </div>
-
-        {# ===== BANNERS HEADER ===== #}
-        {% if banners_header %}
-            <div style="padding:0 2rem;">
-                {% render_banner_carousel banners_header %}
-            </div>
-        {% endif %}
     </header>
 
     {# ===== EVENEMENT BANNER ===== #}
@@ -276,18 +262,15 @@
     <script src="{% static 'js/main.js' %}"></script>
 
     {# ========================================== #}
-    {# RE-INITIALISATION DROPDOWN APRÈ LÒT JS #}
+    {# MENU MOBILE FLOTTANT + DROPDOWNS #}
     {# ========================================== #}
     <script>
     (function() {
         "use strict";
 
-        // ========== ÉLÉMENTS ==========
-        var header = document.getElementById('mainHeader');
         var menuToggle = document.getElementById('menuToggle');
         var mainNav = document.getElementById('mainNav');
 
-        // ========== HELPERS ==========
         function isMobile() {
             return window.innerWidth <= 768;
         }
@@ -300,7 +283,7 @@
             });
         }
 
-        function closeMenu() {
+        function closeMobileMenu() {
             if (mainNav.classList.contains('active')) {
                 mainNav.classList.remove('active');
                 if (menuToggle) {
@@ -309,97 +292,109 @@
                     if (icon) icon.className = 'fas fa-bars';
                 }
                 if (isMobile()) {
-                    mainNav.style.maxHeight = '0';
-                    mainNav.style.overflowY = 'hidden';
+                    mainNav.style.display = 'none';
+                    mainNav.style.transform = 'translateY(-20px)';
+                    mainNav.style.opacity = '0';
                 }
             }
             closeAllDropdowns();
         }
 
-        function applyMobileStyles() {
-            if (!isMobile()) {
+        function openMobileMenu() {
+            mainNav.classList.add('active');
+            if (menuToggle) {
+                menuToggle.setAttribute('aria-expanded', 'true');
+                menuToggle.setAttribute('aria-label', 'Fermer le menu');
+                var icon = menuToggle.querySelector('i');
+                if (icon) icon.className = 'fas fa-times';
+            }
+            if (isMobile()) {
+                mainNav.style.display = 'flex';
+                mainNav.style.transform = 'translateY(0)';
+                mainNav.style.opacity = '1';
+            }
+        }
+
+        function applyResponsiveStyles() {
+            if (!mainNav) return;
+
+            if (isMobile()) {
+                // Style du menu mobile flottant
+                mainNav.style.position = 'fixed';
+                mainNav.style.top = '70px';
+                mainNav.style.left = '10px';
+                mainNav.style.right = '10px';
+                mainNav.style.width = 'auto';
+                mainNav.style.background = '#ffffff';
+                mainNav.style.boxShadow = '0 8px 30px rgba(0,0,0,0.15)';
+                mainNav.style.borderRadius = '12px';
+                mainNav.style.padding = '15px';
+                mainNav.style.zIndex = '1000';
+                mainNav.style.flexDirection = 'column';
+                mainNav.style.gap = '10px';
+                mainNav.style.maxHeight = '70vh';
+                mainNav.style.overflowY = 'auto';
+                mainNav.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+                mainNav.style.display = mainNav.classList.contains('active') ? 'flex' : 'none';
+                mainNav.style.transform = mainNav.classList.contains('active') ? 'translateY(0)' : 'translateY(-20px)';
+                mainNav.style.opacity = mainNav.classList.contains('active') ? '1' : '0';
+
+                // Style des dropdowns dans le menu mobile
+                document.querySelectorAll('.nav-dropdown-content, .dropdown-content').forEach(function(content) {
+                    content.style.position = 'static';
+                    content.style.boxShadow = 'none';
+                    content.style.width = '100%';
+                });
+            } else {
                 // Réinitialise les styles sur desktop
                 mainNav.style.position = '';
                 mainNav.style.top = '';
                 mainNav.style.left = '';
                 mainNav.style.right = '';
+                mainNav.style.width = '';
                 mainNav.style.background = '';
                 mainNav.style.boxShadow = '';
+                mainNav.style.borderRadius = '';
+                mainNav.style.padding = '';
+                mainNav.style.zIndex = '';
+                mainNav.style.flexDirection = '';
+                mainNav.style.gap = '';
                 mainNav.style.maxHeight = '';
-                mainNav.style.overflow = '';
                 mainNav.style.overflowY = '';
                 mainNav.style.transition = '';
-                mainNav.style.zIndex = '';
-                mainNav.style.width = '';
-                if (mainNav.classList.contains('active')) {
-                    mainNav.classList.remove('active');
-                    if (menuToggle) {
-                        menuToggle.setAttribute('aria-expanded', 'false');
-                        var icon = menuToggle.querySelector('i');
-                        if (icon) icon.className = 'fas fa-bars';
-                    }
-                }
-                return;
-            }
+                mainNav.style.display = '';
+                mainNav.style.transform = '';
+                mainNav.style.opacity = '';
 
-            // Style mobile : menu reste dans le header
-            mainNav.style.position = 'absolute';
-            mainNav.style.top = '100%';
-            mainNav.style.left = '0';
-            mainNav.style.right = '0';
-            mainNav.style.background = '#fff';
-            mainNav.style.boxShadow = '0 10px 20px rgba(0,0,0,0.1)';
-            mainNav.style.transition = 'max-height 0.3s ease';
-            mainNav.style.zIndex = '999';
-            mainNav.style.width = '100%';
-            mainNav.style.overflow = 'hidden';
-            mainNav.style.maxHeight = mainNav.classList.contains('active') ? '80vh' : '0';
-            mainNav.style.overflowY = mainNav.classList.contains('active') ? 'auto' : 'hidden';
-
-            // Assure que le header est positionné pour contenir le menu
-            if (header) {
-                header.style.position = 'relative';
+                document.querySelectorAll('.nav-dropdown-content, .dropdown-content').forEach(function(content) {
+                    content.style.position = '';
+                    content.style.boxShadow = '';
+                    content.style.width = '';
+                });
             }
         }
 
         function toggleMenu(e) {
             if (!isMobile()) return;
             e.stopPropagation();
-            var isOpen = mainNav.classList.toggle('active');
-            if (menuToggle) {
-                menuToggle.setAttribute('aria-expanded', String(isOpen));
-                menuToggle.setAttribute('aria-label', isOpen ? 'Fermer le menu' : 'Ouvrir le menu');
-                var icon = menuToggle.querySelector('i');
-                if (icon) icon.className = isOpen ? 'fas fa-times' : 'fas fa-bars';
-            }
-            if (isOpen) {
-                mainNav.style.maxHeight = '80vh';
-                mainNav.style.overflowY = 'auto';
+            if (mainNav.classList.contains('active')) {
+                closeMobileMenu();
             } else {
-                mainNav.style.maxHeight = '0';
-                mainNav.style.overflowY = 'hidden';
                 closeAllDropdowns();
+                openMobileMenu();
             }
         }
 
-        // ========== INITIALISATION ==========
         function init() {
             if (!mainNav) return;
 
             // Applique les styles initiaux
-            applyMobileStyles();
+            applyResponsiveStyles();
 
             // Gestion du bouton menu
             if (menuToggle) {
                 menuToggle.addEventListener('click', toggleMenu);
             }
-
-            // Fermer le menu mobile si clic hors du header
-            document.addEventListener('click', function(e) {
-                if (!e.target.closest('.main-header')) {
-                    closeMenu();
-                }
-            });
 
             // Gestion des dropdowns (délégation d'événements)
             document.addEventListener('click', function(e) {
@@ -423,17 +418,16 @@
                     // Toggle le dropdown courant
                     var isOpen = dropdown.classList.toggle('open');
                     dropdownBtn.setAttribute('aria-expanded', String(isOpen));
-
-                    // Si mobile et menu ouvert, s'assurer que le contenu est visible
-                    if (isMobile() && mainNav.classList.contains('active')) {
-                        mainNav.style.maxHeight = '80vh';
-                        mainNav.style.overflowY = 'auto';
-                    }
                 } else {
-                    // Clic en dehors des dropdowns -> ferme tout
+                    // Clic en dehors des dropdowns
                     if (!e.target.closest('.user-dropdown, .nav-dropdown')) {
                         closeAllDropdowns();
                     }
+                }
+
+                // Ferme le menu mobile si clic en dehors
+                if (isMobile() && !e.target.closest('#mainNav') && !e.target.closest('.menu-toggle')) {
+                    closeMobileMenu();
                 }
             });
 
@@ -441,7 +435,7 @@
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
                     closeAllDropdowns();
-                    closeMenu();
+                    closeMobileMenu();
                 }
             });
 
@@ -451,15 +445,30 @@
                 clearTimeout(resizeTimer);
                 resizeTimer = setTimeout(function() {
                     if (!isMobile()) {
-                        closeMenu();
+                        closeMobileMenu();
                     }
-                    applyMobileStyles();
+                    applyResponsiveStyles();
                     closeAllDropdowns();
                 }, 200);
             });
+
+            // Ajuste les dropdowns sur mobile
+            document.querySelectorAll('.nav-dropdown-btn, .dropbtn').forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    if (isMobile()) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        var dropdown = this.closest('.nav-dropdown, .user-dropdown');
+                        if (dropdown) {
+                            dropdown.classList.toggle('open');
+                            this.setAttribute('aria-expanded', String(dropdown.classList.contains('open')));
+                        }
+                    }
+                });
+            });
         }
 
-        // Lance l'initialisation après le chargement complet
+        // Lance l'initialisation
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', init);
         } else {
