@@ -1,7 +1,7 @@
-/* ============================================
+/* ============================================================
    EDUCDIM - Complete JavaScript (FIXED)
    All dropdowns, menus, animations working
-   ============================================ */
+   ============================================================ */
 
 (function() {
     "use strict";
@@ -17,7 +17,7 @@
         var mainNav = document.getElementById('mainNav');
 
         if (menuToggle && mainNav) {
-            // Supprime les anciens écouteurs
+            // Supprime les anciens écouteurs en clonant
             var newMenuToggle = menuToggle.cloneNode(true);
             menuToggle.parentNode.replaceChild(newMenuToggle, menuToggle);
             menuToggle = newMenuToggle;
@@ -35,36 +35,6 @@
                 
                 this.setAttribute('aria-expanded', String(isOpen));
                 this.setAttribute('aria-label', isOpen ? 'Fermer le menu' : 'Ouvrir le menu');
-
-                // Applique les styles mobiles si nécessaire
-                if (window.innerWidth <= 768) {
-                    if (isOpen) {
-                        mainNav.style.position = 'fixed';
-                        mainNav.style.top = '70px';
-                        mainNav.style.left = '10px';
-                        mainNav.style.right = '10px';
-                        mainNav.style.width = 'auto';
-                        mainNav.style.background = '#ffffff';
-                        mainNav.style.boxShadow = '0 8px 30px rgba(0,0,0,0.15)';
-                        mainNav.style.borderRadius = '12px';
-                        mainNav.style.padding = '15px';
-                        mainNav.style.zIndex = '1000';
-                        mainNav.style.display = 'flex';
-                        mainNav.style.flexDirection = 'column';
-                        mainNav.style.gap = '10px';
-                        mainNav.style.maxHeight = '70vh';
-                        mainNav.style.overflowY = 'auto';
-                        mainNav.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
-                        mainNav.style.transform = 'translateY(0)';
-                        mainNav.style.opacity = '1';
-                    } else {
-                        mainNav.style.transform = 'translateY(-20px)';
-                        mainNav.style.opacity = '0';
-                        setTimeout(function() {
-                            mainNav.style.display = 'none';
-                        }, 300);
-                    }
-                }
             });
 
             // Ferme le menu au clic extérieur
@@ -81,127 +51,74 @@
                             icon.className = 'fas fa-bars';
                         }
                     }
-                    
-                    // Cache le menu mobile
-                    if (window.innerWidth <= 768) {
-                        mainNav.style.transform = 'translateY(-20px)';
-                        mainNav.style.opacity = '0';
-                        setTimeout(function() {
-                            mainNav.style.display = 'none';
-                        }, 300);
-                    }
                 }
             });
         }
 
         // ============================================
-        // 2. USER DROPDOWN (FIXED)
+        // 2. DROPDOWNS UNIFIÉS (USER + CHAT)
+        // Utilise la délégation d'événements sur document
         // ============================================
+        
+        // Supprime d'abord tous les anciens écouteurs en clonant
         var userDropdownBtn = document.getElementById('userDropdownBtn');
-
-        if (userDropdownBtn) {
-            var newUserBtn = userDropdownBtn.cloneNode(true);
-            userDropdownBtn.parentNode.replaceChild(newUserBtn, userDropdownBtn);
-            userDropdownBtn = newUserBtn;
-
-            userDropdownBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                var parent = this.closest('.user-dropdown');
-                if (!parent) return;
-
-                // Ferme le dropdown chat si ouvert
-                var chatDropdown = document.querySelector('.nav-dropdown.open');
-                if (chatDropdown) {
-                    chatDropdown.classList.remove('open');
-                    var chatBtn = document.getElementById('chatDropdownBtn');
-                    if (chatBtn) chatBtn.setAttribute('aria-expanded', 'false');
-                }
-
-                var isOpen = parent.classList.toggle('open');
-                this.setAttribute('aria-expanded', String(isOpen));
-            });
-        }
-
-        // ============================================
-        // 3. CHAT DROPDOWN (FIXED)
-        // ============================================
         var chatDropdownBtn = document.getElementById('chatDropdownBtn');
-
-        if (chatDropdownBtn) {
-            var newChatBtn = chatDropdownBtn.cloneNode(true);
-            chatDropdownBtn.parentNode.replaceChild(newChatBtn, chatDropdownBtn);
-            chatDropdownBtn = newChatBtn;
-
-            chatDropdownBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                var parent = this.closest('.nav-dropdown');
-                if (!parent) return;
-
-                // Ferme le dropdown user si ouvert
-                var userDropdown = document.querySelector('.user-dropdown.open');
-                if (userDropdown) {
-                    userDropdown.classList.remove('open');
-                    var userBtn = document.getElementById('userDropdownBtn');
-                    if (userBtn) userBtn.setAttribute('aria-expanded', 'false');
+        
+        // On n'utilise PAS de clonage ici pour éviter les conflits
+        // On utilise la délégation d'événements sur document
+        
+        // Fonction pour fermer tous les dropdowns
+        function closeAllDropdowns(exceptDropdown) {
+            var allDropdowns = document.querySelectorAll('.user-dropdown, .nav-dropdown');
+            allDropdowns.forEach(function(dropdown) {
+                if (dropdown !== exceptDropdown) {
+                    dropdown.classList.remove('open');
+                    var btn = dropdown.querySelector('.dropbtn, .nav-dropdown-btn');
+                    if (btn) btn.setAttribute('aria-expanded', 'false');
                 }
-
-                var isOpen = parent.classList.toggle('open');
-                this.setAttribute('aria-expanded', String(isOpen));
             });
         }
 
-        // ============================================
-        // 4. CLOSE DROPDOWNS ON OUTSIDE CLICK (FIXED)
-        // ============================================
+        // Gestionnaire de clic global pour les dropdowns
         document.addEventListener('click', function(e) {
             var target = e.target;
             if (!(target instanceof Element)) return;
 
-            // Ferme dropdown user si clic extérieur
-            if (!target.closest('.user-dropdown')) {
-                var userDropdown = document.querySelector('.user-dropdown.open');
-                if (userDropdown) {
-                    userDropdown.classList.remove('open');
-                    var userBtn = document.getElementById('userDropdownBtn');
-                    if (userBtn) userBtn.setAttribute('aria-expanded', 'false');
-                }
-            }
-
-            // Ferme dropdown chat si clic extérieur
-            if (!target.closest('.nav-dropdown')) {
-                var chatDropdown = document.querySelector('.nav-dropdown.open');
-                if (chatDropdown) {
-                    chatDropdown.classList.remove('open');
-                    var chatBtn = document.getElementById('chatDropdownBtn');
-                    if (chatBtn) chatBtn.setAttribute('aria-expanded', 'false');
+            // Vérifie si on a cliqué sur un bouton dropdown
+            var dropdownBtn = target.closest('.dropbtn, .nav-dropdown-btn');
+            
+            if (dropdownBtn) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                var dropdown = dropdownBtn.closest('.user-dropdown, .nav-dropdown');
+                if (!dropdown) return;
+                
+                // Ferme tous les autres dropdowns
+                closeAllDropdowns(dropdown);
+                
+                // Toggle le dropdown courant
+                var isOpen = dropdown.classList.toggle('open');
+                dropdownBtn.setAttribute('aria-expanded', String(isOpen));
+                
+                console.log('Dropdown toggled:', isOpen);
+            } else {
+                // Clic en dehors des dropdowns - ferme tout
+                if (!target.closest('.user-dropdown, .nav-dropdown')) {
+                    closeAllDropdowns(null);
                 }
             }
         });
 
         // ============================================
-        // 5. CLOSE DROPDOWNS ON ESCAPE KEY
+        // 3. CLOSE DROPDOWNS ON ESCAPE KEY
         // ============================================
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
-                // Ferme dropdown user
-                var userDropdown = document.querySelector('.user-dropdown.open');
-                if (userDropdown) {
-                    userDropdown.classList.remove('open');
-                    var userBtn = document.getElementById('userDropdownBtn');
-                    if (userBtn) userBtn.setAttribute('aria-expanded', 'false');
-                }
-
-                // Ferme dropdown chat
-                var chatDropdown = document.querySelector('.nav-dropdown.open');
-                if (chatDropdown) {
-                    chatDropdown.classList.remove('open');
-                    var chatBtn = document.getElementById('chatDropdownBtn');
-                    if (chatBtn) chatBtn.setAttribute('aria-expanded', 'false');
-                }
-
-                // Ferme menu mobile
+                // Ferme tous les dropdowns
+                closeAllDropdowns(null);
+                
+                // Ferme le menu mobile
                 if (mainNav && mainNav.classList.contains('active')) {
                     mainNav.classList.remove('active');
                     if (menuToggle) {
@@ -211,20 +128,12 @@
                             icon.className = 'fas fa-bars';
                         }
                     }
-                    
-                    if (window.innerWidth <= 768) {
-                        mainNav.style.transform = 'translateY(-20px)';
-                        mainNav.style.opacity = '0';
-                        setTimeout(function() {
-                            mainNav.style.display = 'none';
-                        }, 300);
-                    }
                 }
             }
         });
 
         // ============================================
-        // 6. ALERT DISMISS (FIXED)
+        // 4. ALERT DISMISS (FIXED)
         // ============================================
         var closeButtons = document.querySelectorAll('.close-alert');
         closeButtons.forEach(function(btn) {
@@ -259,7 +168,7 @@
         });
 
         // ============================================
-        // 7. SMOOTH SCROLL FOR ANCHOR LINKS
+        // 5. SMOOTH SCROLL FOR ANCHOR LINKS
         // ============================================
         document.querySelectorAll('a[href^="#"]:not([href="#"])').forEach(function(link) {
             link.addEventListener('click', function(event) {
@@ -290,47 +199,22 @@
                             icon.className = 'fas fa-bars';
                         }
                     }
-                    
-                    if (window.innerWidth <= 768) {
-                        mainNav.style.transform = 'translateY(-20px)';
-                        mainNav.style.opacity = '0';
-                        setTimeout(function() {
-                            mainNav.style.display = 'none';
-                        }, 300);
-                    }
                 }
             });
         });
 
         // ============================================
-        // 8. SCROLL REVEAL ANIMATIONS (FIXED)
+        // 6. SCROLL REVEAL ANIMATIONS (VISIBLE BY DEFAULT)
         // ============================================
         var revealItems = document.querySelectorAll('.reveal, .reveal-two, .reveal-three, .animate-on-scroll');
-
-        if ('IntersectionObserver' in window) {
-            var revealObserver = new IntersectionObserver(function(entries) {
-                entries.forEach(function(entry) {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        revealObserver.unobserve(entry.target);
-                    }
-                });
-            }, {
-                threshold: 0.12,
-                rootMargin: '0px 0px -30px 0px'
-            });
-
-            revealItems.forEach(function(item) {
-                revealObserver.observe(item);
-            });
-        } else {
-            revealItems.forEach(function(item) {
-                item.classList.add('visible');
-            });
-        }
+        
+        // Ajoute directement la classe visible pour que tout soit visible
+        revealItems.forEach(function(item) {
+            item.classList.add('visible');
+        });
 
         // ============================================
-        // 9. STATS COUNTER ANIMATION (FIXED)
+        // 7. STATS COUNTER ANIMATION
         // ============================================
         var statNumbers = document.querySelectorAll('.stat-number');
         
@@ -383,39 +267,22 @@
                 requestAnimationFrame(updateCounter);
             }
 
-            if ('IntersectionObserver' in window) {
-                var statsObserver = new IntersectionObserver(function(entries) {
-                    entries.forEach(function(entry) {
-                        if (entry.isIntersecting) {
-                            var index = statTargets.findIndex(function(item) {
-                                return item.element === entry.target;
-                            });
-                            if (index !== -1 && !statTargets[index].animated) {
-                                animateCounter(statTargets[index]);
-                            }
-                            statsObserver.unobserve(entry.target);
-                        }
-                    });
-                }, { threshold: 0.5 });
-
-                statNumbers.forEach(function(stat) {
-                    statsObserver.observe(stat);
-                });
-            } else {
-                statTargets.forEach(function(data) {
+            // Anime immédiatement sans attendre IntersectionObserver
+            statTargets.forEach(function(data) {
+                setTimeout(function() {
                     animateCounter(data);
-                });
-            }
+                }, 300);
+            });
         }
 
         // ============================================
-        // 10. FEATURE CARD INTERACTIVE EFFECTS
+        // 8. FEATURE CARD INTERACTIVE EFFECTS
         // ============================================
         var featureCards = document.querySelectorAll('.feature-card');
 
         featureCards.forEach(function(card) {
             card.addEventListener('mouseenter', function() {
-                var icon = this.querySelector('.feature-icon');
+                var icon = this.querySelector('.feature-icon, .feature-icon-wrapper');
                 if (icon) {
                     icon.style.transition = 'transform 0.3s ease';
                     icon.style.transform = 'scale(1.1) rotate(5deg)';
@@ -423,7 +290,7 @@
             });
 
             card.addEventListener('mouseleave', function() {
-                var icon = this.querySelector('.feature-icon');
+                var icon = this.querySelector('.feature-icon, .feature-icon-wrapper');
                 if (icon) {
                     icon.style.transform = 'scale(1) rotate(0deg)';
                 }
@@ -431,7 +298,7 @@
         });
 
         // ============================================
-        // 11. TESTIMONIAL CARD HOVER
+        // 9. TESTIMONIAL CARD HOVER
         // ============================================
         var testimonialCards = document.querySelectorAll('.testimonial-card');
 
@@ -449,7 +316,7 @@
         });
 
         // ============================================
-        // 12. PROOF AVATARS PULSE
+        // 10. PROOF AVATARS PULSE
         // ============================================
         var proofDots = document.querySelectorAll('.proof-dot');
 
@@ -466,7 +333,7 @@
         });
 
         // ============================================
-        // 13. PARALLAX EFFECT ON HERO
+        // 11. PARALLAX EFFECT ON HERO
         // ============================================
         var heroOrbits = document.querySelectorAll('.hero-orbit');
         var heroPhoto = document.querySelector('.hero-photo-frame');
@@ -492,7 +359,7 @@
         }
 
         // ============================================
-        // 14. ORBIT PARALLAX ON MOUSE MOVE
+        // 12. ORBIT PARALLAX ON MOUSE MOVE
         // ============================================
         if (heroOrbits.length) {
             document.addEventListener('mousemove', function(e) {
@@ -508,7 +375,7 @@
         }
 
         // ============================================
-        // 15. HEADER SCROLL EFFECT
+        // 13. HEADER SCROLL EFFECT
         // ============================================
         var header = document.querySelector('.main-header');
 
@@ -523,7 +390,7 @@
         }
 
         // ============================================
-        // 16. SWIPER CAROUSEL (if available)
+        // 14. SWIPER CAROUSEL (if available)
         // ============================================
         if (typeof Swiper !== 'undefined') {
             var swiperEl = document.querySelector('.banner-swiper, .swiper-container');
@@ -549,7 +416,7 @@
         }
 
         // ============================================
-        // 17. LOADING OVERLAY
+        // 15. LOADING OVERLAY
         // ============================================
         var loadingOverlay = document.getElementById('loadingOverlay');
 
@@ -566,7 +433,7 @@
         }
 
         // ============================================
-        // 18. LAZY LOAD IMAGES
+        // 16. LAZY LOAD IMAGES
         // ============================================
         if ('IntersectionObserver' in window) {
             var lazyImages = document.querySelectorAll('.hero-photo-frame img, .about-photo-wrap img, .testimonial-person img');
@@ -591,34 +458,7 @@
         }
 
         // ============================================
-        // 19. FIX: DROPDOWN HOVER ON DESKTOP
-        // ============================================
-        if (!('ontouchstart' in window)) {
-            document.querySelectorAll('.nav-dropdown, .user-dropdown').forEach(function(dropdown) {
-                dropdown.addEventListener('mouseenter', function() {
-                    if (window.innerWidth > 768) {
-                        var btn = this.querySelector('.nav-dropdown-btn, .dropbtn');
-                        if (btn) {
-                            btn.setAttribute('aria-expanded', 'true');
-                        }
-                    }
-                });
-
-                dropdown.addEventListener('mouseleave', function() {
-                    if (window.innerWidth > 768) {
-                        if (!this.classList.contains('open')) {
-                            var btn = this.querySelector('.nav-dropdown-btn, .dropbtn');
-                            if (btn) {
-                                btn.setAttribute('aria-expanded', 'false');
-                            }
-                        }
-                    }
-                });
-            });
-        }
-
-        // ============================================
-        // 20. FIX: CLOSE DROPDOWNS ON WINDOW RESIZE
+        // 17. FIX: CLOSE DROPDOWNS ON WINDOW RESIZE
         // ============================================
         var resizeTimer;
         window.addEventListener('resize', function() {
@@ -632,28 +472,6 @@
                     allBtns.forEach(function(btn) {
                         btn.setAttribute('aria-expanded', 'false');
                     });
-                } else {
-                    // Réinitialise le menu sur desktop
-                    if (mainNav) {
-                        mainNav.style.display = '';
-                        mainNav.style.position = '';
-                        mainNav.style.top = '';
-                        mainNav.style.left = '';
-                        mainNav.style.right = '';
-                        mainNav.style.width = '';
-                        mainNav.style.background = '';
-                        mainNav.style.boxShadow = '';
-                        mainNav.style.borderRadius = '';
-                        mainNav.style.padding = '';
-                        mainNav.style.zIndex = '';
-                        mainNav.style.flexDirection = '';
-                        mainNav.style.gap = '';
-                        mainNav.style.maxHeight = '';
-                        mainNav.style.overflowY = '';
-                        mainNav.style.transition = '';
-                        mainNav.style.transform = '';
-                        mainNav.style.opacity = '';
-                    }
                 }
             }, 250);
         });
@@ -670,7 +488,7 @@
         initEducDim();
     }
 
-    // Re-initialize on Turbolinks/HTMX navigation
+    // Réinitialise sur navigation dynamique
     if (typeof Turbolinks !== 'undefined') {
         document.addEventListener('turbolinks:load', function() {
             setTimeout(initEducDim, 100);
@@ -683,10 +501,10 @@
         });
     }
 
-    // Expose for manual re-init
+    // Expose pour ré-init manuel
     window.EducDim = {
         init: initEducDim,
-        version: '2.0.1'
+        version: '3.0.0'
     };
 
 })();
