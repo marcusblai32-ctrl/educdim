@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+
+{% block title %}{{ learning_path.nom }} - {{ theme.site_name|default:'EducDim' }}{% endblock %}
+
+{% block content %}
+<div class="lp-detail-container" style="max-width: 1200px; margin: 2rem auto; padding: 0 1.5rem;">
+    
+    <!-- ===== BREADCRUMB ===== -->
+    <nav class="breadcrumb" style="margin-bottom: 1.5rem;">
+        <a href="{% url 'home' %}"><i class="fas fa-home"></i> {% trans "Accueil" %}</a>
+        <span class="separator"> &gt; </span>
+        <a href="{% url 'courses:learning_path_list' %}">{% trans "Learning Paths" %}</a>
+        <span class="separator"> &gt; </span>
+        <span>{{ learning_path.nom }}</span>
+    </nav>
+
+    <!-- ===== HEADER ===== -->
+    <div class="lp-detail-header" style="background: var(--grad-brand); border-radius: var(--radius-lg); padding: 3rem 2.5rem; text-align: center; position: relative; overflow: hidden; margin-bottom: 2rem; box-shadow: 0 24px 60px color-mix(in srgb, var(--primary) 40%, transparent);">
+        <!-- Decorative circles -->
+        <div style="position: absolute; top: -30px; right: -30px; width: 150px; height: 150px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+        <div style="position: absolute; bottom: -40px; left: -40px; width: 180px; height: 180px; background: rgba(255,255,255,0.08); border-radius: 50%;"></div>
+        
+        <div style="position: relative; z-index: 2;">
+            {% if learning_path.icone %}
+            <i class="{{ learning_path.icone }}" style="font-size: 4rem; color: #fff; margin-bottom: 1rem;"></i>
+            {% else %}
+            <i class="fas fa-road" style="font-size: 4rem; color: #fff; margin-bottom: 1rem;"></i>
+            {% endif %}
+            
+            <h1 style="font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; color: #fff; font-family: var(--font-display); margin-bottom: 0.5rem;">
+                {{ learning_path.nom }}
+            </h1>
+            
+            {% if learning_path.description %}
+            <p style="color: rgba(255,255,255,0.9); max-width: 700px; margin: 0 auto 1.5rem; font-size: 1.05rem; line-height: 1.7;">
+                {{ learning_path.description }}
+            </p>
+            {% endif %}
+
+            <!-- Stats -->
+            <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
+                <div style="text-align: center;">
+                    <span style="display: block; font-size: 1.8rem; font-weight: 800; color: #fff;">{{ cours|length }}</span>
+                    <span style="color: rgba(255,255,255,0.8); font-size: 0.85rem;">{% trans "Cours" %}</span>
+                </div>
+                {% if learning_path.duree_estimee %}
+                <div style="text-align: center;">
+                    <span style="display: block; font-size: 1.8rem; font-weight: 800; color: #fff;">{{ learning_path.duree_estimee }}</span>
+                    <span style="color: rgba(255,255,255,0.8); font-size: 0.85rem;">{% trans "Durée" %}</span>
+                </div>
+                {% endif %}
+                {% if learning_path.niveau %}
+                <div style="text-align: center;">
+                    <span style="display: block; font-size: 1.8rem; font-weight: 800; color: #fff;">{{ learning_path.get_niveau_display }}</span>
+                    <span style="color: rgba(255,255,255,0.8); font-size: 0.85rem;">{% trans "Niveau" %}</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== PROGRESS BAR ===== -->
+    {% if user.is_authenticated and cours %}
+    <div style="background: var(--glass); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 2rem; border: 1px solid var(--glass-brd); box-shadow: var(--shadow);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
+            <h3 style="font-size: 1.1rem; font-weight: 700; font-family: var(--font-display);">{% trans "Votre progression" %}</h3>
+            <span style="font-weight: 700; color: var(--primary);">{{ learning_path.get_progression_utilisateur|default:0 }}%</span>
+        </div>
+        <div style="background: var(--glass-soft); border-radius: 50px; height: 10px; overflow: hidden;">
+            <div style="background: var(--grad-brand); height: 100%; width: {{ learning_path.get_progression_utilisateur|default:0 }}%; border-radius: 50px; transition: width 0.5s ease;"></div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- ===== COURSE LIST ===== -->
+    <h2 style="font-size: 1.5rem; font-weight: 700; font-family: var(--font-display); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+        <i class="fas fa-book" style="color: var(--primary);"></i> {% trans "Cours dans ce parcours" %}
+    </h2>
+
+    {% if cours %}
+    <div class="lp-courses-list" style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 3rem;">
+        {% for course in cours %}
+        <div class="lp-course-item" style="display: flex; gap: 1.5rem; background: var(--glass); border-radius: var(--radius); padding: 1.2rem 1.5rem; border: 1px solid var(--glass-brd); box-shadow: var(--shadow); transition: var(--transition); align-items: center; flex-wrap: wrap;">
+            
+            <!-- Order number -->
+            <div style="width: 45px; height: 45px; border-radius: 50%; background: var(--grad-brand); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; font-family: var(--font-display); flex-shrink: 0;">
+                {{ forloop.counter }}
+            </div>
+
+            <!-- Course info -->
+            <div style="flex: 1; min-width: 200px;">
+                <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0.2rem;">
+                    <a href="{% url 'courses:course_detail' course.pk %}" style="color: var(--text); text-decoration: none; transition: var(--transition);">
+                        {{ course.titre }}
+                    </a>
+                </h3>
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    {% if course.nivo %}
+                    <span class="badge badge-primary">{{ course.nivo.get_nom_display }}</span>
+                    {% endif %}
+                    {% if course.est_payant %}
+                    <span class="badge badge-warning">{% trans "Payant" %} - {{ course.prix }} HTG</span>
+                    {% else %}
+                    <span class="badge badge-success">{% trans "Gratuit" %}</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Duration & Stats -->
+            <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.3rem; flex-shrink: 0;">
+                <span style="color: var(--text-muted); font-size: 0.8rem; display: flex; align-items: center; gap: 0.3rem;">
+                    <i class="fas fa-clock"></i> {{ course.duree }}h
+                </span>
+                <span style="color: var(--text-muted); font-size: 0.8rem;">
+                    {{ course.unites.count }} {% trans "unités" %}
+                </span>
+                <a href="{% url 'courses:course_detail' course.pk %}" class="btn btn-primary btn-sm" style="margin-top: 0.3rem;">
+                    {% trans "Voir" %} <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <!-- Empty state -->
+    <div style="text-align: center; padding: 3rem 2rem; background: var(--glass); border-radius: var(--radius); border: 1px solid var(--glass-brd);">
+        <i class="fas fa-book-open" style="font-size: 3.5rem; color: var(--text-muted); opacity: 0.3; margin-bottom: 1rem;"></i>
+        <h3 style="font-size: 1.3rem; font-weight: 700; font-family: var(--font-display); margin-bottom: 0.5rem;">
+            {% trans "Aucun cours dans ce parcours" %}
+        </h3>
+        <p style="color: var(--text-muted);">{% trans "Des cours seront bientôt ajoutés à ce parcours." %}</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
