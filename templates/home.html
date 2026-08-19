@@ -38,11 +38,11 @@
         <!-- ===== STATS ===== -->
         <div class="hero-stats">
             <div class="stat-item">
-                <span class="stat-number">{{ theme.stats_cours|default:50 }}+</span>
+                <span class="stat-number">{{ theme.stats_cours|default:50 }}</span>
                 <span class="stat-label">{% trans "Cours" %}</span>
             </div>
             <div class="stat-item">
-                <span class="stat-number">{{ theme.stats_etudiants|default:1200 }}+</span>
+                <span class="stat-number">{{ theme.stats_etudiants|default:1200 }}</span>
                 <span class="stat-label">{% trans "Étudiants" %}</span>
             </div>
             <div class="stat-item">
@@ -55,28 +55,28 @@
     <!-- ===== HERO VISUAL ===== -->
     <div class="hero-visual">
         {% if theme.hero_image %}
-            <img src="{{ theme.hero_image.url }}" alt="{{ theme.hero_title }}" class="hero-main-image">
+            <img src="{{ theme.hero_image.url }}" alt="{{ theme.hero_title }}" class="hero-main-image" style="width: 100%; border-radius: var(--radius); box-shadow: var(--shadow);">
         {% else %}
             <!-- Carte 1 -->
             <div class="hero-card animate-float">
-                <div class="feature-icon-wrapper">
-                    <i class="{{ theme.hero_card1_icon|default:'fas fa-laptop-code' }}"></i>
+                <div class="feature-icon-wrapper" style="width: 55px; height: 55px; border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.8rem; background: var(--grad-brand);">
+                    <i class="{{ theme.hero_card1_icon|default:'fas fa-laptop-code' }}" style="color: #fff; font-size: 1.5rem;"></i>
                 </div>
                 <h3>{{ theme.hero_card1_title|default:_("Formation en ligne") }}</h3>
                 <p>{{ theme.hero_card1_desc|default:_("+1000 étudiants") }}</p>
             </div>
             <!-- Carte 2 -->
             <div class="hero-card animate-float delay-1">
-                <div class="feature-icon-wrapper">
-                    <i class="{{ theme.hero_card2_icon|default:'fas fa-certificate' }}"></i>
+                <div class="feature-icon-wrapper" style="width: 55px; height: 55px; border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.8rem; background: var(--grad-brand);">
+                    <i class="{{ theme.hero_card2_icon|default:'fas fa-certificate' }}" style="color: #fff; font-size: 1.5rem;"></i>
                 </div>
                 <h3>{{ theme.hero_card2_title|default:_("Certifiés") }}</h3>
                 <p>{{ theme.hero_card2_desc|default:_("Reconnus par l'État") }}</p>
             </div>
             <!-- Carte 3 -->
             <div class="hero-card animate-float delay-2">
-                <div class="feature-icon-wrapper">
-                    <i class="{{ theme.hero_card3_icon|default:'fas fa-users' }}"></i>
+                <div class="feature-icon-wrapper" style="width: 55px; height: 55px; border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.8rem; background: var(--grad-brand);">
+                    <i class="{{ theme.hero_card3_icon|default:'fas fa-users' }}" style="color: #fff; font-size: 1.5rem;"></i>
                 </div>
                 <h3>{{ theme.hero_card3_title|default:_("+50 cours") }}</h3>
                 <p>{{ theme.hero_card3_desc|default:_("Disponibles") }}</p>
@@ -89,16 +89,13 @@
 <section class="features-section">
     <div class="section-header">
         <span class="section-tag">{{ theme.features_tag|default:_("Pourquoi nous choisir ?") }}</span>
-        <h2>
-            {{ theme.features_title|default:_("Une expérience d'apprentissage") }} 
-            <span class="highlight">{{ theme.features_highlight|default:_("unique") }}</span>
-        </h2>
+        <h2>{{ theme.features_title|default:_("Une expérience d'apprentissage") }} <span class="highlight">{{ theme.features_highlight|default:_("unique") }}</span></h2>
     </div>
 
     <div class="features-grid">
         <!-- Feature 1 -->
         <div class="feature-card animate-on-scroll">
-            <div class="feature-icon-wrapper" style="background: var(--{{ theme.feature1_color|default:'primary' }});">
+            <div class="feature-icon-wrapper">
                 <i class="{{ theme.feature1_icon|default:'fas fa-laptop-code' }} feature-icon"></i>
             </div>
             <h3>{{ theme.feature1_title|default:_("Cours interactifs") }}</h3>
@@ -109,7 +106,7 @@
         </div>
         <!-- Feature 2 -->
         <div class="feature-card animate-on-scroll delay-1">
-            <div class="feature-icon-wrapper" style="background: var(--{{ theme.feature2_color|default:'success' }});">
+            <div class="feature-icon-wrapper">
                 <i class="{{ theme.feature2_icon|default:'fas fa-certificate' }} feature-icon"></i>
             </div>
             <h3>{{ theme.feature2_title|default:_("Certificats vérifiés") }}</h3>
@@ -120,7 +117,7 @@
         </div>
         <!-- Feature 3 -->
         <div class="feature-card animate-on-scroll delay-2">
-            <div class="feature-icon-wrapper" style="background: var(--{{ theme.feature3_color|default:'warning' }});">
+            <div class="feature-icon-wrapper">
                 <i class="{{ theme.feature3_icon|default:'fas fa-trophy' }} feature-icon"></i>
             </div>
             <h3>{{ theme.feature3_title|default:_("Classement & Badges") }}</h3>
@@ -135,12 +132,9 @@
 <!-- ===== CTA SECTION ===== -->
 <section class="cta-section">
     <div class="cta-content">
-        <h2>
-            {{ theme.cta_title|default:_("Prêt à commencer votre") }} 
-            <span class="highlight-cta">{{ theme.cta_highlight|default:_("aventure") }}</span> ?
-        </h2>
+        <h2>{{ theme.cta_title|default:_("Prêt à commencer votre") }} <span style="text-decoration: underline; text-decoration-color: var(--secondary);">{{ theme.cta_highlight|default:_("aventure") }}</span> ?</h2>
         <p>{{ theme.cta_desc|default:_("Rejoignez des milliers d'apprenants et transformez votre avenir dès aujourd'hui.") }}</p>
-        <a href="{% url 'accounts:signup' %}" class="btn btn-lg btn-cta">
+        <a href="{% url 'accounts:signup' %}" class="btn btn-lg" style="background: #fff; color: var(--primary);">
             <i class="fas fa-rocket"></i> {{ theme.cta_btn|default:_("Créer un compte gratuit") }}
         </a>
     </div>
@@ -150,11 +144,7 @@
 <section class="testimonials-section">
     <div class="section-header">
         <span class="section-tag">{{ theme.testimonials_tag|default:_("Ce que nos étudiants disent") }}</span>
-        <h2>
-            {{ theme.testimonials_title|default:_("Ils ont") }} 
-            <span class="highlight">{{ theme.testimonials_highlight|default:_("réussi") }}</span> 
-            {{ theme.testimonials_end|default:_("grâce à nous") }}
-        </h2>
+        <h2>{{ theme.testimonials_title|default:_("Ils ont") }} <span class="highlight">{{ theme.testimonials_highlight|default:_("réussi") }}</span> {{ theme.testimonials_end|default:_("grâce à nous") }}</h2>
     </div>
 
     <div class="testimonials-grid">
@@ -172,9 +162,9 @@
             <p>"{{ theme.testimonial1_text|default:_("Grâce à EduPlatform, j'ai appris le développement web en 3 mois. Aujourd'hui je travaille comme freelance.") }}"</p>
             <div class="testimonial-author">
                 {% if theme.testimonial1_avatar %}
-                    <img src="{{ theme.testimonial1_avatar.url }}" alt="{{ theme.testimonial1_name|default:'Jean Dupont' }}">
+                    <img src="{{ theme.testimonial1_avatar }}" alt="{{ theme.testimonial1_name|default:'Jean Dupont' }}">
                 {% else %}
-                    <div class="avatar-placeholder" style="background: var(--primary);">{{ theme.testimonial1_name|default:'Jean Dupont'|slice:":1" }}</div>
+                    <img src="https://ui-avatars.com/api/?name={{ theme.testimonial1_name|default:'Jean+Dupont' }}&background=2563eb&color=fff&size=50" alt="{{ theme.testimonial1_name|default:'Jean Dupont' }}">
                 {% endif %}
                 <div>
                     <h4>{{ theme.testimonial1_name|default:"Jean Dupont" }}</h4>
@@ -196,9 +186,9 @@
             <p>"{{ theme.testimonial2_text|default:_("Les cours sont bien structurés et les professeurs sont très compétents. Je recommande à 100%.") }}"</p>
             <div class="testimonial-author">
                 {% if theme.testimonial2_avatar %}
-                    <img src="{{ theme.testimonial2_avatar.url }}" alt="{{ theme.testimonial2_name|default:'Marie Paul' }}">
+                    <img src="{{ theme.testimonial2_avatar }}" alt="{{ theme.testimonial2_name|default:'Marie Paul' }}">
                 {% else %}
-                    <div class="avatar-placeholder" style="background: var(--success);">{{ theme.testimonial2_name|default:'Marie Paul'|slice:":1" }}</div>
+                    <img src="https://ui-avatars.com/api/?name={{ theme.testimonial2_name|default:'Marie+Paul' }}&background=10b981&color=fff&size=50" alt="{{ theme.testimonial2_name|default:'Marie Paul' }}">
                 {% endif %}
                 <div>
                     <h4>{{ theme.testimonial2_name|default:"Marie Paul" }}</h4>
@@ -210,3 +200,5 @@
 </section>
 
 {% endblock %}
+
+Tanpri Rebanm sa menm jan men asire w ke done ki soti nan tèm manager yo pase ladann
