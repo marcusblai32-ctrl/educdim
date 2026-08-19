@@ -1,8 +1,7 @@
 /* ============================================================
-   EDUCDIM — UDEMY COMPACT STYLE (EXACT)
+   EDUCDIM — UDEMY COMPACT STYLE (FINAL)
    Course Card: Exact Udemy Layout
-   No margin/padding on image
-   Image: 100% width, 130px height
+   Mobile Menu: Flottant (Fixed Position)
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
@@ -103,7 +102,7 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.2; }
     border-radius: var(--radius-sm);
 }
 
-/* NAVIGATION */
+/* NAVIGATION - DESKTOP */
 .main-nav {
     display: flex;
     align-items: center;
@@ -384,7 +383,7 @@ label { font-weight: 600; font-size: 0.85rem; color: var(--text); }
 }
 .btn-reset:hover { color: var(--danger); border-color: var(--danger); }
 
-/* ============ COURSE GRID - EXACT UDEMY ============ */
+/* ============ COURSE GRID ============ */
 .course-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -395,7 +394,7 @@ label { font-weight: 600; font-size: 0.85rem; color: var(--text); }
     align-items: stretch;
 }
 
-/* COURSE CARD - EXACT UDEMY LAYOUT */
+/* COURSE CARD - EXACT UDEMY */
 .course-card {
     background: #ffffff;
     border: 1px solid #e0e0e0;
@@ -412,7 +411,7 @@ label { font-weight: 600; font-size: 0.85rem; color: var(--text); }
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* IMAGE - NO MARGIN, NO PADDING, 100% WIDTH, 130px */
+/* IMAGE - 100% WIDTH, 130px, NO MARGIN/PADDING */
 .course-card .course-img {
     width: 100%;
     height: 130px;
@@ -436,15 +435,13 @@ label { font-weight: 600; font-size: 0.85rem; color: var(--text); }
 }
 .course-card .no-image i { font-size: 2rem; opacity: 0.5; }
 
-/* BODY - PADDING 0.75rem */
+/* BODY */
 .course-card .course-body {
     padding: 0.75rem;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
 }
-
-/* BADGES */
 .course-card .course-body .course-badges {
     display: flex;
     flex-wrap: wrap;
@@ -457,8 +454,6 @@ label { font-weight: 600; font-size: 0.85rem; color: var(--text); }
     border-radius: 3px;
     font-weight: 600;
 }
-
-/* TITLE */
 .course-card .course-body h3 {
     font-size: 0.9rem;
     font-weight: bold;
@@ -474,8 +469,6 @@ label { font-weight: 600; font-size: 0.85rem; color: var(--text); }
     color: #1c1d1f;
 }
 .course-card .course-body h3 a:hover { color: #5624d0; }
-
-/* DESCRIPTION */
 .course-card .course-body .course-description {
     font-size: 0.75rem;
     color: #6a6f73;
@@ -487,8 +480,6 @@ label { font-weight: 600; font-size: 0.85rem; color: var(--text); }
     overflow: hidden;
     line-height: 1.4;
 }
-
-/* META - PRI, DIRE, BOUTON */
 .course-card .course-body .course-meta {
     display: flex;
     align-items: center;
@@ -511,8 +502,6 @@ label { font-weight: 600; font-size: 0.85rem; color: var(--text); }
     align-items: center;
     gap: 0.2rem;
 }
-
-/* BOUTON - UDEMY STYLE */
 .course-card .course-body .course-meta .btn,
 .course-card .course-body .btn-sm,
 .course-card .course-body a.btn {
@@ -754,35 +743,57 @@ footer {
     .features-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
+/* ============ MOBILE - MENU FLOTTANT ============ */
 @media (max-width: 768px) {
+    .header-container { position: relative; }
     .menu-toggle { display: block; order: 3; }
     .logo { order: 1; }
     .lang-switcher { order: 2; margin-left: auto; }
+    
+    /* MENU FLOTTANT - FIXED POSITION, EN DEHORS DU HEADER */
     .main-nav {
         display: none;
-        flex-direction: column;
-        width: 100%;
-        order: 4;
-        background: #fff;
-        padding: 0.7rem;
-        box-shadow: var(--shadow-hover);
-        border-radius: var(--radius);
-        max-height: 80vh;
+        position: fixed;
+        top: 70px;
+        right: 10px;
+        width: min(calc(100vw - 20px), 320px);
+        max-height: calc(100vh - 90px);
         overflow-y: auto;
+        background: #ffffff;
         border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        z-index: 9999;
+        padding: 0.7rem;
+        gap: 0.15rem;
+        flex-direction: column;
+        align-items: stretch;
+        margin: 0;
     }
     .main-nav.active { display: flex; }
-    .nav-link, .nav-dropdown-btn, .dropbtn { width: 100%; justify-content: flex-start; font-size: 0.9rem; }
+    
+    .nav-link, .nav-dropdown-btn, .dropbtn {
+        width: 100%;
+        justify-content: flex-start;
+        padding: 0.5rem 0.7rem;
+        font-size: 0.9rem;
+    }
+    
     .nav-dropdown-content, .dropdown-content {
         position: static;
         box-shadow: none;
         border: none;
-        padding-left: 0.8rem;
+        padding: 0.15rem 0 0.15rem 0.8rem;
+        background: transparent;
+        min-width: unset;
         width: 100%;
+        animation: none;
     }
+    
     .hero { grid-template-columns: 1fr; }
     .hero-visual { display: none; }
     .features-grid, .testimonials-grid { grid-template-columns: 1fr; }
+    
     .course-grid { 
         max-width: 95%;
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
