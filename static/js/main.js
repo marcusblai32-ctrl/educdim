@@ -11,40 +11,68 @@
         console.log('EducDim: Initializing...');
 
         // ============================================
-        // 1. MOBILE MENU TOGGLE
+        // 1. MOBILE MENU TOGGLE (FIXED)
         // ============================================
         var menuToggle = document.getElementById('menuToggle');
         var mainNav = document.getElementById('mainNav');
 
         if (menuToggle && mainNav) {
-            // Remove any existing listeners by cloning
+            // Supprime les anciens écouteurs
             var newMenuToggle = menuToggle.cloneNode(true);
             menuToggle.parentNode.replaceChild(newMenuToggle, menuToggle);
             menuToggle = newMenuToggle;
 
             menuToggle.addEventListener('click', function(e) {
+                e.preventDefault();
                 e.stopPropagation();
+                
                 var isOpen = mainNav.classList.toggle('active');
                 var icon = this.querySelector('i');
                 
                 if (icon) {
-                    if (isOpen) {
-                        icon.className = 'fas fa-times';
-                    } else {
-                        icon.className = 'fas fa-bars';
-                    }
+                    icon.className = isOpen ? 'fas fa-times' : 'fas fa-bars';
                 }
                 
                 this.setAttribute('aria-expanded', String(isOpen));
                 this.setAttribute('aria-label', isOpen ? 'Fermer le menu' : 'Ouvrir le menu');
+
+                // Applique les styles mobiles si nécessaire
+                if (window.innerWidth <= 768) {
+                    if (isOpen) {
+                        mainNav.style.position = 'fixed';
+                        mainNav.style.top = '70px';
+                        mainNav.style.left = '10px';
+                        mainNav.style.right = '10px';
+                        mainNav.style.width = 'auto';
+                        mainNav.style.background = '#ffffff';
+                        mainNav.style.boxShadow = '0 8px 30px rgba(0,0,0,0.15)';
+                        mainNav.style.borderRadius = '12px';
+                        mainNav.style.padding = '15px';
+                        mainNav.style.zIndex = '1000';
+                        mainNav.style.display = 'flex';
+                        mainNav.style.flexDirection = 'column';
+                        mainNav.style.gap = '10px';
+                        mainNav.style.maxHeight = '70vh';
+                        mainNav.style.overflowY = 'auto';
+                        mainNav.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+                        mainNav.style.transform = 'translateY(0)';
+                        mainNav.style.opacity = '1';
+                    } else {
+                        mainNav.style.transform = 'translateY(-20px)';
+                        mainNav.style.opacity = '0';
+                        setTimeout(function() {
+                            mainNav.style.display = 'none';
+                        }, 300);
+                    }
+                }
             });
 
-            // Close menu when clicking outside
+            // Ferme le menu au clic extérieur
             document.addEventListener('click', function(e) {
                 var target = e.target;
                 if (!(target instanceof Element)) return;
                 
-                if (!target.closest('.main-header')) {
+                if (!target.closest('.main-header') && !target.closest('#mainNav')) {
                     mainNav.classList.remove('active');
                     if (menuToggle) {
                         menuToggle.setAttribute('aria-expanded', 'false');
@@ -52,6 +80,15 @@
                         if (icon) {
                             icon.className = 'fas fa-bars';
                         }
+                    }
+                    
+                    // Cache le menu mobile
+                    if (window.innerWidth <= 768) {
+                        mainNav.style.transform = 'translateY(-20px)';
+                        mainNav.style.opacity = '0';
+                        setTimeout(function() {
+                            mainNav.style.display = 'none';
+                        }, 300);
                     }
                 }
             });
@@ -63,17 +100,17 @@
         var userDropdownBtn = document.getElementById('userDropdownBtn');
 
         if (userDropdownBtn) {
-            // Remove existing listeners by cloning
             var newUserBtn = userDropdownBtn.cloneNode(true);
             userDropdownBtn.parentNode.replaceChild(newUserBtn, userDropdownBtn);
             userDropdownBtn = newUserBtn;
 
             userDropdownBtn.addEventListener('click', function(e) {
+                e.preventDefault();
                 e.stopPropagation();
                 var parent = this.closest('.user-dropdown');
                 if (!parent) return;
 
-                // Close chat dropdown if open
+                // Ferme le dropdown chat si ouvert
                 var chatDropdown = document.querySelector('.nav-dropdown.open');
                 if (chatDropdown) {
                     chatDropdown.classList.remove('open');
@@ -92,17 +129,17 @@
         var chatDropdownBtn = document.getElementById('chatDropdownBtn');
 
         if (chatDropdownBtn) {
-            // Remove existing listeners by cloning
             var newChatBtn = chatDropdownBtn.cloneNode(true);
             chatDropdownBtn.parentNode.replaceChild(newChatBtn, chatDropdownBtn);
             chatDropdownBtn = newChatBtn;
 
             chatDropdownBtn.addEventListener('click', function(e) {
+                e.preventDefault();
                 e.stopPropagation();
                 var parent = this.closest('.nav-dropdown');
                 if (!parent) return;
 
-                // Close user dropdown if open
+                // Ferme le dropdown user si ouvert
                 var userDropdown = document.querySelector('.user-dropdown.open');
                 if (userDropdown) {
                     userDropdown.classList.remove('open');
@@ -122,7 +159,7 @@
             var target = e.target;
             if (!(target instanceof Element)) return;
 
-            // Close user dropdown if clicking outside
+            // Ferme dropdown user si clic extérieur
             if (!target.closest('.user-dropdown')) {
                 var userDropdown = document.querySelector('.user-dropdown.open');
                 if (userDropdown) {
@@ -132,7 +169,7 @@
                 }
             }
 
-            // Close chat dropdown if clicking outside
+            // Ferme dropdown chat si clic extérieur
             if (!target.closest('.nav-dropdown')) {
                 var chatDropdown = document.querySelector('.nav-dropdown.open');
                 if (chatDropdown) {
@@ -148,7 +185,7 @@
         // ============================================
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
-                // Close user dropdown
+                // Ferme dropdown user
                 var userDropdown = document.querySelector('.user-dropdown.open');
                 if (userDropdown) {
                     userDropdown.classList.remove('open');
@@ -156,7 +193,7 @@
                     if (userBtn) userBtn.setAttribute('aria-expanded', 'false');
                 }
 
-                // Close chat dropdown
+                // Ferme dropdown chat
                 var chatDropdown = document.querySelector('.nav-dropdown.open');
                 if (chatDropdown) {
                     chatDropdown.classList.remove('open');
@@ -164,7 +201,7 @@
                     if (chatBtn) chatBtn.setAttribute('aria-expanded', 'false');
                 }
 
-                // Close mobile menu
+                // Ferme menu mobile
                 if (mainNav && mainNav.classList.contains('active')) {
                     mainNav.classList.remove('active');
                     if (menuToggle) {
@@ -173,6 +210,14 @@
                         if (icon) {
                             icon.className = 'fas fa-bars';
                         }
+                    }
+                    
+                    if (window.innerWidth <= 768) {
+                        mainNav.style.transform = 'translateY(-20px)';
+                        mainNav.style.opacity = '0';
+                        setTimeout(function() {
+                            mainNav.style.display = 'none';
+                        }, 300);
                     }
                 }
             }
@@ -183,7 +228,6 @@
         // ============================================
         var closeButtons = document.querySelectorAll('.close-alert');
         closeButtons.forEach(function(btn) {
-            // Remove existing listeners by cloning
             var newBtn = btn.cloneNode(true);
             btn.parentNode.replaceChild(newBtn, btn);
             
@@ -236,7 +280,7 @@
                     behavior: 'smooth'
                 });
                 
-                // Close mobile menu if open
+                // Ferme menu mobile
                 if (mainNav) {
                     mainNav.classList.remove('active');
                     if (menuToggle) {
@@ -245,6 +289,14 @@
                         if (icon) {
                             icon.className = 'fas fa-bars';
                         }
+                    }
+                    
+                    if (window.innerWidth <= 768) {
+                        mainNav.style.transform = 'translateY(-20px)';
+                        mainNav.style.opacity = '0';
+                        setTimeout(function() {
+                            mainNav.style.display = 'none';
+                        }, 300);
                     }
                 }
             });
@@ -272,7 +324,6 @@
                 revealObserver.observe(item);
             });
         } else {
-            // Fallback for older browsers
             revealItems.forEach(function(item) {
                 item.classList.add('visible');
             });
@@ -542,11 +593,9 @@
         // ============================================
         // 19. FIX: DROPDOWN HOVER ON DESKTOP
         // ============================================
-        // Add hover support for desktop (non-touch devices)
         if (!('ontouchstart' in window)) {
             document.querySelectorAll('.nav-dropdown, .user-dropdown').forEach(function(dropdown) {
                 dropdown.addEventListener('mouseenter', function() {
-                    // Only for desktop, don't interfere with click
                     if (window.innerWidth > 768) {
                         var btn = this.querySelector('.nav-dropdown-btn, .dropbtn');
                         if (btn) {
@@ -557,7 +606,6 @@
 
                 dropdown.addEventListener('mouseleave', function() {
                     if (window.innerWidth > 768) {
-                        // Don't close if it has open class (clicked)
                         if (!this.classList.contains('open')) {
                             var btn = this.querySelector('.nav-dropdown-btn, .dropbtn');
                             if (btn) {
@@ -576,7 +624,6 @@
         window.addEventListener('resize', function() {
             clearTimeout(resizeTimer);
             resizeTimer = setTimeout(function() {
-                // Close dropdowns on mobile if screen becomes small
                 if (window.innerWidth < 768) {
                     document.querySelectorAll('.user-dropdown.open, .nav-dropdown.open').forEach(function(item) {
                         item.classList.remove('open');
@@ -585,6 +632,28 @@
                     allBtns.forEach(function(btn) {
                         btn.setAttribute('aria-expanded', 'false');
                     });
+                } else {
+                    // Réinitialise le menu sur desktop
+                    if (mainNav) {
+                        mainNav.style.display = '';
+                        mainNav.style.position = '';
+                        mainNav.style.top = '';
+                        mainNav.style.left = '';
+                        mainNav.style.right = '';
+                        mainNav.style.width = '';
+                        mainNav.style.background = '';
+                        mainNav.style.boxShadow = '';
+                        mainNav.style.borderRadius = '';
+                        mainNav.style.padding = '';
+                        mainNav.style.zIndex = '';
+                        mainNav.style.flexDirection = '';
+                        mainNav.style.gap = '';
+                        mainNav.style.maxHeight = '';
+                        mainNav.style.overflowY = '';
+                        mainNav.style.transition = '';
+                        mainNav.style.transform = '';
+                        mainNav.style.opacity = '';
+                    }
                 }
             }, 250);
         });
@@ -649,15 +718,14 @@
 
             card.addEventListener('mousemove', function(e) {
                 var rect = card.getBoundingClientRect();
-                var px = (e.clientX - rect.left) / rect.width;   // 0..1
-                var py = (e.clientY - rect.top) / rect.height;   // 0..1
-                var rotY = (px - 0.5) * 9;    // left/right tilt
-                var rotX = (0.5 - py) * 9;    // up/down tilt
+                var px = (e.clientX - rect.left) / rect.width;
+                var py = (e.clientY - rect.top) / rect.height;
+                var rotY = (px - 0.5) * 9;
+                var rotX = (0.5 - py) * 9;
 
                 card.style.transition = 'transform 0.08s ease-out';
                 card.style.transform = 'perspective(900px) rotateX(' + rotX.toFixed(2) + 'deg) rotateY(' + rotY.toFixed(2) + 'deg) translateY(-6px)';
 
-                // Moving light spotlight
                 card.style.setProperty('--mx', (px * 100).toFixed(1) + '%');
                 card.style.setProperty('--my', (py * 100).toFixed(1) + '%');
                 if (!card.dataset.spotlight) {
@@ -681,7 +749,6 @@
         bindTilt();
     }
 
-    // Re-bind after dynamic navigation, matching main init hooks
     if (typeof htmx !== 'undefined') {
         document.addEventListener('htmx:afterSwap', function() { setTimeout(bindTilt, 120); });
     }
