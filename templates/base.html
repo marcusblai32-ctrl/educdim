@@ -230,10 +230,6 @@
     {# ===== FOOTER ===== #}
     <footer>
         <div class="footer-container">
-            <p>
-                &copy; {{ theme.site_name|default:'EducDim' }} - 
-                {{ theme.footer_text|default:_('Tous droits réservés') }}
-            </p>
             <nav>
                 <a href="{% url 'about' %}">
                     <i class="fas fa-info-circle"></i> {% trans "À propos" %}
@@ -251,6 +247,10 @@
                     <i class="fas fa-question-circle"></i> {% trans "FAQ" %}
                 </a>
             </nav>
+            <p>
+                &copy; {{ theme.site_name|default:'EducDim' }} - 
+                {{ theme.footer_text|default:_('Tous droits réservés') }}
+            </p>
         </div>
     </footer>
 
