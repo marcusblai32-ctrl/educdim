@@ -53,8 +53,6 @@
     --glass-brd-soft: rgba(255, 255, 255, 0.4);
     --blur: 20px;
     --inner-hi: inset 0 1px 0 rgba(255, 255, 255, 0.7);
-    /* independent glass shadow — the theme layer overrides --shadow, so the
-       resting depth of every glass surface routes through --glass-sh instead */
     --glass-sh: 0 10px 34px rgba(30, 41, 89, 0.12), var(--inner-hi);
 
     /* Radii */
@@ -149,8 +147,8 @@ body::after {
 
 /* Scroll reveal (JS toggles .visible) */
 .reveal, .reveal-two, .reveal-three, .animate-on-scroll {
-    opacity: 0;
-    transform: translateY(26px);
+    opacity: 1;
+    transform: none;
     transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .reveal-two { transition-delay: 0.12s; }
@@ -213,7 +211,6 @@ h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.02em; line
 }
 .logo:hover { transform: scale(1.03) rotate(-1deg); }
 .logo img { height: 40px; width: auto; max-width: 180px; object-fit: contain; }
-.logo span, .logo svg { }
 .logo span {
     background: var(--grad-brand);
     -webkit-background-clip: text; background-clip: text;
@@ -617,7 +614,6 @@ main > .card,
 }
 .card:hover { box-shadow: var(--shadow-hover); }
 .card h1 { font-size: 2rem; margin-bottom: 0.4rem; }
-.card h1 .highlight { }
 .card h2 { font-size: 1.4rem; margin: 1rem 0 0.5rem; }
 .card h3 { font-size: 1.15rem; margin: 0.8rem 0 0.4rem; }
 .card p { color: var(--text-muted); }
@@ -799,7 +795,6 @@ main > .card,
 }
 .hero-content { display: flex; flex-direction: column; gap: 1.1rem; }
 .hero-content h1 { font-size: clamp(2.6rem, 5vw, 4rem); font-weight: 700; }
-.hero-content h1 .highlight { }
 .hero-content .hero-badge {
     display: inline-block;
     background: var(--glass-2) !important;
