@@ -4,18 +4,33 @@
 {% block title %}{{ tentative.quiz.titre }} - {% trans "Quiz" %}{% endblock %}
 
 {% block content %}
-<div style="max-width: 900px; margin: 2rem auto; padding: 0 1.5rem;">
+<div class="quiz-container" style="max-width: 900px; margin: 2rem auto; padding: 0 1.5rem;">
 
     <!-- En-tête -->
-    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
-        <h1 style="font-size: 1.8rem; font-weight: 800;">{{ tentative.quiz.titre }}</h1>
-        <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
-            <span style="color: var(--text-muted);">
+    <div class="quiz-header" style="text-align: center; margin-bottom: 2rem;">
+        <h1 style="font-size: 1.8rem; font-weight: 800; font-family: var(--font-display);">{{ tentative.quiz.titre }}</h1>
+        
+        <!-- Info bar -->
+        <div style="display: flex; justify-content: center; align-items: center; gap: 1.5rem; flex-wrap: wrap; margin-top: 0.8rem;">
+            <span style="color: var(--text-muted); font-size: 0.9rem;">
                 <i class="fas fa-clock"></i> {% trans "Temps restant" %}: <span id="timer">--:--</span>
             </span>
-            <span style="color: var(--text-muted);">
+            <span style="color: var(--text-muted); font-size: 0.9rem;">
                 <i class="fas fa-list"></i> {{ total_questions }} {% trans "questions" %}
             </span>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="quiz-progress" style="margin-top: 1.5rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">
+                    {% trans "Question" %} <span id="currentQuestionNum">1</span> / {{ total_questions }}
+                </span>
+                <span style="font-size: 0.85rem; color: var(--primary); font-weight: 700;" id="progressPercent">0%</span>
+            </div>
+            <div style="width: 100%; height: 8px; background: var(--glass-soft); border-radius: 50px; overflow: hidden;">
+                <div id="progressBar" style="height: 100%; background: var(--grad-brand); border-radius: 50px; width: 0%; transition: width 0.4s ease;"></div>
+            </div>
         </div>
     </div>
 
@@ -23,191 +38,387 @@
     <form method="post" enctype="multipart/form-data" id="quizForm" action="{% url 'quiz:submit' tentative.pk %}">
         {% csrf_token %}
 
-        {% for question in questions %}
-        <div class="question-block" style="background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius); margin-bottom: 1.5rem; box-shadow: var(--shadow); border: 1px solid var(--border);">
+        <!-- ===== QUESTIONS CONTAINER ===== -->
+        <div id="questionsContainer">
+            {% for question in questions %}
+            <div class="question-slide" data-question="{{ forloop.counter }}" style="{% if not forloop.first %}display: none;{% endif %}">
+                <div class="card" style="padding: 2rem; margin: 0;">
+                    
+                    <!-- En-tête question -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem;">
+                        <h3 style="font-size: 1.1rem; font-weight: 700; margin: 0; font-family: var(--font-display);">
+                            <span style="background: var(--grad-brand); color: #fff; border-radius: 50%; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.9rem; margin-right: 0.5rem;">{{ forloop.counter }}</span>
+                            {% trans "Question" %} {{ forloop.counter }}
+                            <span style="font-weight: 400; color: var(--text-muted); font-size: 0.85rem;">
+                                ({{ question.points }} {% trans "pts" %})
+                            </span>
+                        </h3>
+                        <span class="badge badge-secondary">{{ question.get_type_question_display }}</span>
+                    </div>
 
-            <!-- En-tête question -->
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem;">
-                <h3 style="font-size: 1.1rem; font-weight: 700; margin: 0;">
-                    {% trans "Question" %} {{ forloop.counter }}
-                    <span style="font-weight: 400; color: var(--text-muted); font-size: 0.9rem;">
-                        ({{ question.points }} {% trans "points" %})
-                    </span>
-                </h3>
-                <span class="badge badge-secondary">{{ question.get_type_question_display }}</span>
+                    <!-- Texte de la question -->
+                    <p style="font-size: 1.05rem; margin-bottom: 1rem; font-weight: 500;">{{ question.texte }}</p>
+
+                    <!-- Média de la question -->
+                    {% if question.has_media %}
+                    <div style="background: var(--glass-soft); padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1rem;">
+                        {% if question.q_media_titre %}
+                        <p style="font-weight: 600; margin-bottom: 0.3rem;">{{ question.q_media_titre }}</p>
+                        {% endif %}
+                        {% if question.q_media_audio_url or question.q_media_audio_file %}
+                        <audio controls style="width: 100%;">
+                            <source src="{{ question.q_media_audio_url|default:question.q_media_audio_file.url }}" type="audio/mpeg">
+                        </audio>
+                        {% endif %}
+                        {% if question.q_media_video_url or question.q_media_video_file %}
+                        <video controls style="width: 100%; max-width: 500px; border-radius: var(--radius-sm);">
+                            <source src="{{ question.q_media_video_url|default:question.q_media_video_file.url }}" type="video/mp4">
+                        </video>
+                        {% endif %}
+                        {% if question.q_media_image_url or question.q_media_image_file %}
+                        <img src="{{ question.q_media_image_url|default:question.q_media_image_file.url }}" alt="{{ question.q_media_titre }}" style="max-width: 100%; max-height: 250px; border-radius: var(--radius-sm);">
+                        {% endif %}
+                        {% if question.q_media_texte %}
+                        <p style="margin-top: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">{{ question.q_media_texte }}</p>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    <!-- ===== TYPES DE RÉPONSES ===== -->
+                    {% if question.type_question == 'single' or question.type_question == 'vrai_faux' %}
+                    <div class="options-list" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        {% for reponse in question.reponses.all %}
+                        <label class="option-label" style="display: flex; align-items: center; gap: 0.8rem; padding: 0.7rem 1rem; background: var(--glass-soft); border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); border: 2px solid transparent;">
+                            <input type="radio" name="question_{{ question.id }}" value="{{ reponse.pk }}" class="option-input" style="accent-color: var(--primary); width: 18px; height: 18px;">
+                            <span style="font-size: 0.95rem;">{{ reponse.texte }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+
+                    {% elif question.type_question == 'multiple' %}
+                    <div class="options-list" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        {% for reponse in question.reponses.all %}
+                        <label class="option-label" style="display: flex; align-items: center; gap: 0.8rem; padding: 0.7rem 1rem; background: var(--glass-soft); border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); border: 2px solid transparent;">
+                            <input type="checkbox" name="question_{{ question.id }}" value="{{ reponse.pk }}" class="option-input" style="accent-color: var(--primary); width: 18px; height: 18px;">
+                            <span style="font-size: 0.95rem;">{{ reponse.texte }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+
+                    {% elif question.type_question == 'texte_trous' %}
+                    <div class="form-group">
+                        <input type="text" name="question_{{ question.id }}_texte" class="form-control"
+                               placeholder="{% trans 'Écrivez votre réponse...' %}" style="width: 100%;">
+                    </div>
+
+                    {% elif question.type_question == 'texte_libre' %}
+                    <div class="form-group">
+                        <textarea name="question_{{ question.id }}_texte_libre" class="form-control" rows="4"
+                                  placeholder="{% trans 'Écrivez votre réponse ici...' %}" style="width: 100%;"></textarea>
+                    </div>
+
+                    {% elif question.type_question == 'audio_reponse' %}
+                    <div class="upload-area" style="border: 2px dashed var(--glass-brd); border-radius: var(--radius-sm); padding: 1.5rem; text-align: center;">
+                        <i class="fas fa-microphone" style="font-size: 2.5rem; color: var(--primary); opacity: 0.5; margin-bottom: 0.5rem;"></i>
+                        <p style="font-weight: 600;">{% trans "Téléchargez votre réponse audio" %}</p>
+                        <input type="file" name="question_{{ question.id }}_audio" accept="audio/*" class="form-control" style="margin-top: 0.5rem;">
+                    </div>
+
+                    {% elif question.type_question == 'video_reponse' %}
+                    <div class="upload-area" style="border: 2px dashed var(--glass-brd); border-radius: var(--radius-sm); padding: 1.5rem; text-align: center;">
+                        <i class="fas fa-video" style="font-size: 2.5rem; color: var(--primary); opacity: 0.5; margin-bottom: 0.5rem;"></i>
+                        <p style="font-weight: 600;">{% trans "Téléchargez votre réponse vidéo" %}</p>
+                        <input type="file" name="question_{{ question.id }}_video" accept="video/*" class="form-control" style="margin-top: 0.5rem;">
+                    </div>
+
+                    {% elif question.type_question == 'image_reponse' %}
+                    <div class="upload-area" style="border: 2px dashed var(--glass-brd); border-radius: var(--radius-sm); padding: 1.5rem; text-align: center;">
+                        <i class="fas fa-image" style="font-size: 2.5rem; color: var(--primary); opacity: 0.5; margin-bottom: 0.5rem;"></i>
+                        <p style="font-weight: 600;">{% trans "Téléchargez votre réponse image" %}</p>
+                        <input type="file" name="question_{{ question.id }}_image" accept="image/*" class="form-control" style="margin-top: 0.5rem;">
+                    </div>
+
+                    {% elif question.type_question == 'fichier_reponse' %}
+                    <div class="upload-area" style="border: 2px dashed var(--glass-brd); border-radius: var(--radius-sm); padding: 1.5rem; text-align: center;">
+                        <i class="fas fa-file" style="font-size: 2.5rem; color: var(--primary); opacity: 0.5; margin-bottom: 0.5rem;"></i>
+                        <p style="font-weight: 600;">{% trans "Téléchargez votre fichier réponse" %}</p>
+                        <input type="file" name="question_{{ question.id }}_fichier" accept=".pdf,.doc,.docx,.txt" class="form-control" style="margin-top: 0.5rem;">
+                    </div>
+
+                    {% endif %}
+
+                </div>
             </div>
-
-            <!-- Texte de la question -->
-            <p style="font-size: 1.05rem; margin-bottom: 1rem;">{{ question.texte }}</p>
-
-            <!-- Média de la question -->
-            {% if question.has_media %}
-            <div style="background: var(--bg); padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1rem;">
-                {% if question.q_media_titre %}
-                <p style="font-weight: 600; margin-bottom: 0.3rem;">{{ question.q_media_titre }}</p>
-                {% endif %}
-                {% if question.q_media_audio_url or question.q_media_audio_file %}
-                <audio controls style="width: 100%;">
-                    <source src="{{ question.q_media_audio_url|default:question.q_media_audio_file.url }}" type="audio/mpeg">
-                    {% trans "Votre navigateur ne supporte pas l'audio." %}
-                </audio>
-                {% endif %}
-                {% if question.q_media_video_url or question.q_media_video_file %}
-                <video controls style="width: 100%; max-width: 500px;">
-                    <source src="{{ question.q_media_video_url|default:question.q_media_video_file.url }}" type="video/mp4">
-                    {% trans "Votre navigateur ne supporte pas la vidéo." %}
-                </video>
-                {% endif %}
-                {% if question.q_media_image_url or question.q_media_image_file %}
-                <img src="{{ question.q_media_image_url|default:question.q_media_image_file.url }}" alt="{{ question.q_media_titre }}" style="max-width: 100%; max-height: 300px; border-radius: var(--radius-sm);">
-                {% endif %}
-                {% if question.q_media_texte %}
-                <p style="margin-top: 0.5rem; color: var(--text-muted);">{{ question.q_media_texte }}</p>
-                {% endif %}
-            </div>
-            {% endif %}
-
-            <!-- ===== TYPES DE RÉPONSES ===== -->
-
-            {% if question.type_question == 'single' or question.type_question == 'vrai_faux' %}
-            <!-- Choix unique / Vrai/Faux -->
-            <div class="options-grid" style="display: flex; flex-direction: column; gap: 0.5rem;">
-                {% for reponse in question.reponses.all %}
-                <label style="display: flex; align-items: center; gap: 0.8rem; padding: 0.6rem 1rem; background: var(--bg); border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition);">
-                    <input type="radio" name="question_{{ question.id }}" value="{{ reponse.pk }}"
-                           {% if reponse.pk in reponses_utilisateur.question_id.reponses_selectionnees.all|default:'' %}checked{% endif %}>
-                    {{ reponse.texte }}
-                </label>
-                {% endfor %}
-            </div>
-
-            {% elif question.type_question == 'multiple' %}
-            <!-- Choix multiples -->
-            <div class="options-grid" style="display: flex; flex-direction: column; gap: 0.5rem;">
-                {% for reponse in question.reponses.all %}
-                <label style="display: flex; align-items: center; gap: 0.8rem; padding: 0.6rem 1rem; background: var(--bg); border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition);">
-                    <input type="checkbox" name="question_{{ question.id }}" value="{{ reponse.pk }}"
-                           {% if reponse.pk in reponses_utilisateur.question_id.reponses_selectionnees.all|default:'' %}checked{% endif %}>
-                    {{ reponse.texte }}
-                </label>
-                {% endfor %}
-            </div>
-
-            {% elif question.type_question == 'texte_trous' %}
-            <!-- Texte à trous -->
-            <div class="form-group">
-                <input type="text" name="question_{{ question.id }}_texte" class="form-control"
-                       placeholder="{% trans 'Écrivez votre réponse...' %}"
-                       value="{{ reponses_utilisateur.question_id.texte_reponse|default:'' }}">
-            </div>
-
-            {% elif question.type_question == 'texte_libre' %}
-            <!-- Texte libre -->
-            <div class="form-group">
-                <textarea name="question_{{ question.id }}_texte_libre" class="form-control" rows="4"
-                          placeholder="{% trans 'Écrivez votre réponse ici...' %}">{{ reponses_utilisateur.question_id.texte_reponse|default:'' }}</textarea>
-            </div>
-
-            <!-- ===== UPLOAD TYPES ===== -->
-            {% elif question.type_question == 'audio_reponse' %}
-            <div class="upload-area" style="border: 2px dashed var(--border); border-radius: var(--radius); padding: 2rem; text-align: center;">
-                <i class="fas fa-microphone" style="font-size: 3rem; color: var(--primary); opacity: 0.5; margin-bottom: 0.5rem;"></i>
-                <p style="font-weight: 600;">{% trans "Enregistrez ou téléchargez votre réponse audio" %}</p>
-                <p style="color: var(--text-muted); font-size: 0.9rem;">{% trans "Formats acceptés: MP3, WAV, M4A" %}</p>
-                <input type="file" name="question_{{ question.id }}_audio" accept="audio/*" class="form-control" style="padding: 0.5rem; margin-top: 0.5rem;">
-                {% if reponses_utilisateur.question_id.audio_reponse %}
-                <p style="color: var(--success); margin-top: 0.5rem;">
-                    <i class="fas fa-check-circle"></i> {% trans "Fichier déjà téléchargé" %}
-                </p>
-                {% endif %}
-            </div>
-
-            {% elif question.type_question == 'video_reponse' %}
-            <div class="upload-area" style="border: 2px dashed var(--border); border-radius: var(--radius); padding: 2rem; text-align: center;">
-                <i class="fas fa-video" style="font-size: 3rem; color: var(--primary); opacity: 0.5; margin-bottom: 0.5rem;"></i>
-                <p style="font-weight: 600;">{% trans "Enregistrez ou téléchargez votre réponse vidéo" %}</p>
-                <p style="color: var(--text-muted); font-size: 0.9rem;">{% trans "Formats acceptés: MP4, WebM, MOV" %}</p>
-                <input type="file" name="question_{{ question.id }}_video" accept="video/*" class="form-control" style="padding: 0.5rem; margin-top: 0.5rem;">
-                {% if reponses_utilisateur.question_id.video_reponse %}
-                <p style="color: var(--success); margin-top: 0.5rem;">
-                    <i class="fas fa-check-circle"></i> {% trans "Fichier déjà téléchargé" %}
-                </p>
-                {% endif %}
-            </div>
-
-            {% elif question.type_question == 'image_reponse' %}
-            <div class="upload-area" style="border: 2px dashed var(--border); border-radius: var(--radius); padding: 2rem; text-align: center;">
-                <i class="fas fa-image" style="font-size: 3rem; color: var(--primary); opacity: 0.5; margin-bottom: 0.5rem;"></i>
-                <p style="font-weight: 600;">{% trans "Téléchargez votre réponse image" %}</p>
-                <p style="color: var(--text-muted); font-size: 0.9rem;">{% trans "Formats acceptés: PNG, JPG, GIF, SVG" %}</p>
-                <input type="file" name="question_{{ question.id }}_image" accept="image/*" class="form-control" style="padding: 0.5rem; margin-top: 0.5rem;">
-                {% if reponses_utilisateur.question_id.image_reponse %}
-                <p style="color: var(--success); margin-top: 0.5rem;">
-                    <i class="fas fa-check-circle"></i> {% trans "Image déjà téléchargée" %}
-                </p>
-                {% endif %}
-            </div>
-
-            {% elif question.type_question == 'fichier_reponse' %}
-            <div class="upload-area" style="border: 2px dashed var(--border); border-radius: var(--radius); padding: 2rem; text-align: center;">
-                <i class="fas fa-file" style="font-size: 3rem; color: var(--primary); opacity: 0.5; margin-bottom: 0.5rem;"></i>
-                <p style="font-weight: 600;">{% trans "Téléchargez votre fichier réponse" %}</p>
-                <p style="color: var(--text-muted); font-size: 0.9rem;">{% trans "Formats acceptés: PDF, DOC, DOCX, TXT" %}</p>
-                <input type="file" name="question_{{ question.id }}_fichier" accept=".pdf,.doc,.docx,.txt" class="form-control" style="padding: 0.5rem; margin-top: 0.5rem;">
-                {% if reponses_utilisateur.question_id.fichier_reponse %}
-                <p style="color: var(--success); margin-top: 0.5rem;">
-                    <i class="fas fa-check-circle"></i> {% trans "Fichier déjà téléchargé" %}
-                </p>
-                {% endif %}
-            </div>
-
-            {% endif %}
-
+            {% endfor %}
         </div>
-        {% endfor %}
 
-        <!-- Bouton soumettre -->
-        <div style="text-align: center; margin-top: 2rem;">
-            <button type="submit" class="btn btn-success btn-lg" id="submitBtn" style="padding: 0.8rem 3rem;">
+        <!-- ===== NAVIGATION BUTTONS ===== -->
+        <div class="quiz-navigation" style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;">
+            <!-- Bouton Precedent -->
+            <button type="button" id="prevBtn" class="btn btn-secondary btn-lg" style="min-width: 150px; display: none;">
+                <i class="fas fa-arrow-left"></i> {% trans "Précédent" %}
+            </button>
+            
+            <!-- Espace -->
+            <div style="flex: 1;"></div>
+            
+            <!-- Bouton Suivant -->
+            <button type="button" id="nextBtn" class="btn btn-primary btn-lg" style="min-width: 150px;">
+                {% trans "Suivant" %} <i class="fas fa-arrow-right"></i>
+            </button>
+            
+            <!-- Bouton Soumettre (caché par défaut) -->
+            <button type="submit" id="submitBtn" class="btn btn-success btn-lg" style="min-width: 150px; display: none;">
                 <i class="fas fa-paper-plane"></i> {% trans "Soumettre le quiz" %}
             </button>
+        </div>
+
+        <!-- ===== INDICATEUR DE POINTS ===== -->
+        <div class="quiz-dots" id="quizDots" style="display: flex; justify-content: center; gap: 0.5rem; margin-top: 1.5rem; flex-wrap: wrap;">
+            {% for question in questions %}
+            <span class="quiz-dot" data-dot="{{ forloop.counter }}" style="width: 12px; height: 12px; border-radius: 50%; background: var(--glass-soft); border: 2px solid var(--glass-brd); cursor: pointer; transition: var(--transition);"></span>
+            {% endfor %}
         </div>
     </form>
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const submitBtn = document.getElementById('submitBtn');
-        const form = document.getElementById('quizForm');
+document.addEventListener('DOMContentLoaded', function() {
+    const slides = document.querySelectorAll('.question-slide');
+    const totalSlides = slides.length;
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const progressBar = document.getElementById('progressBar');
+    const progressPercent = document.getElementById('progressPercent');
+    const currentQuestionNum = document.getElementById('currentQuestionNum');
+    const quizDots = document.querySelectorAll('.quiz-dot');
+    let currentSlide = 0;
 
-        // Confirmation avant soumission
-        submitBtn.addEventListener('click', function(e) {
-            if (!confirm("{% trans 'Êtes-vous sûr de vouloir soumettre ce quiz ?' %}")) {
-                e.preventDefault();
+    function updateSlide() {
+        // Cache tout
+        slides.forEach(function(slide, index) {
+            slide.style.display = index === currentSlide ? 'block' : 'none';
+        });
+
+        // Update progress
+        const percent = ((currentSlide + 1) / totalSlides) * 100;
+        progressBar.style.width = percent + '%';
+        progressPercent.textContent = Math.round(percent) + '%';
+        currentQuestionNum.textContent = currentSlide + 1;
+
+        // Update dots
+        quizDots.forEach(function(dot, index) {
+            if (index === currentSlide) {
+                dot.style.background = 'var(--primary)';
+                dot.style.borderColor = 'var(--primary)';
+                dot.style.transform = 'scale(1.3)';
+            } else if (index < currentSlide) {
+                dot.style.background = 'var(--success)';
+                dot.style.borderColor = 'var(--success)';
+                dot.style.transform = 'scale(1)';
+            } else {
+                dot.style.background = 'var(--glass-soft)';
+                dot.style.borderColor = 'var(--glass-brd)';
+                dot.style.transform = 'scale(1)';
             }
         });
 
-        // ===== PREVIEW UPLOAD FILES =====
-        const fileInputs = document.querySelectorAll('input[type="file"]');
-        fileInputs.forEach(function(input) {
-            input.addEventListener('change', function(e) {
-                const file = this.files[0];
-                if (file) {
-                    const parent = this.closest('.upload-area');
-                    const existingMsg = parent.querySelector('.file-preview');
-                    if (existingMsg) existingMsg.remove();
+        // Affiche/Cache boutons
+        if (currentSlide === 0) {
+            prevBtn.style.display = 'none';
+        } else {
+            prevBtn.style.display = 'inline-flex';
+        }
 
-                    const msg = document.createElement('p');
-                    msg.className = 'file-preview';
-                    msg.style.cssText = 'color: var(--success); margin-top: 0.5rem; font-size: 0.9rem;';
-                    msg.innerHTML = '<i class="fas fa-check-circle"></i> ' + file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
-                    parent.appendChild(msg);
-                }
+        if (currentSlide === totalSlides - 1) {
+            nextBtn.style.display = 'none';
+            submitBtn.style.display = 'inline-flex';
+        } else {
+            nextBtn.style.display = 'inline-flex';
+            submitBtn.style.display = 'none';
+        }
+
+        // Scroll to top of form
+        const quizContainer = document.querySelector('.quiz-container');
+        quizContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function validateCurrentQuestion() {
+        const currentSlideEl = slides[currentSlide];
+        const inputs = currentSlideEl.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked, input[type="text"], textarea, input[type="file"]');
+        
+        let answered = false;
+        
+        // Vérifie si c'est un upload
+        const fileInputs = currentSlideEl.querySelectorAll('input[type="file"]');
+        if (fileInputs.length > 0) {
+            fileInputs.forEach(function(input) {
+                if (input.files.length > 0) answered = true;
             });
-        });
+            if (!answered) {
+                alert("{% trans 'Veuillez télécharger un fichier avant de continuer.' %}");
+                return false;
+            }
+            return true;
+        }
+        
+        // Vérifie les radios
+        const radioInputs = currentSlideEl.querySelectorAll('input[type="radio"]');
+        if (radioInputs.length > 0) {
+            radioInputs.forEach(function(input) {
+                if (input.checked) answered = true;
+            });
+            if (!answered) {
+                alert("{% trans 'Veuillez sélectionner une réponse avant de continuer.' %}");
+                return false;
+            }
+            return true;
+        }
+        
+        // Vérifie les checkboxes
+        const checkboxInputs = currentSlideEl.querySelectorAll('input[type="checkbox"]');
+        if (checkboxInputs.length > 0) {
+            checkboxInputs.forEach(function(input) {
+                if (input.checked) answered = true;
+            });
+            if (!answered) {
+                alert("{% trans 'Veuillez sélectionner au moins une réponse avant de continuer.' %}");
+                return false;
+            }
+            return true;
+        }
+        
+        // Vérifie les text inputs
+        const textInputs = currentSlideEl.querySelectorAll('input[type="text"], textarea');
+        if (textInputs.length > 0) {
+            textInputs.forEach(function(input) {
+                if (input.value.trim() !== '') answered = true;
+            });
+            if (!answered) {
+                alert("{% trans 'Veuillez écrire votre réponse avant de continuer.' %}");
+                return false;
+            }
+            return true;
+        }
+        
+        return true;
+    }
 
-        // ===== TIMER (si ou vle ajoute yon timer) =====
-        // Ou ka ajoute yon timer isit la si w vle
+    function validateAllQuestions() {
+        for (let i = 0; i < totalSlides; i++) {
+            currentSlide = i;
+            updateSlide();
+            if (!validateCurrentQuestion()) {
+                return false;
+            }
+        }
+        currentSlide = 0;
+        updateSlide();
+        return true;
+    }
+
+    // Next button
+    nextBtn.addEventListener('click', function() {
+        if (validateCurrentQuestion()) {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
     });
+
+    // Previous button
+    prevBtn.addEventListener('click', function() {
+        if (currentSlide > 0) {
+            currentSlide--;
+            updateSlide();
+        }
+    });
+
+    // Dots click
+    quizDots.forEach(function(dot) {
+        dot.addEventListener('click', function() {
+            const targetSlide = parseInt(this.getAttribute('data-dot')) - 1;
+            // Empêche de sauter si la question actuelle n'est pas répondue
+            if (targetSlide > currentSlide) {
+                if (!validateCurrentQuestion()) {
+                    return;
+                }
+            }
+            currentSlide = targetSlide;
+            updateSlide();
+        });
+    });
+
+    // Submit button validation
+    submitBtn.addEventListener('click', function(e) {
+        if (!validateAllQuestions()) {
+            e.preventDefault();
+            return;
+        }
+        if (!confirm("{% trans 'Êtes-vous sûr de vouloir soumettre ce quiz ? Vous ne pourrez plus modifier vos réponses.' %}")) {
+            e.preventDefault();
+        }
+    });
+
+    // Highlight selected option
+    document.querySelectorAll('.option-label').forEach(function(label) {
+        const input = label.querySelector('input');
+        input.addEventListener('change', function() {
+            const parentList = this.closest('.options-list');
+            parentList.querySelectorAll('.option-label').forEach(function(l) {
+                l.style.borderColor = 'transparent';
+                l.style.background = 'var(--glass-soft)';
+            });
+            if (this.checked) {
+                label.style.borderColor = 'var(--primary)';
+                label.style.background = 'color-mix(in srgb, var(--primary) 8%, transparent)';
+            }
+        });
+    });
+
+    // Preview upload files
+    document.querySelectorAll('input[type="file"]').forEach(function(input) {
+        input.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const parent = this.closest('.upload-area');
+                const existingMsg = parent.querySelector('.file-preview');
+                if (existingMsg) existingMsg.remove();
+                
+                const msg = document.createElement('p');
+                msg.className = 'file-preview';
+                msg.style.cssText = 'color: var(--success); margin-top: 0.5rem; font-size: 0.85rem;';
+                msg.innerHTML = '<i class="fas fa-check-circle"></i> ' + file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+                parent.appendChild(msg);
+            }
+        });
+    });
+
+    // Initialize
+    updateSlide();
+});
 </script>
+
+<style>
+    .option-label:hover {
+        border-color: var(--primary) !important;
+        background: color-mix(in srgb, var(--primary) 5%, transparent) !important;
+    }
+    
+    .quiz-dot:hover {
+        transform: scale(1.3) !important;
+        border-color: var(--primary) !important;
+    }
+    
+    .question-slide {
+        animation: fadeUp 0.3s ease;
+    }
+    
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: none; }
+    }
+</style>
 {% endblock %}
