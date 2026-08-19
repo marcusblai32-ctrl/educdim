@@ -3,6 +3,7 @@
    Complete CSS - Final Version
    Course Cards: Rectangular, 50/50 Split, Fixed Button 40%
    Container: 80% Width
+   Image: 100% Width, Border Radius Top
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
@@ -558,7 +559,7 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     align-items: stretch;
 }
 
-/* COURSE CARD */
+/* ============ COURSE CARD ============ */
 .course-card {
     background: var(--glass);
     backdrop-filter: blur(var(--blur)) saturate(150%);
@@ -581,6 +582,7 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     border-color: color-mix(in srgb, var(--primary) 35%, transparent);
 }
 
+/* IMAGE - 100% WIDTH, 50% HEIGHT, BORDER RADIUS TOP */
 .course-card .course-img {
     width: 100%;
     height: 50%;
@@ -591,6 +593,7 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     margin: 0;
     padding: 0;
     display: block;
+    border-radius: var(--radius) var(--radius) 0 0;
 }
 .course-card .no-image {
     width: 100%;
@@ -605,9 +608,11 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     flex-shrink: 0;
     margin: 0;
     padding: 0;
+    border-radius: var(--radius) var(--radius) 0 0;
 }
 .course-card .no-image i { font-size: 2.8rem; opacity: 0.4; }
 
+/* CONTENT - 50% */
 .course-card .course-body {
     padding: 1rem 1.2rem 0.8rem;
     flex: 1;
@@ -642,6 +647,7 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
 }
 .course-card .course-body h3 a:hover { color: var(--primary); }
 
+/* DESKRIPSYON */
 .course-card .course-body .course-description {
     color: var(--text-muted);
     font-size: 0.72rem;
@@ -655,6 +661,7 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     max-height: 2em;
 }
 
+/* META + HR */
 .course-card .course-body .course-meta {
     display: flex;
     justify-content: space-between;
@@ -664,7 +671,7 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     padding-top: 0.5rem;
     border-top: 1px solid var(--glass-brd-soft);
     margin-top: auto;
-    padding-bottom: 2.2rem;
+    padding-bottom: 2.5rem;
     flex-shrink: 0;
     position: relative;
 }
@@ -683,24 +690,36 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     gap: 0.25rem;
 }
 
-/* BOUTON FIXED 40% */
+/* BOUTON "VOIR" - VISIBLE, FIXED BOTTOM RIGHT, 40% */
 .course-card .course-body .course-meta .btn,
-.course-card .course-body .btn-sm {
+.course-card .course-body .btn-sm,
+.course-card .course-body a.btn {
     position: absolute;
     bottom: 5px;
     right: 5px;
     width: 40%;
     min-width: auto;
-    padding: 0.35rem 0.6rem;
-    font-size: 0.7rem;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.72rem;
     border-radius: 8px;
     text-align: center;
     justify-content: center;
-    display: inline-flex;
+    display: inline-flex !important;
     align-items: center;
     gap: 0.25rem;
-    z-index: 5;
+    z-index: 10;
     margin: 0;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    background: var(--grad-brand);
+    color: #fff;
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--primary) 30%, transparent);
+    text-decoration: none;
+    font-weight: 600;
+    font-family: var(--font-body);
+    line-height: 1.2;
+    white-space: nowrap;
 }
 
 .empty-courses {
@@ -1049,7 +1068,8 @@ footer {
     .course-card .course-body .course-meta .price { font-size: 0.85rem; }
     .course-card .course-body .course-meta .duration { font-size: 0.65rem; }
     .course-card .course-body .course-meta .btn,
-    .course-card .course-body .btn-sm {
+    .course-card .course-body .btn-sm,
+    .course-card .course-body a.btn {
         font-size: 0.65rem;
         padding: 0.3rem 0.5rem;
         bottom: 3px;
