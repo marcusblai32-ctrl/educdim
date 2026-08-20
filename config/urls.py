@@ -8,20 +8,24 @@ from django.shortcuts import redirect
 from courses.views import about_page, contact_page, conditions_page, privacy_page, faq_page
 
 
-# Changer le titre de l'administration
-admin.site.site_header = "Administration Edimduc"
-admin.site.site_title = "Administration Edimduc"
-admin.site.index_title = "Bienvenue dans l'administration Edimduc"
+# ============================================
+# PERSONNALISATION DE L'ADMINISTRATION
+# ============================================
+admin.site.site_header = "Administration EducDim"
+admin.site.site_title = "Administration EducDim"
+admin.site.index_title = "Bienvenue dans l'administration EducDim"
+admin.site.site_url = "/fr/"
 
 
 # ============================================
-# URL SANS PREFIX LANG (admin, i18n, redireksyon)
+# URL SANS PRÉFIXE DE LANGUE (admin, i18n, redirections)
 # ============================================
 urlpatterns = [
     path('dp/', admin.site.urls),
     path('i18n/', include('django.conf.urls.i18n')),
-    
-    # ===== REDIREKSYON POU ANSYEN URLs SAN PREFIKS =====
+
+    # ===== REDIRECTIONS POUR ANCIENNES URLS SANS PRÉFIXE =====
+    path('', lambda request: redirect('/fr/', permanent=False)),
     path('accounts', lambda request: redirect('/fr/accounts/', permanent=True)),
     path('accounts/', lambda request: redirect('/fr/accounts/', permanent=True)),
     path('cours', lambda request: redirect('/fr/cours/', permanent=True)),
@@ -43,37 +47,37 @@ urlpatterns = [
 ]
 
 # ============================================
-# URL AVEC PREFIX LANG (fr/ ak ht/)
+# URL AVEC PRÉFIXE DE LANGUE (fr/ et ht/)
 # ============================================
 urlpatterns += i18n_patterns(
-    # Home
+    # Accueil
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
 
-    # Accounts
+    # Comptes utilisateurs
     path('accounts/', include('accounts.urls')),
 
-    # Courses
+    # Cours
     path('cours/', include('courses.urls')),
 
-    # Enrollments
+    # Inscriptions
     path('inscriptions/', include('enrollments.urls')),
 
-    # Subscriptions
+    # Abonnements
     path('abonnements/', include('subscriptions.urls')),
 
-    # Progress
+    # Progression
     path('progression/', include('progress.urls')),
 
     # Quiz
     path('quiz/', include('quiz.urls')),
 
-    # Attendance
+    # Présences
     path('presence/', include('attendance.urls')),
 
     # Badges
     path('badges/', include('badges.urls')),
 
-    # Ranking
+    # Classement
     path('classement/', include('ranking.urls')),
 
     # Chat
@@ -82,13 +86,13 @@ urlpatterns += i18n_patterns(
     # Notifications
     path('notifications/', include('notifications.urls')),
 
-    # Theme Manager
+    # Gestionnaire de thème
     path('theme/', include('theme_manager.urls')),
 
-    # Ads
+    # Annonces publicitaires
     path('ads/', include('ads.urls')),
 
-    # Dashboard
+    # Tableau de bord
     path('dashboard/', include('dashboard.urls')),
 
     # Pages statiques
@@ -98,15 +102,13 @@ urlpatterns += i18n_patterns(
     path('confidentialite/', privacy_page, name='privacy'),
     path('faq/', faq_page, name='faq'),
 
-    # ===== CHANJMAN: Mete False pou TOU DE lang yo gen prefiks =====
+    # ===== Les deux langues ont des préfixes =====
     prefix_default_language=False,
 )
 
 # ============================================
-# STATIC & MEDIA FILES (DEBUG SEULEMENT)
+# FICHIERS STATIQUES ET MÉDIAS (DEBUG UNIQUEMENT)
 # ============================================
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-
