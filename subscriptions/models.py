@@ -24,7 +24,6 @@ class Subscription(models.Model):
     METHODES_PAIEMENT = [
         ('moncash', 'MonCash'),
         ('natcash', 'NatCash'),
-        ('manual', 'Attribution manuelle (admin)'),
     ]
 
     STATUTS = [
