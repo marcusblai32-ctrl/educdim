@@ -6,15 +6,15 @@ echo "  EDUCIM - Build & Reset Subscription"
 echo "=============================================="
 
 echo ""
-echo "=== 1/4: Installation des dépendances ==="
+echo "=== 1/3: Installation des dépendances ==="
 pip install -r requirements.txt
 
 echo ""
-echo "=== 2/4: Collecte des fichiers statiques ==="
+echo "=== 2/3: Collecte des fichiers statiques ==="
 python manage.py collectstatic --noinput
 
 echo ""
-echo "=== 3/4: Reset done subscription + kreye kolòn ==="
+echo "=== 3/3: Reset done subscription + kreye kolòn ==="
 python manage.py shell -c "
 from django.db import connection
 with connection.cursor() as cursor:
@@ -77,10 +77,6 @@ with connection.cursor() as cursor:
     print('')
     print('✅ Done subscription efase ak kolòn kreye!')
 "
-
-echo ""
-echo "=== 4/4: Fake migrasyon ==="
-python manage.py migrate subscriptions --fake --noinput
 
 echo ""
 echo "=============================================="
