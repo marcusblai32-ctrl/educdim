@@ -7,6 +7,13 @@ from django.conf.urls.i18n import i18n_patterns
 from django.shortcuts import redirect
 from courses.views import about_page, contact_page, conditions_page, privacy_page, faq_page
 
+
+# Changer le titre de l'administration
+admin.site.site_header = "Administration Edimduc"
+admin.site.site_title = "Administration Edimduc"
+admin.site.index_title = "Bienvenue dans l'administration Edimduc"
+
+
 # ============================================
 # URL SANS PREFIX LANG (admin, i18n, redireksyon)
 # ============================================
@@ -101,3 +108,5 @@ urlpatterns += i18n_patterns(
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
