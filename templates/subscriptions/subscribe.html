@@ -14,7 +14,12 @@
 
     <div style="background:var(--glass-soft); border-radius:var(--radius); padding:1rem; margin-bottom:1.5rem; text-align:center;">
         <p style="margin:0; font-size:0.9rem; color:var(--text-muted);">
-            {% trans "Prix" %}: <strong style="color:var(--primary); font-size:1.2rem;">{{ plan.prix }} HTG</strong>
+            {% trans "Prix" %}: 
+            {% if plan.prix == 0 %}
+                <strong style="color:var(--success); font-size:1.2rem;">{% trans "Gratuit" %}</strong>
+            {% else %}
+                <strong style="color:var(--primary); font-size:1.2rem;">{{ plan.prix }} HTG</strong>
+            {% endif %}
         </p>
         <p style="margin:0.3rem 0; font-size:0.9rem; color:var(--text-muted);">
             {% trans "Durée" %}: {{ plan.duree_jours }} {% trans "jours" %}
