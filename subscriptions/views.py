@@ -38,7 +38,7 @@ def subscribe(request, plan_pk):
         messages.info(request, _("Vous avez déjà une demande pour ce plan."))
         return redirect('subscriptions:list')
 
-    # ===== Plan GRATIS (prix = 0) — aktive dirèkteman =====
+    # ===== PLAN GRATIS — AKTIVE DIRÈKTEMAN SANS FÒMILÈ =====
     if plan.prix == 0:
         subscription = Subscription.objects.create(
             utilisateur=request.user,
@@ -71,7 +71,7 @@ def subscribe(request, plan_pk):
             messages.success(request, _("Abonnement gratuit activé ! Tous les cours sont accessibles."))
             return redirect('courses:course_list')
 
-    # ===== Plan PEYAN — montre fòmilè peman =====
+    # ===== PLAN PEYAN — montre fòmilè peman =====
     if request.method == 'POST':
         form = SubscriptionForm(request.POST, request.FILES, user=request.user)
         if form.is_valid():
@@ -133,7 +133,6 @@ def my_subscriptions(request):
                 max_courses = 0
             
             if max_courses > 0:
-                # Konte seleksyon yo — pi fiable pase courses_selectionnes
                 selections_count = sub.course_selections.count()
                 if selections_count < max_courses:
                     active_sub_needing_selection = sub
