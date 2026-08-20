@@ -4,22 +4,66 @@
 {% block title %}{{ module.titre }}{% endblock %}
 
 {% block content %}
-<div class="card">
-    <nav class="breadcrumb">
-        <a href="{% url 'courses:course_list' %}">{% trans "Cours" %}</a> &gt;
-        <a href="{% url 'courses:course_detail' module.unite.cours.pk %}">{{ module.unite.cours.titre }}</a> &gt;
-        <a href="{% url 'courses:unit_detail' module.unite.pk %}">{{ module.unite.titre }}</a> &gt;
-        <span>{{ module.titre }}</span>
-    </nav>
-    <h1>{{ module.titre }} ({% trans "Module" %} {{ module.ordre }})</h1>
-    <p>{{ module.description }}</p>
-    <h2>{% trans "Leçons" %}</h2>
-    <ul class="lecon-list">
-        {% for lecon in lecons %}
-        <li><a href="{% url 'courses:lesson_detail' lecon.pk %}">{{ lecon.titre }} ({% trans "Leçon" %} {{ lecon.ordre }})</a></li>
-        {% empty %}
-        <li>{% trans "Aucune leçon dans ce module." %}</li>
-        {% endfor %}
-    </ul>
+<div class="course-detail-container">
+    <div class="card">
+        <!-- Breadcrumb -->
+        <nav class="breadcrumb">
+            <a href="{% url 'courses:course_list' %}">{% trans "Cours" %}</a>
+            <span class="separator">&gt;</span>
+            <a href="{% url 'courses:course_detail' module.unite.cours.pk %}">{{ module.unite.cours.titre }}</a>
+            <span class="separator">&gt;</span>
+            <a href="{% url 'courses:unit_detail' module.unite.pk %}">{{ module.unite.titre }}</a>
+            <span class="separator">&gt;</span>
+            <span>{{ module.titre }}</span>
+        </nav>
+
+        <!-- Titre ak deskripsyon -->
+        <h1 style="font-size:1.8rem; margin-bottom:0.5rem;">{{ module.titre }} ({% trans "Module" %} {{ module.ordre }})</h1>
+        <p style="color:var(--text-muted); margin-bottom:1.5rem;">{{ module.description }}</p>
+
+        <!-- Quiz modil la -->
+        {% if quizzes_module %}
+        <div style="margin-bottom:2rem;">
+            <h2 style="font-size:1.3rem; margin-bottom:1rem; display:flex; align-items:center; gap:0.5rem;">
+                <i class="fas fa-question-circle" style="color:var(--primary);"></i> {% trans "Quiz du module" %}
+            </h2>
+            <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:1rem;">
+                {% for quiz in quizzes_module %}
+                <div style="background:var(--glass-soft); border-radius:var(--radius-sm); padding:1rem; border:1px solid var(--glass-brd-soft); transition:var(--transition);">
+                    <h3 style="font-size:1rem; margin:0 0 0.3rem;">
+                        <a href="{% url 'quiz:detail' quiz.pk %}" style="color:var(--text); text-decoration:none;">{{ quiz.titre }}</a>
+                    </h3>
+                    {% if quiz.description %}
+                    <p style="color:var(--text-muted); font-size:0.85rem; margin:0 0 0.5rem;">{{ quiz.description|truncatechars:100 }}</p>
+                    {% endif %}
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.5rem;">
+                        <span style="color:var(--text-muted); font-size:0.75rem;">
+                            <i class="fas fa-percent"></i> {{ quiz.pourcentage_reussite }}% {% trans "réussite" %}
+                        </span>
+                        <a href="{% url 'quiz:start' quiz.pk %}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-play"></i> {% trans "Commencer" %}
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Leson yo -->
+        <h2 style="font-size:1.3rem; margin-bottom:1rem;">{% trans "Leçons" %}</h2>
+        <ul class="lecon-list" style="list-style:none; padding:0; margin:0;">
+            {% for lecon in lecons %}
+            <li style="padding:0.6rem 0.8rem; border-bottom:1px solid var(--border);">
+                <a href="{% url 'courses:lesson_detail' lecon.pk %}" style="display:flex; align-items:center; gap:0.5rem; color:var(--text); text-decoration:none;">
+                    <i class="fas fa-book" style="color:var(--primary);"></i>
+                    {{ lecon.titre }} ({% trans "Leçon" %} {{ lecon.ordre }})
+                </a>
+            </li>
+            {% empty %}
+            <li style="padding:0.6rem 0.8rem; color:var(--text-muted);">{% trans "Aucune leçon dans ce module." %}</li>
+            {% endfor %}
+        </ul>
+    </div>
 </div>
 {% endblock %}
