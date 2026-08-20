@@ -23,7 +23,7 @@ msgid "Profil"
 msgstr "Pwofil"
 
 msgid "Tableau de bord"
-msgstr "Tablo de bòd"
+msgstr "Tablo de bò"
 
 msgid "Cours"
 msgstr "Kou"
@@ -60,9 +60,6 @@ msgstr "Pri"
 
 msgid "S'inscrire"
 msgstr "Enskri"
-
-msgid "Inscription"
-msgstr "Enskripsyon"
 
 msgid "Confirmation"
 msgstr "Konfimasyon"
