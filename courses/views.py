@@ -13,6 +13,43 @@ from theme_manager.models import Theme
 
 
 # ============================================
+# HELPER: Verifye aksè itilizatè a
+# ============================================
+def _get_user_access(request, cours):
+    """Retounen (a_acces, est_inscrit, inscription_approuvee, a_acces_abonnement)."""
+    est_inscrit = False
+    inscription_approuvee = False
+    a_acces_abonnement = False
+    
+    if not request.user.is_authenticated:
+        return (False, False, False, False)
+    
+    # Verifye enskripsyon aktif
+    enrollment = Enrollment.objects.filter(
+        utilisateur=request.user,
+        cours=cours,
+        statut='active'
+    ).first()
+    if enrollment:
+        est_inscrit = True
+        inscription_approuvee = True
+    
+    # Verifye abònman aktif
+    a_acces_abonnement = SubscriptionAccess.objects.filter(
+        subscription__utilisateur=request.user,
+        subscription__statut='active',
+        cours=cours,
+        date_expiration__gt=timezone.now()
+    ).exists()
+    
+    if a_acces_abonnement:
+        inscription_approuvee = True
+    
+    a_acces = inscription_approuvee or a_acces_abonnement
+    return (a_acces, est_inscrit, inscription_approuvee, a_acces_abonnement)
+
+
+# ============================================
 # COURSE LIST
 # ============================================
 def course_list(request):
@@ -57,43 +94,6 @@ def course_list(request):
 
 
 # ============================================
-# HELPER: Verifye aksè itilizatè a
-# ============================================
-def _get_user_access(request, cours):
-    """Retounen (a_acces, est_inscrit, inscription_approuvee, a_acces_abonnement)."""
-    est_inscrit = False
-    inscription_approuvee = False
-    a_acces_abonnement = False
-    
-    if not request.user.is_authenticated:
-        return (False, False, False, False)
-    
-    # Verifye enskripsyon aktif
-    enrollment = Enrollment.objects.filter(
-        utilisateur=request.user,
-        cours=cours,
-        statut='active'
-    ).first()
-    if enrollment:
-        est_inscrit = True
-        inscription_approuvee = True
-    
-    # Verifye abònman aktif
-    a_acces_abonnement = SubscriptionAccess.objects.filter(
-        subscription__utilisateur=request.user,
-        subscription__statut='active',
-        cours=cours,
-        date_expiration__gt=timezone.now()
-    ).exists()
-    
-    if a_acces_abonnement:
-        inscription_approuvee = True
-    
-    a_acces = inscription_approuvee or a_acces_abonnement
-    return (a_acces, est_inscrit, inscription_approuvee, a_acces_abonnement)
-
-
-# ============================================
 # COURSE DETAIL — AK LOJIK AKSÈ
 # ============================================
 def course_detail(request, pk):
@@ -107,7 +107,7 @@ def course_detail(request, pk):
         # Kou peyan — bezwen enskripsyon oswa abònman aktif
         if not a_acces:
             # Redireksyone sou paj enroll
-            return redirect('enrollments:enroll', pk=cours.pk)
+            return redirect('enrollments:enroll_course', cours_pk=cours.pk)
     # Kou gratis — tout moun ka wè kontni a
     
     # ===== VARIABLES POU TEMPLATE =====
@@ -232,11 +232,10 @@ def toggle_inscription(request, pk):
 def unit_detail(request, pk):
     unite = get_object_or_404(Unite, pk=pk)
     
-    # Verifye aksè
     cours = unite.cours
     a_acces, _, _, _ = _get_user_access(request, cours)
     if cours.est_payant and not a_acces:
-        return redirect('enrollments:enroll', pk=cours.pk)
+        return redirect('enrollments:enroll_course', cours_pk=cours.pk)
     
     modules = unite.modules.filter(actif=True)
     return render(request, 'courses/unit_detail.html', {'unite': unite, 'modules': modules})
@@ -248,11 +247,10 @@ def unit_detail(request, pk):
 def module_detail(request, pk):
     module = get_object_or_404(Module, pk=pk)
     
-    # Verifye aksè
     cours = module.unite.cours
     a_acces, _, _, _ = _get_user_access(request, cours)
     if cours.est_payant and not a_acces:
-        return redirect('enrollments:enroll', pk=cours.pk)
+        return redirect('enrollments:enroll_course', cours_pk=cours.pk)
     
     lecons = module.lecons.filter(actif=True)
     quizzes_module = module.quiz.filter(publie=True)
@@ -271,14 +269,12 @@ def lesson_detail(request, pk):
     lecon = get_object_or_404(Lecon, pk=pk)
     sections = lecon.sections.all()
     
-    # Verifye aksè
     cours = lecon.module.unite.cours
     a_acces, _, _, _ = _get_user_access(request, cours)
     if cours.est_payant and not a_acces:
         messages.warning(request, "Vous devez être inscrit ou avoir un abonnement actif pour voir cette leçon.")
-        return redirect('enrollments:enroll', pk=cours.pk)
+        return redirect('enrollments:enroll_course', cours_pk=cours.pk)
     
-    # Verifye quiz leçon an (si genyen)
     quizzes_lecon = lecon.quiz.filter(publie=True)
     
     if request.user.is_authenticated and quizzes_lecon.exists():
