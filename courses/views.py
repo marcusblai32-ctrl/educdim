@@ -8,7 +8,7 @@ from .models import Course, Unite, Module, Lecon, SectionLecon, Category, Niveau
 from .forms import CourseForm
 from enrollments.models import Enrollment
 from quiz.models import TentativeQuiz, Quiz
-from subscriptions.models import Subscription, SubscriptionAccess
+from subscriptions.models import Subscription, SubscriptionAccess, SubscriptionCourseSelection
 from theme_manager.models import Theme
 
 
@@ -16,7 +16,6 @@ from theme_manager.models import Theme
 # HELPER: Verifye aksè itilizatè a
 # ============================================
 def _get_user_access(request, cours):
-    """Retounen (a_acces, est_inscrit, inscription_approuvee, a_acces_abonnement)."""
     est_inscrit = False
     inscription_approuvee = False
     a_acces_abonnement = False
@@ -47,6 +46,50 @@ def _get_user_access(request, cours):
     
     a_acces = inscription_approuvee or a_acces_abonnement
     return (a_acces, est_inscrit, inscription_approuvee, a_acces_abonnement)
+
+
+# ============================================
+# HELPER: Verifye ak kreye aksè atravè abònman
+# ============================================
+def _check_abonnement_access(request, cours):
+    """Tcheke si itilizatè a gen abònman aktif ki kouvri kou a, epi kreye aksè si nesesè."""
+    if not request.user.is_authenticated:
+        return False
+    
+    # TCHEK 1: Abònman san limit (max_courses=0)
+    abonnement_san_limit = Subscription.objects.filter(
+        utilisateur=request.user,
+        statut='active',
+        plan__max_courses=0,
+        plan__cours=cours,
+        date_fin__gt=timezone.now()
+    ).first()
+    
+    if abonnement_san_limit:
+        SubscriptionAccess.objects.get_or_create(
+            subscription=abonnement_san_limit,
+            cours=cours,
+            defaults={'date_expiration': abonnement_san_limit.date_fin}
+        )
+        return True
+    
+    # TCHEK 2: Abònman ak limit ki gen kou sa a seleksyone
+    selection_active = SubscriptionCourseSelection.objects.filter(
+        subscription__utilisateur=request.user,
+        subscription__statut='active',
+        subscription__date_fin__gt=timezone.now(),
+        course=cours
+    ).first()
+    
+    if selection_active:
+        SubscriptionAccess.objects.get_or_create(
+            subscription=selection_active.subscription,
+            cours=cours,
+            defaults={'date_expiration': selection_active.subscription.date_fin}
+        )
+        return True
+    
+    return False
 
 
 # ============================================
@@ -86,6 +129,8 @@ def course_list(request):
         a_acces = False
         if request.user.is_authenticated:
             a_acces, _, _, _ = _get_user_access(request, cours_item)
+            if not a_acces:
+                a_acces = _check_abonnement_access(request, cours_item)
         cours_avec_acces.append({
             'cours': cours_item,
             'a_acces': a_acces,
@@ -110,47 +155,21 @@ def course_list(request):
 def course_detail(request, pk):
     cours = get_object_or_404(Course, pk=pk)
     
+    # ===== TCHEK ABÒNMAN EPI KREYE AKSÈ SI NESESÈ =====
+    abonnement_access = _check_abonnement_access(request, cours)
+    
     a_acces, est_inscrit, inscription_approuvee, a_acces_abonnement = _get_user_access(request, cours)
     
-    # ===== LOJIK AKSÈ KONPLÈ =====
+    # Si abònman bay aksè, mete aksè a
+    if abonnement_access:
+        a_acces = True
+        a_acces_abonnement = True
+        inscription_approuvee = True
+    
+    # ===== LOJIK AKSÈ =====
     if cours.est_payant:
         if not a_acces:
-            # Kou peyan — itilizatè pa gen aksè
-            if request.user.is_authenticated:
-                # TCHEK 1: Abònman san limit (max_courses=0)
-                abonnement_san_limit = Subscription.objects.filter(
-                    utilisateur=request.user,
-                    statut='active',
-                    plan__max_courses=0,
-                    plan__cours=cours,
-                    date_fin__gt=timezone.now()
-                ).first()
-                
-                if abonnement_san_limit:
-                    SubscriptionAccess.objects.get_or_create(
-                        subscription=abonnement_san_limit,
-                        cours=cours,
-                        defaults={'date_expiration': abonnement_san_limit.date_fin}
-                    )
-                    messages.success(request, _("Votre abonnement vous donne accès à ce cours !"))
-                    return redirect('courses:course_detail', pk=cours.pk)
-                
-                # TCHEK 2: Abònman ak limit ki gen kou sa a deja seleksyone
-                a_acces_abonnement = SubscriptionAccess.objects.filter(
-                    subscription__utilisateur=request.user,
-                    subscription__statut='active',
-                    cours=cours,
-                    date_expiration__gt=timezone.now()
-                ).exists()
-                
-                if a_acces_abonnement:
-                    pass  # Aksè ok, kontinye
-                else:
-                    # Pa gen aksè — redireksyone sou enroll
-                    return redirect('enrollments:enroll_course', cours_pk=cours.pk)
-            else:
-                # Pa konekte — redireksyone sou enroll
-                return redirect('enrollments:enroll_course', cours_pk=cours.pk)
+            return redirect('enrollments:enroll_course', cours_pk=cours.pk)
     
     # ===== VARIABLES POU TEMPLATE =====
     prerequisites = cours.get_prerequisites()
@@ -273,6 +292,8 @@ def unit_detail(request, pk):
     unite = get_object_or_404(Unite, pk=pk)
     cours = unite.cours
     a_acces, _, _, _ = _get_user_access(request, cours)
+    if not a_acces:
+        a_acces = _check_abonnement_access(request, cours)
     if cours.est_payant and not a_acces:
         return redirect('enrollments:enroll_course', cours_pk=cours.pk)
     
@@ -287,6 +308,8 @@ def module_detail(request, pk):
     module = get_object_or_404(Module, pk=pk)
     cours = module.unite.cours
     a_acces, _, _, _ = _get_user_access(request, cours)
+    if not a_acces:
+        a_acces = _check_abonnement_access(request, cours)
     if cours.est_payant and not a_acces:
         return redirect('enrollments:enroll_course', cours_pk=cours.pk)
     
@@ -309,6 +332,8 @@ def lesson_detail(request, pk):
     
     cours = lecon.module.unite.cours
     a_acces, _, _, _ = _get_user_access(request, cours)
+    if not a_acces:
+        a_acces = _check_abonnement_access(request, cours)
     if cours.est_payant and not a_acces:
         messages.warning(request, "Vous devez être inscrit ou avoir un abonnement actif pour voir cette leçon.")
         return redirect('enrollments:enroll_course', cours_pk=cours.pk)
