@@ -38,6 +38,43 @@ def subscribe(request, plan_pk):
         messages.info(request, _("Vous avez déjà une demande pour ce plan."))
         return redirect('subscriptions:list')
 
+    # ===== NOUVO: Si plan an GRATIS (prix = 0) =====
+    if plan.prix == 0:
+        subscription = Subscription.objects.create(
+            utilisateur=request.user,
+            plan=plan,
+            statut='active',
+            methode_paiement='manual',
+            date_debut=timezone.now(),
+            date_fin=timezone.now() + timezone.timedelta(days=plan.duree_jours),
+            date_verification=timezone.now(),
+            verifie_par=request.user if request.user.is_staff else None,
+        )
+        
+        try:
+            max_courses = plan.max_courses
+        except AttributeError:
+            max_courses = 0
+        
+        if max_courses > 0:
+            messages.success(request, _("Abonnement gratuit activé ! Veuillez choisir vos cours."))
+            return redirect('subscriptions:select_courses', pk=subscription.pk)
+        else:
+            for cours in plan.cours.all():
+                SubscriptionAccess.objects.get_or_create(
+                    subscription=subscription,
+                    cours=cours,
+                    defaults={'date_expiration': subscription.date_fin}
+                )
+            try:
+                subscription.courses_selectionnes = True
+                subscription.save(update_fields=['courses_selectionnes'])
+            except:
+                pass
+            messages.success(request, _("Abonnement gratuit activé ! Tous les cours sont accessibles."))
+            return redirect('courses:course_list')
+
+    # ===== Plan peyan — montre fòmilè peman =====
     if request.method == 'POST':
         form = SubscriptionForm(request.POST, request.FILES, user=request.user)
         if form.is_valid():
@@ -59,10 +96,7 @@ def subscribe(request, plan_pk):
                     max_courses = 0
 
                 if max_courses > 0:
-                    messages.success(
-                        request,
-                        _("Abonnement activé ! Veuillez choisir vos cours ({} maximum).").format(max_courses)
-                    )
+                    messages.success(request, _("Abonnement activé ! Veuillez choisir vos cours ({} maximum).").format(max_courses))
                     return redirect('subscriptions:select_courses', pk=subscription.pk)
                 else:
                     for cours in plan.cours.all():
@@ -76,7 +110,6 @@ def subscribe(request, plan_pk):
                         subscription.save(update_fields=['courses_selectionnes'])
                     except:
                         pass
-                    
                     messages.success(request, _("Abonnement activé ! Tous les cours sont accessibles."))
                     return redirect('courses:course_list')
             else:
@@ -122,7 +155,6 @@ def my_subscriptions(request):
 def subscription_detail(request, pk):
     sub = get_object_or_404(Subscription, pk=pk, utilisateur=request.user)
     
-    # ===== NOUVO: Tcheke si bezwen seleksyon kou =====
     try:
         max_courses = sub.plan.max_courses
     except AttributeError:
@@ -133,9 +165,8 @@ def subscription_detail(request, pk):
     except AttributeError:
         deja_selectionnes = False
     
-    # Si abònman aktif, gen limit, epi pa seleksyone → redireksyone sou seleksyon kou
     if sub.statut == 'active' and max_courses > 0 and not deja_selectionnes:
-        messages.info(request, _("Votre abonnement est actif. Veuillez choisir vos cours pour y accéder."))
+        messages.info(request, _("Veuillez choisir vos cours pour activer votre abonnement."))
         return redirect('subscriptions:select_courses', pk=sub.pk)
     
     accesses = sub.accesses.all().select_related('cours')
