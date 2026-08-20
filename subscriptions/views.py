@@ -23,7 +23,6 @@ def subscription_list(request):
 
 @login_required
 def subscribe(request, plan_pk):
-    # Jere si plan pa egziste
     try:
         plan = SubscriptionPlan.objects.get(pk=plan_pk, actif=True)
     except SubscriptionPlan.DoesNotExist:
@@ -54,21 +53,18 @@ def subscribe(request, plan_pk):
                 subscription.verifie_par = request.user
                 subscription.save()
 
-                # ===== NOUVO: Korije selon max_courses =====
                 try:
                     max_courses = plan.max_courses
                 except AttributeError:
                     max_courses = 0
-                
+
                 if max_courses > 0:
-                    # Gen limit — itilizatè a dwe chwazi kou yo
                     messages.success(
                         request,
                         _("Abonnement activé ! Veuillez choisir vos cours ({} maximum).").format(max_courses)
                     )
                     return redirect('subscriptions:select_courses', pk=subscription.pk)
                 else:
-                    # San limit — aktive tout kou plan an
                     for cours in plan.cours.all():
                         SubscriptionAccess.objects.get_or_create(
                             subscription=subscription,
@@ -81,7 +77,7 @@ def subscribe(request, plan_pk):
                     except:
                         pass
                     
-                    messages.success(request, _("Abonnement activé ! Tous les cours du plan sont accessibles."))
+                    messages.success(request, _("Abonnement activé ! Tous les cours sont accessibles."))
                     return redirect('courses:course_list')
             else:
                 subscription.statut = 'pending'
@@ -149,7 +145,6 @@ def subscription_detail(request, pk):
 
 @login_required
 def select_courses(request, pk):
-    """Itilizatè chwazi kou yo pou abònman aktif li."""
     subscription = get_object_or_404(
         Subscription,
         pk=pk,
@@ -245,7 +240,6 @@ def admin_pending(request):
 
 @user_passes_test(lambda u: u.is_staff)
 def admin_verify_subscription(request, pk):
-    """Admin verifye epi aktive abònman an."""
     subscription = get_object_or_404(Subscription, pk=pk)
 
     if subscription.statut == 'active':
@@ -268,7 +262,6 @@ def admin_verify_subscription(request, pk):
         messages.success(request, _("Abonnement activé. L'utilisateur doit maintenant choisir ses cours."))
         return redirect('subscriptions:admin_pending')
 
-    # San limit
     for cours in subscription.plan.cours.all():
         SubscriptionAccess.objects.get_or_create(
             subscription=subscription,
