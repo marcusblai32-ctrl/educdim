@@ -1,9 +1,11 @@
+import base64
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.http import JsonResponse
+from django.core.files.base import ContentFile
 from .models import Quiz, Question, Reponse, TentativeQuiz, ReponseUtilisateur
 from .services import corriger_tentative, get_upload_fields_for_question
 
@@ -104,11 +106,32 @@ def submit_quiz(request, tentative_pk):
                 texte = request.POST.get(f'question_{question.id}_texte_libre', '').strip()
                 reponse_utilisateur.texte_reponse = texte
 
-            # ===== UPLOAD DES FICHIERS =====
+            # ===== AUDIO RECORDING (Base64) =====
             elif question.type_question == 'audio_reponse':
-                if request.FILES.get(f'question_{question.id}_audio'):
+                # TCHEK 1: Audio anrejistre nan navigatè (base64)
+                audio_blob = request.POST.get(f'question_{question.id}_audio_blob', '')
+                audio_filename = request.POST.get(f'question_{question.id}_audio_filename', '')
+                
+                if audio_blob:
+                    try:
+                        # Dekode base64 la
+                        format_part, base64_data = audio_blob.split(';base64,')
+                        audio_bytes = base64.b64decode(base64_data)
+                        
+                        # Sove fichye a
+                        reponse_utilisateur.audio_reponse.save(
+                            audio_filename,
+                            ContentFile(audio_bytes),
+                            save=False
+                        )
+                    except Exception as e:
+                        messages.error(request, f"Erreur lors de l'enregistrement audio: {str(e)}")
+                
+                # TCHEK 2: Fichye telechaje
+                elif request.FILES.get(f'question_{question.id}_audio'):
                     reponse_utilisateur.audio_reponse = request.FILES[f'question_{question.id}_audio']
 
+            # ===== UPLOAD DES FICHIERS =====
             elif question.type_question == 'video_reponse':
                 if request.FILES.get(f'question_{question.id}_video'):
                     reponse_utilisateur.video_reponse = request.FILES[f'question_{question.id}_video']
@@ -127,7 +150,6 @@ def submit_quiz(request, tentative_pk):
         corriger_tentative(tentative)
 
         messages.success(request, _("Quiz soumis avec succès!"))
-        # REDIRIGE VERS RESULTAT
         return redirect('quiz:quiz_result', tentative_pk=tentative.pk)
 
     return redirect('quiz:take_quiz', tentative_pk=tentative.pk)
