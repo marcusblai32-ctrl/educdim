@@ -4,48 +4,59 @@
 {% block title %}{{ theme.contact_page_title|default:_("Contactez-nous") }} - {{ theme.site_name }}{% endblock %}
 
 {% block content %}
-<div class="card">
-    <h1>{{ theme.contact_page_title|default:_("Contactez-nous") }}</h1>
-    <p>{{ theme.contact_page_subtitle|default:_("Nous sommes là pour vous aider. Envoyez-nous un message.") }}</p>
+<div class="card" style="max-width:800px; margin:0 auto;">
+    <h1 style="text-align:center; margin-bottom:1rem;">
+        <i class="fas fa-envelope" style="color:var(--primary);"></i> 
+        {{ theme.contact_page_title|default:_("Contactez-nous") }}
+    </h1>
+    <p style="text-align:center; color:var(--text-muted); margin-bottom:2rem;">
+        {{ theme.contact_page_subtitle|default:_("Nous sommes là pour vous aider.") }}
+    </p>
 
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:2rem; margin-top:2rem;">
-        <div>
-            <h3><i class="fas fa-phone" style="color:var(--primary);"></i> {% trans "Téléphone" %}</h3>
-            <p>{{ theme.contact_phone|default:"+509 0000-0000" }}</p>
-
-            <h3><i class="fas fa-map-marker-alt" style="color:var(--primary);"></i> {% trans "Adresse" %}</h3>
-            <p>{{ theme.contact_address|default:"Port-au-Prince, Haïti" }}</p>
-
-            <h3><i class="fas fa-clock" style="color:var(--primary);"></i> {% trans "Heures d'ouverture" %}</h3>
-            <p>{{ theme.contact_hours|default:"Lun-Ven: 8h - 17h" }}</p>
-
-            <h3><i class="fas fa-envelope" style="color:var(--primary);"></i> {% trans "Email" %}</h3>
-            <p><a href="mailto:{{ theme.contact_email }}">{{ theme.contact_email }}</a></p>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:1.5rem;">
+        <!-- Téléphone -->
+        <div style="background:var(--glass-soft); border-radius:var(--radius); padding:1.5rem; text-align:center; border:1px solid var(--glass-brd-soft); transition:var(--transition);">
+            <div style="width:50px; height:50px; border-radius:50%; background:var(--primary); display:flex; align-items:center; justify-content:center; margin:0 auto 1rem;">
+                <i class="fas fa-phone" style="color:#fff; font-size:1.3rem;"></i>
+            </div>
+            <h3 style="font-size:1.1rem; margin-bottom:0.5rem;">{% trans "Téléphone" %}</h3>
+            <p style="color:var(--text-muted); margin:0;">{{ theme.contact_phone|default:"+509 0000-0000" }}</p>
         </div>
 
-        <div>
-            <h3>{% trans "Envoyez-nous un message" %}</h3>
-            <form method="post">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label>{% trans "Votre nom" %}</label>
-                    <input type="text" name="name" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label>{% trans "Email" %}</label>
-                    <input type="email" name="email" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label>{% trans "Message" %}</label>
-                    <textarea name="message" class="form-control" rows="5" required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">{% trans "Envoyer" %}</button>
-            </form>
+        <!-- Adresse -->
+        <div style="background:var(--glass-soft); border-radius:var(--radius); padding:1.5rem; text-align:center; border:1px solid var(--glass-brd-soft); transition:var(--transition);">
+            <div style="width:50px; height:50px; border-radius:50%; background:var(--success); display:flex; align-items:center; justify-content:center; margin:0 auto 1rem;">
+                <i class="fas fa-map-marker-alt" style="color:#fff; font-size:1.3rem;"></i>
+            </div>
+            <h3 style="font-size:1.1rem; margin-bottom:0.5rem;">{% trans "Adresse" %}</h3>
+            <p style="color:var(--text-muted); margin:0;">{{ theme.contact_address|default:"Port-au-Prince, Haïti" }}</p>
+        </div>
+
+        <!-- Heures d'ouverture -->
+        <div style="background:var(--glass-soft); border-radius:var(--radius); padding:1.5rem; text-align:center; border:1px solid var(--glass-brd-soft); transition:var(--transition);">
+            <div style="width:50px; height:50px; border-radius:50%; background:var(--warning); display:flex; align-items:center; justify-content:center; margin:0 auto 1rem;">
+                <i class="fas fa-clock" style="color:#fff; font-size:1.3rem;"></i>
+            </div>
+            <h3 style="font-size:1.1rem; margin-bottom:0.5rem;">{% trans "Heures d'ouverture" %}</h3>
+            <p style="color:var(--text-muted); margin:0;">{{ theme.contact_hours|default:"Lun-Ven: 8h - 17h" }}</p>
+        </div>
+
+        <!-- Email -->
+        <div style="background:var(--glass-soft); border-radius:var(--radius); padding:1.5rem; text-align:center; border:1px solid var(--glass-brd-soft); transition:var(--transition);">
+            <div style="width:50px; height:50px; border-radius:50%; background:var(--info); display:flex; align-items:center; justify-content:center; margin:0 auto 1rem;">
+                <i class="fas fa-envelope" style="color:#fff; font-size:1.3rem;"></i>
+            </div>
+            <h3 style="font-size:1.1rem; margin-bottom:0.5rem;">{% trans "Email" %}</h3>
+            <p style="color:var(--text-muted); margin:0;">
+                <a href="mailto:{{ theme.contact_email }}" style="color:var(--primary); text-decoration:none;">
+                    {{ theme.contact_email|default:"contact@educdim.com" }}
+                </a>
+            </p>
         </div>
     </div>
 
     {% if theme.contact_map_embed %}
-    <div style="margin-top:2rem;">
+    <div style="margin-top:2rem; border-radius:var(--radius); overflow:hidden;">
         {{ theme.contact_map_embed|safe }}
     </div>
     {% endif %}
