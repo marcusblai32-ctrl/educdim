@@ -10,24 +10,39 @@
     </h1>
     <p style="text-align:center; color:var(--text-muted); margin-bottom:1.5rem;">
         {% trans "Plan" %}: <strong>{{ subscription.plan.nom }}</strong> | 
-        {% trans "Places restantes" %}: <strong>{{ places_restantes }}</strong> / {{ max_courses }}
+        {% trans "Places restantes" %}: <strong id="placesRestantes">{{ places_restantes }}</strong> / {{ max_courses }}
     </p>
 
     <!-- Progress bar -->
     <div style="background:var(--glass-soft); border-radius:50px; height:8px; overflow:hidden; margin-bottom:2rem;">
-        <div style="background:var(--grad-brand); height:100%; width:{% widthratio max_courses|add:'-places_restantes' max_courses 100 %}%; border-radius:50px;"></div>
+        <div id="progressBar" style="background:var(--grad-brand); height:100%; width:0%; border-radius:50px; transition:width 0.4s ease;"></div>
     </div>
+
+    {% if deja_selectionnes %}
+    <div style="margin-bottom:1.5rem;">
+        <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:0.8rem;">
+            <i class="fas fa-check-circle" style="color:var(--success);"></i> {% trans "Déjà sélectionnés" %}
+        </h3>
+        <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+            {% for selection in deja_selectionnes %}
+            <span class="badge badge-success" style="padding:0.5rem 1rem; font-size:0.85rem;">
+                <i class="fas fa-check"></i> {{ selection.course.titre }}
+            </span>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
 
     <form method="post" id="courseSelectionForm">
         {% csrf_token %}
 
         <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:1rem; margin-bottom:1.5rem;">
             {% for course in form.courses.field.queryset %}
-            <label style="display:flex; align-items:flex-start; gap:0.8rem; padding:1rem; background:var(--glass-soft); border-radius:var(--radius-sm); cursor:pointer; border:2px solid transparent; transition:var(--transition);">
+            <label class="course-checkbox-item" style="display:flex; align-items:flex-start; gap:0.8rem; padding:1rem; background:var(--glass-soft); border-radius:var(--radius-sm); cursor:pointer; border:2px solid transparent; transition:var(--transition);">
                 <input type="checkbox" name="courses" value="{{ course.pk }}" class="course-checkbox" style="accent-color:var(--primary); width:18px; height:18px; margin-top:3px;">
                 <div>
                     <strong style="display:block; font-size:0.95rem; margin-bottom:0.2rem;">{{ course.titre }}</strong>
-                    <small style="color:var(--text-muted);">{{ course.duree }}h • {{ course.unites.count }} unités</small>
+                    <small style="color:var(--text-muted);">{{ course.duree }}h • {{ course.unites.count }} {% trans "unités" %}</small>
                 </div>
             </label>
             {% endfor %}
@@ -48,17 +63,18 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('courseSelectionForm');
     const checkboxes = document.querySelectorAll('.course-checkbox');
     const errorDiv = document.getElementById('selectionError');
-    const placesRestantes = {{ places_restantes }};
+    const progressBar = document.getElementById('progressBar');
+    const placesRestantesSpan = document.getElementById('placesRestantes');
     const maxCourses = {{ max_courses }};
+    let placesRestantes = {{ places_restantes }};
 
     function updateProgress() {
         const checked = document.querySelectorAll('.course-checkbox:checked').length;
         const percent = (checked / maxCourses) * 100;
         progressBar.style.width = Math.min(percent, 100) + '%';
-        placesRestantesSpan.textContent = Math.max(0, maxCourses - checked);
+        placesRestantesSpan.textContent = Math.max(0, placesRestantes - checked);
     }
 
     checkboxes.forEach(function(checkbox) {
@@ -66,22 +82,38 @@ document.addEventListener('DOMContentLoaded', function() {
             const checked = document.querySelectorAll('.course-checkbox:checked').length;
             if (checked > placesRestantes) {
                 this.checked = false;
-                errorDiv.textContent = "Vous ne pouvez sélectionner que " + placesRestantes + " cours maximum.";
+                errorDiv.textContent = "{% trans 'Vous ne pouvez sélectionner que' %} " + placesRestantes + " {% trans 'cours maximum.' %}";
                 errorDiv.style.display = 'block';
             } else {
                 errorDiv.style.display = 'none';
             }
+            updateProgress();
         });
     });
 
-    form.addEventListener('submit', function(e) {
+    document.querySelectorAll('.course-checkbox-item').forEach(function(label) {
+        const input = label.querySelector('input');
+        input.addEventListener('change', function() {
+            if (this.checked) {
+                label.style.borderColor = 'var(--primary)';
+                label.style.background = 'color-mix(in srgb, var(--primary) 8%, transparent)';
+            } else {
+                label.style.borderColor = 'transparent';
+                label.style.background = 'var(--glass-soft)';
+            }
+        });
+    });
+
+    document.getElementById('courseSelectionForm').addEventListener('submit', function(e) {
         const checked = document.querySelectorAll('.course-checkbox:checked').length;
         if (checked === 0) {
             e.preventDefault();
-            errorDiv.textContent = "Veuillez sélectionner au moins un cours.";
+            errorDiv.textContent = "{% trans 'Veuillez sélectionner au moins un cours.' %}";
             errorDiv.style.display = 'block';
         }
     });
+
+    updateProgress();
 });
 </script>
 {% endblock %}
