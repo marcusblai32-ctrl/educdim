@@ -23,15 +23,17 @@
         {% endif %}
     </div>
 
-    {% if subscription.statut == 'active' and subscription.plan.max_courses > 0 and not subscription.courses_selectionnes %}
-    <div class="alert alert-warning" style="background:rgba(245,158,11,0.1); color:var(--warning-dark); padding:1rem; border-radius:var(--radius); border-left:4px solid var(--warning); margin-bottom:1.5rem; text-align:center;">
-        <i class="fas fa-exclamation-triangle"></i>
-        <strong>{% trans "Action requise" %} :</strong>
-        {% trans "Vous devez choisir vos cours pour accéder au contenu." %}
-        <a href="{% url 'subscriptions:select_courses' subscription.pk %}" class="btn btn-primary btn-sm" style="margin-left:0.5rem;">
-            <i class="fas fa-book-open"></i> {% trans "Choisir mes cours" %}
-        </a>
-    </div>
+    {% if subscription.statut == 'active' and subscription.plan.max_courses > 0 %}
+        {% if subscription.course_selections.count < subscription.plan.max_courses %}
+        <div class="alert alert-warning" style="background:rgba(245,158,11,0.1); color:var(--warning-dark); padding:1rem; border-radius:var(--radius); border-left:4px solid var(--warning); margin-bottom:1.5rem; text-align:center;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <strong>{% trans "Action requise" %} :</strong>
+            {% trans "Vous devez choisir vos cours pour accéder au contenu." %}
+            <a href="{% url 'subscriptions:select_courses' subscription.pk %}" class="btn btn-primary btn-sm" style="margin-left:0.5rem;">
+                <i class="fas fa-book-open"></i> {% trans "Choisir mes cours" %}
+            </a>
+        </div>
+        {% endif %}
     {% endif %}
 
     <h2 style="font-size:1.3rem; margin-bottom:1rem;">
