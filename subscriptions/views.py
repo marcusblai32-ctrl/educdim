@@ -160,6 +160,25 @@ def subscription_detail(request, pk):
         messages.info(request, _("Veuillez choisir vos cours pour activer votre abonnement."))
         return redirect('subscriptions:select_courses', pk=sub.pk)
     
+    # ===== KREYE AKSÈ POU KOU SELEKSYONE SI MANKE =====
+    if sub.statut == 'active' and sub.date_fin and sub.date_fin > timezone.now():
+        # Aksè pou kou seleksyone yo
+        for selection in sub.course_selections.all():
+            SubscriptionAccess.objects.get_or_create(
+                subscription=sub,
+                cours=selection.course,
+                defaults={'date_expiration': sub.date_fin}
+            )
+        
+        # Si san limit (max_courses == 0), kreye aksè pou tout kou plan an
+        if max_courses == 0:
+            for cours in sub.plan.cours.all():
+                SubscriptionAccess.objects.get_or_create(
+                    subscription=sub,
+                    cours=cours,
+                    defaults={'date_expiration': sub.date_fin}
+                )
+    
     accesses = sub.accesses.all().select_related('cours')
     selections = sub.course_selections.all().select_related('course')
     
