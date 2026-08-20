@@ -42,7 +42,6 @@
           {% endfor %}
         </select>
       </div>
-      <!-- NOUVEAU: Filtre Learning Path -->
       <div class="filter-group">
         <select name="learning_path" onchange="this.form.submit()">
           <option value="">{% trans "Tous les Learning Paths" %}</option>
@@ -70,46 +69,55 @@
 
   <!-- ===== COURSE GRID ===== -->
   <div class="course-grid">
-    {% for course in cours %}
+    {% for item in cours %}
     <div class="card course-card">
-      {% with img=course.get_image %}
+      {% with img=item.cours.get_image %}
       {% if img %}
-      <img src="{{ img }}" alt="{{ course.titre }}" class="course-img">
+      <img src="{{ img }}" alt="{{ item.cours.titre }}" class="course-img">
       {% else %}
       <div class="no-image"><i class="fas fa-book fa-3x"></i></div>
       {% endif %}
       {% endwith %}
       <div class="course-body">
         <div class="course-badges">
-          {% if course.nivo %}
-          <span class="badge badge-secondary">{{ course.nivo.get_nom_display }}</span>
+          {% if item.cours.nivo %}
+          <span class="badge badge-secondary">{{ item.cours.nivo.get_nom_display }}</span>
           {% endif %}
-          {% if course.categorie %}
-          <span class="badge badge-primary">{{ course.categorie.nom }}</span>
+          {% if item.cours.categorie %}
+          <span class="badge badge-primary">{{ item.cours.categorie.nom }}</span>
           {% endif %}
-          {% if course.est_payant %}
+          {% if item.cours.est_payant %}
           <span class="badge badge-warning">{% trans "Payant" %}</span>
           {% else %}
           <span class="badge badge-success">{% trans "Gratuit" %}</span>
           {% endif %}
-          {% if course.learning_path %}
-          <span class="badge badge-secondary"><i class="fas fa-road"></i> {{ course.learning_path.nom }}</span>
+          {% if item.cours.learning_path %}
+          <span class="badge badge-secondary"><i class="fas fa-road"></i> {{ item.cours.learning_path.nom }}</span>
           {% endif %}
-          {% if not course.inscription_possible %}
+          {% if item.a_acces %}
+          <span class="badge badge-success">
+            <i class="fas fa-check-circle"></i> {% trans "Accès" %}
+          </span>
+          {% endif %}
+          {% if not item.cours.inscription_possible %}
           <span class="badge badge-danger">{% trans "Inscriptions fermées" %}</span>
           {% endif %}
         </div>
-        <h3><a href="{% url 'courses:course_detail' course.pk %}">{{ course.titre }}</a></h3>
-        <p class="course-description">{{ course.description|truncatechars:100 }}</p>
+        <h3><a href="{% url 'courses:course_detail' item.cours.pk %}">{{ item.cours.titre }}</a></h3>
+        <p class="course-description">{{ item.cours.description|truncatechars:100 }}</p>
         <div class="course-meta">
-                    <span class="price {% if not course.est_payant %}free{% endif %}">
-                        {% if course.est_payant %}{{ course.prix }} HTG{% else %}{% trans "Gratuit" %}{% endif %}
-                    </span>
+          <span class="price {% if not item.cours.est_payant %}free{% endif %}">
+            {% if item.cours.est_payant %}{{ item.cours.prix }} HTG{% else %}{% trans "Gratuit" %}{% endif %}
+          </span>
           <span class="duration">
-                        <i class="fas fa-clock"></i> {{ course.duree }}h
-                    </span>
-          <a href="{% url 'courses:course_detail' course.pk %}" class="btn btn-primary btn-sm">
-            {% trans "Voir" %}
+            <i class="fas fa-clock"></i> {{ item.cours.duree }}h
+          </span>
+          <a href="{% url 'courses:course_detail' item.cours.pk %}" class="btn btn-primary btn-sm">
+            {% if item.a_acces %}
+              <i class="fas fa-unlock"></i> {% trans "Accéder" %}
+            {% else %}
+              {% trans "Voir" %}
+            {% endif %}
           </a>
         </div>
       </div>
