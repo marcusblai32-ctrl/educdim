@@ -25,7 +25,7 @@ urlpatterns = [
 
 
 # ============================================
-# URL AVEC PRÉFIXE DE LANGUE (fr/ et ht/)
+# URL AVEC PRÉFIXE DE LANGUE
 # ============================================
 urlpatterns += i18n_patterns(
     # Accueil
@@ -80,8 +80,8 @@ urlpatterns += i18n_patterns(
     path('confidentialite/', privacy_page, name='privacy'),
     path('faq/', faq_page, name='faq'),
 
-    # ===== TOU DE lang yo gen prefiks =====
-    prefix_default_language=False,
+    # ===== TRUE: Lang default (fr) pa gen prefiks =====
+    prefix_default_language=True,
 )
 
 
