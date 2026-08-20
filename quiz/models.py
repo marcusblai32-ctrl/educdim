@@ -1,8 +1,35 @@
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
+
 
 class Quiz(models.Model):
-    cours = models.ForeignKey('courses.Course', on_delete=models.CASCADE, related_name='quiz')
+    # ===== RELASYON — You nan twa yo dwe ranpli =====
+    cours = models.ForeignKey(
+        'courses.Course', 
+        on_delete=models.CASCADE, 
+        related_name='quiz',
+        null=True, 
+        blank=True,
+        verbose_name="Cours"
+    )
+    module = models.ForeignKey(
+        'courses.Module',
+        on_delete=models.CASCADE,
+        related_name='quiz',
+        null=True,
+        blank=True,
+        verbose_name="Module"
+    )
+    lecon = models.ForeignKey(
+        'courses.Lecon',
+        on_delete=models.CASCADE,
+        related_name='quiz',
+        null=True,
+        blank=True,
+        verbose_name="Leçon"
+    )
+    
     titre = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     publie = models.BooleanField(default=False)
@@ -25,6 +52,12 @@ class Quiz(models.Model):
         ordering = ['-created_at']
 
     def __str__(self):
+        if self.cours:
+            return f"[Cours] {self.titre}"
+        elif self.module:
+            return f"[Module] {self.titre}"
+        elif self.lecon:
+            return f"[Leçon] {self.titre}"
         return self.titre
 
     def has_media(self):
@@ -34,6 +67,26 @@ class Quiz(models.Model):
             self.media_image_url, self.media_image_file,
             self.media_texte
         ])
+    
+    def get_cours_parent(self):
+        """Retounen kou paran an kèlkeswa relasyon an."""
+        if self.cours:
+            return self.cours
+        elif self.module:
+            return self.module.unite.cours
+        elif self.lecon:
+            return self.lecon.module.unite.cours
+        return None
+    
+    def get_niveau(self):
+        """Retounen nivo quiz la."""
+        if self.cours:
+            return "cours"
+        elif self.module:
+            return "module"
+        elif self.lecon:
+            return "lecon"
+        return "inconnu"
 
 
 class Question(models.Model):
