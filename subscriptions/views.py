@@ -121,25 +121,30 @@ def my_subscriptions(request):
 @login_required
 def subscription_detail(request, pk):
     sub = get_object_or_404(Subscription, pk=pk, utilisateur=request.user)
+    
+    # ===== NOUVO: Tcheke si bezwen seleksyon kou =====
+    try:
+        max_courses = sub.plan.max_courses
+    except AttributeError:
+        max_courses = 0
+    
+    try:
+        deja_selectionnes = sub.courses_selectionnes
+    except AttributeError:
+        deja_selectionnes = False
+    
+    # Si abònman aktif, gen limit, epi pa seleksyone → redireksyone sou seleksyon kou
+    if sub.statut == 'active' and max_courses > 0 and not deja_selectionnes:
+        messages.info(request, _("Votre abonnement est actif. Veuillez choisir vos cours pour y accéder."))
+        return redirect('subscriptions:select_courses', pk=sub.pk)
+    
     accesses = sub.accesses.all().select_related('cours')
     selections = sub.course_selections.all().select_related('course')
-    
-    doit_choisir = False
-    try:
-        if sub.statut == 'active' and sub.plan.max_courses > 0:
-            try:
-                if not sub.courses_selectionnes:
-                    doit_choisir = True
-            except AttributeError:
-                doit_choisir = True
-    except AttributeError:
-        pass
     
     return render(request, 'subscriptions/detail.html', {
         'subscription': sub,
         'accesses': accesses,
         'selections': selections,
-        'doit_choisir': doit_choisir,
     })
 
 
