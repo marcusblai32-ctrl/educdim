@@ -17,7 +17,7 @@ admin.site.index_title = "Bienvenue dans l'administration EducDim"
 
 
 # ============================================
-# URL SANS PRÉFIXE DE LANGUE
+# URL SANS PRÉFIXE DE LANGUE (admin, i18n)
 # ============================================
 urlpatterns = [
     path('dp/', admin.site.urls),
@@ -26,7 +26,7 @@ urlpatterns = [
 
 
 # ============================================
-# URL AVEC PRÉFIXE DE LANGUE
+# URL AVEC PRÉFIXE DE LANGUE (fr/ et ht/)
 # ============================================
 urlpatterns += i18n_patterns(
     # Accueil
@@ -81,38 +81,19 @@ urlpatterns += i18n_patterns(
     path('confidentialite/', privacy_page, name='privacy'),
     path('faq/', faq_page, name='faq'),
 
-    # ===== Mete False pou TOU DE lang yo gen prefiks =====
+    # ===== TOU DE lang yo gen prefiks =====
     prefix_default_language=False,
 )
 
 
 # ============================================
-# REDIRECTIONS
+# REDIRECTIONS — APRÈ i18n_patterns (SANSE)
 # ============================================
 urlpatterns += [
-    # Redireksyone / sou /fr/
+    # Redireksyone rasin sou /fr/
     path('', lambda request: redirect('/fr/', permanent=False)),
-    
-    # Redireksyone ansyen URLs san prefiks
-    path('accounts', lambda request: redirect('/fr/accounts/', permanent=True)),
-    path('accounts/', lambda request: redirect('/fr/accounts/', permanent=True)),
-    path('cours', lambda request: redirect('/fr/cours/', permanent=True)),
-    path('cours/', lambda request: redirect('/fr/cours/', permanent=True)),
-    path('abonnements', lambda request: redirect('/fr/abonnements/', permanent=True)),
-    path('abonnements/', lambda request: redirect('/fr/abonnements/', permanent=True)),
-    path('quiz', lambda request: redirect('/fr/quiz/', permanent=True)),
-    path('quiz/', lambda request: redirect('/fr/quiz/', permanent=True)),
-    path('chat', lambda request: redirect('/fr/chat/', permanent=True)),
-    path('chat/', lambda request: redirect('/fr/chat/', permanent=True)),
-    path('badges', lambda request: redirect('/fr/badges/', permanent=True)),
-    path('badges/', lambda request: redirect('/fr/badges/', permanent=True)),
-    path('classement', lambda request: redirect('/fr/classement/', permanent=True)),
-    path('classement/', lambda request: redirect('/fr/classement/', permanent=True)),
-    path('notifications', lambda request: redirect('/fr/notifications/', permanent=True)),
-    path('notifications/', lambda request: redirect('/fr/notifications/', permanent=True)),
-    path('progression', lambda request: redirect('/fr/progression/', permanent=True)),
-    path('progression/', lambda request: redirect('/fr/progression/', permanent=True)),
 ]
+
 
 # ============================================
 # STATIC & MEDIA
