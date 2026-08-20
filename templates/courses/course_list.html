@@ -91,16 +91,13 @@
           {% else %}
           <span class="badge badge-success">{% trans "Gratuit" %}</span>
           {% endif %}
-          {% if item.cours.learning_path %}
-          <span class="badge badge-secondary"><i class="fas fa-road"></i> {{ item.cours.learning_path.nom }}</span>
-          {% endif %}
           {% if item.a_acces %}
           <span class="badge badge-success">
             <i class="fas fa-check-circle"></i> {% trans "Accès" %}
           </span>
           {% endif %}
-          {% if not item.cours.inscription_possible %}
-          <span class="badge badge-danger">{% trans "Inscriptions fermées" %}</span>
+          {% if item.cours.learning_path %}
+          <span class="badge badge-secondary"><i class="fas fa-road"></i> {{ item.cours.learning_path.nom }}</span>
           {% endif %}
         </div>
         <h3><a href="{% url 'courses:course_detail' item.cours.pk %}">{{ item.cours.titre }}</a></h3>
