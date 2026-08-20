@@ -8,7 +8,7 @@ from .models import Course, Unite, Module, Lecon, SectionLecon, Category, Niveau
 from .forms import CourseForm
 from enrollments.models import Enrollment
 from quiz.models import TentativeQuiz, Quiz
-from subscriptions.models import SubscriptionAccess
+from subscriptions.models import Subscription, SubscriptionAccess
 from theme_manager.models import Theme
 
 
@@ -34,7 +34,7 @@ def _get_user_access(request, cours):
         est_inscrit = True
         inscription_approuvee = True
     
-    # Verifye abònman aktif (kèlkeswa max_courses)
+    # Verifye abònman aktif
     a_acces_abonnement = SubscriptionAccess.objects.filter(
         subscription__utilisateur=request.user,
         subscription__statut='active',
@@ -80,8 +80,19 @@ def course_list(request):
     niveaux = Niveau.objects.all()
     learning_paths = LearningPath.objects.filter(actif=True)
 
+    # ===== NOUVO: Ajoute aksè_utilisateur pou chak kou =====
+    cours_avec_acces = []
+    for cours_item in cours:
+        a_acces = False
+        if request.user.is_authenticated:
+            a_acces, _, _, _ = _get_user_access(request, cours_item)
+        cours_avec_acces.append({
+            'cours': cours_item,
+            'a_acces': a_acces,
+        })
+
     return render(request, 'courses/course_list.html', {
-        'cours': cours,
+        'cours': cours_avec_acces,
         'categories': categories,
         'niveaux': niveaux,
         'learning_paths': learning_paths,
@@ -99,47 +110,34 @@ def course_list(request):
 def course_detail(request, pk):
     cours = get_object_or_404(Course, pk=pk)
     
-    # ===== Verifye aksè itilizatè a =====
     a_acces, est_inscrit, inscription_approuvee, a_acces_abonnement = _get_user_access(request, cours)
     
     # ===== LOJIK AKSÈ =====
     if cours.est_payant:
-        # Kou peyan
         if not a_acces:
-            # Si itilizatè konekte men pa gen aksè, tcheke si gen abònman san limit
+            # Kou peyan — bezwen enskripsyon oswa abònman
             if request.user.is_authenticated:
-                # Tcheke si gen yon abònman aktif ki pa kreye aksè ankò (max_courses=0)
-                from subscriptions.models import Subscription
+                # Tcheke abònman san limit (max_courses=0)
                 abonnement_san_limit = Subscription.objects.filter(
                     utilisateur=request.user,
                     statut='active',
                     plan__max_courses=0,
                     plan__cours=cours,
                     date_fin__gt=timezone.now()
-                ).exists()
+                ).first()
                 
                 if abonnement_san_limit:
-                    # Kreye aksè otomatikman
-                    subscription = Subscription.objects.filter(
-                        utilisateur=request.user,
-                        statut='active',
-                        plan__max_courses=0,
-                        plan__cours=cours,
-                        date_fin__gt=timezone.now()
-                    ).first()
                     SubscriptionAccess.objects.get_or_create(
-                        subscription=subscription,
+                        subscription=abonnement_san_limit,
                         cours=cours,
-                        defaults={'date_expiration': subscription.date_fin}
+                        defaults={'date_expiration': abonnement_san_limit.date_fin}
                     )
                     messages.success(request, _("Votre abonnement vous donne accès à ce cours !"))
                     return redirect('courses:course_detail', pk=cours.pk)
-            
-            # Pa gen aksè — redireksyone sou paj enroll
-            return redirect('enrollments:enroll_course', cours_pk=cours.pk)
-    else:
-        # Kou gratis — tout moun ka wè kontni a
-        pass
+                else:
+                    return redirect('enrollments:enroll_course', cours_pk=cours.pk)
+            else:
+                return redirect('enrollments:enroll_course', cours_pk=cours.pk)
     
     # ===== VARIABLES POU TEMPLATE =====
     prerequisites = cours.get_prerequisites()
@@ -149,14 +147,12 @@ def course_detail(request, pk):
     quizzes_reussi = []
     
     if request.user.is_authenticated:
-        # Rekipere tantativ quiz yo
         tentatives_quiz = TentativeQuiz.objects.filter(
             utilisateur=request.user,
             quiz__cours=cours
         ).select_related('quiz')
         quizzes_reussi = [t.quiz for t in tentatives_quiz if t.reussi]
         
-        # Verifye pre-requis yo
         if prerequisites:
             prerequis_completed, prerequis_missing = cours.get_prerequisites_completed(request.user)
     
