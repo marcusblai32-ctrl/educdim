@@ -82,7 +82,7 @@
             <!-- ===== ACTIONS ===== -->
             <div class="course-actions">
                 {% if user.is_authenticated %}
-                    {% if inscription_approuvee or est_inscrit %}
+                    {% if inscription_approuvee or a_acces_abonnement %}
                         {% if cours.unites.first %}
                         <a href="{% url 'courses:unit_detail' cours.unites.first.pk %}" class="btn btn-success btn-lg">
                             <i class="fas fa-play"></i> {% trans "Commencer le cours" %}
@@ -93,7 +93,7 @@
                         </button>
                         {% endif %}
                     {% elif prerequis_completed %}
-                    <a href="{% url 'enrollments:enroll' cours.pk %}" class="btn btn-primary btn-lg">
+                    <a href="{% url 'enrollments:enroll_course' cours.pk %}" class="btn btn-primary btn-lg">
                         <i class="fas fa-user-plus"></i> {% trans "S'inscrire" %}
                     </a>
                     {% else %}
@@ -124,7 +124,7 @@
     </div>
 </div>
 
-<!-- ===== QUIZ SECTION ===== -->
+<!-- ===== QUIZ DU COURS ===== -->
 {% if quizzes %}
 <div class="course-detail-container">
     <div class="card">
@@ -173,7 +173,7 @@
 </div>
 {% endif %}
 
-<!-- ===== COURSE CONTENT ===== -->
+<!-- ===== CONTENU DU COURS ===== -->
 <div class="course-detail-container">
     <div class="card">
         <h2 class="section-card-title">
