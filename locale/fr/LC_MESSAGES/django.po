@@ -61,8 +61,5 @@ msgstr "Prix"
 msgid "S'inscrire"
 msgstr "S'inscrire"
 
-msgid "Inscription"
-msgstr "Inscription"
-
 msgid "Confirmation"
 msgstr "Confirmation"
