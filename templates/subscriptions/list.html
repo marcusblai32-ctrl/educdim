@@ -24,7 +24,6 @@
         {% for plan in plans %}
         <div style="background:var(--glass-soft); border-radius:var(--radius); padding:1.5rem; border:1px solid var(--glass-brd-soft); text-align:center; transition:var(--transition); position:relative;">
             
-            <!-- Badge "Gratuit" si plan an gratis -->
             {% if plan.prix == 0 %}
             <span class="badge badge-success" style="position:absolute; top:10px; right:10px; font-size:0.7rem;">
                 {% trans "GRATUIT" %}
@@ -61,12 +60,10 @@
             {% endif %}
             
             {% if plan.prix == 0 %}
-            <!-- Bouton pou plan GRATIS -->
             <a href="{% url 'subscriptions:subscribe' plan.pk %}" class="btn btn-success btn-block" style="width:100%;">
                 <i class="fas fa-gift"></i> {% trans "Activer gratuitement" %}
             </a>
             {% else %}
-            <!-- Bouton pou plan PEYAN -->
             <a href="{% url 'subscriptions:subscribe' plan.pk %}" class="btn btn-primary btn-block" style="width:100%;">
                 <i class="fas fa-crown"></i> {% trans "S'abonner" %}
             </a>
