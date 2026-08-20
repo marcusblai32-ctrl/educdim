@@ -41,13 +41,9 @@ class ContenuInline(admin.TabularInline):
 # ============================================
 @admin.register(LearningPath)
 class LearningPathAdmin(admin.ModelAdmin):
-    list_display = ('nom', 'actif', 'created_at', 'nombre_cours')
+    list_display = ('nom', 'actif', 'created_at')
     search_fields = ('nom', 'description')
     list_filter = ('actif',)
-    
-    def nombre_cours(self, obj):
-        return obj.cours_publies().count()
-    nombre_cours.short_description = "Nb cours"
 
 
 # ============================================
@@ -58,7 +54,6 @@ class CoursePrerequisiteAdmin(admin.ModelAdmin):
     list_display = ('cours', 'prerequis', 'obligatoire')
     search_fields = ('cours__titre', 'prerequis__titre')
     list_filter = ('obligatoire',)
-    autocomplete_fields = ('cours', 'prerequis')
 
 
 # ============================================
@@ -69,15 +64,15 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ('nom', 'actif', 'ordre')
     search_fields = ('nom',)
     list_filter = ('actif',)
-    list_editable = ('ordre',)
 
 
 # ============================================
-# NIVEAU ADMIN
+# NIVEAU ADMIN — KORIJE: Ajoute search_fields
 # ============================================
 @admin.register(Niveau)
 class NiveauAdmin(admin.ModelAdmin):
     list_display = ('nom',)
+    search_fields = ('nom',)  # ← SA A TE MANKE
 
 
 # ============================================
@@ -132,7 +127,6 @@ class UniteAdmin(admin.ModelAdmin):
     list_display = ('titre', 'cours', 'ordre', 'actif')
     list_filter = ('actif',)
     search_fields = ('titre', 'cours__titre')
-    list_editable = ('ordre', 'actif')
     inlines = [ModuleInline]
 
 
@@ -144,7 +138,6 @@ class ModuleAdmin(admin.ModelAdmin):
     list_display = ('titre', 'unite', 'ordre', 'actif')
     list_filter = ('actif',)
     search_fields = ('titre', 'unite__titre')
-    list_editable = ('ordre', 'actif')
     inlines = [LeconInline]
 
 
@@ -156,7 +149,6 @@ class LeconAdmin(admin.ModelAdmin):
     list_display = ('titre', 'module', 'ordre', 'actif')
     list_filter = ('actif',)
     search_fields = ('titre', 'module__titre')
-    list_editable = ('ordre', 'actif')
     inlines = [SectionInline]
 
 
@@ -168,7 +160,6 @@ class SectionLeconAdmin(admin.ModelAdmin):
     list_display = ('titre', 'lecon', 'type_section', 'ordre')
     list_filter = ('type_section',)
     search_fields = ('titre', 'lecon__titre')
-    list_editable = ('ordre',)
     inlines = [ContenuInline]
 
 
@@ -180,7 +171,6 @@ class ContenuAdmin(admin.ModelAdmin):
     list_display = ('titre', 'section', 'type_contenu', 'ordre')
     list_filter = ('type_contenu',)
     search_fields = ('titre', 'section__titre')
-    list_editable = ('ordre',)
     fieldsets = (
         (None, {'fields': ('section', 'type_contenu', 'ordre')}),
         ('Version Française', {
