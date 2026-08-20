@@ -24,8 +24,12 @@
         {% for plan in plans %}
         <div style="background:var(--glass-soft); border-radius:var(--radius); padding:1.5rem; border:1px solid var(--glass-brd-soft); text-align:center; transition:var(--transition);">
             <h3 style="font-size:1.2rem; margin:0 0 0.5rem;">{{ plan.nom }}</h3>
-            <p style="font-size:2rem; font-weight:800; color:var(--primary); margin:0.5rem 0;">
-                {{ plan.prix }} HTG
+            <p style="font-size:2rem; font-weight:800; margin:0.5rem 0;">
+                {% if plan.prix == 0 %}
+                    <span style="color:var(--success);">{% trans "Gratuit" %}</span>
+                {% else %}
+                    <span style="color:var(--primary);">{{ plan.prix }} HTG</span>
+                {% endif %}
             </p>
             <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:0.5rem;">
                 {% trans "Durée" %}: {{ plan.duree_jours }} {% trans "jours" %}
@@ -41,9 +45,16 @@
             {% if plan.description %}
             <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1rem;">{{ plan.description|truncatechars:100 }}</p>
             {% endif %}
+            
+            {% if plan.prix == 0 %}
+            <a href="{% url 'subscriptions:subscribe' plan.pk %}" class="btn btn-success btn-block" style="width:100%;">
+                <i class="fas fa-gift"></i> {% trans "Activer gratuitement" %}
+            </a>
+            {% else %}
             <a href="{% url 'subscriptions:subscribe' plan.pk %}" class="btn btn-primary btn-block" style="width:100%;">
                 <i class="fas fa-crown"></i> {% trans "S'abonner" %}
             </a>
+            {% endif %}
         </div>
         {% empty %}
         <p style="text-align:center; color:var(--text-muted); grid-column:1/-1;">
