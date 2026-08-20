@@ -4,18 +4,39 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
 from django.conf.urls.i18n import i18n_patterns
+from django.shortcuts import redirect
 from courses.views import about_page, contact_page, conditions_page, privacy_page, faq_page
 
 # ============================================
-# URL SANS PREFIX LANG (admin, i18n, sitemap)
+# URL SANS PREFIX LANG (admin, i18n, redireksyon)
 # ============================================
 urlpatterns = [
     path('dp/', admin.site.urls),
     path('i18n/', include('django.conf.urls.i18n')),
+    
+    # ===== REDIREKSYON POU ANSYEN URLs SAN PREFIKS =====
+    path('accounts', lambda request: redirect('/fr/accounts/', permanent=True)),
+    path('accounts/', lambda request: redirect('/fr/accounts/', permanent=True)),
+    path('cours', lambda request: redirect('/fr/cours/', permanent=True)),
+    path('cours/', lambda request: redirect('/fr/cours/', permanent=True)),
+    path('abonnements', lambda request: redirect('/fr/abonnements/', permanent=True)),
+    path('abonnements/', lambda request: redirect('/fr/abonnements/', permanent=True)),
+    path('quiz', lambda request: redirect('/fr/quiz/', permanent=True)),
+    path('quiz/', lambda request: redirect('/fr/quiz/', permanent=True)),
+    path('chat', lambda request: redirect('/fr/chat/', permanent=True)),
+    path('chat/', lambda request: redirect('/fr/chat/', permanent=True)),
+    path('badges', lambda request: redirect('/fr/badges/', permanent=True)),
+    path('badges/', lambda request: redirect('/fr/badges/', permanent=True)),
+    path('classement', lambda request: redirect('/fr/classement/', permanent=True)),
+    path('classement/', lambda request: redirect('/fr/classement/', permanent=True)),
+    path('notifications', lambda request: redirect('/fr/notifications/', permanent=True)),
+    path('notifications/', lambda request: redirect('/fr/notifications/', permanent=True)),
+    path('progression', lambda request: redirect('/fr/progression/', permanent=True)),
+    path('progression/', lambda request: redirect('/fr/progression/', permanent=True)),
 ]
 
 # ============================================
-# URL AVEC PREFIX LANG (fr/, ht/)
+# URL AVEC PREFIX LANG (fr/ ak ht/)
 # ============================================
 urlpatterns += i18n_patterns(
     # Home
@@ -70,13 +91,8 @@ urlpatterns += i18n_patterns(
     path('confidentialite/', privacy_page, name='privacy'),
     path('faq/', faq_page, name='faq'),
 
-    # Sitemap (sans prefix lang)
-    path('sitemap.xml', TemplateView.as_view(
-        template_name='sitemap.xml',
-        content_type='application/xml'
-    ), name='sitemap'),
-
-    prefix_default_language=True,
+    # ===== CHANJMAN: Mete False pou TOU DE lang yo gen prefiks =====
+    prefix_default_language=False,
 )
 
 # ============================================
