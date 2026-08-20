@@ -38,7 +38,7 @@ def subscribe(request, plan_pk):
         messages.info(request, _("Vous avez déjà une demande pour ce plan."))
         return redirect('subscriptions:list')
 
-    # ===== NOUVO: Si plan an GRATIS (prix = 0) =====
+    # ===== Plan GRATIS (prix = 0) — aktive dirèkteman =====
     if plan.prix == 0:
         subscription = Subscription.objects.create(
             utilisateur=request.user,
@@ -66,15 +66,12 @@ def subscribe(request, plan_pk):
                     cours=cours,
                     defaults={'date_expiration': subscription.date_fin}
                 )
-            try:
-                subscription.courses_selectionnes = True
-                subscription.save(update_fields=['courses_selectionnes'])
-            except:
-                pass
+            subscription.courses_selectionnes = True
+            subscription.save(update_fields=['courses_selectionnes'])
             messages.success(request, _("Abonnement gratuit activé ! Tous les cours sont accessibles."))
             return redirect('courses:course_list')
 
-    # ===== Plan peyan — montre fòmilè peman =====
+    # ===== Plan PEYAN — montre fòmilè peman =====
     if request.method == 'POST':
         form = SubscriptionForm(request.POST, request.FILES, user=request.user)
         if form.is_valid():
@@ -105,11 +102,8 @@ def subscribe(request, plan_pk):
                             cours=cours,
                             defaults={'date_expiration': subscription.date_fin}
                         )
-                    try:
-                        subscription.courses_selectionnes = True
-                        subscription.save(update_fields=['courses_selectionnes'])
-                    except:
-                        pass
+                    subscription.courses_selectionnes = True
+                    subscription.save(update_fields=['courses_selectionnes'])
                     messages.success(request, _("Abonnement activé ! Tous les cours sont accessibles."))
                     return redirect('courses:course_list')
             else:
@@ -134,16 +128,16 @@ def my_subscriptions(request):
     for sub in subscriptions:
         if sub.statut == 'active':
             try:
-                if sub.plan.max_courses > 0:
-                    try:
-                        if not sub.courses_selectionnes:
-                            active_sub_needing_selection = sub
-                            break
-                    except AttributeError:
-                        active_sub_needing_selection = sub
-                        break
+                max_courses = sub.plan.max_courses
             except AttributeError:
-                pass
+                max_courses = 0
+            
+            if max_courses > 0:
+                # Konte seleksyon yo — pi fiable pase courses_selectionnes
+                selections_count = sub.course_selections.count()
+                if selections_count < max_courses:
+                    active_sub_needing_selection = sub
+                    break
     
     return render(request, 'subscriptions/my_subscriptions.html', {
         'subscriptions': subscriptions,
@@ -160,12 +154,10 @@ def subscription_detail(request, pk):
     except AttributeError:
         max_courses = 0
     
-    try:
-        deja_selectionnes = sub.courses_selectionnes
-    except AttributeError:
-        deja_selectionnes = False
+    selections_count = sub.course_selections.count()
     
-    if sub.statut == 'active' and max_courses > 0 and not deja_selectionnes:
+    # Si abònman aktif, gen limit, epi poko seleksyone tout kou → redireksyone
+    if sub.statut == 'active' and max_courses > 0 and selections_count < max_courses:
         messages.info(request, _("Veuillez choisir vos cours pour activer votre abonnement."))
         return redirect('subscriptions:select_courses', pk=sub.pk)
     
@@ -197,22 +189,10 @@ def select_courses(request, pk):
         messages.info(request, _("Ce plan donne accès à tous les cours automatiquement."))
         return redirect('subscriptions:my_subscriptions')
 
-    try:
-        deja_selectionnes = subscription.courses_selectionnes
-    except AttributeError:
-        deja_selectionnes = False
-
-    if deja_selectionnes:
-        messages.info(request, _("Vous avez déjà sélectionné vos cours."))
-        return redirect('subscriptions:my_subscriptions')
-
-    try:
-        places_restantes = subscription.get_places_restantes()
-    except:
-        places_restantes = max_courses
-
+    places_restantes = subscription.get_places_restantes()
+    
     if places_restantes is not None and places_restantes <= 0:
-        messages.warning(request, _("Vous avez atteint la limite de cours pour ce plan."))
+        messages.info(request, _("Vous avez déjà sélectionné tous vos cours."))
         return redirect('subscriptions:my_subscriptions')
 
     if request.method == 'POST':
@@ -220,7 +200,7 @@ def select_courses(request, pk):
         if form.is_valid():
             selected_courses = form.cleaned_data['courses']
 
-            if places_restantes is not None and selected_courses.count() > places_restantes:
+            if selected_courses.count() > places_restantes:
                 messages.error(request, _("Vous ne pouvez sélectionner que {} cours maximum.").format(places_restantes))
             else:
                 try:
@@ -236,22 +216,20 @@ def select_courses(request, pk):
                                 defaults={'date_expiration': subscription.date_fin}
                             )
 
-                        try:
-                            places_restantes_apres = subscription.get_places_restantes()
-                        except:
-                            places_restantes_apres = 0
+                        places_restantes_apres = subscription.get_places_restantes()
 
-                        if places_restantes_apres is not None and places_restantes_apres == 0:
-                            try:
-                                subscription.courses_selectionnes = True
-                                subscription.save(update_fields=['courses_selectionnes'])
-                            except:
-                                pass
+                        if places_restantes_apres == 0:
+                            subscription.courses_selectionnes = True
+                            subscription.save(update_fields=['courses_selectionnes'])
                             messages.success(request, _("Félicitations ! Tous vos cours ont été activés."))
                             return redirect('subscriptions:my_subscriptions')
                         else:
-                            remaining = places_restantes_apres if places_restantes_apres is not None else 0
-                            messages.success(request, _("{} cours sélectionnés. Il vous reste {} place(s).").format(selected_courses.count(), remaining))
+                            messages.success(
+                                request,
+                                _("{} cours sélectionnés. Il vous reste {} place(s).").format(
+                                    selected_courses.count(), places_restantes_apres
+                                )
+                            )
                             return redirect('subscriptions:select_courses', pk=subscription.pk)
 
                 except Exception as e:
@@ -264,7 +242,7 @@ def select_courses(request, pk):
         'subscription': subscription,
         'places_restantes': places_restantes,
         'max_courses': max_courses,
-        'deja_selectionnes': subscription.get_courses_deja_selectionnes() if hasattr(subscription, 'get_courses_deja_selectionnes') else [],
+        'deja_selectionnes': subscription.get_courses_deja_selectionnes(),
     })
 
 
@@ -304,11 +282,8 @@ def admin_verify_subscription(request, pk):
             cours=cours,
             defaults={'date_expiration': subscription.date_fin}
         )
-    try:
-        subscription.courses_selectionnes = True
-        subscription.save(update_fields=['courses_selectionnes'])
-    except:
-        pass
+    subscription.courses_selectionnes = True
+    subscription.save(update_fields=['courses_selectionnes'])
 
     messages.success(request, _("Abonnement activé et accès créés."))
     return redirect('subscriptions:admin_pending')
