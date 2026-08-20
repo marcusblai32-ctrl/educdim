@@ -5,7 +5,7 @@ echo "=== Installation ==="
 pip install -r requirements.txt
 
 echo "=== Compile messages (tradiksyon) ==="
-python manage.py compilemessages --noinput
+python manage.py compilemessages
 
 echo "=== Collect static ==="
 python manage.py collectstatic --noinput
