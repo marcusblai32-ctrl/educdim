@@ -40,7 +40,7 @@ urlpatterns += i18n_patterns(
     path('confidentialite/', privacy_page, name='privacy'),
     path('faq/', faq_page, name='faq'),
 
-    # ===== CHANJMAN: TRUE olye FALSE =====
+    # ===== CHANJMAN: TRUE (pa gen prefiks pou lang default) =====
     prefix_default_language=True,
 )
 
