@@ -43,12 +43,10 @@
                 {% endif %}
             </div>
             <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
-                {% if sub.statut == 'active' and sub.plan.max_courses > 0 %}
-                    {% if sub.course_selections.count < sub.plan.max_courses %}
-                    <a href="{% url 'subscriptions:select_courses' sub.pk %}" class="btn btn-primary btn-sm">
-                        <i class="fas fa-book-open"></i> {% trans "Choisir mes cours" %}
-                    </a>
-                    {% endif %}
+                {% if sub.statut == 'active' and sub.plan.max_courses > 0 and sub.course_selections.count < sub.plan.max_courses %}
+                <a href="{% url 'subscriptions:select_courses' sub.pk %}" class="btn btn-primary btn-sm">
+                    <i class="fas fa-book-open"></i> {% trans "Choisir mes cours" %}
+                </a>
                 {% endif %}
                 <a href="{% url 'subscriptions:detail' sub.pk %}" class="btn btn-secondary btn-sm">
                     <i class="fas fa-eye"></i> {% trans "Détails" %}
