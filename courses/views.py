@@ -34,7 +34,7 @@ def _get_user_access(request, cours):
         est_inscrit = True
         inscription_approuvee = True
     
-    # Verifye abònman aktif
+    # Verifye abònman aktif (kèlkeswa max_courses)
     a_acces_abonnement = SubscriptionAccess.objects.filter(
         subscription__utilisateur=request.user,
         subscription__statut='active',
@@ -94,21 +94,52 @@ def course_list(request):
 
 
 # ============================================
-# COURSE DETAIL — AK LOJIK AKSÈ
+# COURSE DETAIL — AK LOJIK AKSÈ KONPLÈ
 # ============================================
 def course_detail(request, pk):
     cours = get_object_or_404(Course, pk=pk)
     
-    # Verifye aksè itilizatè a
+    # ===== Verifye aksè itilizatè a =====
     a_acces, est_inscrit, inscription_approuvee, a_acces_abonnement = _get_user_access(request, cours)
     
     # ===== LOJIK AKSÈ =====
     if cours.est_payant:
-        # Kou peyan — bezwen enskripsyon oswa abònman aktif
+        # Kou peyan
         if not a_acces:
-            # Redireksyone sou paj enroll
+            # Si itilizatè konekte men pa gen aksè, tcheke si gen abònman san limit
+            if request.user.is_authenticated:
+                # Tcheke si gen yon abònman aktif ki pa kreye aksè ankò (max_courses=0)
+                from subscriptions.models import Subscription
+                abonnement_san_limit = Subscription.objects.filter(
+                    utilisateur=request.user,
+                    statut='active',
+                    plan__max_courses=0,
+                    plan__cours=cours,
+                    date_fin__gt=timezone.now()
+                ).exists()
+                
+                if abonnement_san_limit:
+                    # Kreye aksè otomatikman
+                    subscription = Subscription.objects.filter(
+                        utilisateur=request.user,
+                        statut='active',
+                        plan__max_courses=0,
+                        plan__cours=cours,
+                        date_fin__gt=timezone.now()
+                    ).first()
+                    SubscriptionAccess.objects.get_or_create(
+                        subscription=subscription,
+                        cours=cours,
+                        defaults={'date_expiration': subscription.date_fin}
+                    )
+                    messages.success(request, _("Votre abonnement vous donne accès à ce cours !"))
+                    return redirect('courses:course_detail', pk=cours.pk)
+            
+            # Pa gen aksè — redireksyone sou paj enroll
             return redirect('enrollments:enroll_course', cours_pk=cours.pk)
-    # Kou gratis — tout moun ka wè kontni a
+    else:
+        # Kou gratis — tout moun ka wè kontni a
+        pass
     
     # ===== VARIABLES POU TEMPLATE =====
     prerequisites = cours.get_prerequisites()
@@ -231,7 +262,6 @@ def toggle_inscription(request, pk):
 # ============================================
 def unit_detail(request, pk):
     unite = get_object_or_404(Unite, pk=pk)
-    
     cours = unite.cours
     a_acces, _, _, _ = _get_user_access(request, cours)
     if cours.est_payant and not a_acces:
@@ -246,7 +276,6 @@ def unit_detail(request, pk):
 # ============================================
 def module_detail(request, pk):
     module = get_object_or_404(Module, pk=pk)
-    
     cours = module.unite.cours
     a_acces, _, _, _ = _get_user_access(request, cours)
     if cours.est_payant and not a_acces:
