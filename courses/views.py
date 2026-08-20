@@ -34,7 +34,7 @@ def _get_user_access(request, cours):
         est_inscrit = True
         inscription_approuvee = True
     
-    # Verifye abònman aktif
+    # Verifye abònman aktif atravè SubscriptionAccess
     a_acces_abonnement = SubscriptionAccess.objects.filter(
         subscription__utilisateur=request.user,
         subscription__statut='active',
@@ -80,7 +80,7 @@ def course_list(request):
     niveaux = Niveau.objects.all()
     learning_paths = LearningPath.objects.filter(actif=True)
 
-    # ===== NOUVO: Ajoute aksè_utilisateur pou chak kou =====
+    # Ajoute aksè pou chak kou
     cours_avec_acces = []
     for cours_item in cours:
         a_acces = False
@@ -105,19 +105,19 @@ def course_list(request):
 
 
 # ============================================
-# COURSE DETAIL — AK LOJIK AKSÈ KONPLÈ
+# COURSE DETAIL — AK TOUT TCHEK YO
 # ============================================
 def course_detail(request, pk):
     cours = get_object_or_404(Course, pk=pk)
     
     a_acces, est_inscrit, inscription_approuvee, a_acces_abonnement = _get_user_access(request, cours)
     
-    # ===== LOJIK AKSÈ =====
+    # ===== LOJIK AKSÈ KONPLÈ =====
     if cours.est_payant:
         if not a_acces:
-            # Kou peyan — bezwen enskripsyon oswa abònman
+            # Kou peyan — itilizatè pa gen aksè
             if request.user.is_authenticated:
-                # Tcheke abònman san limit (max_courses=0)
+                # TCHEK 1: Abònman san limit (max_courses=0)
                 abonnement_san_limit = Subscription.objects.filter(
                     utilisateur=request.user,
                     statut='active',
@@ -134,9 +134,22 @@ def course_detail(request, pk):
                     )
                     messages.success(request, _("Votre abonnement vous donne accès à ce cours !"))
                     return redirect('courses:course_detail', pk=cours.pk)
+                
+                # TCHEK 2: Abònman ak limit ki gen kou sa a deja seleksyone
+                a_acces_abonnement = SubscriptionAccess.objects.filter(
+                    subscription__utilisateur=request.user,
+                    subscription__statut='active',
+                    cours=cours,
+                    date_expiration__gt=timezone.now()
+                ).exists()
+                
+                if a_acces_abonnement:
+                    pass  # Aksè ok, kontinye
                 else:
+                    # Pa gen aksè — redireksyone sou enroll
                     return redirect('enrollments:enroll_course', cours_pk=cours.pk)
             else:
+                # Pa konekte — redireksyone sou enroll
                 return redirect('enrollments:enroll_course', cours_pk=cours.pk)
     
     # ===== VARIABLES POU TEMPLATE =====
