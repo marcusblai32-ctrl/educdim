@@ -12,6 +12,9 @@ from subscriptions.models import SubscriptionAccess
 from theme_manager.models import Theme
 
 
+# ============================================
+# COURSE LIST
+# ============================================
 def course_list(request):
     cours = Course.objects.filter(publie=True)
     search_query = request.GET.get('search', '')
@@ -53,6 +56,9 @@ def course_list(request):
     })
 
 
+# ============================================
+# COURSE DETAIL — AK LOJIK AKSÈ
+# ============================================
 def course_detail(request, pk):
     cours = get_object_or_404(Course, pk=pk)
     est_inscrit = False
@@ -65,14 +71,17 @@ def course_detail(request, pk):
     prerequisites = cours.get_prerequisites()
 
     if request.user.is_authenticated:
-        # Vérifier si l'utilisateur a une inscription active
-        enrollment = Enrollment.objects.filter(utilisateur=request.user, cours=cours).first()
+        # Verifye si itilizatè a gen yon enskripsyon aktif
+        enrollment = Enrollment.objects.filter(
+            utilisateur=request.user, 
+            cours=cours, 
+            statut='active'
+        ).first()
         if enrollment:
             est_inscrit = True
-            if enrollment.statut == 'active':
-                inscription_approuvee = True
+            inscription_approuvee = True
 
-        # Vérifier si abonnement actif donne accès
+        # Verifye si abònman aktif bay aksè
         a_acces_abonnement = SubscriptionAccess.objects.filter(
             subscription__utilisateur=request.user,
             subscription__statut='active',
@@ -83,30 +92,36 @@ def course_detail(request, pk):
         if a_acces_abonnement:
             inscription_approuvee = True
 
-        # Récupérer les tentatives de quiz
+        # Rekipere tantativ quiz yo
         tentatives_quiz = TentativeQuiz.objects.filter(
             utilisateur=request.user,
             quiz__cours=cours
         ).select_related('quiz')
         quizzes_reussi = [t.quiz for t in tentatives_quiz if t.reussi]
 
-        # Vérifier les prérequis
+        # Verifye pre-requis yo
         if prerequisites:
             prerequis_completed, prerequis_missing = cours.get_prerequisites_completed(request.user)
     else:
         prerequis_completed = True
         prerequis_missing = []
 
-    # ===== BLOKÈ: SI ITILIZATÈ PA INSCRIT OU PA APROUVE =====
-    if request.user.is_authenticated and not inscription_approuvee:
-        # Si konekte men pa gen aksè → montre paj enfòmasyon
-        return render(request, 'courses/course_access_denied.html', {
-            'cours': cours,
-            'est_inscrit': est_inscrit,
-            'inscription_approuvee': inscription_approuvee,
-            'a_acces_abonnement': a_acces_abonnement,
-            'message': _("Vous n'avez pas encore accès à ce cours. Veuillez vous inscrire ou attendre la validation de votre paiement.")
-        })
+    # ===== NOUVO LOGIK: Ki moun ki ka wè kontni a? =====
+    if cours.est_payant:
+        # Kou peyan — bezwen enskripsyon oswa abònman
+        if request.user.is_authenticated:
+            if inscription_approuvee or a_acces_abonnement:
+                # Aksè ok — kontinye
+                pass
+            else:
+                # Pa gen aksè — redireksyone sou paj enroll
+                return redirect('enrollments:enroll', pk=cours.pk)
+        else:
+            # Pa konekte — redireksyone sou paj enroll
+            return redirect('enrollments:enroll', pk=cours.pk)
+    else:
+        # Kou gratis — tout moun ka wè kontni a
+        pass
 
     # ===== SI AKSE OK → montre kontni kou a =====
     unites = cours.unites.filter(actif=True)
@@ -142,6 +157,9 @@ def course_detail(request, pk):
     })
 
 
+# ============================================
+# COURSE CREATE
+# ============================================
 @login_required
 @user_passes_test(lambda u: u.is_staff)
 def course_create(request):
@@ -158,6 +176,9 @@ def course_create(request):
     return render(request, 'courses/course_form.html', {'form': form})
 
 
+# ============================================
+# COURSE UPDATE
+# ============================================
 @login_required
 @user_passes_test(lambda u: u.is_staff)
 def course_update(request, pk):
@@ -173,6 +194,9 @@ def course_update(request, pk):
     return render(request, 'courses/course_form.html', {'form': form})
 
 
+# ============================================
+# COURSE DELETE
+# ============================================
 @login_required
 @user_passes_test(lambda u: u.is_staff)
 def course_delete(request, pk):
@@ -184,6 +208,9 @@ def course_delete(request, pk):
     return render(request, 'courses/course_confirm_delete.html', {'course': course})
 
 
+# ============================================
+# TOGGLE INSCRIPTION
+# ============================================
 @login_required
 @user_passes_test(lambda u: u.is_staff)
 def toggle_inscription(request, pk):
@@ -195,29 +222,52 @@ def toggle_inscription(request, pk):
     return redirect('courses:course_detail', pk=pk)
 
 
+# ============================================
+# UNIT DETAIL
+# ============================================
 def unit_detail(request, pk):
     unite = get_object_or_404(Unite, pk=pk)
     modules = unite.modules.filter(actif=True)
     return render(request, 'courses/unit_detail.html', {'unite': unite, 'modules': modules})
 
 
+# ============================================
+# MODULE DETAIL
+# ============================================
 def module_detail(request, pk):
     module = get_object_or_404(Module, pk=pk)
     lecons = module.lecons.filter(actif=True)
     return render(request, 'courses/module_detail.html', {'module': module, 'lecons': lecons})
 
 
+# ============================================
+# LESSON DETAIL
+# ============================================
 def lesson_detail(request, pk):
     lecon = get_object_or_404(Lecon, pk=pk)
     sections = lecon.sections.all()
 
-    # Vérifier si l'utilisateur a accès au cours parent
+    # Verifye si itilizatè a gen aksè ak kou paran an
     if request.user.is_authenticated:
         cours = lecon.module.unite.cours
-        enrollment = Enrollment.objects.filter(utilisateur=request.user, cours=cours, statut='active').first()
-        if not enrollment:
-            messages.warning(request, "Vous devez être inscrit et avoir accès à ce cours pour voir cette leçon.")
-            return redirect('courses:course_detail', pk=cours.pk)
+        enrollment = Enrollment.objects.filter(
+            utilisateur=request.user, 
+            cours=cours, 
+            statut='active'
+        ).first()
+        
+        # Verifye aksè abònman tou
+        a_acces_abonnement = SubscriptionAccess.objects.filter(
+            subscription__utilisateur=request.user,
+            subscription__statut='active',
+            cours=cours,
+            date_expiration__gt=timezone.now()
+        ).exists()
+        
+        # Si kou peyan epi pa gen aksè, redireksyone
+        if cours.est_payant and not enrollment and not a_acces_abonnement:
+            messages.warning(request, "Vous devez être inscrit ou avoir un abonnement actif pour voir cette leçon.")
+            return redirect('enrollments:enroll', pk=cours.pk)
 
     if request.user.is_authenticated and lecon.quiz:
         quiz_termine = TentativeQuiz.objects.filter(
@@ -235,12 +285,18 @@ def lesson_detail(request, pk):
     })
 
 
+# ============================================
+# SECTION DETAIL
+# ============================================
 def section_detail(request, pk):
     section = get_object_or_404(SectionLecon, pk=pk)
     contenus = section.contenus.all()
     return render(request, 'courses/section_detail.html', {'section': section, 'contenus': contenus})
 
 
+# ============================================
+# PAGES STATIQUES
+# ============================================
 def about_page(request):
     theme = Theme.objects.filter(actif=True).first()
     return render(request, 'pages/about.html', {'theme': theme})
