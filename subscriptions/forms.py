@@ -1,36 +1,69 @@
 from django import forms
-from .models import Subscription
+from django.utils.translation import gettext as _
+from .models import Subscription, SubscriptionCourseSelection
+
 
 class SubscriptionForm(forms.ModelForm):
+    """Fòmilè pou kreye yon abònman (DEJA EGZISTE - PA TOUCHE)."""
+    
     class Meta:
         model = Subscription
         fields = ['methode_paiement', 'nom_compte', 'telephone', 'id_transaction', 'photo_paiement']
         widgets = {
-            'nom_compte': forms.TextInput(attrs={'placeholder': 'Ex: Jean Dupont'}),
-            'telephone': forms.TextInput(attrs={'placeholder': '509XXXXXXXX'}),
-            'id_transaction': forms.TextInput(attrs={'placeholder': 'ID de la transaction'}),
-            'photo_paiement': forms.FileInput(attrs={'accept': 'image/*'}),
+            'methode_paiement': forms.Select(attrs={'class': 'form-control'}),
+            'nom_compte': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nom du compte'}),
+            'telephone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Numéro de téléphone'}),
+            'id_transaction': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'ID de transaction'}),
+            'photo_paiement': forms.FileInput(attrs={'class': 'form-control'}),
         }
-        labels = {
-            'methode_paiement': 'Méthode de paiement',
-            'nom_compte': 'Nom sur le compte',
-            'telephone': 'Numéro de téléphone',
-            'id_transaction': 'ID de transaction',
-            'photo_paiement': 'Photo du paiement',
-        }
-
+    
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        methode = cleaned_data.get('methode_paiement')
+        
+        if methode == 'moncash':
+            if not cleaned_data.get('id_transaction'):
+                self.add_error('id_transaction', _("L'ID de transaction est requis pour MonCash."))
+            if not cleaned_data.get('telephone'):
+                self.add_error('telephone', _("Le numéro de téléphone est requis pour MonCash."))
+        elif methode == 'natcash':
+            if not cleaned_data.get('photo_paiement'):
+                self.add_error('photo_paiement', _("La photo de paiement est requise pour NatCash."))
+        
+        return cleaned_data
 
-        if self.user and self.user.is_staff:
-            self.fields['methode_paiement'].choices = [
-                ('moncash', 'MonCash'),
-                ('natcash', 'NatCash'),
-                ('manual', 'Attribution manuelle (admin)'),
-            ]
-        else:
-            self.fields['methode_paiement'].choices = [
-                ('moncash', 'MonCash'),
-                ('natcash', 'NatCash'),
-            ]
+
+class CourseSelectionForm(forms.Form):
+    """NOUVO FÒMILÈ: Pou chwazi kou yo."""
+    
+    courses = forms.ModelMultipleChoiceField(
+        queryset=None,
+        widget=forms.CheckboxSelectMultiple,
+        required=True,
+        label="Choisissez vos cours"
+    )
+    
+    def __init__(self, *args, **kwargs):
+        subscription = kwargs.pop('subscription', None)
+        super().__init__(*args, **kwargs)
+        
+        if subscription:
+            # Filtrer kou ki disponib yo
+            self.fields['courses'].queryset = subscription.get_courses_disponibles()
+            
+            # Ajoute max limit kòm atribi pou JavaScript
+            if subscription.plan.max_courses > 0:
+                self.fields['courses'].widget.attrs.update({
+                    'data-max-courses': subscription.plan.max_courses,
+                    'data-subscription-id': subscription.pk,
+                })
+    
+    def clean_courses(self):
+        courses = self.cleaned_data.get('courses')
+        if courses and courses.count() == 0:
+            raise forms.ValidationError(_("Veuillez sélectionner au moins un cours."))
+        return courses
