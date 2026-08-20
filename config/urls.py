@@ -17,7 +17,7 @@ admin.site.index_title = "Bienvenue dans l'administration EducDim"
 
 
 # ============================================
-# URL SANS PRÉFIXE DE LANGUE (admin, i18n)
+# URL SANS PRÉFIXE DE LANGUE
 # ============================================
 urlpatterns = [
     path('dp/', admin.site.urls),
@@ -87,13 +87,26 @@ urlpatterns += i18n_patterns(
 
 
 # ============================================
-# REDIRECTIONS — APRÈ i18n_patterns (SANSE)
+# REDIRECTIONS — Mete APRÈ i18n_patterns
+# Sa ap sèlman mache si URL la pa deja matche
 # ============================================
 urlpatterns += [
     # Redireksyone rasin sou /fr/
     path('', lambda request: redirect('/fr/', permanent=False)),
+    
+    # Redireksyone ansyen URLs san prefiks
+    path('accounts/', lambda request: redirect('/fr/accounts/', permanent=True)),
+    path('cours/', lambda request: redirect('/fr/cours/', permanent=True)),
+    path('abonnements/', lambda request: redirect('/fr/abonnements/', permanent=True)),
+    path('quiz/', lambda request: redirect('/fr/quiz/', permanent=True)),
+    path('chat/', lambda request: redirect('/fr/chat/', permanent=True)),
+    path('badges/', lambda request: redirect('/fr/badges/', permanent=True)),
+    path('classement/', lambda request: redirect('/fr/classement/', permanent=True)),
+    path('notifications/', lambda request: redirect('/fr/notifications/', permanent=True)),
+    path('progression/', lambda request: redirect('/fr/progression/', permanent=True)),
+    path('presence/', lambda request: redirect('/fr/presence/', permanent=True)),
+    path('inscriptions/', lambda request: redirect('/fr/inscriptions/', permanent=True)),
 ]
-
 
 # ============================================
 # STATIC & MEDIA
