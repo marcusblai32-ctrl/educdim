@@ -1,59 +1,77 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}{% trans "Détail abonnement" %} - {{ theme.site_name }}{% endblock %}
+{% block title %}{{ subscription.plan.nom }} - {% trans "Détail" %}{% endblock %}
 
 {% block content %}
-<div class="card">
-    <h1 style="color:var(--text);"><i class="fas fa-crown" style="color:var(--primary);"></i> {{ subscription.plan.nom }}</h1>
+<div class="card" style="max-width:800px; margin:0 auto;">
+    <h1 style="text-align:center; margin-bottom:1rem;">
+        <i class="fas fa-crown" style="color:var(--primary);"></i> {{ subscription.plan.nom }}
+    </h1>
 
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:2rem;">
-        <div>
-            <h3 style="color:var(--text);"><i class="fas fa-info-circle" style="color:var(--primary);"></i> {% trans "Informations" %}</h3>
-            <p style="color:var(--text);"><strong>{% trans "Statut" %} :</strong>
-                <span class="badge
-          {% if subscription.statut == 'active' %}badge-success
-          {% elif subscription.statut == 'pending' %}badge-warning
-          {% elif subscription.statut == 'expired' %}badge-danger
-          {% else %}badge-secondary{% endif %}"
-                      style="background:{% if subscription.statut == 'active' %}var(--success){% elif subscription.statut == 'pending' %}var(--warning){% elif subscription.statut == 'expired' %}var(--danger){% else %}var(--secondary){% endif %}; color:var(--white);">
-          {{ subscription.get_statut_display }}
-        </span>
-            </p>
-            <p style="color:var(--text);"><strong>{% trans "Date de demande" %} :</strong> {{ subscription.date_demande|date:"d/m/Y H:i" }}</p>
-            {% if subscription.date_debut %}
-            <p style="color:var(--text);"><strong>{% trans "Date de début" %} :</strong> {{ subscription.date_debut|date:"d/m/Y" }}</p>
-            {% endif %}
-            {% if subscription.date_fin %}
-            <p style="color:var(--text);"><strong>{% trans "Date de fin" %} :</strong> {{ subscription.date_fin|date:"d/m/Y" }}</p>
-            <p style="color:var(--text);"><strong>{% trans "Jours restants" %} :</strong> {{ subscription.jours_restants }}</p>
-            {% endif %}
-            {% if subscription.note_admin %}
-            <p style="color:var(--text);"><strong>{% trans "Note admin" %} :</strong> {{ subscription.note_admin }}</p>
-            {% endif %}
-        </div>
-        <div>
-            <h3 style="color:var(--text);"><i class="fas fa-book" style="color:var(--primary);"></i> {% trans "Cours inclus" %}</h3>
-            <ul style="color:var(--text-muted); padding-left:1.5rem;">
-                {% for access in accesses %}
-                <li><a href="{% url 'courses:course_detail' access.cours.pk %}" style="color:var(--primary);">{{ access.cours.titre }}</a></li>
-                {% empty %}
-                <li style="color:var(--text-muted);">{% trans "Aucun cours" %}</li>
-                {% endfor %}
-            </ul>
-
-            {% if subscription.statut == 'active' %}
-            <a href="{% url 'courses:course_list' %}" class="btn btn-primary btn-block" style="background:var(--primary); color:var(--white); margin-top:1rem;">
-                <i class="fas fa-play"></i> {% trans "Commencer l'apprentissage" %}
-            </a>
-            {% endif %}
-        </div>
-    </div>
-
-    <div style="margin-top:2rem; padding-top:1.5rem; border-top:1px solid var(--border);">
-        <a href="{% url 'subscriptions:my_subscriptions' %}" class="btn btn-secondary" style="background:var(--secondary); color:var(--white);">
-            <i class="fas fa-arrow-left"></i> {% trans "Retour" %}
+    {% if doit_choisir %}
+    <div class="alert alert-warning" style="background:rgba(245,158,11,0.1); color:var(--warning-dark); padding:1rem; border-radius:var(--radius); border-left:4px solid var(--warning); margin-bottom:1.5rem; text-align:center;">
+        <i class="fas fa-exclamation-triangle"></i>
+        <strong>{% trans "Action requise" %} :</strong>
+        {% trans "Vous devez choisir vos cours pour accéder au contenu." %}
+        <a href="{% url 'subscriptions:select_courses' subscription.pk %}" class="btn btn-primary btn-sm" style="margin-left:0.5rem;">
+            <i class="fas fa-book-open"></i> {% trans "Choisir mes cours" %}
         </a>
     </div>
+    {% endif %}
+
+    <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:0.5rem; margin-bottom:1.5rem;">
+        <span class="badge badge-success">{{ subscription.get_statut_display }}</span>
+        {% if subscription.date_debut %}
+        <span style="color:var(--text-muted);">
+            <i class="fas fa-calendar"></i> {% trans "Début" %}: {{ subscription.date_debut|date:"d/m/Y" }}
+        </span>
+        {% endif %}
+        {% if subscription.date_fin %}
+        <span style="color:var(--text-muted);">
+            <i class="fas fa-calendar-alt"></i> {% trans "Fin" %}: {{ subscription.date_fin|date:"d/m/Y" }}
+        </span>
+        {% endif %}
+    </div>
+
+    <h2 style="font-size:1.3rem; margin-bottom:1rem;">
+        <i class="fas fa-book" style="color:var(--primary);"></i> {% trans "Cours sélectionnés" %}
+    </h2>
+
+    {% if selections %}
+    <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:1rem; margin-bottom:2rem;">
+        {% for selection in selections %}
+        <div style="padding:0.8rem 1rem; background:var(--glass-soft); border-radius:var(--radius-sm); border:1px solid var(--glass-brd-soft); display:flex; justify-content:space-between; align-items:center;">
+            <strong>{{ selection.course.titre }}</strong>
+            <a href="{% url 'courses:course_detail' selection.course.pk %}" class="btn btn-sm btn-primary">
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p style="color:var(--text-muted); margin-bottom:2rem;">{% trans "Aucun cours sélectionné." %}</p>
+    {% endif %}
+
+    <h2 style="font-size:1.3rem; margin-bottom:1rem;">
+        <i class="fas fa-unlock" style="color:var(--success);"></i> {% trans "Accès actifs" %}
+    </h2>
+
+    {% if accesses %}
+    <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:1rem;">
+        {% for access in accesses %}
+        <div style="padding:0.8rem 1rem; background:var(--glass-soft); border-radius:var(--radius-sm); border:1px solid var(--glass-brd-soft);">
+            <strong>{{ access.cours.titre }}</strong>
+            {% if access.date_expiration %}
+            <p style="margin:0.3rem 0 0; font-size:0.8rem; color:var(--text-muted);">
+                {% trans "Expire" %}: {{ access.date_expiration|date:"d/m/Y" }}
+            </p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p style="color:var(--text-muted);">{% trans "Aucun accès actif." %}</p>
+    {% endif %}
 </div>
 {% endblock %}
