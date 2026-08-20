@@ -8,60 +8,72 @@ from .models import (
 class UniteInline(admin.TabularInline):
     model = Unite
     extra = 0
+    show_change_link = True
 
 
 class ModuleInline(admin.TabularInline):
     model = Module
     extra = 0
+    show_change_link = True
 
 
 class LeconInline(admin.TabularInline):
     model = Lecon
     extra = 0
+    show_change_link = True
 
 
 class SectionInline(admin.TabularInline):
     model = SectionLecon
     extra = 0
+    show_change_link = True
 
 
 class ContenuInline(admin.TabularInline):
     model = Contenu
     extra = 0
     fields = ('type_contenu', 'titre', 'titre_ht', 'ordre')
+    show_change_link = True
 
 
 # ============================================
-# LEARNING PATH ADMIN (NOUVEAU)
+# LEARNING PATH ADMIN
 # ============================================
 @admin.register(LearningPath)
 class LearningPathAdmin(admin.ModelAdmin):
     list_display = ('nom', 'actif', 'created_at', 'nombre_cours')
     search_fields = ('nom', 'description')
     list_filter = ('actif',)
+    
+    def nombre_cours(self, obj):
+        return obj.cours_publies().count()
+    nombre_cours.short_description = "Nb cours"
 
 
 # ============================================
-# COURSE PREREQUISITE ADMIN (NOUVEAU)
+# COURSE PREREQUISITE ADMIN
 # ============================================
 @admin.register(CoursePrerequisite)
 class CoursePrerequisiteAdmin(admin.ModelAdmin):
     list_display = ('cours', 'prerequis', 'obligatoire')
     search_fields = ('cours__titre', 'prerequis__titre')
     list_filter = ('obligatoire',)
+    autocomplete_fields = ('cours', 'prerequis')
 
 
 # ============================================
-# CATEGORY ADMIN (EXISTANT)
+# CATEGORY ADMIN
 # ============================================
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('nom', 'actif', 'ordre')
     search_fields = ('nom',)
+    list_filter = ('actif',)
+    list_editable = ('ordre',)
 
 
 # ============================================
-# NIVEAU ADMIN (EXISTANT)
+# NIVEAU ADMIN
 # ============================================
 @admin.register(Niveau)
 class NiveauAdmin(admin.ModelAdmin):
@@ -69,17 +81,18 @@ class NiveauAdmin(admin.ModelAdmin):
 
 
 # ============================================
-# PROMOTIONS ADMIN (EXISTANT)
+# PROMOTIONS ADMIN
 # ============================================
 @admin.register(Promotions)
 class PromotionsAdmin(admin.ModelAdmin):
     list_display = ('nom', 'nivo', 'date_debut', 'date_fin', 'actif')
     filter_horizontal = ('etudiants',)
     search_fields = ('nom',)
+    list_filter = ('actif', 'nivo')
 
 
 # ============================================
-# COURSE ADMIN (MODIFIÉ)
+# COURSE ADMIN
 # ============================================
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
@@ -87,6 +100,7 @@ class CourseAdmin(admin.ModelAdmin):
     list_filter = ('publie', 'categorie', 'nivo', 'inscription_ouverte', 'learning_path')
     search_fields = ('titre', 'description')
     inlines = [UniteInline]
+    autocomplete_fields = ('categorie', 'nivo', 'learning_path')
     fieldsets = (
         ('Informations générales', {
             'fields': ('titre', 'description', 'image_url', 'image', 'prix', 'publie', 'created_by')
@@ -102,50 +116,71 @@ class CourseAdmin(admin.ModelAdmin):
             'fields': ('inscription_ouverte', 'date_debut_inscription', 'date_fin_inscription', 'promotion')
         }),
     )
+    readonly_fields = ('created_by',)
+    
+    def save_model(self, request, obj, form, change):
+        if not obj.created_by:
+            obj.created_by = request.user
+        super().save_model(request, obj, form, change)
 
 
 # ============================================
-# UNITE ADMIN (EXISTANT)
+# UNITE ADMIN
 # ============================================
 @admin.register(Unite)
 class UniteAdmin(admin.ModelAdmin):
     list_display = ('titre', 'cours', 'ordre', 'actif')
+    list_filter = ('actif',)
+    search_fields = ('titre', 'cours__titre')
+    list_editable = ('ordre', 'actif')
     inlines = [ModuleInline]
 
 
 # ============================================
-# MODULE ADMIN (EXISTANT)
+# MODULE ADMIN
 # ============================================
 @admin.register(Module)
 class ModuleAdmin(admin.ModelAdmin):
     list_display = ('titre', 'unite', 'ordre', 'actif')
+    list_filter = ('actif',)
+    search_fields = ('titre', 'unite__titre')
+    list_editable = ('ordre', 'actif')
     inlines = [LeconInline]
 
 
 # ============================================
-# LECON ADMIN (KORIJE - SANS QUIZ)
+# LECON ADMIN
 # ============================================
 @admin.register(Lecon)
 class LeconAdmin(admin.ModelAdmin):
     list_display = ('titre', 'module', 'ordre', 'actif')
+    list_filter = ('actif',)
+    search_fields = ('titre', 'module__titre')
+    list_editable = ('ordre', 'actif')
     inlines = [SectionInline]
 
 
 # ============================================
-# SECTION LECON ADMIN (EXISTANT)
+# SECTION LECON ADMIN
 # ============================================
 @admin.register(SectionLecon)
 class SectionLeconAdmin(admin.ModelAdmin):
     list_display = ('titre', 'lecon', 'type_section', 'ordre')
+    list_filter = ('type_section',)
+    search_fields = ('titre', 'lecon__titre')
+    list_editable = ('ordre',)
     inlines = [ContenuInline]
 
 
 # ============================================
-# CONTENU ADMIN (EXISTANT)
+# CONTENU ADMIN
 # ============================================
 @admin.register(Contenu)
 class ContenuAdmin(admin.ModelAdmin):
     list_display = ('titre', 'section', 'type_contenu', 'ordre')
+    list_filter = ('type_contenu',)
+    search_fields = ('titre', 'section__titre')
+    list_editable = ('ordre',)
     fieldsets = (
         (None, {'fields': ('section', 'type_contenu', 'ordre')}),
         ('Version Française', {
