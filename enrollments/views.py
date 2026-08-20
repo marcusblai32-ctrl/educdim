@@ -8,13 +8,15 @@ from .models import Enrollment
 from .forms import EnrollmentPaymentForm, EnrollmentAdminForm
 from courses.models import Course
 from notifications.models import Notification
-from subscriptions.models import SubscriptionAccess
+from subscriptions.models import SubscriptionAccess, Subscription
 import os
+
 
 @login_required
 def enrollment_list(request):
     inscriptions = Enrollment.objects.filter(utilisateur=request.user).select_related('cours')
     return render(request, 'enrollments/enrollment_list.html', {'inscriptions': inscriptions})
+
 
 @login_required
 def enrollment_detail(request, pk):
@@ -23,17 +25,22 @@ def enrollment_detail(request, pk):
         raise PermissionDenied(_("Vous n'avez pas accès à cette inscription."))
     return render(request, 'enrollments/enrollment_detail.html', {'inscription': inscription})
 
+
 @login_required
 def enroll_course(request, cours_pk):
     cours = get_object_or_404(Course, pk=cours_pk)
 
-    # Vérifier si déjà inscrit
-    existing = Enrollment.objects.filter(utilisateur=request.user, cours=cours).first()
+    # ===== 1. Tcheke si deja enskri =====
+    existing = Enrollment.objects.filter(
+        utilisateur=request.user,
+        cours=cours,
+        statut='active'
+    ).first()
     if existing:
         messages.info(request, _("Vous êtes déjà inscrit à ce cours."))
         return redirect('courses:course_detail', pk=cours.pk)
 
-    # Vérifier si abonnement actif donne accès à ce cours
+    # ===== 2. Tcheke si abònman aktif bay aksè =====
     has_subscription_access = SubscriptionAccess.objects.filter(
         subscription__utilisateur=request.user,
         subscription__statut='active',
@@ -41,40 +48,72 @@ def enroll_course(request, cours_pk):
         date_expiration__gt=timezone.now()
     ).exists()
 
-    # Si abonnement actif → inscription automatique
     if has_subscription_access:
-        enrollment = Enrollment.objects.create(
+        # Enskripsyon otomatik atravè abònman
+        enrollment = Enrollment.objects.get_or_create(
             utilisateur=request.user,
             cours=cours,
-            statut='active',
-            methode_paiement='subscription',
-            note_admin="Accès via abonnement"
+            defaults={
+                'statut': 'active',
+                'methode_paiement': 'subscription',
+                'note_admin': "Accès via abonnement"
+            }
         )
         messages.success(request, _("Inscription réussie via votre abonnement !"))
         return redirect('courses:course_detail', pk=cours.pk)
 
-    # Si cours gratuit → inscription automatique
+    # ===== 3. Tcheke abònman san limit (max_courses=0) =====
+    abonnement_san_limit = Subscription.objects.filter(
+        utilisateur=request.user,
+        statut='active',
+        plan__max_courses=0,
+        plan__cours=cours,
+        date_fin__gt=timezone.now()
+    ).first()
+
+    if abonnement_san_limit:
+        # Kreye aksè otomatikman
+        SubscriptionAccess.objects.get_or_create(
+            subscription=abonnement_san_limit,
+            cours=cours,
+            defaults={'date_expiration': abonnement_san_limit.date_fin}
+        )
+        # Enskripsyon otomatik tou
+        Enrollment.objects.get_or_create(
+            utilisateur=request.user,
+            cours=cours,
+            defaults={
+                'statut': 'active',
+                'methode_paiement': 'subscription',
+                'note_admin': f"Accès via abonnement {abonnement_san_limit.plan.nom}"
+            }
+        )
+        messages.success(request, _("Votre abonnement vous donne accès à ce cours !"))
+        return redirect('courses:course_detail', pk=cours.pk)
+
+    # ===== 4. Kou gratis → enskripsyon otomatik =====
     if not cours.est_payant:
         enrollment = Enrollment.objects.create(
             utilisateur=request.user,
             cours=cours,
             statut='active',
-            methode_paiement='manual'
+            methode_paiement='manual',
+            note_admin="Cours gratuit - accès direct"
         )
         messages.success(request, _("Inscription réussie au cours '{}'.").format(cours.titre))
         return redirect('courses:course_detail', pk=cours.pk)
 
-    # Si cours payant → demande en attente (pending)
+    # ===== 5. Kou peyan → montre fòmilè peman =====
     if request.method == 'POST':
         form = EnrollmentPaymentForm(request.POST, request.FILES)
         if form.is_valid():
             enrollment = form.save(commit=False)
             enrollment.utilisateur = request.user
             enrollment.cours = cours
-            enrollment.statut = 'pending'  # <--- EN ATTENTE DE VALIDATION
+            enrollment.statut = 'pending'
             enrollment.save()
 
-            # Notifier les admins
+            # Notifye admin yo
             from django.contrib.auth import get_user_model
             User = get_user_model()
             admins = User.objects.filter(is_staff=True)
@@ -94,21 +133,22 @@ def enroll_course(request, cours_pk):
 
     return render(request, 'enrollments/enroll_form.html', {'form': form, 'cours': cours})
 
+
 @user_passes_test(lambda u: u.is_staff)
 def admin_pending(request):
     inscriptions = Enrollment.objects.filter(statut='pending').select_related('utilisateur', 'cours')
     return render(request, 'enrollments/admin_pending.html', {'inscriptions': inscriptions})
 
+
 @user_passes_test(lambda u: u.is_staff)
 def admin_approve_enrollment(request, pk):
     enrollment = get_object_or_404(Enrollment, pk=pk)
     if enrollment.statut == 'pending':
-        enrollment.statut = 'active'  # <--- AKTIVE APRÈ VALIDATION
+        enrollment.statut = 'active'
         enrollment.date_verification = timezone.now()
         enrollment.verifie_par = request.user
         enrollment.save()
 
-        # Efase foto apresa validasyon
         enrollment.delete_photo()
 
         Notification.objects.create(
@@ -121,6 +161,7 @@ def admin_approve_enrollment(request, pk):
         messages.success(request, f"Inscription de {enrollment.utilisateur.get_full_name()} approuvée.")
     return redirect('enrollments:admin_pending')
 
+
 @user_passes_test(lambda u: u.is_staff)
 def admin_reject_enrollment(request, pk):
     enrollment = get_object_or_404(Enrollment, pk=pk)
@@ -130,7 +171,6 @@ def admin_reject_enrollment(request, pk):
         enrollment.verifie_par = request.user
         enrollment.save()
 
-        # Efase foto aprè refi
         enrollment.delete_photo()
 
         Notification.objects.create(
