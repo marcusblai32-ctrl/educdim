@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
 set -o errexit
 
-echo "=== Installation des dépendances ==="
+echo "=== Installation ==="
 pip install -r requirements.txt
 
-echo "=== Collecte des fichiers statiques ==="
+echo "=== Compile messages (tradiksyon) ==="
+python manage.py compilemessages --noinput
+
+echo "=== Collect static ==="
 python manage.py collectstatic --noinput
 
-echo "=== Exécution des migrations ==="
+echo "=== Migrations ==="
 python manage.py migrate --noinput
 
-echo "=== Build terminé avec succès ==="
+echo "=== Build terminé ==="
