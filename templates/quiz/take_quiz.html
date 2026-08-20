@@ -9,8 +9,7 @@
     <!-- En-tête -->
     <div class="quiz-header" style="text-align: center; margin-bottom: 2rem;">
         <h1 style="font-size: 1.8rem; font-weight: 800; font-family: var(--font-display);">{{ tentative.quiz.titre }}</h1>
-        
-        <!-- Info bar -->
+
         <div style="display: flex; justify-content: center; align-items: center; gap: 1.5rem; flex-wrap: wrap; margin-top: 0.8rem;">
             <span style="color: var(--text-muted); font-size: 0.9rem;">
                 <i class="fas fa-clock"></i> {% trans "Temps restant" %}: <span id="timer">--:--</span>
@@ -20,7 +19,6 @@
             </span>
         </div>
 
-        <!-- Progress Bar -->
         <div class="quiz-progress" style="margin-top: 1.5rem; max-width: 600px; margin-left: auto; margin-right: auto;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
                 <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">
@@ -38,13 +36,11 @@
     <form method="post" enctype="multipart/form-data" id="quizForm" action="{% url 'quiz:submit' tentative.pk %}">
         {% csrf_token %}
 
-        <!-- ===== QUESTIONS CONTAINER ===== -->
         <div id="questionsContainer">
             {% for question in questions %}
             <div class="question-slide" data-question="{{ forloop.counter }}" style="{% if not forloop.first %}display: none;{% endif %}">
                 <div class="card" style="padding: 2rem; margin: 0;">
-                    
-                    <!-- En-tête question -->
+
                     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem;">
                         <h3 style="font-size: 1.1rem; font-weight: 700; margin: 0; font-family: var(--font-display);">
                             <span style="background: var(--grad-brand); color: #fff; border-radius: 50%; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.9rem; margin-right: 0.5rem;">{{ forloop.counter }}</span>
@@ -56,10 +52,8 @@
                         <span class="badge badge-secondary">{{ question.get_type_question_display }}</span>
                     </div>
 
-                    <!-- Texte de la question -->
                     <p style="font-size: 1.05rem; margin-bottom: 1rem; font-weight: 500;">{{ question.texte }}</p>
 
-                    <!-- Média de la question -->
                     {% if question.has_media %}
                     <div style="background: var(--glass-soft); padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1rem;">
                         {% if question.q_media_titre %}
@@ -108,20 +102,37 @@
                     {% elif question.type_question == 'texte_trous' %}
                     <div class="form-group">
                         <input type="text" name="question_{{ question.id }}_texte" class="form-control"
-                               placeholder="{% trans 'Écrivez votre réponse...' %}" style="width: 100%;">
+                               placeholder="{% trans 'Écrivez votre réponse...' %}" style="width: 100%; padding:0.7rem 1rem; border:1.5px solid var(--border); border-radius:var(--radius-sm); font-size:0.95rem;">
                     </div>
 
                     {% elif question.type_question == 'texte_libre' %}
                     <div class="form-group">
                         <textarea name="question_{{ question.id }}_texte_libre" class="form-control" rows="4"
-                                  placeholder="{% trans 'Écrivez votre réponse ici...' %}" style="width: 100%;"></textarea>
+                                  placeholder="{% trans 'Écrivez votre réponse ici...' %}" style="width: 100%; padding:0.7rem 1rem; border:1.5px solid var(--border); border-radius:var(--radius-sm); font-size:0.95rem;"></textarea>
                     </div>
 
                     {% elif question.type_question == 'audio_reponse' %}
-                    <div class="upload-area" style="border: 2px dashed var(--glass-brd); border-radius: var(--radius-sm); padding: 1.5rem; text-align: center;">
-                        <i class="fas fa-microphone" style="font-size: 2.5rem; color: var(--primary); opacity: 0.5; margin-bottom: 0.5rem;"></i>
-                        <p style="font-weight: 600;">{% trans "Téléchargez votre réponse audio" %}</p>
-                        <input type="file" name="question_{{ question.id }}_audio" accept="audio/*" class="form-control" style="margin-top: 0.5rem;">
+                    <div class="voice-recorder" style="border: 2px dashed var(--primary); border-radius: var(--radius-sm); padding: 1.5rem; text-align: center;">
+                        <i class="fas fa-microphone" style="font-size: 2.5rem; color: var(--danger); margin-bottom: 0.5rem;"></i>
+                        <p style="font-weight: 600; margin-bottom: 1rem;">{% trans "Enregistrez votre réponse audio" %}</p>
+                        
+                        <button type="button" class="btn-record" id="btnRecord_{{ question.id }}" onclick="toggleRecording({{ question.id }})">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                        
+                        <p id="recordStatus_{{ question.id }}" style="margin-top:0.75rem; color:var(--text-muted); font-size:0.9rem;">
+                            {% trans "Cliquez pour enregistrer" %}
+                        </p>
+                        
+                        <audio id="audioPreview_{{ question.id }}" controls style="display:none; margin:1rem auto; width:100%; max-width:400px;"></audio>
+                        
+                        <input type="hidden" name="question_{{ question.id }}_audio_blob" id="audioBlob_{{ question.id }}">
+                        <input type="hidden" name="question_{{ question.id }}_audio_filename" id="audioFilename_{{ question.id }}">
+                        
+                        <div style="margin-top:1rem; border-top:1px solid var(--border); padding-top:1rem;">
+                            <p style="font-size:0.85rem; color:var(--text-muted);">{% trans "Ou téléchargez un fichier audio" %}</p>
+                            <input type="file" name="question_{{ question.id }}_audio" accept="audio/*" class="form-control" style="margin-top:0.3rem;">
+                        </div>
                     </div>
 
                     {% elif question.type_question == 'video_reponse' %}
@@ -152,28 +163,20 @@
             {% endfor %}
         </div>
 
-        <!-- ===== NAVIGATION BUTTONS ===== -->
+        <!-- Navigation -->
         <div class="quiz-navigation" style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;">
-            <!-- Bouton Precedent -->
             <button type="button" id="prevBtn" class="btn btn-secondary btn-lg" style="min-width: 150px; display: none;">
                 <i class="fas fa-arrow-left"></i> {% trans "Précédent" %}
             </button>
-            
-            <!-- Espace -->
             <div style="flex: 1;"></div>
-            
-            <!-- Bouton Suivant -->
             <button type="button" id="nextBtn" class="btn btn-primary btn-lg" style="min-width: 150px;">
                 {% trans "Suivant" %} <i class="fas fa-arrow-right"></i>
             </button>
-            
-            <!-- Bouton Soumettre (caché par défaut) -->
             <button type="submit" id="submitBtn" class="btn btn-success btn-lg" style="min-width: 150px; display: none;">
                 <i class="fas fa-paper-plane"></i> {% trans "Soumettre le quiz" %}
             </button>
         </div>
 
-        <!-- ===== INDICATEUR DE POINTS ===== -->
         <div class="quiz-dots" id="quizDots" style="display: flex; justify-content: center; gap: 0.5rem; margin-top: 1.5rem; flex-wrap: wrap;">
             {% for question in questions %}
             <span class="quiz-dot" data-dot="{{ forloop.counter }}" style="width: 12px; height: 12px; border-radius: 50%; background: var(--glass-soft); border: 2px solid var(--glass-brd); cursor: pointer; transition: var(--transition);"></span>
@@ -183,6 +186,73 @@
 </div>
 
 <script>
+// ===== ANREJISTREMAN VWA =====
+let mediaRecorders = {};
+let audioChunks = {};
+let isRecording = {};
+
+async function toggleRecording(questionId) {
+    const btnRecord = document.getElementById('btnRecord_' + questionId);
+    const statusEl = document.getElementById('recordStatus_' + questionId);
+    const previewEl = document.getElementById('audioPreview_' + questionId);
+    const blobInput = document.getElementById('audioBlob_' + questionId);
+    const filenameInput = document.getElementById('audioFilename_' + questionId);
+    
+    if (isRecording[questionId]) {
+        mediaRecorders[questionId].stop();
+        isRecording[questionId] = false;
+        
+        btnRecord.classList.remove('recording');
+        btnRecord.innerHTML = '<i class="fas fa-microphone"></i>';
+        statusEl.textContent = '{% trans "Enregistrement terminé !" %}';
+        statusEl.style.color = 'var(--success)';
+        
+        if (mediaRecorders[questionId].stream) {
+            mediaRecorders[questionId].stream.getTracks().forEach(track => track.stop());
+        }
+    } else {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            
+            audioChunks[questionId] = [];
+            mediaRecorders[questionId] = new MediaRecorder(stream);
+            
+            mediaRecorders[questionId].ondataavailable = function(e) {
+                if (e.data.size > 0) {
+                    audioChunks[questionId].push(e.data);
+                }
+            };
+            
+            mediaRecorders[questionId].onstop = function() {
+                const audioBlob = new Blob(audioChunks[questionId], { type: 'audio/webm' });
+                
+                previewEl.src = URL.createObjectURL(audioBlob);
+                previewEl.style.display = 'block';
+                
+                const reader = new FileReader();
+                reader.readAsDataURL(audioBlob);
+                reader.onloadend = function() {
+                    blobInput.value = reader.result;
+                    filenameInput.value = 'enregistrement_q' + questionId + '_' + Date.now() + '.webm';
+                };
+            };
+            
+            mediaRecorders[questionId].start();
+            isRecording[questionId] = true;
+            
+            btnRecord.classList.add('recording');
+            btnRecord.innerHTML = '<i class="fas fa-stop"></i>';
+            statusEl.textContent = '{% trans "Enregistrement en cours..." %}';
+            statusEl.style.color = 'var(--danger)';
+            
+        } catch (err) {
+            alert('{% trans "Impossible d\'accéder au microphone. Vérifiez les permissions." %}');
+            console.error('Erreur:', err);
+        }
+    }
+}
+
+// ===== PAGINATION =====
 document.addEventListener('DOMContentLoaded', function() {
     const slides = document.querySelectorAll('.question-slide');
     const totalSlides = slides.length;
@@ -196,18 +266,15 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentSlide = 0;
 
     function updateSlide() {
-        // Cache tout
         slides.forEach(function(slide, index) {
             slide.style.display = index === currentSlide ? 'block' : 'none';
         });
 
-        // Update progress
         const percent = ((currentSlide + 1) / totalSlides) * 100;
         progressBar.style.width = percent + '%';
         progressPercent.textContent = Math.round(percent) + '%';
         currentQuestionNum.textContent = currentSlide + 1;
 
-        // Update dots
         quizDots.forEach(function(dot, index) {
             if (index === currentSlide) {
                 dot.style.background = 'var(--primary)';
@@ -224,7 +291,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Affiche/Cache boutons
         if (currentSlide === 0) {
             prevBtn.style.display = 'none';
         } else {
@@ -239,33 +305,34 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.style.display = 'none';
         }
 
-        // Scroll to top of form
         const quizContainer = document.querySelector('.quiz-container');
         quizContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     function validateCurrentQuestion() {
         const currentSlideEl = slides[currentSlide];
-        const inputs = currentSlideEl.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked, input[type="text"], textarea, input[type="file"]');
-        
-        let answered = false;
-        
-        // Vérifie si c'est un upload
         const fileInputs = currentSlideEl.querySelectorAll('input[type="file"]');
+        const blobInputs = currentSlideEl.querySelectorAll('input[type="hidden"][id*="audioBlob"]');
+        
         if (fileInputs.length > 0) {
+            let hasFile = false;
             fileInputs.forEach(function(input) {
-                if (input.files.length > 0) answered = true;
+                if (input.files.length > 0) hasFile = true;
             });
-            if (!answered) {
-                alert("{% trans 'Veuillez télécharger un fichier avant de continuer.' %}");
+            blobInputs.forEach(function(input) {
+                if (input.value) hasFile = true;
+            });
+            
+            if (!hasFile) {
+                alert("{% trans 'Veuillez enregistrer un audio ou télécharger un fichier avant de continuer.' %}");
                 return false;
             }
             return true;
         }
         
-        // Vérifie les radios
         const radioInputs = currentSlideEl.querySelectorAll('input[type="radio"]');
         if (radioInputs.length > 0) {
+            let answered = false;
             radioInputs.forEach(function(input) {
                 if (input.checked) answered = true;
             });
@@ -276,9 +343,9 @@ document.addEventListener('DOMContentLoaded', function() {
             return true;
         }
         
-        // Vérifie les checkboxes
         const checkboxInputs = currentSlideEl.querySelectorAll('input[type="checkbox"]');
         if (checkboxInputs.length > 0) {
+            let answered = false;
             checkboxInputs.forEach(function(input) {
                 if (input.checked) answered = true;
             });
@@ -289,9 +356,9 @@ document.addEventListener('DOMContentLoaded', function() {
             return true;
         }
         
-        // Vérifie les text inputs
         const textInputs = currentSlideEl.querySelectorAll('input[type="text"], textarea');
         if (textInputs.length > 0) {
+            let answered = false;
             textInputs.forEach(function(input) {
                 if (input.value.trim() !== '') answered = true;
             });
@@ -301,7 +368,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             return true;
         }
-        
+
         return true;
     }
 
@@ -318,7 +385,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return true;
     }
 
-    // Next button
     nextBtn.addEventListener('click', function() {
         if (validateCurrentQuestion()) {
             if (currentSlide < totalSlides - 1) {
@@ -328,7 +394,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Previous button
     prevBtn.addEventListener('click', function() {
         if (currentSlide > 0) {
             currentSlide--;
@@ -336,11 +401,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Dots click
     quizDots.forEach(function(dot) {
         dot.addEventListener('click', function() {
             const targetSlide = parseInt(this.getAttribute('data-dot')) - 1;
-            // Empêche de sauter si la question actuelle n'est pas répondue
             if (targetSlide > currentSlide) {
                 if (!validateCurrentQuestion()) {
                     return;
@@ -351,18 +414,16 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Submit button validation
     submitBtn.addEventListener('click', function(e) {
         if (!validateAllQuestions()) {
             e.preventDefault();
             return;
         }
-        if (!confirm("{% trans 'Êtes-vous sûr de vouloir soumettre ce quiz ? Vous ne pourrez plus modifier vos réponses.' %}")) {
+        if (!confirm("{% trans 'Êtes-vous sûr de vouloir soumettre ce quiz ?' %}")) {
             e.preventDefault();
         }
     });
 
-    // Highlight selected option
     document.querySelectorAll('.option-label').forEach(function(label) {
         const input = label.querySelector('input');
         input.addEventListener('change', function() {
@@ -378,25 +439,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Preview upload files
-    document.querySelectorAll('input[type="file"]').forEach(function(input) {
-        input.addEventListener('change', function() {
-            const file = this.files[0];
-            if (file) {
-                const parent = this.closest('.upload-area');
-                const existingMsg = parent.querySelector('.file-preview');
-                if (existingMsg) existingMsg.remove();
-                
-                const msg = document.createElement('p');
-                msg.className = 'file-preview';
-                msg.style.cssText = 'color: var(--success); margin-top: 0.5rem; font-size: 0.85rem;';
-                msg.innerHTML = '<i class="fas fa-check-circle"></i> ' + file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
-                parent.appendChild(msg);
-            }
-        });
-    });
-
-    // Initialize
     updateSlide();
 });
 </script>
@@ -406,19 +448,51 @@ document.addEventListener('DOMContentLoaded', function() {
         border-color: var(--primary) !important;
         background: color-mix(in srgb, var(--primary) 5%, transparent) !important;
     }
-    
+
     .quiz-dot:hover {
         transform: scale(1.3) !important;
         border-color: var(--primary) !important;
     }
-    
+
     .question-slide {
         animation: fadeUp 0.3s ease;
     }
-    
+
     @keyframes fadeUp {
         from { opacity: 0; transform: translateY(10px); }
         to { opacity: 1; transform: none; }
+    }
+
+    .btn-record {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: var(--danger);
+        color: #fff;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-record:hover {
+        transform: scale(1.1);
+        box-shadow: 0 8px 25px rgba(239, 68, 68, 0.5);
+    }
+
+    .btn-record.recording {
+        background: #666;
+        animation: pulse-rec 1s infinite;
+    }
+
+    @keyframes pulse-rec {
+        0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); }
+        70% { box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
     }
 </style>
 {% endblock %}
