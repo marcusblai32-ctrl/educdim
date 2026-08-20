@@ -30,6 +30,7 @@ def subscribe(request, plan_pk):
         messages.error(request, _("Ce plan d'abonnement n'existe pas ou n'est plus disponible."))
         return redirect('subscriptions:list')
 
+    # Verifye si itilizatè a deja gen yon demann pou plan sa a
     existing = Subscription.objects.filter(
         utilisateur=request.user,
         plan=plan,
@@ -54,35 +55,41 @@ def subscribe(request, plan_pk):
                 subscription.verifie_par = request.user
                 subscription.save()
 
-                # NOUVO WORKFLOW: Si max_courses > 0
+                # ===== NOUVO WORKFLOW: Si max_courses > 0 =====
                 try:
                     if plan.max_courses > 0:
-                        messages.success(request, _("Abonnement activé ! Veuillez maintenant choisir vos cours."))
+                        messages.success(
+                            request, 
+                            _("Abonnement activé ! Veuillez maintenant choisir vos cours ({} maximum).").format(plan.max_courses)
+                        )
                         return redirect('subscriptions:select_courses', pk=subscription.pk)
                 except AttributeError:
                     pass
 
-                # ANSYEN WORKFLOW: Si max_courses == 0
+                # ===== ANSYEN WORKFLOW: Si max_courses == 0 =====
                 for cours in plan.cours.all():
                     SubscriptionAccess.objects.get_or_create(
                         subscription=subscription,
                         cours=cours,
                         defaults={'date_expiration': subscription.date_fin}
                     )
-                
+
                 try:
                     subscription.courses_selectionnes = True
                     subscription.save(update_fields=['courses_selectionnes'])
                 except:
                     pass
 
-                messages.success(request, _("Abonnement activé !"))
-                return redirect('subscriptions:list')
+                messages.success(request, _("Abonnement activé ! Tous les cours sont accessibles."))
+                return redirect('subscriptions:my_subscriptions')
             else:
                 subscription.statut = 'pending'
                 subscription.save()
-                messages.success(request, _("Votre demande a été envoyée. Un administrateur vérifiera votre paiement."))
-                return redirect('subscriptions:list')
+                messages.success(
+                    request, 
+                    _("Votre demande a été envoyée. Un administrateur vérifiera votre paiement.")
+                )
+                return redirect('subscriptions:my_subscriptions')
     else:
         form = SubscriptionForm(user=request.user)
 
@@ -95,7 +102,27 @@ def subscribe(request, plan_pk):
 @login_required
 def my_subscriptions(request):
     subscriptions = Subscription.objects.filter(utilisateur=request.user).order_by('-date_demande')
-    return render(request, 'subscriptions/my_subscriptions.html', {'subscriptions': subscriptions})
+    
+    # ===== NOUVO: Tcheke si gen abònman aktif ki bezwen seleksyon kou =====
+    active_sub_needing_selection = None
+    for sub in subscriptions:
+        if sub.statut == 'active':
+            try:
+                if sub.plan.max_courses > 0:
+                    try:
+                        if not sub.courses_selectionnes:
+                            active_sub_needing_selection = sub
+                            break
+                    except AttributeError:
+                        active_sub_needing_selection = sub
+                        break
+            except AttributeError:
+                pass
+    
+    return render(request, 'subscriptions/my_subscriptions.html', {
+        'subscriptions': subscriptions,
+        'active_sub_needing_selection': active_sub_needing_selection,
+    })
 
 
 @login_required
@@ -103,10 +130,24 @@ def subscription_detail(request, pk):
     sub = get_object_or_404(Subscription, pk=pk, utilisateur=request.user)
     accesses = sub.accesses.all().select_related('cours')
     selections = sub.course_selections.all().select_related('course')
+    
+    # ===== NOUVO: Verifye si bezwen chwazi kou =====
+    doit_choisir = False
+    try:
+        if sub.statut == 'active' and sub.plan.max_courses > 0:
+            try:
+                if not sub.courses_selectionnes:
+                    doit_choisir = True
+            except AttributeError:
+                doit_choisir = True
+    except AttributeError:
+        pass
+    
     return render(request, 'subscriptions/detail.html', {
         'subscription': sub,
         'accesses': accesses,
         'selections': selections,
+        'doit_choisir': doit_choisir,
     })
 
 
@@ -120,7 +161,7 @@ def select_courses(request, pk):
         statut='active'
     )
 
-    # Tcheke max_courses avèk try/except
+    # Tcheke max_courses
     try:
         max_courses = subscription.plan.max_courses
     except AttributeError:
@@ -131,7 +172,7 @@ def select_courses(request, pk):
         messages.info(request, _("Ce plan donne accès à tous les cours automatiquement."))
         return redirect('subscriptions:my_subscriptions')
 
-    # Tcheke courses_selectionnes avèk try/except
+    # Tcheke courses_selectionnes
     try:
         deja_selectionnes = subscription.courses_selectionnes
     except AttributeError:
@@ -188,7 +229,10 @@ def select_courses(request, pk):
                                 subscription.save(update_fields=['courses_selectionnes'])
                             except:
                                 pass
-                            messages.success(request, _("Félicitations ! Vos cours ont été activés."))
+                            messages.success(
+                                request, 
+                                _("Félicitations ! Tous vos cours ont été activés.")
+                            )
                             return redirect('subscriptions:my_subscriptions')
                         else:
                             remaining = places_restantes_apres if places_restantes_apres is not None else 0
@@ -237,10 +281,13 @@ def admin_verify_subscription(request, pk):
     subscription.verifie_par = request.user
     subscription.save()
 
-    # NOUVO WORKFLOW
+    # NOUVO WORKFLOW: Si max_courses > 0
     try:
         if subscription.plan.max_courses > 0:
-            messages.success(request, _("Abonnement activé. L'utilisateur doit maintenant choisir ses cours."))
+            messages.success(
+                request, 
+                _("Abonnement activé. L'utilisateur doit maintenant choisir ses cours.")
+            )
             return redirect('subscriptions:admin_pending')
     except AttributeError:
         pass
