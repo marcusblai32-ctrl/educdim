@@ -1,5 +1,42 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    .btn-correction {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        background: #28a745;
+        color: white;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 14px;
+        transition: background 0.3s;
+    }
+    .btn-correction:hover {
+        background: #218838;
+        color: white;
+        text-decoration: none;
+    }
+    .icon-edit {
+        font-size: 16px;
+        line-height: 1;
+    }
+    .status-icon {
+        font-size: 18px;
+        line-height: 1;
+    }
+    .status-success {
+        color: #28a745;
+    }
+    .status-failed {
+        color: #dc3545;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
 <h2>{% trans "Tentatives soumises" %}</h2>
@@ -20,11 +57,19 @@
             <td>{{ tentative.utilisateur.get_full_name }}</td>
             <td>{{ tentative.quiz.titre }}</td>
             <td>{{ tentative.score|default:"-" }}</td>
-            <td>{{ tentative.reussi|yesno:"✅,❌" }}</td>
+            <td>
+                {% if tentative.reussi %}
+                    <span class="status-icon status-success">&#10003;</span>
+                {% elif tentative.reussi == False %}
+                    <span class="status-icon status-failed">&#10007;</span>
+                {% else %}
+                    <span>-</span>
+                {% endif %}
+            </td>
             <td>{{ tentative.date_soumission|date:"d/m/Y H:i" }}</td>
             <td>
-                <a href="{% url 'quiz:corriger_tentative' tentative.pk %}" class="btn btn-sm btn-primary">
-                    {% trans "Corriger" %}
+                <a href="{% url 'quiz:corriger_tentative' tentative.pk %}" class="btn-correction">
+                    <span class="icon-edit">&#9998;</span> {% trans "Corriger" %}
                 </a>
             </td>
         </tr>
