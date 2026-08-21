@@ -79,7 +79,7 @@
         <p><i class="fas fa-info-circle" style="color: var(--text-muted, #6c757d);"></i> {% trans "Aucune tentative." %}</p>
     {% endif %}
 
-    <!-- ===== KORIJE: Bouton retou ===== -->
+    <!-- ===== KORIJE: Bouton retou ak kondisyon ===== -->
     <div style="margin-top:1.5rem; display: flex; gap: 1rem; flex-wrap: wrap;">
         {% if quiz.cours %}
             <a href="{% url 'courses:course_detail' quiz.cours.pk %}" class="btn btn-secondary">
