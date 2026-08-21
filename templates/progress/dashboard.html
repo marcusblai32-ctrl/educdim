@@ -3,74 +3,484 @@
 
 {% block title %}{% trans "Ma progression" %}{% endblock %}
 
+{% block extra_css %}
+<style>
+    /* ============================================
+       DASHBOARD PROGRESS STYLES
+       ============================================ */
+    
+    .dashboard-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+    
+    /* --- Header --- */
+    .dashboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 2px solid var(--border, #dee2e6);
+    }
+    
+    .dashboard-header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text, #212529);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 0;
+    }
+    
+    .dashboard-header h1 .icon {
+        color: var(--primary, #1a1a2e);
+        font-size: 2.2rem;
+    }
+    
+    .dashboard-subtitle {
+        color: var(--text-muted, #6c757d);
+        margin: 0;
+        font-size: 0.95rem;
+    }
+    
+    .dashboard-subtitle i {
+        margin-right: 0.3rem;
+    }
+    
+    /* --- Stats Cards --- */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+        background: var(--white, #ffffff);
+        padding: 1.2rem 1rem;
+        border-radius: var(--radius, 8px);
+        text-align: center;
+        border: 1px solid var(--border, #dee2e6);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: default;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow, 0 4px 20px rgba(0,0,0,0.08));
+    }
+    
+    .stat-card .stat-number {
+        font-size: 2rem;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+    
+    .stat-card .stat-label {
+        font-size: 0.85rem;
+        color: var(--text-muted, #6c757d);
+        margin-top: 0.3rem;
+    }
+    
+    .stat-card.primary .stat-number { color: var(--primary, #1a1a2e); }
+    .stat-card.success .stat-number { color: var(--success, #28a745); }
+    .stat-card.warning .stat-number { color: var(--warning, #ffc107); }
+    .stat-card.info .stat-number { color: var(--info, #17a2b8); }
+    .stat-card.danger .stat-number { color: var(--danger, #dc3545); }
+    
+    /* --- Course Progress Items --- */
+    .course-list {
+        display: grid;
+        gap: 1.5rem;
+    }
+    
+    .course-item {
+        background: var(--white, #ffffff);
+        padding: 1.5rem;
+        border-radius: var(--radius, 8px);
+        border: 1px solid var(--border, #dee2e6);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .course-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: var(--primary, #1a1a2e);
+        transition: width 0.3s ease;
+    }
+    
+    .course-item:hover::before {
+        width: 6px;
+    }
+    
+    .course-item:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow, 0 4px 20px rgba(0,0,0,0.08));
+    }
+    
+    .course-item.completed::before {
+        background: var(--success, #28a745);
+    }
+    
+    .course-item .course-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .course-item .course-title {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+    
+    .course-item .course-title a {
+        color: var(--text, #212529);
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+    
+    .course-item .course-title a:hover {
+        color: var(--primary, #1a1a2e);
+    }
+    
+    .course-item .course-meta {
+        font-size: 0.8rem;
+        color: var(--text-muted, #6c757d);
+    }
+    
+    .course-item .course-meta i {
+        margin-right: 0.3rem;
+    }
+    
+    .course-item .course-percentage {
+        font-weight: 700;
+        font-size: 1.3rem;
+        color: var(--primary, #1a1a2e);
+        white-space: nowrap;
+    }
+    
+    .course-item .course-percentage.completed {
+        color: var(--success, #28a745);
+    }
+    
+    /* --- Progress Bar --- */
+    .progress-bar-wrapper {
+        width: 100%;
+        height: 10px;
+        background: var(--border, #dee2e6);
+        border-radius: 50px;
+        overflow: hidden;
+        margin-bottom: 1rem;
+        position: relative;
+    }
+    
+    .progress-bar-wrapper .progress-fill {
+        height: 100%;
+        border-radius: 50px;
+        transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        width: 0%;
+    }
+    
+    .progress-bar-wrapper .progress-fill.primary {
+        background: linear-gradient(90deg, var(--primary, #1a1a2e), var(--info, #17a2b8));
+    }
+    
+    .progress-bar-wrapper .progress-fill.success {
+        background: linear-gradient(90deg, var(--success, #28a745), var(--info, #17a2b8));
+    }
+    
+    .progress-bar-wrapper .progress-fill.warning {
+        background: linear-gradient(90deg, var(--warning, #ffc107), var(--primary, #1a1a2e));
+    }
+    
+    .progress-bar-wrapper .progress-fill.danger {
+        background: linear-gradient(90deg, var(--danger, #dc3545), var(--warning, #ffc107));
+    }
+    
+    /* --- Pulse animation for progress < 100% --- */
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.6; }
+    }
+    
+    .progress-bar-wrapper .progress-fill.pulse {
+        animation: pulse 2s ease-in-out infinite;
+    }
+    
+    /* --- Course Actions --- */
+    .course-actions {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+    
+    .course-actions .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.4rem 1rem;
+        border-radius: var(--radius, 4px);
+        font-size: 0.85rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 1px solid transparent;
+        cursor: pointer;
+    }
+    
+    .course-actions .btn-primary {
+        background: var(--primary, #1a1a2e);
+        color: #fff;
+        border-color: var(--primary, #1a1a2e);
+    }
+    
+    .course-actions .btn-primary:hover {
+        background: var(--primary-hover, #2d2d4a);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(26, 26, 46, 0.3);
+    }
+    
+    .course-actions .btn-outline {
+        background: transparent;
+        color: var(--text, #212529);
+        border-color: var(--border, #dee2e6);
+    }
+    
+    .course-actions .btn-outline:hover {
+        background: var(--light, #f8f9fa);
+        border-color: var(--primary, #1a1a2e);
+        color: var(--primary, #1a1a2e);
+        transform: translateY(-2px);
+    }
+    
+    .course-actions .btn-success {
+        background: var(--success, #28a745);
+        color: #fff;
+        border-color: var(--success, #28a745);
+    }
+    
+    .course-actions .btn-success:hover {
+        background: var(--success-hover, #218838);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+    }
+    
+    .course-actions .btn-completed {
+        background: var(--success, #28a745);
+        color: #fff;
+        padding: 0.4rem 1rem;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+    
+    /* --- Empty State --- */
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+    }
+    
+    .empty-state .empty-icon {
+        font-size: 4rem;
+        color: var(--text-muted, #6c757d);
+        display: block;
+        margin-bottom: 1rem;
+    }
+    
+    .empty-state h3 {
+        color: var(--text-muted, #6c757d);
+        margin-bottom: 0.5rem;
+    }
+    
+    .empty-state p {
+        color: var(--text-muted, #6c757d);
+        margin-bottom: 1.5rem;
+    }
+    
+    /* --- Badge --- */
+    .badge-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.2rem 0.8rem;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #fff;
+    }
+    
+    .badge-status.success { background: var(--success, #28a745); }
+    .badge-status.warning { background: var(--warning, #ffc107); color: #212529; }
+    .badge-status.secondary { background: var(--secondary, #6c757d); }
+    .badge-status.primary { background: var(--primary, #1a1a2e); }
+    
+    /* --- Responsive --- */
+    @media (max-width: 768px) {
+        .dashboard-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .dashboard-header h1 {
+            font-size: 1.5rem;
+        }
+        
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .course-item .course-header {
+            flex-direction: column;
+        }
+        
+        .course-item .course-percentage {
+            font-size: 1.1rem;
+        }
+        
+        .course-actions {
+            flex-direction: column;
+            width: 100%;
+        }
+        
+        .course-actions .btn {
+            justify-content: center;
+            width: 100%;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .dashboard-container {
+            padding: 1rem 0.5rem;
+        }
+        
+        .stats-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+        
+        .stat-card {
+            padding: 0.8rem 0.5rem;
+        }
+        
+        .stat-card .stat-number {
+            font-size: 1.5rem;
+        }
+        
+        .course-item {
+            padding: 1rem;
+        }
+    }
+    
+    /* --- Dark Mode --- */
+    [data-bs-theme="dark"] .stat-card,
+    [data-bs-theme="dark"] .course-item {
+        background: var(--dark, #2d2d2d);
+        border-color: var(--border, #444);
+    }
+    
+    [data-bs-theme="dark"] .course-item .course-title a {
+        color: var(--text, #e0e0e0);
+    }
+    
+    [data-bs-theme="dark"] .course-actions .btn-outline {
+        color: var(--text, #e0e0e0);
+        border-color: var(--border, #444);
+    }
+    
+    [data-bs-theme="dark"] .course-actions .btn-outline:hover {
+        background: var(--dark, #3a3a3a);
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="card" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+<div class="dashboard-container">
     <!-- ===== HEADER ===== -->
-    <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
+    <div class="dashboard-header">
         <div>
-            <h1 style="font-size: 2rem; font-weight: 700; color: var(--text, #212529); display: flex; align-items: center; gap: 0.75rem;">
-                <i class="fas fa-chart-line" style="color: var(--primary, #1a1a2e);"></i>
+            <h1>
+                <i class="fas fa-chart-line icon"></i>
                 {% trans "Ma progression" %}
             </h1>
-            <p style="color: var(--text-muted, #6c757d); margin: 0;">
+            <p class="dashboard-subtitle">
                 <i class="fas fa-user-graduate"></i>
-                {{ total_cours }} {% trans "cours" %} · {{ lecons_termine }} {% trans "leçons terminées" %}
+                {{ total_cours }} {% trans "cours" %} · 
+                {{ lecons_termine }} {% trans "leçons terminées" %}
             </p>
         </div>
-        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-            <span style="background: var(--success, #28a745); color: #fff; padding: 0.3rem 1rem; border-radius: 50px; font-size: 0.85rem; font-weight: 600;">
-                <i class="fas fa-check"></i> {{ completed_cours }} {% trans "terminés" %}
+        <div style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
+            <span class="badge-status success">
+                <i class="fas fa-check-circle"></i> {{ completed_cours }} {% trans "terminés" %}
             </span>
-            <span style="background: var(--primary, #1a1a2e); color: #fff; padding: 0.3rem 1rem; border-radius: 50px; font-size: 0.85rem; font-weight: 600;">
+            <span class="badge-status warning">
                 <i class="fas fa-spinner"></i> {{ cours_en_cours|length }} {% trans "en cours" %}
             </span>
         </div>
     </div>
 
     <!-- ===== STATISTIQUES ===== -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
-        <div style="background: var(--light, #f8f9fa); padding: 1rem; border-radius: var(--radius, 8px); text-align: center;">
-            <div style="font-size: 1.8rem; font-weight: 700; color: var(--primary, #1a1a2e);">{{ total_cours }}</div>
-            <div style="font-size: 0.85rem; color: var(--text-muted, #6c757d);">{% trans "Cours" %}</div>
+    <div class="stats-grid" id="statsGrid">
+        <div class="stat-card primary">
+            <div class="stat-number" data-count="{{ total_cours }}">0</div>
+            <div class="stat-label">{% trans "Cours" %}</div>
         </div>
-        <div style="background: var(--light, #f8f9fa); padding: 1rem; border-radius: var(--radius, 8px); text-align: center;">
-            <div style="font-size: 1.8rem; font-weight: 700; color: var(--success, #28a745);">{{ lecons_termine }}</div>
-            <div style="font-size: 0.85rem; color: var(--text-muted, #6c757d);">{% trans "Leçons terminées" %}</div>
+        <div class="stat-card success">
+            <div class="stat-number" data-count="{{ lecons_termine }}">0</div>
+            <div class="stat-label">{% trans "Leçons terminées" %}</div>
         </div>
-        <div style="background: var(--light, #f8f9fa); padding: 1rem; border-radius: var(--radius, 8px); text-align: center;">
-            <div style="font-size: 1.8rem; font-weight: 700; color: var(--warning, #ffc107);">{{ lecons_en_cours }}</div>
-            <div style="font-size: 0.85rem; color: var(--text-muted, #6c757d);">{% trans "Leçons en cours" %}</div>
+        <div class="stat-card warning">
+            <div class="stat-number" data-count="{{ lecons_en_cours }}">0</div>
+            <div class="stat-label">{% trans "Leçons en cours" %}</div>
         </div>
-        <div style="background: var(--light, #f8f9fa); padding: 1rem; border-radius: var(--radius, 8px); text-align: center;">
-            <div style="font-size: 1.8rem; font-weight: 700; color: var(--info, #17a2b8);">{{ completed_cours }}</div>
-            <div style="font-size: 0.85rem; color: var(--text-muted, #6c757d);">{% trans "Cours terminés" %}</div>
+        <div class="stat-card info">
+            <div class="stat-number" data-count="{{ completed_cours }}">0</div>
+            <div class="stat-label">{% trans "Cours terminés" %}</div>
         </div>
     </div>
 
     <!-- ===== LISTE KOU ===== -->
     {% if progres_cours %}
-    <div style="display: grid; gap: 1.5rem;">
+    <div class="course-list" id="courseList">
         {% for pc in progres_cours %}
-        <div class="course-progress-item" style="background: var(--white, #ffffff); padding: 1.5rem; border-radius: var(--radius, 8px); border: 1px solid var(--border, #dee2e6); transition: transform 0.2s, box-shadow 0.2s;">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem;">
+        <div class="course-item {% if pc.est_termine %}completed{% endif %}" data-progress="{{ pc.pourcentage|floatformat:0 }}">
+            <div class="course-header">
                 <div>
-                    <h3 style="margin: 0; font-size: 1.1rem; font-weight: 600;">
-                        <a href="{% url 'progress:course_progress' pc.cours.pk %}" style="color: var(--text, #212529); text-decoration: none;">
+                    <h3 class="course-title">
+                        <a href="{% url 'progress:course_progress' pc.cours.pk %}">
                             {{ pc.cours.titre }}
                         </a>
                     </h3>
                     {% if pc.cours.categorie %}
-                    <span style="font-size: 0.8rem; color: var(--text-muted, #6c757d);">
+                    <span class="course-meta">
                         <i class="fas fa-tag"></i> {{ pc.cours.categorie.nom }}
                     </span>
                     {% endif %}
                 </div>
                 <div style="display: flex; align-items: center; gap: 1rem;">
-                    <span style="font-weight: 700; color: var(--primary, #1a1a2e); font-size: 1.2rem;">
+                    <span class="course-percentage {% if pc.est_termine %}completed{% endif %}">
                         {{ pc.pourcentage|floatformat:0 }}%
                     </span>
                     {% if pc.est_termine %}
-                    <span style="background: var(--success, #28a745); color: #fff; padding: 0.2rem 0.8rem; border-radius: 50px; font-size: 0.75rem; font-weight: 600;">
+                    <span class="badge-status success">
                         <i class="fas fa-check-circle"></i> {% trans "Terminé" %}
                     </span>
                     {% endif %}
@@ -78,19 +488,22 @@
             </div>
             
             <!-- Progress Bar -->
-            <div style="width: 100%; height: 8px; background: var(--border, #dee2e6); border-radius: 50px; overflow: hidden; margin-bottom: 1rem;">
-                <div style="height: 100%; width: {{ pc.pourcentage|floatformat:0 }}%; background: linear-gradient(90deg, var(--primary, #1a1a2e), var(--info, #17a2b8)); border-radius: 50px; transition: width 0.8s ease;"></div>
+            <div class="progress-bar-wrapper">
+                <div class="progress-fill {% if pc.est_termine %}success{% else %}primary{% endif %} {% if pc.pourcentage < 100 and pc.pourcentage > 0 %}pulse{% endif %}" 
+                     data-progress="{{ pc.pourcentage|floatformat:0 }}"
+                     style="width: 0%;">
+                </div>
             </div>
 
-            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                <a href="{% url 'progress:course_progress' pc.cours.pk %}" class="btn btn-sm btn-primary">
+            <div class="course-actions">
+                <a href="{% url 'progress:course_progress' pc.cours.pk %}" class="btn btn-primary">
                     <i class="fas fa-eye"></i> {% trans "Voir détails" %}
                 </a>
-                <a href="{% url 'courses:course_detail' pc.cours.pk %}" class="btn btn-sm btn-outline">
+                <a href="{% url 'courses:course_detail' pc.cours.pk %}" class="btn btn-outline">
                     <i class="fas fa-play"></i> {% trans "Continuer" %}
                 </a>
                 {% if pc.est_termine %}
-                <span style="padding: 0.3rem 1rem; background: var(--success, #28a745); color: #fff; border-radius: 50px; font-size: 0.8rem;">
+                <span class="btn-completed">
                     <i class="fas fa-trophy"></i> {% trans "Félicitations!" %}
                 </span>
                 {% endif %}
@@ -100,13 +513,11 @@
     </div>
     {% else %}
     <!-- ===== VID ===== -->
-    <div style="text-align: center; padding: 4rem 0;">
-        <i class="fas fa-book-open" style="font-size: 4rem; color: var(--text-muted, #6c757d); display: block; margin-bottom: 1rem;"></i>
-        <h3 style="color: var(--text-muted, #6c757d);">{% trans "Vous n'avez pas encore commencé de cours." %}</h3>
-        <p style="color: var(--text-muted, #6c757d); margin-bottom: 1.5rem;">
-            {% trans "Explorez nos cours et commencez votre apprentissage dès maintenant." %}
-        </p>
-        <a href="{% url 'courses:course_list' %}" class="btn btn-primary" style="font-size: 1.1rem; padding: 0.8rem 2rem;">
+    <div class="empty-state">
+        <i class="fas fa-book-open empty-icon"></i>
+        <h3>{% trans "Vous n'avez pas encore commencé de cours." %}</h3>
+        <p>{% trans "Explorez nos cours et commencez votre apprentissage dès maintenant." %}</p>
+        <a href="{% url 'courses:course_list' %}" class="btn btn-primary" style="display:inline-flex; align-items:center; gap:0.5rem; padding:0.8rem 2rem; font-size:1.1rem; border-radius:var(--radius,8px); text-decoration:none; background:var(--primary, #1a1a2e); color:#fff; transition:all 0.3s;">
             <i class="fas fa-search"></i> {% trans "Explorer les cours" %}
         </a>
     </div>
@@ -114,18 +525,141 @@
 </div>
 {% endblock %}
 
-{% block extra_css %}
-<style>
-    .course-progress-item:hover {
-        transform: translateY(-3px);
-        box-shadow: var(--shadow, 0 4px 20px rgba(0,0,0,0.08));
-    }
-    
-    @media (max-width: 768px) {
-        .dashboard-header {
-            flex-direction: column;
-            align-items: flex-start !important;
+{% block extra_js %}
+<script>
+    (function() {
+        'use strict';
+
+        // ============================================
+        // 1. ANIMATION STATISTIQUES
+        // ============================================
+        function animateNumbers() {
+            const statNumbers = document.querySelectorAll('.stat-number');
+            
+            statNumbers.forEach(function(el) {
+                const target = parseInt(el.getAttribute('data-count')) || 0;
+                const duration = 800;
+                const startTime = performance.now();
+                const startValue = 0;
+                
+                function updateNumber(currentTime) {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    
+                    // Easing function (easeOutQuart)
+                    const eased = 1 - Math.pow(1 - progress, 4);
+                    const current = Math.round(eased * target);
+                    
+                    el.textContent = current;
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(updateNumber);
+                    } else {
+                        el.textContent = target;
+                    }
+                }
+                
+                // Only animate if element is visible
+                const observer = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            requestAnimationFrame(updateNumber);
+                            observer.disconnect();
+                        }
+                    });
+                }, { threshold: 0.5 });
+                
+                observer.observe(el);
+            });
         }
-    }
-</style>
+
+        // ============================================
+        // 2. PROGRESS BAR ANIMATION
+        // ============================================
+        function animateProgressBars() {
+            const progressFills = document.querySelectorAll('.progress-fill');
+            
+            progressFills.forEach(function(el) {
+                const progress = parseInt(el.getAttribute('data-progress')) || 0;
+                
+                const observer = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            setTimeout(function() {
+                                el.style.width = progress + '%';
+                            }, 300);
+                            observer.disconnect();
+                        }
+                    });
+                }, { threshold: 0.3 });
+                
+                observer.observe(el);
+            });
+        }
+
+        // ============================================
+        // 3. HOVER EFFECT ON COURSE ITEMS
+        // ============================================
+        function setupCourseHover() {
+            const courseItems = document.querySelectorAll('.course-item');
+            
+            courseItems.forEach(function(item) {
+                item.addEventListener('mouseenter', function() {
+                    const fill = this.querySelector('.progress-fill');
+                    if (fill) {
+                        const currentWidth = parseInt(fill.style.width) || 0;
+                        if (currentWidth < 100) {
+                            fill.style.background = 'linear-gradient(90deg, var(--primary, #1a1a2e), var(--warning, #ffc107))';
+                        }
+                    }
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    const fill = this.querySelector('.progress-fill');
+                    if (fill) {
+                        const isCompleted = this.classList.contains('completed');
+                        if (isCompleted) {
+                            fill.style.background = 'linear-gradient(90deg, var(--success, #28a745), var(--info, #17a2b8))';
+                        } else {
+                            fill.style.background = 'linear-gradient(90deg, var(--primary, #1a1a2e), var(--info, #17a2b8))';
+                        }
+                    }
+                });
+            });
+        }
+
+        // ============================================
+        // 4. AUTO-REFRESH PROGRESS (si w vle)
+        // ============================================
+        function autoRefreshProgress() {
+            // Si ou vle, ou ka ajoute yon timeout pou rafrechi done yo
+            // setInterval(function() {
+            //     location.reload();
+            // }, 300000); // 5 minit
+        }
+
+        // ============================================
+        // 5. INITIALIZATION
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            animateNumbers();
+            animateProgressBars();
+            setupCourseHover();
+            autoRefreshProgress();
+        });
+
+        // Re-run when content changes (HTMX, Turbo, etc.)
+        document.addEventListener('htmx:afterSwap', function() {
+            animateProgressBars();
+            setupCourseHover();
+        });
+        
+        document.addEventListener('turbo:load', function() {
+            animateNumbers();
+            animateProgressBars();
+            setupCourseHover();
+        });
+
+    })();
+</script>
 {% endblock %}
