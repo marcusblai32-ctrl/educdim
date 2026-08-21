@@ -186,19 +186,30 @@
 </div>
 
 <script>
-// ===== ANREJISTREMAN VWA =====
+// ============================================
+// ANREJISTREMAN VWA — FONKSYON GLOBAL
+// ============================================
 let mediaRecorders = {};
 let audioChunks = {};
 let isRecording = {};
 
 async function toggleRecording(questionId) {
+    console.log('🎙️ toggleRecording appelé pour question:', questionId);
+    
     const btnRecord = document.getElementById('btnRecord_' + questionId);
     const statusEl = document.getElementById('recordStatus_' + questionId);
     const previewEl = document.getElementById('audioPreview_' + questionId);
     const blobInput = document.getElementById('audioBlob_' + questionId);
     const filenameInput = document.getElementById('audioFilename_' + questionId);
     
+    if (!btnRecord) {
+        console.error('❌ Bouton introuvable pour question:', questionId);
+        return;
+    }
+    
     if (isRecording[questionId]) {
+        // ===== STOP =====
+        console.log('⏹️ Arrêt de l\'enregistrement...');
         mediaRecorders[questionId].stop();
         isRecording[questionId] = false;
         
@@ -211,8 +222,12 @@ async function toggleRecording(questionId) {
             mediaRecorders[questionId].stream.getTracks().forEach(track => track.stop());
         }
     } else {
+        // ===== START =====
+        console.log('🎙️ Démarrage de l\'enregistrement...');
+        
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            console.log('✅ Microphone accessible');
             
             audioChunks[questionId] = [];
             mediaRecorders[questionId] = new MediaRecorder(stream);
@@ -224,6 +239,7 @@ async function toggleRecording(questionId) {
             };
             
             mediaRecorders[questionId].onstop = function() {
+                console.log('✅ Enregistrement terminé, création du blob...');
                 const audioBlob = new Blob(audioChunks[questionId], { type: 'audio/webm' });
                 
                 previewEl.src = URL.createObjectURL(audioBlob);
@@ -234,6 +250,7 @@ async function toggleRecording(questionId) {
                 reader.onloadend = function() {
                     blobInput.value = reader.result;
                     filenameInput.value = 'enregistrement_q' + questionId + '_' + Date.now() + '.webm';
+                    console.log('✅ Audio sauvegardé en base64');
                 };
             };
             
@@ -246,13 +263,15 @@ async function toggleRecording(questionId) {
             statusEl.style.color = 'var(--danger)';
             
         } catch (err) {
-            alert('{% trans "Impossible d\'accéder au microphone. Vérifiez les permissions." %}');
-            console.error('Erreur:', err);
+            console.error('❌ Erreur microphone:', err);
+            alert('{% trans "Impossible d\'accéder au microphone. Vérifiez les permissions de votre navigateur." %}');
         }
     }
 }
 
-// ===== PAGINATION =====
+// ============================================
+// PAGINATION
+// ============================================
 document.addEventListener('DOMContentLoaded', function() {
     const slides = document.querySelectorAll('.question-slide');
     const totalSlides = slides.length;
