@@ -1,20 +1,288 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}{{ theme.about_title|default:_("À propos") }} - {{ theme.site_name }}{% endblock %}
+{% block title %}{% if theme %}{{ theme.about_title|default:_("À propos") }} - {{ theme.site_name }}{% else %}{% trans "À propos" %} - EducDim{% endif %}{% endblock %}
 
 {% block content %}
-<div class="card">
-    <h1>{{ theme.about_title|default:_("À propos de nous") }}</h1>
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:2rem; margin-top:1.5rem;">
-        <div>
-            {{ theme.about_content|default:"<p>EduPlatform se yon platform e-learning ki fèt pou ede moun aprann san limit.</p><p>Misyon nou se bay tout moun aksè a edikasyon kalite.</p>"|safe }}
-        </div>
-        {% if theme.about_image %}
-        <div>
-            <img src="{{ theme.about_image.url }}" alt="{{ theme.about_title }}" style="width:100%; border-radius:var(--radius);">
-        </div>
-        {% endif %}
+<div class="about-container">
+    <div class="about-header">
+        <h1 class="about-title">
+            {% if theme %}{{ theme.about_title|default:_("À propos de nous") }}{% else %}{% trans "À propos de nous" %}{% endif %}
+        </h1>
+        <p class="about-subtitle">
+            {% trans "Découvrez notre mission, nos valeurs et notre engagement pour l'éducation" %}
+        </p>
     </div>
+
+    <div class="about-grid">
+        <div class="about-content">
+            {% if theme and theme.about_content %}
+                {{ theme.about_content|safe }}
+            {% else %}
+                <p>{% trans "EduPlatform se yon platform e-learning ki fèt pou ede moun aprann san limit." %}</p>
+                <p>{% trans "Misyon nou se bay tout moun aksè a edikasyon kalite." %}</p>
+                <p>{% trans "Nou kwè ke tout moun merite opòtinite pou aprann epi grandi, kèlkeswa kote yo ye oswa sitiyasyon yo." %}</p>
+                
+                <div class="about-values">
+                    <div class="value-item">
+                        <span class="value-icon">&#128218;</span>
+                        <div>
+                            <h4>{% trans "Accessibilité" %}</h4>
+                            <p>{% trans "Edikasyon pou tout moun, tout kote" %}</p>
+                        </div>
+                    </div>
+                    <div class="value-item">
+                        <span class="value-icon">&#128640;</span>
+                        <div>
+                            <h4>{% trans "Innovation" %}</h4>
+                            <p>{% trans "Toujou ap avanse ak teknoloji" %}</p>
+                        </div>
+                    </div>
+                    <div class="value-item">
+                        <span class="value-icon">&#128170;</span>
+                        <div>
+                            <h4>{% trans "Qualité" %}</h4>
+                            <p>{% trans "Kontni ki prepare pa ekspè" %}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="about-image-wrapper">
+            {% if theme and theme.get_about_image %}
+                <img src="{{ theme.get_about_image }}" alt="{{ theme.about_title|default:_('À propos') }}" class="about-image">
+            {% elif theme and theme.about_image %}
+                <img src="{{ theme.about_image.url }}" alt="{{ theme.about_title|default:_('À propos') }}" class="about-image">
+            {% else %}
+                <div class="about-image-placeholder">
+                    <span class="placeholder-icon">&#128218;</span>
+                    <p>{% trans "Image illustrative" %}</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if theme and theme.about_text %}
+    <div class="about-footer">
+        <div class="about-footer-content">
+            <p>{{ theme.about_text }}</p>
+        </div>
+    </div>
+    {% endif %}
 </div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .about-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+
+    .about-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .about-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--text, #212529);
+        margin-bottom: 0.5rem;
+        position: relative;
+        display: inline-block;
+    }
+
+    .about-title::after {
+        content: '';
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 4px;
+        background: var(--primary, #1a1a2e);
+        border-radius: 2px;
+    }
+
+    .about-subtitle {
+        font-size: 1.1rem;
+        color: var(--text-muted, #6c757d);
+        margin-top: 1rem;
+    }
+
+    .about-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        align-items: start;
+    }
+
+    .about-content {
+        font-size: 1.05rem;
+        line-height: 1.8;
+        color: var(--text, #212529);
+    }
+
+    .about-content p {
+        margin-bottom: 1.2rem;
+    }
+
+    .about-values {
+        margin-top: 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .value-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1rem;
+        background: var(--light, #f8f9fa);
+        border-radius: var(--radius, 8px);
+        border-left: 4px solid var(--primary, #1a1a2e);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .value-item:hover {
+        transform: translateX(5px);
+        box-shadow: var(--shadow, 0 4px 20px rgba(0,0,0,0.08));
+    }
+
+    .value-icon {
+        font-size: 2rem;
+        flex-shrink: 0;
+        line-height: 1;
+    }
+
+    .value-item h4 {
+        margin: 0 0 0.25rem 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text, #212529);
+    }
+
+    .value-item p {
+        margin: 0;
+        font-size: 0.95rem;
+        color: var(--text-muted, #6c757d);
+    }
+
+    .about-image-wrapper {
+        position: sticky;
+        top: 2rem;
+    }
+
+    .about-image {
+        width: 100%;
+        height: auto;
+        border-radius: var(--radius, 8px);
+        box-shadow: var(--shadow, 0 4px 20px rgba(0,0,0,0.08));
+        transition: transform 0.3s;
+    }
+
+    .about-image:hover {
+        transform: scale(1.02);
+    }
+
+    .about-image-placeholder {
+        width: 100%;
+        aspect-ratio: 4/3;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: var(--light, #f8f9fa);
+        border-radius: var(--radius, 8px);
+        border: 2px dashed var(--border, #dee2e6);
+        color: var(--text-muted, #6c757d);
+    }
+
+    .placeholder-icon {
+        font-size: 4rem;
+        margin-bottom: 0.5rem;
+        opacity: 0.5;
+    }
+
+    .about-footer {
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border, #dee2e6);
+    }
+
+    .about-footer-content {
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+        color: var(--text-muted, #6c757d);
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .about-grid {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .about-title {
+            font-size: 2rem;
+        }
+
+        .about-image-wrapper {
+            position: static;
+        }
+
+        .about-image {
+            max-height: 300px;
+            object-fit: cover;
+        }
+
+        .value-item {
+            padding: 0.75rem;
+        }
+
+        .value-icon {
+            font-size: 1.5rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .about-container {
+            padding: 1rem;
+        }
+
+        .about-title {
+            font-size: 1.5rem;
+        }
+
+        .about-subtitle {
+            font-size: 0.95rem;
+        }
+
+        .about-content {
+            font-size: 0.95rem;
+        }
+    }
+
+    /* Dark mode */
+    [data-bs-theme="dark"] .value-item {
+        background: var(--dark, #2d2d2d);
+        border-left-color: var(--primary, #1a1a2e);
+    }
+
+    [data-bs-theme="dark"] .about-image-placeholder {
+        background: var(--dark, #2d2d2d);
+        border-color: var(--border, #444);
+    }
+
+    [data-bs-theme="dark"] .about-footer {
+        border-top-color: var(--border, #444);
+    }
+</style>
 {% endblock %}
