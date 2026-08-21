@@ -4,78 +4,279 @@
 
 {% block extra_css %}
 <style>
-    .btn-correction {
-        display: inline-flex;
+    .correction-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .card-correction {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    
+    .card-correction .card-header {
+        background: #f8f9fa;
+        padding: 12px 20px;
+        border-bottom: 1px solid #dee2e6;
+        font-weight: 600;
+        border-radius: 8px 8px 0 0;
+    }
+    
+    .card-correction .card-body {
+        padding: 20px;
+    }
+    
+    .media-container {
+        margin: 10px 0 15px 0;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 4px;
+    }
+    
+    .media-container audio,
+    .media-container video {
+        max-width: 100%;
+        border-radius: 4px;
+    }
+    
+    .media-container img {
+        max-height: 200px;
+        border-radius: 4px;
+    }
+    
+    .user-response {
+        background: #f1f3f5;
+        padding: 15px;
+        border-radius: 4px;
+        margin: 10px 0;
+    }
+    
+    .user-response pre {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        margin: 0;
+        background: transparent;
+        border: none;
+        padding: 0;
+    }
+    
+    .user-response ul {
+        margin: 0;
+        padding-left: 20px;
+    }
+    
+    .points-input-group {
+        display: flex;
         align-items: center;
-        gap: 6px;
-        padding: 6px 12px;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #dee2e6;
+    }
+    
+    .points-input-group label {
+        font-weight: 500;
+        margin-bottom: 0;
+    }
+    
+    .points-input-group input[type="number"] {
+        width: 120px;
+        padding: 6px 10px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+    
+    .points-input-group input[type="number"]:focus {
+        border-color: #80bdff;
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+    }
+    
+    .text-muted {
+        color: #6c757d;
+        font-size: 13px;
+    }
+    
+    .btn-save {
         background: #28a745;
         color: white;
+        border: none;
+        padding: 10px 30px;
         border-radius: 4px;
-        text-decoration: none;
-        font-size: 14px;
+        font-size: 16px;
+        cursor: pointer;
         transition: background 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
     }
-    .btn-correction:hover {
+    
+    .btn-save:hover {
         background: #218838;
+        color: white;
+    }
+    
+    .btn-back {
+        background: #6c757d;
+        color: white;
+        border: none;
+        padding: 10px 30px;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .btn-back:hover {
+        background: #5a6268;
         color: white;
         text-decoration: none;
     }
-    .icon-edit {
-        font-size: 16px;
-        line-height: 1;
+    
+    .btn-group {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        flex-wrap: wrap;
     }
-    .status-icon {
-        font-size: 18px;
-        line-height: 1;
-    }
-    .status-success {
+    
+    .icon-check {
         color: #28a745;
+        font-weight: bold;
     }
-    .status-failed {
-        color: #dc3545;
+    
+    .icon-media {
+        font-size: 20px;
+        margin-right: 5px;
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<h2>{% trans "Tentatives soumises" %}</h2>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>{% trans "Utilisateur" %}</th>
-            <th>{% trans "Quiz" %}</th>
-            <th>{% trans "Score" %}</th>
-            <th>{% trans "Réussi" %}</th>
-            <th>{% trans "Soumis le" %}</th>
-            <th>{% trans "Action" %}</th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for tentative in tentatives %}
-        <tr>
-            <td>{{ tentative.utilisateur.get_full_name }}</td>
-            <td>{{ tentative.quiz.titre }}</td>
-            <td>{{ tentative.score|default:"-" }}</td>
-            <td>
-                {% if tentative.reussi %}
-                    <span class="status-icon status-success">&#10003;</span>
-                {% elif tentative.reussi == False %}
-                    <span class="status-icon status-failed">&#10007;</span>
-                {% else %}
-                    <span>-</span>
-                {% endif %}
-            </td>
-            <td>{{ tentative.date_soumission|date:"d/m/Y H:i" }}</td>
-            <td>
-                <a href="{% url 'quiz:corriger_tentative' tentative.pk %}" class="btn-correction">
-                    <span class="icon-edit">&#9998;</span> {% trans "Corriger" %}
-                </a>
-            </td>
-        </tr>
-    {% empty %}
-        <tr><td colspan="6">{% trans "Aucune tentative soumise." %}</td></tr>
-    {% endfor %}
-    </tbody>
-</table>
+<div class="correction-container">
+    <h2>{% trans "Correction de la tentative" %} #{{ tentative.pk }}</h2>
+    <p><strong>{% trans "Utilisateur" %}:</strong> {{ tentative.utilisateur.get_full_name }}</p>
+    <p><strong>{% trans "Quiz" %}:</strong> {{ tentative.quiz.titre }}</p>
+    <p><strong>{% trans "Score actuel" %}:</strong> {{ tentative.score|default:"-" }}%</p>
+    <hr>
+
+    <form method="post">
+        {% csrf_token %}
+        {% for item in question_data %}
+            <div class="card-correction">
+                <div class="card-header">
+                    <span>&#9632; {% trans "Question" %} {{ forloop.counter }}</span>
+                    ({{ item.question.get_type_question_display }}) &#8211; {{ item.question.points }} pts
+                </div>
+                <div class="card-body">
+                    <p>{{ item.question.texte }}</p>
+
+                    {% if item.question.has_media %}
+                        <div class="media-container">
+                            {% if item.question.q_media_audio_url or item.question.q_media_audio_file %}
+                                <div>
+                                    <span class="icon-media">&#128266;</span>
+                                    <audio controls>
+                                        <source src="{{ item.question.q_media_audio_file.url|default:item.question.q_media_audio_url }}" type="audio/mpeg">
+                                    </audio>
+                                </div>
+                            {% endif %}
+                            {% if item.question.q_media_video_url or item.question.q_media_video_file %}
+                                <div>
+                                    <span class="icon-media">&#128249;</span>
+                                    <video controls width="320">
+                                        <source src="{{ item.question.q_media_video_file.url|default:item.question.q_media_video_url }}" type="video/mp4">
+                                    </video>
+                                </div>
+                            {% endif %}
+                            {% if item.question.q_media_image_url or item.question.q_media_image_file %}
+                                <div>
+                                    <span class="icon-media">&#128247;</span>
+                                    <img src="{{ item.question.q_media_image_file.url|default:item.question.q_media_image_url }}" alt="média">
+                                </div>
+                            {% endif %}
+                            {% if item.question.q_media_texte %}
+                                <div>
+                                    <span class="icon-media">&#128196;</span>
+                                    <p>{{ item.question.q_media_texte }}</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+
+                    <h6>&#9655; {% trans "Réponse de l'utilisateur" %}</h6>
+                    <div class="user-response">
+                        {% if item.question.type_question in 'single,vrai_faux,multiple' %}
+                            <ul>
+                                {% for rep in item.selected_reponses %}
+                                    <li>{{ rep.texte }} {% if rep.est_correcte %}<span class="icon-check">&#10003;</span>{% endif %}</li>
+                                {% empty %}
+                                    <li><em>{% trans "Aucune réponse sélectionnée" %}</em></li>
+                                {% endfor %}
+                            </ul>
+                        {% elif item.question.type_question == 'texte_trous' or item.question.type_question == 'texte_libre' %}
+                            <pre>{{ item.reponse_utilisateur.texte_reponse|default:"<em>Non renseigné</em>" }}</pre>
+                        {% elif item.question.type_question in 'audio_reponse,video_reponse,image_reponse,fichier_reponse' %}
+                            {% if item.upload_fields.audio %}
+                                <div>
+                                    <span class="icon-media">&#128266;</span>
+                                    <audio controls><source src="{{ item.upload_fields.audio.url }}" type="audio/mpeg"></audio>
+                                </div>
+                            {% elif item.upload_fields.video %}
+                                <div>
+                                    <span class="icon-media">&#128249;</span>
+                                    <video controls width="320"><source src="{{ item.upload_fields.video.url }}" type="video/mp4"></video>
+                                </div>
+                            {% elif item.upload_fields.image %}
+                                <div>
+                                    <span class="icon-media">&#128247;</span>
+                                    <img src="{{ item.upload_fields.image.url }}" style="max-height:200px;">
+                                </div>
+                            {% elif item.upload_fields.fichier %}
+                                <div>
+                                    <span class="icon-media">&#128196;</span>
+                                    <a href="{{ item.upload_fields.fichier.url }}" target="_blank">{% trans "Télécharger le fichier" %}</a>
+                                </div>
+                            {% else %}
+                                <em>{% trans "Aucun fichier envoyé" %}</em>
+                            {% endif %}
+                        {% else %}
+                            <em>{% trans "Type non pris en charge pour l'affichage" %}</em>
+                        {% endif %}
+                    </div>
+
+                    <div class="points-input-group">
+                        <label for="points_{{ item.reponse_utilisateur.id }}">
+                            &#9733; {% trans "Points attribués (sur" %} {{ item.question.points }})
+                        </label>
+                        <input type="number" step="0.01" min="0" max="{{ item.question.points }}"
+                               name="points_{{ item.reponse_utilisateur.id }}"
+                               id="points_{{ item.reponse_utilisateur.id }}"
+                               value="{{ item.reponse_utilisateur.points_attribues|default:'' }}">
+                        <span class="text-muted">&#9432; {% trans "Laissez vide pour utiliser la notation automatique" %}</span>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>{% trans "Aucune question trouvée." %}</p>
+        {% endfor %}
+        
+        <div class="btn-group">
+            <button type="submit" class="btn-save">
+                <span>&#128190;</span> {% trans "Enregistrer les corrections" %}
+            </button>
+            <a href="{% url 'quiz:tentative_list' %}" class="btn-back">
+                <span>&#8592;</span> {% trans "Retour à la liste" %}
+            </a>
+        </div>
+    </form>
+</div>
 {% endblock %}
