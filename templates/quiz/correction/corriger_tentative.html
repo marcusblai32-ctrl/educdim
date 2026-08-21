@@ -44,7 +44,7 @@
                 {% if item.question.type_question in 'single,vrai_faux,multiple' %}
                     <ul>
                         {% for rep in item.selected_reponses %}
-                            <li>{{ rep.texte }} {% if rep.est_correcte %}✅{% endif %}</li>
+                            <li>{{ rep.texte }} {% if rep.est_correcte %}<span style="color:#28a745;">&#10003;</span>{% endif %}</li>
                         {% empty %}
                             <li><em>{% trans "Aucune réponse sélectionnée" %}</em></li>
                         {% endfor %}
@@ -69,21 +69,28 @@
 
                 <div class="mt-2">
                     <label for="points_{{ item.reponse_utilisateur.id }}">
-                        {% trans "Points attribués (sur" %} {{ item.question.points }})
+                        &#9733; {% trans "Points attribués (sur" %} {{ item.question.points }})
                     </label>
                     <input type="number" step="0.01" min="0" max="{{ item.question.points }}"
                            name="points_{{ item.reponse_utilisateur.id }}"
                            id="points_{{ item.reponse_utilisateur.id }}"
                            value="{{ item.reponse_utilisateur.points_attribues|default:'' }}"
                            class="form-control" style="width:120px; display:inline-block;">
-                    <span class="text-muted">{% trans "Laissez vide pour utiliser la notation automatique" %}</span>
+                    <span class="text-muted">&#9432; {% trans "Laissez vide pour utiliser la notation automatique" %}</span>
                 </div>
             </div>
         </div>
     {% empty %}
         <p>{% trans "Aucune question trouvée." %}</p>
     {% endfor %}
-    <button type="submit" class="btn btn-success">{% trans "Enregistrer les corrections" %}</button>
-    <a href="{% url 'quiz:tentative_list' %}" class="btn btn-secondary">{% trans "Retour à la liste" %}</a>
+    
+    <div style="display:flex; gap:10px; margin-top:20px; flex-wrap:wrap;">
+        <button type="submit" class="btn btn-success">
+            &#128190; {% trans "Enregistrer les corrections" %}
+        </button>
+        <a href="{% url 'quiz:tentative_list' %}" class="btn btn-secondary">
+            &#8592; {% trans "Retour à la liste des tentatives" %}
+        </a>
+    </div>
 </form>
 {% endblock %}
