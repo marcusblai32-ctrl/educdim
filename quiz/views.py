@@ -42,11 +42,16 @@ def take_quiz(request, tentative_pk):
     reponses_utilisateur = {
         ru.question_id: ru for ru in ReponseUtilisateur.objects.filter(tentative=tentative)
     }
+    
+    # Pase durée quiz la (an minit)
+    quiz_duree = tentative.quiz.duree_quiz if tentative.quiz.duree_quiz else 15
+    
     return render(request, 'quiz/take_quiz.html', {
         'tentative': tentative,
         'questions': questions,
         'total_questions': total_questions,
         'reponses_utilisateur': reponses_utilisateur,
+        'quiz_duree': quiz_duree,
     })
 
 
@@ -81,22 +86,10 @@ def submit_quiz(request, tentative_pk):
             elif question.type_question == 'texte_libre':
                 reponse_utilisateur.texte_reponse = request.POST.get(f'question_{question.id}_texte_libre', '').strip()
             elif question.type_question == 'audio_reponse':
-                # ===== BASE64 AUDIO =====
-                audio_blob = request.POST.get(f'question_{question.id}_audio_blob', '')
-                audio_filename = request.POST.get(f'question_{question.id}_audio_filename', '')
-                if audio_blob:
-                    try:
-                        format_part, base64_data = audio_blob.split(';base64,')
-                        audio_bytes = base64.b64decode(base64_data)
-                        reponse_utilisateur.audio_reponse.save(
-                            audio_filename,
-                            ContentFile(audio_bytes),
-                            save=False
-                        )
-                    except Exception as e:
-                        messages.error(request, f"Erreur audio: {str(e)}")
-                elif request.FILES.get(f'question_{question.id}_audio'):
+                if request.FILES.get(f'question_{question.id}_audio'):
                     reponse_utilisateur.audio_reponse = request.FILES[f'question_{question.id}_audio']
+                elif request.FILES.get(f'question_{question.id}_audio_upload'):
+                    reponse_utilisateur.audio_reponse = request.FILES[f'question_{question.id}_audio_upload']
             elif question.type_question == 'video_reponse':
                 if request.FILES.get(f'question_{question.id}_video'):
                     reponse_utilisateur.video_reponse = request.FILES[f'question_{question.id}_video']
