@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<h2>{% trans "Tentatives soumises" %}</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>{% trans "Utilisateur" %}</th>
+            <th>{% trans "Quiz" %}</th>
+            <th>{% trans "Score" %}</th>
+            <th>{% trans "Réussi" %}</th>
+            <th>{% trans "Soumis le" %}</th>
+            <th>{% trans "Action" %}</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for tentative in tentatives %}
+        <tr>
+            <td>{{ tentative.utilisateur.get_full_name }}</td>
+            <td>{{ tentative.quiz.titre }}</td>
+            <td>{{ tentative.score|default:"-" }}</td>
+            <td>{{ tentative.reussi|yesno:"✅,❌" }}</td>
+            <td>{{ tentative.date_soumission|date:"d/m/Y H:i" }}</td>
+            <td>
+                <a href="{% url 'quiz:corriger_tentative' tentative.pk %}" class="btn btn-sm btn-primary">
+                    {% trans "Corriger" %}
+                </a>
+            </td>
+        </tr>
+    {% empty %}
+        <tr><td colspan="6">{% trans "Aucune tentative soumise." %}</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
