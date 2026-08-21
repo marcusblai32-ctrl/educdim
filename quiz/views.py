@@ -132,12 +132,11 @@ def get_question_upload_type(request, question_id):
 def tentative_list(request):
     """Lis tout tentatives soumises."""
     tentatives = TentativeQuiz.objects.filter(date_soumission__isnull=False).select_related('utilisateur', 'quiz')
-    # Ou kapab ajoute filt si vle: quiz_id = request.GET.get('quiz') ...
     return render(request, 'quiz/correction/tentative_list.html', {'tentatives': tentatives})
 
 
 @staff_member_required
-def corriger_tentative(request, tentative_pk):
+def corriger_tentative_view(request, tentative_pk):  # <--- Non chanje
     """Koreksyon yon tentative espesifik."""
     tentative = get_object_or_404(TentativeQuiz, pk=tentative_pk, date_soumission__isnull=False)
     questions = tentative.quiz.questions.all().order_by('ordre')
