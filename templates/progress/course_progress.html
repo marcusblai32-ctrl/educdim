@@ -3,113 +3,477 @@
 
 {% block title %}{% trans "Progression" %} - {{ cours.titre }}{% endblock %}
 
+{% block extra_css %}
+<style>
+    .course-progress-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+    
+    .course-progress-header {
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 2px solid var(--border, #dee2e6);
+    }
+    
+    .course-progress-header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text, #212529);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 0;
+    }
+    
+    .course-progress-header h1 .icon {
+        color: var(--primary, #1a1a2e);
+    }
+    
+    .course-progress-header .subtitle {
+        color: var(--text-muted, #6c757d);
+        margin-top: 0.3rem;
+    }
+    
+    /* Overall Progress */
+    .overall-progress-card {
+        padding: 1.5rem;
+        background: var(--light, #f8f9fa);
+        border-radius: var(--radius, 8px);
+        margin-bottom: 2rem;
+        border: 1px solid var(--border, #dee2e6);
+    }
+    
+    .overall-progress-card .progress-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .overall-progress-card .progress-header h3 {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .overall-progress-card .progress-header h3 i {
+        color: var(--success, #28a745);
+    }
+    
+    .overall-progress-card .progress-percentage {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--primary, #1a1a2e);
+    }
+    
+    .overall-progress-card .progress-percentage.completed {
+        color: var(--success, #28a745);
+    }
+    
+    .overall-progress-card .progress-bar-big {
+        width: 100%;
+        height: 14px;
+        background: var(--border, #dee2e6);
+        border-radius: 50px;
+        overflow: hidden;
+    }
+    
+    .overall-progress-card .progress-bar-big .fill {
+        height: 100%;
+        border-radius: 50px;
+        transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        width: 0%;
+        background: linear-gradient(90deg, var(--primary, #1a1a2e), var(--info, #17a2b8));
+    }
+    
+    .overall-progress-card .progress-bar-big .fill.completed {
+        background: linear-gradient(90deg, var(--success, #28a745), var(--info, #17a2b8));
+    }
+    
+    /* Lessons List */
+    .lessons-section h2 {
+        font-size: 1.3rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .lessons-section h2 .count {
+        font-size: 0.8rem;
+        font-weight: 400;
+        color: var(--text-muted, #6c757d);
+    }
+    
+    .lesson-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        padding: 1rem 1.2rem;
+        background: var(--white, #ffffff);
+        border: 1px solid var(--border, #dee2e6);
+        border-radius: var(--radius, 8px);
+        border-left: 4px solid var(--border, #dee2e6);
+        transition: all 0.3s ease;
+        margin-bottom: 0.8rem;
+    }
+    
+    .lesson-item:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow, 0 4px 20px rgba(0,0,0,0.08));
+    }
+    
+    .lesson-item.completed {
+        border-left-color: var(--success, #28a745);
+        background: var(--success-bg-subtle, #f0fff4);
+    }
+    
+    .lesson-item.in-progress {
+        border-left-color: var(--warning, #ffc107);
+        background: var(--warning-bg-subtle, #fff8e1);
+    }
+    
+    .lesson-item .lesson-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    
+    .lesson-item .lesson-info .status-icon {
+        font-size: 1.4rem;
+        width: 1.8rem;
+        text-align: center;
+    }
+    
+    .lesson-item .lesson-info .status-icon.completed { color: var(--success, #28a745); }
+    .lesson-item .lesson-info .status-icon.in-progress { color: var(--warning, #ffc107); }
+    .lesson-item .lesson-info .status-icon.pending { color: var(--border, #dee2e6); }
+    
+    .lesson-item .lesson-info .lesson-title {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+    
+    .lesson-item .lesson-info .lesson-meta {
+        font-size: 0.8rem;
+        color: var(--text-muted, #6c757d);
+    }
+    
+    .lesson-item .lesson-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+    
+    .lesson-item .lesson-actions .badge {
+        padding: 0.3rem 0.8rem;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #fff;
+    }
+    
+    .lesson-item .lesson-actions .badge.success { background: var(--success, #28a745); }
+    .lesson-item .lesson-actions .badge.warning { background: var(--warning, #ffc107); color: #212529; }
+    .lesson-item .lesson-actions .badge.secondary { background: var(--secondary, #6c757d); }
+    
+    .lesson-item .lesson-actions .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.3rem 0.8rem;
+        border-radius: var(--radius, 4px);
+        font-size: 0.85rem;
+        text-decoration: none;
+        border: 1px solid transparent;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .lesson-item .lesson-actions .btn-outline {
+        background: transparent;
+        color: var(--text, #212529);
+        border-color: var(--border, #dee2e6);
+    }
+    
+    .lesson-item .lesson-actions .btn-outline:hover {
+        background: var(--light, #f8f9fa);
+        border-color: var(--primary, #1a1a2e);
+    }
+    
+    .lesson-item .lesson-actions .btn-success {
+        background: var(--success, #28a745);
+        color: #fff;
+        border-color: var(--success, #28a745);
+    }
+    
+    .lesson-item .lesson-actions .btn-success:hover {
+        background: var(--success-hover, #218838);
+        transform: scale(1.05);
+    }
+    
+    .lesson-item .lesson-actions .btn-success:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+    }
+    
+    /* Actions Footer */
+    .actions-footer {
+        margin-top: 2rem;
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border, #dee2e6);
+    }
+    
+    .actions-footer .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1.5rem;
+        border-radius: var(--radius, 4px);
+        font-size: 0.95rem;
+        text-decoration: none;
+        border: 1px solid transparent;
+        transition: all 0.3s ease;
+    }
+    
+    .actions-footer .btn-secondary {
+        background: var(--secondary, #6c757d);
+        color: #fff;
+    }
+    
+    .actions-footer .btn-secondary:hover {
+        background: var(--secondary-hover, #5a6268);
+        transform: translateY(-2px);
+    }
+    
+    .actions-footer .btn-primary {
+        background: var(--primary, #1a1a2e);
+        color: #fff;
+    }
+    
+    .actions-footer .btn-primary:hover {
+        background: var(--primary-hover, #2d2d4a);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(26, 26, 46, 0.3);
+    }
+    
+    .actions-footer .btn-success {
+        background: var(--success, #28a745);
+        color: #fff;
+    }
+    
+    .actions-footer .btn-success:hover {
+        background: var(--success-hover, #218838);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .course-progress-container {
+            padding: 1rem;
+        }
+        
+        .course-progress-header h1 {
+            font-size: 1.5rem;
+        }
+        
+        .overall-progress-card .progress-percentage {
+            font-size: 1.5rem;
+        }
+        
+        .lesson-item {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        
+        .lesson-item .lesson-actions {
+            justify-content: flex-start;
+        }
+        
+        .actions-footer {
+            flex-direction: column;
+        }
+        
+        .actions-footer .btn {
+            justify-content: center;
+            width: 100%;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .course-progress-container {
+            padding: 0.5rem;
+        }
+        
+        .overall-progress-card {
+            padding: 1rem;
+        }
+        
+        .lesson-item {
+            padding: 0.8rem;
+        }
+        
+        .lesson-item .lesson-info .lesson-title {
+            font-size: 0.9rem;
+        }
+    }
+    
+    /* Dark Mode */
+    [data-bs-theme="dark"] .overall-progress-card {
+        background: var(--dark, #2d2d2d);
+        border-color: var(--border, #444);
+    }
+    
+    [data-bs-theme="dark"] .lesson-item {
+        background: var(--dark, #2d2d2d);
+        border-color: var(--border, #444);
+    }
+    
+    [data-bs-theme="dark"] .lesson-item.completed {
+        background: var(--success-bg-subtle, #1a3a2a);
+    }
+    
+    [data-bs-theme="dark"] .lesson-item.in-progress {
+        background: var(--warning-bg-subtle, #3a3a1a);
+    }
+    
+    [data-bs-theme="dark"] .lesson-item .lesson-actions .btn-outline {
+        color: var(--text, #e0e0e0);
+        border-color: var(--border, #444);
+    }
+    
+    [data-bs-theme="dark"] .lesson-item .lesson-actions .btn-outline:hover {
+        background: var(--dark, #3a3a3a);
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="card" style="max-width: 900px; margin: 0 auto; padding: 2rem;">
-    <div class="course-progress-header" style="margin-bottom: 2rem;">
-        <h1 style="font-size: 2rem; font-weight: 700; color: var(--text, #212529);">
-            <i class="fas fa-chart-line" style="color: var(--primary, #1a1a2e);"></i>
+<div class="course-progress-container">
+    <!-- ===== HEADER ===== -->
+    <div class="course-progress-header">
+        <h1>
+            <i class="fas fa-chart-line icon"></i>
             {{ cours.titre }}
         </h1>
-        <p style="color: var(--text-muted, #6c757d);">
-            {% trans "Suivez votre progression dans ce cours" %}
+        <p class="subtitle">
+            <i class="fas fa-layer-group"></i> 
+            {{ lecons_data|length }} {% trans "leçons" %} · 
+            <span id="completedCount">{{ lecons_data|length_custom }}</span> {% trans "terminées" %}
         </p>
     </div>
 
     <!-- ===== PROGRES GLOBAL ===== -->
-    {% if progres_cours %}
-    <div class="overall-progress" style="margin-bottom: 2rem; padding: 1.5rem; background: var(--light, #f8f9fa); border-radius: var(--radius, 8px);">
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-            <div>
-                <h3 style="margin: 0; font-size: 1.1rem; font-weight: 600;">
-                    <i class="fas fa-circle-check" style="color: var(--success, #28a745);"></i>
-                    {% trans "Progression globale" %}
-                </h3>
-                <span style="font-size: 0.9rem; color: var(--text-muted, #6c757d);">
-                    {{ progres_cours.pourcentage|floatformat:0 }}% {% trans "terminé" %}
-                </span>
-            </div>
-            <span style="font-size: 2rem; font-weight: 700; color: var(--primary, #1a1a2e);">
+    <div class="overall-progress-card">
+        <div class="progress-header">
+            <h3>
+                <i class="fas fa-circle-check"></i>
+                {% trans "Progression globale" %}
+            </h3>
+            <span class="progress-percentage {% if progres_cours.est_termine %}completed{% endif %}" id="overallPercentage">
                 {{ progres_cours.pourcentage|floatformat:0 }}%
             </span>
         </div>
-        <!-- Progress Bar -->
-        <div style="width: 100%; height: 12px; background: var(--border, #dee2e6); border-radius: 50px; overflow: hidden; margin-top: 0.8rem;">
-            <div style="height: 100%; width: {{ progres_cours.pourcentage|floatformat:0 }}%; background: linear-gradient(90deg, var(--primary, #1a1a2e), var(--info, #17a2b8)); border-radius: 50px; transition: width 0.8s ease;"></div>
+        <div class="progress-bar-big">
+            <div class="fill {% if progres_cours.est_termine %}completed{% endif %}" 
+                 id="overallProgressFill"
+                 data-progress="{{ progres_cours.pourcentage|floatformat:0 }}"
+                 style="width: 0%;">
+            </div>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted, #6c757d); margin-top: 0.3rem;">
+            <span>0%</span>
+            <span>100%</span>
         </div>
     </div>
-    {% endif %}
 
     <!-- ===== LISTE LECONS ===== -->
-    <h2 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
-        <i class="fas fa-list-ul" style="color: var(--primary, #1a1a2e);"></i>
-        {% trans "Leçons" %}
-        <span style="font-size: 0.8rem; font-weight: 400; color: var(--text-muted, #6c757d);">
-            ({{ lecons_data|length }})
-        </span>
-    </h2>
+    <div class="lessons-section">
+        <h2>
+            <i class="fas fa-list-ul" style="color: var(--primary, #1a1a2e);"></i>
+            {% trans "Leçons" %}
+            <span class="count">({{ lecons_data|length }})</span>
+        </h2>
 
-    <div class="lessons-progress" style="display: flex; flex-direction: column; gap: 0.8rem;">
-        {% for item in lecons_data %}
-        <div class="lesson-item" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding: 1rem 1.2rem; background: var(--white, #ffffff); border: 1px solid var(--border, #dee2e6); border-radius: var(--radius, 8px); border-left: 4px solid 
-            {% if item.progres.statut == 'termine' %}var(--success, #28a745)
-            {% elif item.progres.statut == 'en_cours' %}var(--warning, #ffc107)
-            {% else %}var(--border, #dee2e6){% endif %};
-            transition: transform 0.2s, box-shadow 0.2s;">
-            
-            <div class="lesson-info" style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
-                <!-- Ikon selon statut -->
-                {% if item.progres.statut == 'termine' %}
-                    <i class="fas fa-check-circle" style="color: var(--success, #28a745); font-size: 1.4rem;"></i>
-                {% elif item.progres.statut == 'en_cours' %}
-                    <i class="fas fa-spinner" style="color: var(--warning, #ffc107); font-size: 1.4rem;"></i>
-                {% else %}
-                    <i class="fas fa-circle" style="color: var(--border, #dee2e6); font-size: 1.4rem;"></i>
-                {% endif %}
+        <div class="lessons-list" id="lessonsList">
+            {% for item in lecons_data %}
+            <div class="lesson-item {% if item.progres.statut == 'termine' %}completed{% elif item.progres.statut == 'en_cours' %}in-progress{% endif %}" 
+                 data-statut="{{ item.progres.statut }}">
                 
-                <div>
-                    <h4 style="margin: 0; font-size: 1rem; font-weight: 500;">
-                        {{ item.lecon.titre }}
-                    </h4>
-                    <span style="font-size: 0.8rem; color: var(--text-muted, #6c757d);">
-                        {{ item.lecon.module.unite.titre }} - {{ item.lecon.module.titre }}
+                <div class="lesson-info">
+                    <span class="status-icon 
+                        {% if item.progres.statut == 'termine' %}completed
+                        {% elif item.progres.statut == 'en_cours' %}in-progress
+                        {% else %}pending{% endif %}">
+                        {% if item.progres.statut == 'termine' %}
+                            <i class="fas fa-check-circle"></i>
+                        {% elif item.progres.statut == 'en_cours' %}
+                            <i class="fas fa-spinner fa-pulse"></i>
+                        {% else %}
+                            <i class="fas fa-circle"></i>
+                        {% endif %}
                     </span>
+                    
+                    <div>
+                        <h4 class="lesson-title">{{ item.lecon.titre }}</h4>
+                        <span class="lesson-meta">
+                            {{ item.lecon.module.unite.titre }} - {{ item.lecon.module.titre }}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="lesson-actions">
+                    <span class="badge 
+                        {% if item.progres.statut == 'termine' %}success
+                        {% elif item.progres.statut == 'en_cours' %}warning
+                        {% else %}secondary{% endif %}">
+                        {{ item.progres.get_statut_display }}
+                    </span>
+
+                    <a href="{% url 'courses:lesson_detail' item.lecon.pk %}" class="btn btn-outline">
+                        <i class="fas fa-eye"></i> {% trans "Voir" %}
+                    </a>
+
+                    {% if item.progres.statut != 'termine' %}
+                    <form method="post" action="{% url 'progress:mark_lecon_complete' item.lecon.pk %}" 
+                          class="complete-form" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success complete-btn">
+                            <i class="fas fa-check"></i> {% trans "Terminer" %}
+                        </button>
+                    </form>
+                    {% endif %}
                 </div>
             </div>
-
-            <div class="lesson-actions" style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                <!-- Badge statut -->
-                <span class="badge" style="padding: 0.3rem 0.8rem; border-radius: 50px; font-size: 0.75rem; font-weight: 600; background: 
-                    {% if item.progres.statut == 'termine' %}var(--success, #28a745)
-                    {% elif item.progres.statut == 'en_cours' %}var(--warning, #ffc107)
-                    {% else %}var(--secondary, #6c757d){% endif %};
-                    color: {% if item.progres.statut == 'termine' or item.progres.statut == 'en_cours' %}#fff{% else %}#fff{% endif %};">
-                    {{ item.progres.get_statut_display }}
-                </span>
-
-                <a href="{% url 'courses:lesson_detail' item.lecon.pk %}" class="btn btn-sm btn-outline" style="padding: 0.3rem 0.8rem; font-size: 0.85rem;">
-                    <i class="fas fa-eye"></i> {% trans "Voir" %}
-                </a>
-
-                {% if item.progres.statut != 'termine' %}
-                <form method="post" action="{% url 'progress:mark_lecon_complete' item.lecon.pk %}" style="display:inline;">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-sm btn-success" style="padding: 0.3rem 0.8rem; font-size: 0.85rem;">
-                        <i class="fas fa-check"></i> {% trans "Terminer" %}
-                    </button>
-                </form>
-                {% endif %}
+            {% empty %}
+            <div style="text-align: center; padding: 2rem; color: var(--text-muted, #6c757d);">
+                <i class="fas fa-book-open" style="font-size: 2rem; display: block; margin-bottom: 0.5rem;"></i>
+                {% trans "Aucune leçon disponible pour ce cours." %}
             </div>
+            {% endfor %}
         </div>
-        {% empty %}
-        <div style="text-align: center; padding: 2rem; color: var(--text-muted, #6c757d);">
-            <i class="fas fa-book-open" style="font-size: 2rem; display: block; margin-bottom: 0.5rem;"></i>
-            {% trans "Aucune leçon disponible pour ce cours." %}
-        </div>
-        {% endfor %}
     </div>
 
-    <!-- ===== BOUTON RETOUR ===== -->
-    <div style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+    <!-- ===== BOUTONS ===== -->
+    <div class="actions-footer">
         <a href="{% url 'progress:dashboard' %}" class="btn btn-secondary">
             <i class="fas fa-arrow-left"></i> {% trans "Retour au tableau de bord" %}
         </a>
@@ -117,7 +481,7 @@
             <i class="fas fa-book"></i> {% trans "Voir le cours" %}
         </a>
         {% if prochain_lecon %}
-        <a href="{% url 'courses:lesson_detail' prochain_lecon.pk %}" class="btn btn-success">
+        <a href="{% url 'courses:lesson_detail' prochain_lecon.pk %}" class="btn btn-success" id="continueBtn">
             <i class="fas fa-play"></i> {% trans "Continuer" %}
         </a>
         {% endif %}
@@ -125,21 +489,130 @@
 </div>
 {% endblock %}
 
-{% block extra_css %}
-<style>
-    .lesson-item:hover {
-        transform: translateY(-2px);
-        box-shadow: var(--shadow, 0 4px 20px rgba(0,0,0,0.08));
-    }
-    
-    @media (max-width: 768px) {
-        .lesson-item {
-            flex-direction: column;
-            align-items: stretch !important;
+{% block extra_js %}
+<script>
+    (function() {
+        'use strict';
+
+        // ============================================
+        // 1. PROGRESS BAR ANIMATION
+        // ============================================
+        function animateProgressBar() {
+            const fill = document.getElementById('overallProgressFill');
+            if (!fill) return;
+            
+            const progress = parseInt(fill.getAttribute('data-progress')) || 0;
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        setTimeout(function() {
+                            fill.style.width = progress + '%';
+                        }, 300);
+                        observer.disconnect();
+                    }
+                });
+            }, { threshold: 0.3 });
+            
+            observer.observe(fill);
         }
-        .lesson-actions {
-            justify-content: flex-start !important;
+
+        // ============================================
+        // 2. AJOUTE ANIMATION SOU BOUTON TERMINER
+        // ============================================
+        function setupCompleteButtons() {
+            const forms = document.querySelectorAll('.complete-form');
+            
+            forms.forEach(function(form) {
+                form.addEventListener('submit', function(e) {
+                    const btn = this.querySelector('.complete-btn');
+                    if (btn) {
+                        btn.disabled = true;
+                        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {% trans "Traitement..." %}';
+                    }
+                });
+            });
         }
-    }
-</style>
+
+        // ============================================
+        // 3. CONFIRMATION AVANT TERMINER
+        // ============================================
+        function setupConfirmDialog() {
+            const forms = document.querySelectorAll('.complete-form');
+            
+            forms.forEach(function(form) {
+                form.addEventListener('submit', function(e) {
+                    if (!confirm('{% trans "Êtes-vous sûr de vouloir terminer cette leçon?" %}')) {
+                        e.preventDefault();
+                        return false;
+                    }
+                });
+            });
+        }
+
+        // ============================================
+        // 4. UPDATE PROGRESS STATS
+        // ============================================
+        function updateProgressStats() {
+            const items = document.querySelectorAll('.lesson-item');
+            const completed = document.querySelectorAll('.lesson-item.completed');
+            const total = items.length;
+            
+            if (total > 0) {
+                const completedCount = completed.length;
+                const percentage = Math.round((completedCount / total) * 100);
+                
+                // Mete ajou pousantaj la
+                const percentageEl = document.getElementById('overallPercentage');
+                const fillEl = document.getElementById('overallProgressFill');
+                const countEl = document.getElementById('completedCount');
+                
+                if (percentageEl) {
+                    percentageEl.textContent = percentage + '%';
+                    if (percentage === 100) {
+                        percentageEl.classList.add('completed');
+                    }
+                }
+                
+                if (fillEl) {
+                    fillEl.style.width = percentage + '%';
+                    fillEl.setAttribute('data-progress', percentage);
+                    if (percentage === 100) {
+                        fillEl.classList.add('completed');
+                    }
+                }
+                
+                if (countEl) {
+                    countEl.textContent = completedCount;
+                }
+            }
+        }
+
+        // ============================================
+        // 5. INITIALIZATION
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            animateProgressBar();
+            setupCompleteButtons();
+            setupConfirmDialog();
+            updateProgressStats();
+        });
+
+        // Re-run when content changes
+        document.addEventListener('htmx:afterSwap', function() {
+            animateProgressBar();
+            setupCompleteButtons();
+            setupConfirmDialog();
+            updateProgressStats();
+        });
+        
+        document.addEventListener('turbo:load', function() {
+            animateProgressBar();
+            setupCompleteButtons();
+            setupConfirmDialog();
+            updateProgressStats();
+        });
+
+    })();
+</script>
 {% endblock %}
