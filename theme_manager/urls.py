@@ -6,7 +6,7 @@ app_name = 'theme_manager'
 urlpatterns = [
     path('css/', views.dynamic_css, name='dynamic_css'),
     path('preview/', views.theme_preview, name='preview'),
-    
+
     # ===== URL POU IMAJ YO =====
     path('logo/', views.theme_logo, name='theme_logo'),
     path('favicon/', views.theme_favicon, name='theme_favicon'),
