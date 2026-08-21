@@ -5,112 +5,238 @@
 
 {% block content %}
 <div class="card">
-  <h1>{{ quiz.titre }}</h1>
-  <p>{{ quiz.description }}</p>
-  <p><strong>{% trans "Score requis" %} :</strong> {{ quiz.pourcentage_reussite }}%</p>
-  <p><strong>{% trans "Cours" %} :</strong> {{ quiz.cours.titre }}</p>
+    <h1>{{ quiz.titre }}</h1>
+    <p>{{ quiz.description }}</p>
+    <p><strong>{% trans "Score requis" %} :</strong> {{ quiz.pourcentage_reussite }}%</p>
+    
+    <!-- ===== KORIJE: Afiche non kou a si li egziste ===== -->
+    <p><strong>{% trans "Cours" %} :</strong>
+        {% if quiz.cours %}
+            {{ quiz.cours.titre }}
+        {% elif quiz.module %}
+            {{ quiz.module.titre }}
+        {% elif quiz.lecon %}
+            {{ quiz.lecon.titre }}
+        {% else %}
+            <span style="color: var(--text-muted, #6c757d);">{% trans "Indépendant" %}</span>
+        {% endif %}
+    </p>
 
-  {% if deja_passe %}
-  <div class="alert alert-success">
-    <i class="fas fa-check-circle"></i>
-    {% trans "Vous avez déjà réussi ce quiz !" %}
-    <a href="{% url 'quiz:quiz_result' tentative_pk=tentatives.first.pk %}" class="btn btn-sm btn-outline">
-      {% trans "Voir mon résultat" %}
-    </a>
-  </div>
-  {% elif tentative_en_cours %}
-  <div class="alert alert-warning">
-    <i class="fas fa-clock"></i>
-    {% trans "Vous avez une tentative en cours." %}
-    <a href="{% url 'quiz:take_quiz' tentative_pk=tentative_en_cours.pk %}" class="btn btn-sm btn-primary">
-      <i class="fas fa-play"></i> {% trans "Continuer" %}
-    </a>
-  </div>
-  {% else %}
-  <a href="{% url 'quiz:start' quiz.pk %}" class="btn btn-primary btn-lg">
-    <i class="fas fa-play"></i> {% trans "Commencer le quiz" %}
-  </a>
-  {% endif %}
+    {% if deja_passe %}
+        <div class="alert alert-success">
+            <i class="fas fa-check-circle"></i>
+            {% trans "Vous avez déjà réussi ce quiz !" %}
+            <a href="{% url 'quiz:quiz_result' tentative_pk=tentatives.first.pk %}" class="btn btn-sm btn-outline">
+                {% trans "Voir mon résultat" %}
+            </a>
+        </div>
+    {% elif tentative_en_cours %}
+        <div class="alert alert-warning">
+            <i class="fas fa-clock"></i>
+            {% trans "Vous avez une tentative en cours." %}
+            <a href="{% url 'quiz:take_quiz' tentative_pk=tentative_en_cours.pk %}" class="btn btn-sm btn-primary">
+                <i class="fas fa-play"></i> {% trans "Continuer" %}
+            </a>
+        </div>
+    {% else %}
+        <a href="{% url 'quiz:start' quiz.pk %}" class="btn btn-primary btn-lg">
+            <i class="fas fa-play"></i> {% trans "Commencer le quiz" %}
+        </a>
+    {% endif %}
 
-  <hr>
+    <hr>
 
-  <h3>{% trans "Vos tentatives" %}</h3>
-  {% if tentatives %}
-  <div class="tentatives-list">
-    {% for tentative in tentatives %}
-    <div class="tentative-item">
-      <span class="tentative-date">{{ tentative.date_debut|date:"d/m/Y H:i" }}</span>
-      {% if tentative.date_soumission %}
-      <span class="badge {% if tentative.reussi %}badge-success{% else %}badge-danger{% endif %}">
-              {% trans "Score" %} : {{ tentative.score|floatformat:0 }}%
-              {% if tentative.reussi %} ✅ {% trans "Réussi" %}{% else %} ❌ {% trans "Échoué" %}{% endif %}
-            </span>
-      <a href="{% url 'quiz:quiz_result' tentative_pk=tentative.pk %}" class="btn btn-sm btn-outline">
-        <i class="fas fa-eye"></i> {% trans "Voir" %}
-      </a>
-      {% else %}
-      <span class="badge badge-warning">{% trans "En cours" %}</span>
-      <a href="{% url 'quiz:take_quiz' tentative_pk=tentative.pk %}" class="btn btn-sm btn-primary">
-        <i class="fas fa-play"></i> {% trans "Continuer" %}
-      </a>
-      {% endif %}
+    <h3>{% trans "Vos tentatives" %}</h3>
+    {% if tentatives %}
+        <div class="tentatives-list">
+            {% for tentative in tentatives %}
+                <div class="tentative-item">
+                    <span class="tentative-date">{{ tentative.date_debut|date:"d/m/Y H:i" }}</span>
+                    {% if tentative.date_soumission %}
+                        <span class="badge {% if tentative.reussi %}badge-success{% else %}badge-danger{% endif %}">
+                            {% trans "Score" %} : {{ tentative.score|floatformat:0 }}%
+                            {% if tentative.reussi %} 
+                                <i class="fas fa-check"></i> {% trans "Réussi" %}
+                            {% else %} 
+                                <i class="fas fa-times"></i> {% trans "Échoué" %}
+                            {% endif %}
+                        </span>
+                        <a href="{% url 'quiz:quiz_result' tentative_pk=tentative.pk %}" class="btn btn-sm btn-outline">
+                            <i class="fas fa-eye"></i> {% trans "Voir" %}
+                        </a>
+                    {% else %}
+                        <span class="badge badge-warning">
+                            <i class="fas fa-spinner fa-pulse"></i> {% trans "En cours" %}
+                        </span>
+                        <a href="{% url 'quiz:take_quiz' tentative_pk=tentative.pk %}" class="btn btn-sm btn-primary">
+                            <i class="fas fa-play"></i> {% trans "Continuer" %}
+                        </a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p><i class="fas fa-info-circle" style="color: var(--text-muted, #6c757d);"></i> {% trans "Aucune tentative." %}</p>
+    {% endif %}
+
+    <!-- ===== KORIJE: Bouton retou ===== -->
+    <div style="margin-top:1.5rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+        {% if quiz.cours %}
+            <a href="{% url 'courses:course_detail' quiz.cours.pk %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> {% trans "Retour au cours" %}
+            </a>
+        {% elif quiz.module %}
+            <a href="{% url 'courses:module_detail' quiz.module.pk %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> {% trans "Retour au module" %}
+            </a>
+        {% elif quiz.lecon %}
+            <a href="{% url 'courses:lesson_detail' quiz.lecon.pk %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> {% trans "Retour à la leçon" %}
+            </a>
+        {% else %}
+            <a href="{% url 'courses:course_list' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> {% trans "Retour aux cours" %}
+            </a>
+        {% endif %}
     </div>
-    {% endfor %}
-  </div>
-  {% else %}
-  <p>{% trans "Aucune tentative." %}</p>
-  {% endif %}
-
-  <div style="margin-top:1.5rem;">
-    <a href="{% url 'courses:course_detail' quiz.cours.pk %}" class="btn btn-secondary">
-      <i class="fas fa-arrow-left"></i> {% trans "Retour au cours" %}
-    </a>
-  </div>
 </div>
 
 <style>
-  .tentatives-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-  }
+    .tentatives-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+    }
 
-  .tentative-item {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 0.5rem 1rem;
-    background: var(--body-bg);
-    border-radius: var(--radius);
-    flex-wrap: wrap;
-  }
-
-  .tentative-date {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    flex: 1;
-  }
-
-  .tentative-item .badge {
-    font-size: 0.8rem;
-    padding: 0.3rem 0.8rem;
-  }
-
-  .tentative-item .btn {
-    font-size: 0.75rem;
-    padding: 0.2rem 0.6rem;
-  }
-
-  @media (max-width: 480px) {
     .tentative-item {
-      flex-direction: column;
-      align-items: stretch;
-      text-align: center;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.5rem 1rem;
+        background: var(--body-bg);
+        border-radius: var(--radius);
+        flex-wrap: wrap;
     }
+
+    .tentative-date {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        flex: 1;
+    }
+
     .tentative-item .badge {
-      align-self: center;
+        font-size: 0.8rem;
+        padding: 0.3rem 0.8rem;
     }
-  }
+
+    .tentative-item .btn {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.6rem;
+    }
+
+    .alert {
+        padding: 1rem;
+        border-radius: var(--radius);
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .alert-success {
+        background: rgba(40, 167, 69, 0.1);
+        border: 1px solid var(--success, #28a745);
+        color: var(--success, #28a745);
+    }
+
+    .alert-warning {
+        background: rgba(255, 193, 7, 0.1);
+        border: 1px solid var(--warning, #ffc107);
+        color: var(--warning, #ffc107);
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1.2rem;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background: var(--primary, #1a1a2e);
+        color: #fff;
+    }
+    .btn-primary:hover {
+        background: var(--primary-hover, #2d2d4a);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(26, 26, 46, 0.3);
+    }
+
+    .btn-secondary {
+        background: var(--secondary, #6c757d);
+        color: #fff;
+    }
+    .btn-secondary:hover {
+        background: var(--secondary-hover, #5a6268);
+        transform: translateY(-2px);
+    }
+
+    .btn-outline {
+        background: transparent;
+        color: var(--text, #212529);
+        border: 1px solid var(--border, #dee2e6);
+    }
+    .btn-outline:hover {
+        background: var(--light, #f8f9fa);
+        border-color: var(--primary, #1a1a2e);
+    }
+
+    .btn-lg {
+        padding: 0.8rem 2rem;
+        font-size: 1.1rem;
+    }
+
+    .btn-sm {
+        padding: 0.3rem 0.8rem;
+        font-size: 0.8rem;
+    }
+
+    .badge {
+        padding: 0.3rem 0.8rem;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #fff;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    .badge-success { background: var(--success, #28a745); }
+    .badge-danger { background: var(--danger, #dc3545); }
+    .badge-warning { background: var(--warning, #ffc107); color: #212529; }
+
+    @media (max-width: 480px) {
+        .tentative-item {
+            flex-direction: column;
+            align-items: stretch;
+            text-align: center;
+        }
+        .tentative-item .badge {
+            align-self: center;
+        }
+        .alert {
+            flex-direction: column;
+            text-align: center;
+        }
+    }
 </style>
 {% endblock %}
