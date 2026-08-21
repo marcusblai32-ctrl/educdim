@@ -6,18 +6,24 @@ from django.db import DatabaseError, OperationalError, ProgrammingError
 
 logger = logging.getLogger(__name__)
 
+
 class MaintenanceMiddleware(MiddlewareMixin):
+    """Middleware pou jere mode maintenance"""
+    
     def process_request(self, request):
         try:
+            # Egzante wout admin, static, media
             if request.path.startswith('/dp/') or request.path.startswith('/static/') or request.path.startswith('/media/'):
                 return None
 
+            # Egzante staff yo
             try:
                 if request.user.is_authenticated and request.user.is_staff:
                     return None
             except Exception:
                 logger.exception("Error checking user staff status")
 
+            # Chèche tema aktif
             try:
                 theme = Theme.objects.filter(actif=True).first()
             except (ProgrammingError, OperationalError, DatabaseError):
