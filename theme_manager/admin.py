@@ -2,12 +2,13 @@ from django.contrib import admin
 from django.utils.html import format_html
 from .models import Theme
 
+
 @admin.register(Theme)
 class ThemeAdmin(admin.ModelAdmin):
     list_display = ('nom', 'actif', 'maintenance_mode', 'evenement_actif')
     list_filter = ('actif', 'maintenance_mode', 'evenement_actif')
     search_fields = ('nom', 'site_name', 'meta_description')
-    
+
     fieldsets = (
         ('Informations générales', {
             'fields': ('nom', 'site_name', 'site_description', 'actif')
@@ -23,7 +24,8 @@ class ThemeAdmin(admin.ModelAdmin):
             'fields': ('primary', 'primary_hover', 'secondary', 'secondary_hover')
         }),
         ("Couleurs d'état", {
-            'fields': ('success', 'success_hover', 'danger', 'danger_hover', 'warning', 'warning_hover', 'info', 'info_hover')
+            'fields': ('success', 'success_hover', 'danger', 'danger_hover', 
+                      'warning', 'warning_hover', 'info', 'info_hover')
         }),
         ('Fond et texte', {
             'fields': ('body_bg', 'text_color', 'text_muted', 'white', 'light', 'dark', 'border')
@@ -61,8 +63,10 @@ class ThemeAdmin(admin.ModelAdmin):
         ('Section Témoignages', {
             'fields': (
                 'testimonials_tag', 'testimonials_title', 'testimonials_highlight', 'testimonials_end',
-                'testimonial1_text', 'testimonial1_name', 'testimonial1_job', 'testimonial1_avatar', 'testimonial1_stars',
-                'testimonial2_text', 'testimonial2_name', 'testimonial2_job', 'testimonial2_avatar', 'testimonial2_stars'
+                'testimonial1_text', 'testimonial1_name', 'testimonial1_job', 
+                'testimonial1_avatar', 'testimonial1_stars',
+                'testimonial2_text', 'testimonial2_name', 'testimonial2_job', 
+                'testimonial2_avatar', 'testimonial2_stars'
             )
         }),
         ('Page - À propos', {
@@ -70,7 +74,8 @@ class ThemeAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
         ('Page - Contact', {
-            'fields': ('contact_page_title', 'contact_page_subtitle', 'contact_phone', 'contact_address', 'contact_hours', 'contact_map_embed'),
+            'fields': ('contact_page_title', 'contact_page_subtitle', 'contact_phone', 
+                      'contact_address', 'contact_hours', 'contact_map_embed'),
             'classes': ('collapse',)
         }),
         ('Page - Conditions générales', {
