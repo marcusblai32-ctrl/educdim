@@ -4,91 +4,91 @@
 {% block title %}{% if theme %}{{ theme.about_title|default:_("À propos") }} - {{ theme.site_name }}{% else %}{% trans "À propos" %} - EducDim{% endif %}{% endblock %}
 
 {% block content %}
-<div class="about-container">
-    <div class="about-header">
-        <h1 class="about-title">
-            {% if theme %}{{ theme.about_title|default:_("À propos de nous") }}{% else %}{% trans "À propos de nous" %}{% endif %}
-        </h1>
-        <p class="about-subtitle">
-            {% trans "Découvrez notre mission, nos valeurs et notre engagement pour l'éducation" %}
-        </p>
-    </div>
-
-    <div class="about-grid">
-        <div class="about-content">
-            {% if theme and theme.about_content %}
-                {{ theme.about_content|safe }}
-            {% else %}
-                <p>{% trans "EduPlatform se yon platform e-learning ki fèt pou ede moun aprann san limit." %}</p>
-                <p>{% trans "Misyon nou se bay tout moun aksè a edikasyon kalite." %}</p>
-                <p>{% trans "Nou kwè ke tout moun merite opòtinite pou aprann epi grandi, kèlkeswa kote yo ye oswa sitiyasyon yo." %}</p>
-                
-                <div class="about-values">
-                    <div class="value-item">
-                        <span class="value-icon">&#128218;</span>
-                        <div>
-                            <h4>{% trans "Accessibilité" %}</h4>
-                            <p>{% trans "Edikasyon pou tout moun, tout kote" %}</p>
-                        </div>
-                    </div>
-                    <div class="value-item">
-                        <span class="value-icon">&#128640;</span>
-                        <div>
-                            <h4>{% trans "Innovation" %}</h4>
-                            <p>{% trans "Toujou ap avanse ak teknoloji" %}</p>
-                        </div>
-                    </div>
-                    <div class="value-item">
-                        <span class="value-icon">&#128170;</span>
-                        <div>
-                            <h4>{% trans "Qualité" %}</h4>
-                            <p>{% trans "Kontni ki prepare pa ekspè" %}</p>
-                        </div>
-                    </div>
-                </div>
-            {% endif %}
+<div class="card" style="max-width:1200px; margin:0 auto; padding:2rem;">
+    <div class="about-container">
+        <div class="about-header">
+            <h1 class="about-title">
+                {% if theme %}{{ theme.about_title|default:_("À propos de nous") }}{% else %}{% trans "À propos de nous" %}{% endif %}
+            </h1>
+            <p class="about-subtitle">
+                {% trans "Découvrez notre mission, nos valeurs et notre engagement pour l'éducation" %}
+            </p>
         </div>
 
-        <div class="about-image-wrapper">
-            {% if theme and theme.get_about_image %}
-                <img src="{{ theme.get_about_image }}" alt="{{ theme.about_title|default:_('À propos') }}" class="about-image">
-            {% elif theme and theme.about_image %}
-                <img src="{{ theme.about_image.url }}" alt="{{ theme.about_title|default:_('À propos') }}" class="about-image">
-            {% else %}
-                <div class="about-image-placeholder">
-                    <span class="placeholder-icon">&#128218;</span>
-                    <p>{% trans "Image illustrative" %}</p>
-                </div>
-            {% endif %}
-        </div>
-    </div>
+        <div class="about-grid">
+            <div class="about-content">
+                {% if theme and theme.about_content %}
+                    {{ theme.about_content|safe }}
+                {% else %}
+                    <p>{% trans "EduPlatform se yon platform e-learning ki fèt pou ede moun aprann san limit." %}</p>
+                    <p>{% trans "Misyon nou se bay tout moun aksè a edikasyon kalite." %}</p>
+                    <p>{% trans "Nou kwè ke tout moun merite opòtinite pou aprann epi grandi, kèlkeswa kote yo ye oswa sitiyasyon yo." %}</p>
+                    
+                    <div class="about-values">
+                        <div class="value-item">
+                            <span class="value-icon">&#128218;</span>
+                            <div>
+                                <h4>{% trans "Accessibilité" %}</h4>
+                                <p>{% trans "Edikasyon pou tout moun, tout kote" %}</p>
+                            </div>
+                        </div>
+                        <div class="value-item">
+                            <span class="value-icon">&#128640;</span>
+                            <div>
+                                <h4>{% trans "Innovation" %}</h4>
+                                <p>{% trans "Toujou ap avanse ak teknoloji" %}</p>
+                            </div>
+                        </div>
+                        <div class="value-item">
+                            <span class="value-icon">&#128170;</span>
+                            <div>
+                                <h4>{% trans "Qualité" %}</h4>
+                                <p>{% trans "Kontni ki prepare pa ekspè" %}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
 
-    {% if theme and theme.about_text %}
-    <div class="about-footer">
-        <div class="about-footer-content">
-            <p>{{ theme.about_text }}</p>
+            <div class="about-image-wrapper">
+                {% if theme and theme.get_about_image %}
+                    <img src="{{ theme.get_about_image }}" alt="{{ theme.about_title|default:_('À propos') }}" class="about-image">
+                {% elif theme and theme.about_image %}
+                    <img src="{{ theme.about_image.url }}" alt="{{ theme.about_title|default:_('À propos') }}" class="about-image">
+                {% else %}
+                    <div class="about-image-placeholder">
+                        <span class="placeholder-icon">&#128218;</span>
+                        <p>{% trans "Image illustrative" %}</p>
+                    </div>
+                {% endif %}
+            </div>
         </div>
+
+        {% if theme and theme.about_text %}
+        <div class="about-footer">
+            <div class="about-footer-content">
+                <p>{{ theme.about_text }}</p>
+            </div>
+        </div>
+        {% endif %}
     </div>
-    {% endif %}
 </div>
 {% endblock %}
 
 {% block extra_css %}
 <style>
     .about-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 2rem 1rem;
+        width: 100%;
     }
 
     .about-header {
         text-align: center;
-        margin-bottom: 3rem;
+        margin-bottom: 2.5rem;
     }
 
     .about-title {
-        font-size: 2.5rem;
-        font-weight: 800;
+        font-size: 2.2rem;
+        font-weight: 700;
         color: var(--text, #212529);
         margin-bottom: 0.5rem;
         position: relative;
@@ -98,50 +98,51 @@
     .about-title::after {
         content: '';
         position: absolute;
-        bottom: -8px;
+        bottom: -6px;
         left: 50%;
         transform: translateX(-50%);
-        width: 60px;
-        height: 4px;
+        width: 50px;
+        height: 3px;
         background: var(--primary, #1a1a2e);
         border-radius: 2px;
     }
 
     .about-subtitle {
-        font-size: 1.1rem;
+        font-size: 1rem;
         color: var(--text-muted, #6c757d);
-        margin-top: 1rem;
+        margin-top: 0.75rem;
     }
 
     .about-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 3rem;
+        gap: 2.5rem;
         align-items: start;
+        margin-top: 1rem;
     }
 
     .about-content {
-        font-size: 1.05rem;
+        font-size: 1rem;
         line-height: 1.8;
         color: var(--text, #212529);
     }
 
     .about-content p {
-        margin-bottom: 1.2rem;
+        margin-bottom: 1rem;
     }
 
     .about-values {
-        margin-top: 2rem;
+        margin-top: 1.5rem;
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        gap: 0.75rem;
     }
 
     .value-item {
         display: flex;
-        align-items: flex-start;
+        align-items: center;
         gap: 1rem;
-        padding: 1rem;
+        padding: 0.75rem 1rem;
         background: var(--light, #f8f9fa);
         border-radius: var(--radius, 8px);
         border-left: 4px solid var(--primary, #1a1a2e);
@@ -154,21 +155,21 @@
     }
 
     .value-icon {
-        font-size: 2rem;
+        font-size: 1.8rem;
         flex-shrink: 0;
         line-height: 1;
     }
 
     .value-item h4 {
-        margin: 0 0 0.25rem 0;
-        font-size: 1.1rem;
+        margin: 0 0 0.15rem 0;
+        font-size: 1rem;
         font-weight: 600;
         color: var(--text, #212529);
     }
 
     .value-item p {
         margin: 0;
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         color: var(--text-muted, #6c757d);
     }
 
@@ -186,7 +187,7 @@
     }
 
     .about-image:hover {
-        transform: scale(1.02);
+        transform: scale(1.01);
     }
 
     .about-image-placeholder {
@@ -203,14 +204,14 @@
     }
 
     .placeholder-icon {
-        font-size: 4rem;
+        font-size: 3.5rem;
         margin-bottom: 0.5rem;
         opacity: 0.5;
     }
 
     .about-footer {
-        margin-top: 3rem;
-        padding-top: 2rem;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
         border-top: 1px solid var(--border, #dee2e6);
     }
 
@@ -219,19 +220,23 @@
         margin: 0 auto;
         text-align: center;
         color: var(--text-muted, #6c757d);
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         line-height: 1.6;
     }
 
     /* Responsive */
     @media (max-width: 768px) {
+        .card {
+            padding: 1.5rem !important;
+        }
+
         .about-grid {
             grid-template-columns: 1fr;
-            gap: 2rem;
+            gap: 1.5rem;
         }
 
         .about-title {
-            font-size: 2rem;
+            font-size: 1.8rem;
         }
 
         .about-image-wrapper {
@@ -239,12 +244,12 @@
         }
 
         .about-image {
-            max-height: 300px;
+            max-height: 250px;
             object-fit: cover;
         }
 
         .value-item {
-            padding: 0.75rem;
+            padding: 0.6rem 0.75rem;
         }
 
         .value-icon {
@@ -253,8 +258,8 @@
     }
 
     @media (max-width: 480px) {
-        .about-container {
-            padding: 1rem;
+        .card {
+            padding: 1rem !important;
         }
 
         .about-title {
@@ -262,11 +267,11 @@
         }
 
         .about-subtitle {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
         .about-content {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
     }
 
