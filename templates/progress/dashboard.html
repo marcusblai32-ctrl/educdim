@@ -11,7 +11,7 @@
         margin: 0 auto;
         padding: 2rem 1rem;
     }
-    
+
     .dashboard-header {
         display: flex;
         justify-content: space-between;
@@ -22,7 +22,7 @@
         padding-bottom: 1.5rem;
         border-bottom: 2px solid #dee2e6;
     }
-    
+
     .dashboard-header h1 {
         font-size: 2rem;
         font-weight: 700;
@@ -32,22 +32,22 @@
         gap: 0.75rem;
         margin: 0;
     }
-    
+
     .dashboard-header h1 .icon {
         color: #1a1a2e;
         font-size: 2.2rem;
     }
-    
+
     .dashboard-subtitle {
         color: #6c757d;
         margin: 0;
         font-size: 0.95rem;
     }
-    
+
     .dashboard-subtitle i {
         margin-right: 0.3rem;
     }
-    
+
     /* ===== STATS CARDS ===== */
     .stats-grid {
         display: grid;
@@ -55,7 +55,7 @@
         gap: 1rem;
         margin-bottom: 2rem;
     }
-    
+
     .stat-card {
         background: #ffffff;
         padding: 1.2rem 1rem;
@@ -65,35 +65,35 @@
         transition: all 0.3s ease;
         cursor: default;
     }
-    
+
     .stat-card:hover {
         transform: translateY(-4px);
         box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     }
-    
+
     .stat-card .stat-number {
         font-size: 2rem;
         font-weight: 700;
         line-height: 1.2;
     }
-    
+
     .stat-card .stat-label {
         font-size: 0.85rem;
         color: #6c757d;
         margin-top: 0.3rem;
     }
-    
+
     .stat-card.primary .stat-number { color: #1a1a2e; }
     .stat-card.success .stat-number { color: #28a745; }
     .stat-card.warning .stat-number { color: #ffc107; }
     .stat-card.info .stat-number { color: #17a2b8; }
-    
+
     /* ===== COURSE ITEMS ===== */
     .course-list {
         display: grid;
         gap: 1.5rem;
     }
-    
+
     .course-item {
         background: #ffffff;
         padding: 1.5rem;
@@ -103,7 +103,7 @@
         position: relative;
         overflow: hidden;
     }
-    
+
     .course-item::before {
         content: '';
         position: absolute;
@@ -114,16 +114,16 @@
         background: #1a1a2e;
         transition: width 0.3s ease;
     }
-    
+
     .course-item:hover {
         transform: translateY(-3px);
         box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     }
-    
+
     .course-item.completed::before {
         background: #28a745;
     }
-    
+
     .course-item .course-header {
         display: flex;
         justify-content: space-between;
@@ -132,43 +132,43 @@
         gap: 0.5rem;
         margin-bottom: 0.8rem;
     }
-    
+
     .course-item .course-title {
         margin: 0;
         font-size: 1.1rem;
         font-weight: 600;
     }
-    
+
     .course-item .course-title a {
         color: #212529;
         text-decoration: none;
         transition: color 0.2s;
     }
-    
+
     .course-item .course-title a:hover {
         color: #1a1a2e;
     }
-    
+
     .course-item .course-meta {
         font-size: 0.8rem;
         color: #6c757d;
     }
-    
+
     .course-item .course-meta i {
         margin-right: 0.3rem;
     }
-    
+
     .course-item .course-percentage {
         font-weight: 700;
         font-size: 1.3rem;
         color: #1a1a2e;
         white-space: nowrap;
     }
-    
+
     .course-item .course-percentage.completed {
         color: #28a745;
     }
-    
+
     /* ===== PROGRESS BAR ===== */
     .progress-bar-wrapper {
         width: 100%;
@@ -178,38 +178,38 @@
         overflow: hidden;
         margin-bottom: 1rem;
     }
-    
+
     .progress-bar-wrapper .progress-fill {
         height: 100%;
         border-radius: 50px;
         transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
         width: 0%;
     }
-    
+
     .progress-bar-wrapper .progress-fill.primary {
         background: linear-gradient(90deg, #1a1a2e, #17a2b8);
     }
-    
+
     .progress-bar-wrapper .progress-fill.success {
         background: linear-gradient(90deg, #28a745, #17a2b8);
     }
-    
+
     .progress-bar-wrapper .progress-fill.pulse {
         animation: pulse 2s ease-in-out infinite;
     }
-    
+
     @keyframes pulse {
         0%, 100% { opacity: 1; }
         50% { opacity: 0.6; }
     }
-    
+
     /* ===== BOUTONS ===== */
     .course-actions {
         display: flex;
         gap: 0.5rem;
         flex-wrap: wrap;
     }
-    
+
     .course-actions .btn {
         display: inline-flex;
         align-items: center;
@@ -223,43 +223,43 @@
         border: 1px solid transparent;
         cursor: pointer;
     }
-    
+
     .course-actions .btn-primary {
         background: #1a1a2e;
         color: #fff;
         border-color: #1a1a2e;
     }
-    
+
     .course-actions .btn-primary:hover {
         background: #2d2d4a;
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(26, 26, 46, 0.3);
     }
-    
+
     .course-actions .btn-outline {
         background: transparent;
         color: #212529;
         border-color: #dee2e6;
     }
-    
+
     .course-actions .btn-outline:hover {
         background: #f8f9fa;
         border-color: #1a1a2e;
         color: #1a1a2e;
     }
-    
+
     .course-actions .btn-success {
         background: #28a745;
         color: #fff;
         border-color: #28a745;
     }
-    
+
     .course-actions .btn-success:hover {
         background: #218838;
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
     }
-    
+
     .badge-status {
         display: inline-flex;
         align-items: center;
@@ -270,12 +270,12 @@
         font-weight: 600;
         color: #fff;
     }
-    
+
     .badge-status.success { background: #28a745; }
     .badge-status.warning { background: #ffc107; color: #212529; }
     .badge-status.secondary { background: #6c757d; }
     .badge-status.primary { background: #1a1a2e; }
-    
+
     .btn-completed {
         background: #28a745;
         color: #fff;
@@ -287,30 +287,30 @@
         align-items: center;
         gap: 0.4rem;
     }
-    
+
     /* ===== EMPTY STATE ===== */
     .empty-state {
         text-align: center;
         padding: 4rem 2rem;
     }
-    
+
     .empty-state .empty-icon {
         font-size: 4rem;
         color: #6c757d;
         display: block;
         margin-bottom: 1rem;
     }
-    
+
     .empty-state h3 {
         color: #6c757d;
         margin-bottom: 0.5rem;
     }
-    
+
     .empty-state p {
         color: #6c757d;
         margin-bottom: 1.5rem;
     }
-    
+
     .empty-state .btn-primary {
         display: inline-flex;
         align-items: center;
@@ -323,61 +323,61 @@
         font-size: 1.1rem;
         transition: all 0.3s;
     }
-    
+
     .empty-state .btn-primary:hover {
         background: #2d2d4a;
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(26, 26, 46, 0.3);
     }
-    
+
     /* ===== RESPONSIVE ===== */
     @media (max-width: 768px) {
         .dashboard-header {
             flex-direction: column;
             align-items: flex-start;
         }
-        
+
         .dashboard-header h1 {
             font-size: 1.5rem;
         }
-        
+
         .stats-grid {
             grid-template-columns: repeat(2, 1fr);
         }
-        
+
         .course-item .course-header {
             flex-direction: column;
         }
-        
+
         .course-actions {
             flex-direction: column;
             width: 100%;
         }
-        
+
         .course-actions .btn {
             justify-content: center;
             width: 100%;
         }
     }
-    
+
     @media (max-width: 480px) {
         .dashboard-container {
             padding: 1rem 0.5rem;
         }
-        
+
         .stats-grid {
             grid-template-columns: 1fr 1fr;
             gap: 0.5rem;
         }
-        
+
         .stat-card {
             padding: 0.8rem 0.5rem;
         }
-        
+
         .stat-card .stat-number {
             font-size: 1.5rem;
         }
-        
+
         .course-item {
             padding: 1rem;
         }
@@ -593,6 +593,19 @@
 
         // ===== INIT =====
         document.addEventListener('DOMContentLoaded', function() {
+            animateNumbers();
+            animateProgressBars();
+            setupHoverEffects();
+        });
+
+        // Re-run when content changes
+        document.addEventListener('htmx:afterSwap', function() {
+            animateNumbers();
+            animateProgressBars();
+            setupHoverEffects();
+        });
+        
+        document.addEventListener('turbo:load', function() {
             animateNumbers();
             animateProgressBars();
             setupHoverEffects();
