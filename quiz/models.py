@@ -29,11 +29,19 @@ class Quiz(models.Model):
         blank=True,
         verbose_name="Leçon"
     )
-    
+
     titre = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     publie = models.BooleanField(default=False)
     pourcentage_reussite = models.PositiveIntegerField(default=70)
+    
+    # ===== NOUVO: Durée du quiz en minutes (admin defini) =====
+    duree_quiz = models.PositiveIntegerField(
+        default=15,
+        verbose_name="Durée du quiz (minutes)",
+        help_text="Temps limite pour compléter le quiz en minutes."
+    )
+    
     created_at = models.DateTimeField(auto_now_add=True)
 
     # Medya miltip
@@ -67,7 +75,7 @@ class Quiz(models.Model):
             self.media_image_url, self.media_image_file,
             self.media_texte
         ])
-    
+
     def get_cours_parent(self):
         """Retounen kou paran an kèlkeswa relasyon an."""
         if self.cours:
@@ -77,7 +85,7 @@ class Quiz(models.Model):
         elif self.lecon:
             return self.lecon.module.unite.cours
         return None
-    
+
     def get_niveau(self):
         """Retounen nivo quiz la."""
         if self.cours:
@@ -87,6 +95,10 @@ class Quiz(models.Model):
         elif self.lecon:
             return "lecon"
         return "inconnu"
+    
+    def get_duree_seconds(self):
+        """Retounen durée quiz la an segonn."""
+        return self.duree_quiz * 60
 
 
 class Question(models.Model):
