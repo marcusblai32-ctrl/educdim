@@ -10,10 +10,13 @@
         <h1 style="font-size: 1.8rem; font-weight: 800; font-family: var(--font-display);">{{ tentative.quiz.titre }}</h1>
         <div style="display: flex; justify-content: center; align-items: center; gap: 1.5rem; flex-wrap: wrap; margin-top: 0.8rem;">
             <span style="color: var(--text-muted); font-size: 0.9rem;">
-                <i class="fas fa-clock"></i> {% trans "Temps restant" %}: <span id="timer" style="font-weight:700; color:var(--primary);">--:--</span>
+                <i class="fas fa-clock"></i> {% trans "Temps restant" %}: <span id="timer" style="font-weight:700; color:var(--primary); font-size:1.1rem;">--:--</span>
             </span>
             <span style="color: var(--text-muted); font-size: 0.9rem;">
                 <i class="fas fa-list"></i> {{ total_questions }} {% trans "questions" %}
+            </span>
+            <span id="answeredCount" style="color: var(--text-muted); font-size: 0.9rem;">
+                <i class="fas fa-check-circle" style="color:var(--success);"></i> <span id="answeredNum">0</span> {% trans "répondues" %}
             </span>
         </div>
         <div class="quiz-progress" style="margin-top: 1.5rem; max-width: 600px; margin-left: auto; margin-right: auto;">
@@ -184,30 +187,79 @@
 </div>
 
 <script>
-// ============================================
-// TIMER QUIZ
-// ============================================
 let quizTimeLeft = {{ quiz_duree }} * 60;
 let quizTimer = null;
+
 function startQuizTimer() {
     const timerEl = document.getElementById('timer');
     const initialMins = Math.floor(quizTimeLeft / 60);
     const initialSecs = quizTimeLeft % 60;
     timerEl.textContent = String(initialMins).padStart(2, '0') + ':' + String(initialSecs).padStart(2, '0');
+    
     quizTimer = setInterval(function() {
         quizTimeLeft--;
-        if (quizTimeLeft <= 0) { clearInterval(quizTimer); timerEl.textContent = '00:00'; document.getElementById('quizForm').submit(); return; }
+        
+        if (quizTimeLeft <= 0) {
+            clearInterval(quizTimer);
+            timerEl.textContent = '00:00';
+            timerEl.style.color = 'var(--danger)';
+            
+            // Banner wouj
+            const banner = document.createElement('div');
+            banner.style.cssText = 'position:fixed; top:0; left:0; right:0; background:var(--danger); color:#fff; padding:1rem; text-align:center; font-weight:800; z-index:9999; font-size:1.1rem;';
+            banner.textContent = '{% trans "Temps écoulé ! Soumission automatique en cours..." %}';
+            document.body.appendChild(banner);
+            
+            // Soumèt apre 1.5 segonn
+            setTimeout(function() {
+                document.getElementById('quizForm').submit();
+            }, 1500);
+            return;
+        }
+        
         const mins = String(Math.floor(quizTimeLeft / 60)).padStart(2, '0');
         const secs = String(quizTimeLeft % 60).padStart(2, '0');
         timerEl.textContent = mins + ':' + secs;
-        if (quizTimeLeft <= 60) { timerEl.style.color = 'var(--danger)'; }
-        else if (quizTimeLeft <= 120) { timerEl.style.color = 'var(--warning)'; }
+        
+        if (quizTimeLeft <= 10) {
+            timerEl.style.color = 'var(--danger)';
+            timerEl.style.fontWeight = '800';
+            timerEl.style.animation = 'timerPulse 1s infinite';
+        } else if (quizTimeLeft <= 60) {
+            timerEl.style.color = 'var(--danger)';
+            timerEl.style.fontWeight = '700';
+        } else if (quizTimeLeft <= 120) {
+            timerEl.style.color = 'var(--warning)';
+            timerEl.style.fontWeight = '700';
+        }
     }, 1000);
 }
 
-// ============================================
-// ANREJISTREMAN VWA — AK DIAGNOSTIK
-// ============================================
+function updateAnsweredCount() {
+    const slides = document.querySelectorAll('.question-slide');
+    let answered = 0;
+    
+    slides.forEach(function(slide) {
+        const radios = slide.querySelectorAll('input[type="radio"]:checked');
+        const checkboxes = slide.querySelectorAll('input[type="checkbox"]:checked');
+        const textInputs = slide.querySelectorAll('input[type="text"], textarea');
+        const fileInputs = slide.querySelectorAll('input[type="file"]');
+        
+        let isAnswered = false;
+        
+        if (radios.length > 0) isAnswered = true;
+        if (checkboxes.length > 0) isAnswered = true;
+        
+        textInputs.forEach(function(input) { if (input.value.trim() !== '') isAnswered = true; });
+        fileInputs.forEach(function(input) { if (input.files.length > 0) isAnswered = true; });
+        
+        if (isAnswered) answered++;
+    });
+    
+    const answeredNum = document.getElementById('answeredNum');
+    if (answeredNum) answeredNum.textContent = answered;
+}
+
 let mediaRecorders = {};
 let audioChunks = {};
 let isRecording = {};
@@ -222,68 +274,44 @@ function detectTouchDevice() {
 }
 
 async function startRecording(questionId) {
-    console.log('=== START RECORDING Q' + questionId + ' ===');
-    
     const btnRecord = document.getElementById('btnRecord_' + questionId);
     const statusEl = document.getElementById('recordStatus_' + questionId);
     const recorderContainer = document.getElementById('voiceRecorder_' + questionId);
     const waveEl = document.getElementById('recordingWave_' + questionId);
     const timerEl = document.getElementById('recordingTimer_' + questionId);
     
-    if (!btnRecord) { console.error('Bouton pa jwenn'); return; }
-    if (isRecording[questionId]) { console.log('Deja anrejistre'); return; }
+    if (!btnRecord || isRecording[questionId]) return;
     
-    if (!window.MediaRecorder) {
-        statusEl.textContent = 'Navigatè pa sipòte MediaRecorder';
-        return;
-    }
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        statusEl.textContent = 'Navigatè pa sipòte getUserMedia';
+    if (!window.MediaRecorder || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        statusEl.textContent = '{% trans "Votre navigateur ne supporte pas l\'enregistrement audio." %}';
+        statusEl.style.color = 'var(--warning)';
         return;
     }
     
     try {
-        console.log('Mande pèmisyon mic...');
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        console.log('✅ Pèmisyon aksepte!');
-        
         currentStreams[questionId] = stream;
         audioChunks[questionId] = [];
         
         let mimeType = '';
         const options = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4'];
-        for (const type of options) {
-            if (MediaRecorder.isTypeSupported(type)) { mimeType = type; break; }
-        }
+        for (const type of options) { if (MediaRecorder.isTypeSupported(type)) { mimeType = type; break; } }
         
         mediaRecorders[questionId] = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream);
         
-        mediaRecorders[questionId].ondataavailable = function(e) {
-            if (e.data.size > 0) audioChunks[questionId].push(e.data);
-        };
+        mediaRecorders[questionId].ondataavailable = function(e) { if (e.data.size > 0) audioChunks[questionId].push(e.data); };
         
         mediaRecorders[questionId].onstop = function() {
-            console.log('Anrejistreman kanpe');
             const blob = new Blob(audioChunks[questionId], { type: mediaRecorders[questionId].mimeType || 'audio/webm' });
             const file = new File([blob], 'enregistrement_q' + questionId + '_' + Date.now() + '.webm', { type: blob.type });
-            
-            try {
-                const dataTransfer = new DataTransfer();
-                dataTransfer.items.add(file);
-                document.getElementById('audioFile_' + questionId).files = dataTransfer.files;
-            } catch (dtErr) {}
-            
+            try { const dataTransfer = new DataTransfer(); dataTransfer.items.add(file); document.getElementById('audioFile_' + questionId).files = dataTransfer.files; } catch (dtErr) {}
             const previewEl = document.getElementById('audioPreview_' + questionId);
             previewEl.src = URL.createObjectURL(blob);
             previewEl.style.display = 'block';
-            
-            if (currentStreams[questionId]) {
-                currentStreams[questionId].getTracks().forEach(track => track.stop());
-                currentStreams[questionId] = null;
-            }
+            if (currentStreams[questionId]) { currentStreams[questionId].getTracks().forEach(track => track.stop()); currentStreams[questionId] = null; }
+            updateAnsweredCount();
         };
         
-        console.log('Kòmanse anrejistreman...');
         mediaRecorders[questionId].start();
         isRecording[questionId] = true;
         
@@ -292,7 +320,7 @@ async function startRecording(questionId) {
         waveEl.style.display = 'flex';
         timerEl.style.display = 'block';
         recorderContainer.style.borderColor = 'var(--danger)';
-        statusEl.textContent = 'Enregistrement en cours...';
+        statusEl.textContent = '{% trans "Enregistrement en cours..." %}';
         statusEl.style.color = 'var(--danger)';
         
         recordingSeconds[questionId] = 0;
@@ -304,13 +332,8 @@ async function startRecording(questionId) {
             if (recordingSeconds[questionId] >= MAX_RECORDING_SECONDS) stopRecording(questionId);
         }, 1000);
         
-        console.log('✅ TOUT OK!');
-        
     } catch (err) {
-        console.error('❌ ERÈ:', err.name, err.message);
-        if (err.name === 'NotAllowedError') statusEl.textContent = 'Pèmisyon refize. Ale nan paramèt navigatè a.';
-        else if (err.name === 'NotFoundError') statusEl.textContent = 'Pa gen mic trovè.';
-        else statusEl.textContent = 'Erè: ' + err.message;
+        statusEl.textContent = '{% trans "Impossible d\'accéder au microphone." %}';
         statusEl.style.color = 'var(--danger)';
     }
 }
@@ -328,7 +351,7 @@ function stopRecording(questionId) {
         if (waveEl) waveEl.style.display = 'none';
         if (timerEl) timerEl.style.display = 'none';
         if (recorderContainer) { recorderContainer.style.borderColor = 'var(--primary)'; recorderContainer.style.background = 'transparent'; }
-        if (statusEl) { statusEl.textContent = 'Enregistrement terminé !'; statusEl.style.color = 'var(--success)'; }
+        if (statusEl) { statusEl.textContent = '{% trans "Enregistrement terminé !" %}'; statusEl.style.color = 'var(--success)'; }
         if (recordingTimers[questionId]) { clearInterval(recordingTimers[questionId]); recordingTimers[questionId] = null; }
     }
 }
@@ -351,13 +374,12 @@ function initRecordButtons() {
     });
 }
 
-// ============================================
-// PAGINATION + INIT
-// ============================================
 document.addEventListener('DOMContentLoaded', function() {
     detectTouchDevice();
     startQuizTimer();
     initRecordButtons();
+    updateAnsweredCount();
+    
     const slides = document.querySelectorAll('.question-slide');
     const totalSlides = slides.length;
     const prevBtn = document.getElementById('prevBtn');
@@ -368,6 +390,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const currentQuestionNum = document.getElementById('currentQuestionNum');
     const quizDots = document.querySelectorAll('.quiz-dot');
     let currentSlide = 0;
+    
     function updateSlide() {
         slides.forEach(function(slide, index) { slide.style.display = index === currentSlide ? 'block' : 'none'; });
         const percent = ((currentSlide + 1) / totalSlides) * 100;
@@ -382,11 +405,19 @@ document.addEventListener('DOMContentLoaded', function() {
         if (currentSlide === 0) prevBtn.style.display = 'none'; else prevBtn.style.display = 'inline-flex';
         if (currentSlide === totalSlides - 1) { nextBtn.style.display = 'none'; submitBtn.style.display = 'inline-flex'; }
         else { nextBtn.style.display = 'inline-flex'; submitBtn.style.display = 'none'; }
+        updateAnsweredCount();
     }
+    
+    // Update count lè w reponn
+    document.querySelectorAll('.option-input, .form-control').forEach(function(input) {
+        input.addEventListener('change', updateAnsweredCount);
+        input.addEventListener('input', updateAnsweredCount);
+    });
+    
     nextBtn.addEventListener('click', function() { if (currentSlide < totalSlides - 1) { currentSlide++; updateSlide(); } });
     prevBtn.addEventListener('click', function() { if (currentSlide > 0) { currentSlide--; updateSlide(); } });
     quizDots.forEach(function(dot) { dot.addEventListener('click', function() { currentSlide = parseInt(this.getAttribute('data-dot')) - 1; updateSlide(); }); });
-    submitBtn.addEventListener('click', function(e) { if (!confirm("{% trans 'Êtes-vous sûr de vouloir soumettre ce quiz ?' %}")) e.preventDefault(); });
+    submitBtn.addEventListener('click', function(e) { if (!confirm("{% trans 'Êtes-vous sûr de vouloir soumettre ce quiz ? Les questions non répondues auront 0 point.' %}")) e.preventDefault(); });
     updateSlide();
 });
 </script>
@@ -396,6 +427,7 @@ document.addEventListener('DOMContentLoaded', function() {
 .quiz-dot:hover { transform: scale(1.3) !important; }
 .question-slide { animation: fadeUp 0.3s ease; }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes timerPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 .btn-record {
     width: 80px; height: 80px; border-radius: 50%;
     background: var(--danger); color: #fff; border: none;
@@ -404,7 +436,7 @@ document.addEventListener('DOMContentLoaded', function() {
     box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
     touch-action: none; -webkit-touch-callout: none;
     -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
-    -webkit-tap-highlight-color: transparent; -ms-touch-action: none;
+    -webkit-tap-highlight-color: transparent;
 }
 .btn-record:hover { transform: scale(1.05); }
 .btn-record:active { transform: scale(0.95); }
