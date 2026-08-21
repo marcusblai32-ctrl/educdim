@@ -1466,3 +1466,150 @@ footer {
         align-items: flex-start;
     }
 }
+
+
+/* ============================================
+   GLOBAL FILE INPUT STYLES
+   ============================================ */
+
+/* --- Style pou tout input[type="file"] --- */
+input[type="file"] {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 14px 20px;
+    background: var(--bs-light, #f8f9fa);
+    border: 2px dashed var(--bs-border-color, #ced4da);
+    border-radius: var(--bs-border-radius, 8px);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 15px;
+    color: var(--bs-body-color, #495057);
+    min-height: 56px;
+    line-height: 1.5;
+}
+
+/* --- Hover --- */
+input[type="file"]:hover {
+    background: var(--bs-gray-200, #e9ecef);
+    border-color: var(--bs-primary, #007bff);
+}
+
+/* --- Focus --- */
+input[type="file"]:focus {
+    outline: 2px solid var(--bs-primary, #007bff);
+    outline-offset: 2px;
+}
+
+/* --- Aktive --- */
+input[type="file"]:active {
+    transform: scale(0.98);
+}
+
+/* --- File name display (pou sel input la) --- */
+input[type="file"]::file-selector-button {
+    display: none;
+}
+
+/* --- Nouvo style san file-selector-button --- */
+input[type="file"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/* --- Kòm input file a pa ka customize fasilman, nou kreye yon pseudo-element --- */
+input[type="file"]::before {
+    content: '\1F4C4  Choisir un fichier';
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    padding: 14px 20px;
+    background: inherit;
+    border-radius: inherit;
+    pointer-events: none;
+    box-sizing: border-box;
+}
+
+/* --- Lè gen fichier --- */
+input[type="file"]:valid::before {
+    content: '\1F4C4  Fichier sélectionné';
+    border-color: var(--bs-success, #28a745);
+    background: var(--bs-success-bg-subtle, #f0fff4);
+    color: var(--bs-success, #28a745);
+}
+
+/* --- Lè gen fichier ak valè --- */
+input[type="file"][data-has-file] {
+    border-color: var(--bs-success, #28a745);
+    background: var(--bs-success-bg-subtle, #f0fff4);
+}
+
+input[type="file"][data-has-file]::before {
+    content: '\1F4C4  ' attr(data-file-name);
+    border-color: var(--bs-success, #28a745);
+    background: var(--bs-success-bg-subtle, #f0fff4);
+    color: var(--bs-success, #28a745);
+}
+
+/* --- Erè --- */
+input[type="file"][data-error] {
+    border-color: var(--bs-danger, #dc3545);
+    background: var(--bs-danger-bg-subtle, #fff5f5);
+}
+
+input[type="file"][data-error]::before {
+    border-color: var(--bs-danger, #dc3545);
+    background: var(--bs-danger-bg-subtle, #fff5f5);
+    color: var(--bs-danger, #dc3545);
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    input[type="file"] {
+        padding: 12px 15px;
+        font-size: 14px;
+        min-height: 48px;
+    }
+    
+    input[type="file"]::before {
+        padding: 12px 15px;
+    }
+}
+
+/* --- Dark Mode --- */
+[data-bs-theme="dark"] input[type="file"] {
+    background: var(--bs-dark, #2d2d2d);
+    border-color: var(--bs-border-color, #444);
+    color: var(--bs-body-color, #e0e0e0);
+}
+
+[data-bs-theme="dark"] input[type="file"]:hover {
+    background: var(--bs-gray-800, #3a3a3a);
+    border-color: var(--bs-primary, #007bff);
+}
+
+[data-bs-theme="dark"] input[type="file"][data-has-file] {
+    border-color: var(--bs-success, #28a745);
+    background: var(--bs-success-bg-subtle, #1a3a2a);
+}
+
+[data-bs-theme="dark"] input[type="file"][data-has-file]::before {
+    border-color: var(--bs-success, #28a745);
+    background: var(--bs-success-bg-subtle, #1a3a2a);
+    color: var(--bs-success, #28a745);
+}
+
+[data-bs-theme="dark"] input[type="file"][data-error] {
+    border-color: var(--bs-danger, #dc3545);
+    background: var(--bs-danger-bg-subtle, #3a1a1a);
+}
+
+[data-bs-theme="dark"] input[type="file"][data-error]::before {
+    border-color: var(--bs-danger, #dc3545);
+    background: var(--bs-danger-bg-subtle, #3a1a1a);
+    color: var(--bs-danger, #dc3545);
+}
