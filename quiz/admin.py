@@ -39,7 +39,7 @@ class QuizAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
     )
-    
+
     def get_niveau_display(self, obj):
         niveau = obj.get_niveau()
         labels = {'cours': '📚 Cours', 'module': '📖 Module', 'lecon': '📝 Leçon', 'inconnu': '❓ Inconnu'}
