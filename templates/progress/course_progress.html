@@ -5,19 +5,18 @@
 
 {% block extra_css %}
 <style>
-    /* ===== STYLES ===== */
     .course-progress-container {
         max-width: 900px;
         margin: 0 auto;
         padding: 2rem 1rem;
     }
-    
+
     .course-progress-header {
         margin-bottom: 2rem;
         padding-bottom: 1.5rem;
         border-bottom: 2px solid #dee2e6;
     }
-    
+
     .course-progress-header h1 {
         font-size: 2rem;
         font-weight: 700;
@@ -27,17 +26,16 @@
         gap: 0.75rem;
         margin: 0;
     }
-    
+
     .course-progress-header h1 .icon {
         color: #1a1a2e;
     }
-    
+
     .course-progress-header .subtitle {
         color: #6c757d;
         margin-top: 0.3rem;
     }
-    
-    /* ===== OVERALL PROGRESS ===== */
+
     .overall-progress-card {
         padding: 1.5rem;
         background: #f8f9fa;
@@ -45,7 +43,7 @@
         margin-bottom: 2rem;
         border: 1px solid #dee2e6;
     }
-    
+
     .overall-progress-card .progress-header {
         display: flex;
         justify-content: space-between;
@@ -54,7 +52,7 @@
         gap: 1rem;
         margin-bottom: 0.8rem;
     }
-    
+
     .overall-progress-card .progress-header h3 {
         margin: 0;
         font-size: 1.1rem;
@@ -63,21 +61,21 @@
         align-items: center;
         gap: 0.5rem;
     }
-    
+
     .overall-progress-card .progress-header h3 i {
         color: #28a745;
     }
-    
+
     .overall-progress-card .progress-percentage {
         font-size: 2rem;
         font-weight: 700;
         color: #1a1a2e;
     }
-    
+
     .overall-progress-card .progress-percentage.completed {
         color: #28a745;
     }
-    
+
     .overall-progress-card .progress-bar-big {
         width: 100%;
         height: 14px;
@@ -85,7 +83,7 @@
         border-radius: 50px;
         overflow: hidden;
     }
-    
+
     .overall-progress-card .progress-bar-big .fill {
         height: 100%;
         border-radius: 50px;
@@ -93,12 +91,11 @@
         width: 0%;
         background: linear-gradient(90deg, #1a1a2e, #17a2b8);
     }
-    
+
     .overall-progress-card .progress-bar-big .fill.completed {
         background: linear-gradient(90deg, #28a745, #17a2b8);
     }
-    
-    /* ===== LESSONS LIST ===== */
+
     .lessons-section h2 {
         font-size: 1.3rem;
         font-weight: 600;
@@ -107,13 +104,13 @@
         gap: 0.5rem;
         margin-bottom: 1.5rem;
     }
-    
+
     .lessons-section h2 .count {
         font-size: 0.8rem;
         font-weight: 400;
         color: #6c757d;
     }
-    
+
     .lesson-item {
         display: flex;
         justify-content: space-between;
@@ -128,57 +125,57 @@
         transition: all 0.3s ease;
         margin-bottom: 0.8rem;
     }
-    
+
     .lesson-item:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     }
-    
+
     .lesson-item.completed {
         border-left-color: #28a745;
         background: #f0fff4;
     }
-    
+
     .lesson-item.in-progress {
         border-left-color: #ffc107;
         background: #fff8e1;
     }
-    
+
     .lesson-item .lesson-info {
         display: flex;
         align-items: center;
         gap: 1rem;
         flex-wrap: wrap;
     }
-    
+
     .lesson-item .lesson-info .status-icon {
         font-size: 1.4rem;
         width: 1.8rem;
         text-align: center;
     }
-    
+
     .lesson-item .lesson-info .status-icon.completed { color: #28a745; }
     .lesson-item .lesson-info .status-icon.in-progress { color: #ffc107; }
     .lesson-item .lesson-info .status-icon.pending { color: #dee2e6; }
-    
+
     .lesson-item .lesson-info .lesson-title {
         margin: 0;
         font-size: 1rem;
         font-weight: 500;
     }
-    
+
     .lesson-item .lesson-info .lesson-meta {
         font-size: 0.8rem;
         color: #6c757d;
     }
-    
+
     .lesson-item .lesson-actions {
         display: flex;
         align-items: center;
         gap: 0.5rem;
         flex-wrap: wrap;
     }
-    
+
     .lesson-item .lesson-actions .badge {
         padding: 0.3rem 0.8rem;
         border-radius: 50px;
@@ -186,11 +183,11 @@
         font-weight: 600;
         color: #fff;
     }
-    
+
     .lesson-item .lesson-actions .badge.success { background: #28a745; }
     .lesson-item .lesson-actions .badge.warning { background: #ffc107; color: #212529; }
     .lesson-item .lesson-actions .badge.secondary { background: #6c757d; }
-    
+
     .lesson-item .lesson-actions .btn {
         display: inline-flex;
         align-items: center;
@@ -203,36 +200,35 @@
         transition: all 0.3s ease;
         cursor: pointer;
     }
-    
+
     .lesson-item .lesson-actions .btn-outline {
         background: transparent;
         color: #212529;
         border-color: #dee2e6;
     }
-    
+
     .lesson-item .lesson-actions .btn-outline:hover {
         background: #f8f9fa;
         border-color: #1a1a2e;
     }
-    
+
     .lesson-item .lesson-actions .btn-success {
         background: #28a745;
         color: #fff;
         border-color: #28a745;
     }
-    
+
     .lesson-item .lesson-actions .btn-success:hover {
         background: #218838;
         transform: scale(1.05);
     }
-    
+
     .lesson-item .lesson-actions .btn-success:disabled {
         opacity: 0.5;
         cursor: not-allowed;
         transform: none;
     }
-    
-    /* ===== ACTIONS FOOTER ===== */
+
     .actions-footer {
         margin-top: 2rem;
         display: flex;
@@ -241,7 +237,7 @@
         padding-top: 1.5rem;
         border-top: 1px solid #dee2e6;
     }
-    
+
     .actions-footer .btn {
         display: inline-flex;
         align-items: center;
@@ -253,39 +249,39 @@
         border: 1px solid transparent;
         transition: all 0.3s ease;
     }
-    
+
     .actions-footer .btn-secondary {
         background: #6c757d;
         color: #fff;
     }
-    
+
     .actions-footer .btn-secondary:hover {
         background: #5a6268;
         transform: translateY(-2px);
     }
-    
+
     .actions-footer .btn-primary {
         background: #1a1a2e;
         color: #fff;
     }
-    
+
     .actions-footer .btn-primary:hover {
         background: #2d2d4a;
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(26, 26, 46, 0.3);
     }
-    
+
     .actions-footer .btn-success {
         background: #28a745;
         color: #fff;
     }
-    
+
     .actions-footer .btn-success:hover {
         background: #218838;
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
     }
-    
+
     @media (max-width: 768px) {
         .course-progress-container { padding: 1rem; }
         .course-progress-header h1 { font-size: 1.5rem; }
@@ -295,7 +291,7 @@
         .actions-footer { flex-direction: column; }
         .actions-footer .btn { justify-content: center; width: 100%; }
     }
-    
+
     @media (max-width: 480px) {
         .course-progress-container { padding: 0.5rem; }
         .overall-progress-card { padding: 1rem; }
@@ -433,19 +429,16 @@
     (function() {
         'use strict';
 
-        // ===== UPDATE COMPLETED COUNT =====
         function updateStats() {
             const items = document.querySelectorAll('.lesson-item');
             const completed = document.querySelectorAll('.lesson-item.completed');
             const total = items.length;
             
-            // Update completed count
             const countEl = document.getElementById('completedCount');
             if (countEl) {
                 countEl.textContent = completed.length;
             }
             
-            // Update percentage
             if (total > 0) {
                 const percentage = Math.round((completed.length / total) * 100);
                 const percentageEl = document.getElementById('overallPercentage');
@@ -472,7 +465,6 @@
             }
         }
 
-        // ===== PROGRESS BAR ANIMATION =====
         function animateProgressBar() {
             const fill = document.getElementById('overallProgressFill');
             if (!fill) return;
@@ -493,7 +485,6 @@
             observer.observe(fill);
         }
 
-        // ===== CONFIRMATION =====
         function setupConfirmDialog() {
             document.querySelectorAll('.complete-form').forEach(function(form) {
                 form.addEventListener('submit', function(e) {
@@ -505,7 +496,6 @@
             });
         }
 
-        // ===== BUTTON LOADING =====
         function setupCompleteButtons() {
             document.querySelectorAll('.complete-form').forEach(function(form) {
                 form.addEventListener('submit', function(e) {
@@ -518,7 +508,6 @@
             });
         }
 
-        // ===== INIT =====
         document.addEventListener('DOMContentLoaded', function() {
             animateProgressBar();
             setupConfirmDialog();
