@@ -39,7 +39,6 @@
             {% for question in questions %}
             <div class="question-slide" data-question="{{ forloop.counter }}" style="{% if not forloop.first %}display: none;{% endif %}">
                 <div class="card" style="padding: 2rem; margin: 0;">
-
                     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem;">
                         <h3 style="font-size: 1.1rem; font-weight: 700; margin: 0; font-family: var(--font-display);">
                             <span style="background: var(--grad-brand); color: #fff; border-radius: 50%; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.9rem; margin-right: 0.5rem;">{{ forloop.counter }}</span>
@@ -48,30 +47,21 @@
                         </h3>
                         <span class="badge badge-secondary">{{ question.get_type_question_display }}</span>
                     </div>
-
                     <p style="font-size: 1.05rem; margin-bottom: 1rem; font-weight: 500;">{{ question.texte }}</p>
 
                     {% if question.has_media %}
                     <div style="background: var(--glass-soft); padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1rem;">
-                        {% if question.q_media_titre %}
-                        <p style="font-weight: 600; margin-bottom: 0.3rem;">{{ question.q_media_titre }}</p>
-                        {% endif %}
+                        {% if question.q_media_titre %}<p style="font-weight: 600; margin-bottom: 0.3rem;">{{ question.q_media_titre }}</p>{% endif %}
                         {% if question.q_media_audio_url or question.q_media_audio_file %}
-                        <audio controls style="width: 100%;">
-                            <source src="{{ question.q_media_audio_url|default:question.q_media_audio_file.url }}" type="audio/mpeg">
-                        </audio>
+                        <audio controls style="width: 100%;"><source src="{{ question.q_media_audio_url|default:question.q_media_audio_file.url }}" type="audio/mpeg"></audio>
                         {% endif %}
                         {% if question.q_media_video_url or question.q_media_video_file %}
-                        <video controls style="width: 100%; max-width: 500px; border-radius: var(--radius-sm);">
-                            <source src="{{ question.q_media_video_url|default:question.q_media_video_file.url }}" type="video/mp4">
-                        </video>
+                        <video controls style="width: 100%; max-width: 500px; border-radius: var(--radius-sm);"><source src="{{ question.q_media_video_url|default:question.q_media_video_file.url }}" type="video/mp4"></video>
                         {% endif %}
                         {% if question.q_media_image_url or question.q_media_image_file %}
                         <img src="{{ question.q_media_image_url|default:question.q_media_image_file.url }}" alt="{{ question.q_media_titre }}" style="max-width: 100%; max-height: 250px; border-radius: var(--radius-sm);">
                         {% endif %}
-                        {% if question.q_media_texte %}
-                        <p style="margin-top: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">{{ question.q_media_texte }}</p>
-                        {% endif %}
+                        {% if question.q_media_texte %}<p style="margin-top: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">{{ question.q_media_texte }}</p>{% endif %}
                     </div>
                     {% endif %}
 
@@ -157,9 +147,7 @@
                         <p style="font-weight: 600;">{% trans "Téléchargez votre fichier réponse" %}</p>
                         <input type="file" name="question_{{ question.id }}_fichier" accept=".pdf,.doc,.docx,.txt" class="form-control" style="margin-top: 0.5rem;">
                     </div>
-
                     {% endif %}
-
                 </div>
             </div>
             {% endfor %}
@@ -187,239 +175,200 @@
 </div>
 
 <script>
-let quizTimeLeft = {{ quiz_duree }} * 60;
-let quizTimer = null;
+(function() {
+    "use strict";
 
-function startQuizTimer() {
-    const timerEl = document.getElementById('timer');
-    const initialMins = Math.floor(quizTimeLeft / 60);
-    const initialSecs = quizTimeLeft % 60;
-    timerEl.textContent = String(initialMins).padStart(2, '0') + ':' + String(initialSecs).padStart(2, '0');
-    
-    quizTimer = setInterval(function() {
-        quizTimeLeft--;
+    // ===== VARIABLES =====
+    let quizTimeLeft = {{ quiz_duree|default:15 }} * 60;
+    let quizTimer = null;
+    let mediaRecorders = {};
+    let audioChunks = {};
+    let isRecording = {};
+    let recordingTimers = {};
+    let recordingSeconds = {};
+    let currentStreams = {};
+    let isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+    const MAX_RECORDING_SECONDS = 180;
+
+    // ===== TIMER QUIZ =====
+    function startQuizTimer() {
+        const timerEl = document.getElementById('timer');
+        if (!timerEl) return;
         
-        if (quizTimeLeft <= 0) {
-            clearInterval(quizTimer);
-            timerEl.textContent = '00:00';
-            timerEl.style.color = 'var(--danger)';
+        const initialMins = Math.floor(quizTimeLeft / 60);
+        const initialSecs = quizTimeLeft % 60;
+        timerEl.textContent = String(initialMins).padStart(2, '0') + ':' + String(initialSecs).padStart(2, '0');
+        
+        quizTimer = setInterval(function() {
+            quizTimeLeft--;
             
-            // Banner wouj
-            const banner = document.createElement('div');
-            banner.style.cssText = 'position:fixed; top:0; left:0; right:0; background:var(--danger); color:#fff; padding:1rem; text-align:center; font-weight:800; z-index:9999; font-size:1.1rem;';
-            banner.textContent = '{% trans "Temps écoulé ! Soumission automatique en cours..." %}';
-            document.body.appendChild(banner);
-            
-            // Soumèt apre 1.5 segonn
-            setTimeout(function() {
+            if (quizTimeLeft <= 0) {
+                clearInterval(quizTimer);
+                timerEl.textContent = '00:00';
+                timerEl.style.color = 'var(--danger)';
                 document.getElementById('quizForm').submit();
-            }, 1500);
-            return;
-        }
-        
-        const mins = String(Math.floor(quizTimeLeft / 60)).padStart(2, '0');
-        const secs = String(quizTimeLeft % 60).padStart(2, '0');
-        timerEl.textContent = mins + ':' + secs;
-        
-        if (quizTimeLeft <= 10) {
-            timerEl.style.color = 'var(--danger)';
-            timerEl.style.fontWeight = '800';
-            timerEl.style.animation = 'timerPulse 1s infinite';
-        } else if (quizTimeLeft <= 60) {
-            timerEl.style.color = 'var(--danger)';
-            timerEl.style.fontWeight = '700';
-        } else if (quizTimeLeft <= 120) {
-            timerEl.style.color = 'var(--warning)';
-            timerEl.style.fontWeight = '700';
-        }
-    }, 1000);
-}
-
-function updateAnsweredCount() {
-    const slides = document.querySelectorAll('.question-slide');
-    let answered = 0;
-    
-    slides.forEach(function(slide) {
-        const radios = slide.querySelectorAll('input[type="radio"]:checked');
-        const checkboxes = slide.querySelectorAll('input[type="checkbox"]:checked');
-        const textInputs = slide.querySelectorAll('input[type="text"], textarea');
-        const fileInputs = slide.querySelectorAll('input[type="file"]');
-        
-        let isAnswered = false;
-        
-        if (radios.length > 0) isAnswered = true;
-        if (checkboxes.length > 0) isAnswered = true;
-        
-        textInputs.forEach(function(input) { if (input.value.trim() !== '') isAnswered = true; });
-        fileInputs.forEach(function(input) { if (input.files.length > 0) isAnswered = true; });
-        
-        if (isAnswered) answered++;
-    });
-    
-    const answeredNum = document.getElementById('answeredNum');
-    if (answeredNum) answeredNum.textContent = answered;
-}
-
-let mediaRecorders = {};
-let audioChunks = {};
-let isRecording = {};
-let recordingTimers = {};
-let recordingSeconds = {};
-let currentStreams = {};
-let isTouchDevice = false;
-const MAX_RECORDING_SECONDS = 180;
-
-function detectTouchDevice() {
-    isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-}
-
-async function startRecording(questionId) {
-    const btnRecord = document.getElementById('btnRecord_' + questionId);
-    const statusEl = document.getElementById('recordStatus_' + questionId);
-    const recorderContainer = document.getElementById('voiceRecorder_' + questionId);
-    const waveEl = document.getElementById('recordingWave_' + questionId);
-    const timerEl = document.getElementById('recordingTimer_' + questionId);
-    
-    if (!btnRecord || isRecording[questionId]) return;
-    
-    if (!window.MediaRecorder || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        statusEl.textContent = '{% trans "Votre navigateur ne supporte pas l\'enregistrement audio." %}';
-        statusEl.style.color = 'var(--warning)';
-        return;
-    }
-    
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        currentStreams[questionId] = stream;
-        audioChunks[questionId] = [];
-        
-        let mimeType = '';
-        const options = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4'];
-        for (const type of options) { if (MediaRecorder.isTypeSupported(type)) { mimeType = type; break; } }
-        
-        mediaRecorders[questionId] = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream);
-        
-        mediaRecorders[questionId].ondataavailable = function(e) { if (e.data.size > 0) audioChunks[questionId].push(e.data); };
-        
-        mediaRecorders[questionId].onstop = function() {
-            const blob = new Blob(audioChunks[questionId], { type: mediaRecorders[questionId].mimeType || 'audio/webm' });
-            const file = new File([blob], 'enregistrement_q' + questionId + '_' + Date.now() + '.webm', { type: blob.type });
-            try { const dataTransfer = new DataTransfer(); dataTransfer.items.add(file); document.getElementById('audioFile_' + questionId).files = dataTransfer.files; } catch (dtErr) {}
-            const previewEl = document.getElementById('audioPreview_' + questionId);
-            previewEl.src = URL.createObjectURL(blob);
-            previewEl.style.display = 'block';
-            if (currentStreams[questionId]) { currentStreams[questionId].getTracks().forEach(track => track.stop()); currentStreams[questionId] = null; }
-            updateAnsweredCount();
-        };
-        
-        mediaRecorders[questionId].start();
-        isRecording[questionId] = true;
-        
-        btnRecord.classList.add('recording');
-        btnRecord.innerHTML = '<i class="fas fa-stop"></i>';
-        waveEl.style.display = 'flex';
-        timerEl.style.display = 'block';
-        recorderContainer.style.borderColor = 'var(--danger)';
-        statusEl.textContent = '{% trans "Enregistrement en cours..." %}';
-        statusEl.style.color = 'var(--danger)';
-        
-        recordingSeconds[questionId] = 0;
-        recordingTimers[questionId] = setInterval(function() {
-            recordingSeconds[questionId]++;
-            const mins = String(Math.floor(recordingSeconds[questionId] / 60)).padStart(2, '0');
-            const secs = String(recordingSeconds[questionId] % 60).padStart(2, '0');
+                return;
+            }
+            
+            const mins = String(Math.floor(quizTimeLeft / 60)).padStart(2, '0');
+            const secs = String(quizTimeLeft % 60).padStart(2, '0');
             timerEl.textContent = mins + ':' + secs;
-            if (recordingSeconds[questionId] >= MAX_RECORDING_SECONDS) stopRecording(questionId);
+            
+            if (quizTimeLeft <= 60) {
+                timerEl.style.color = 'var(--danger)';
+                timerEl.style.fontWeight = '800';
+            } else if (quizTimeLeft <= 120) {
+                timerEl.style.color = 'var(--warning)';
+            }
         }, 1000);
-        
-    } catch (err) {
-        statusEl.textContent = '{% trans "Impossible d\'accéder au microphone." %}';
-        statusEl.style.color = 'var(--danger)';
     }
-}
 
-function stopRecording(questionId) {
-    if (isRecording[questionId] && mediaRecorders[questionId]) {
-        try { mediaRecorders[questionId].stop(); } catch (err) {}
-        isRecording[questionId] = false;
+    // ===== ANREJISTREMAN =====
+    async function startRecording(questionId) {
         const btnRecord = document.getElementById('btnRecord_' + questionId);
         const statusEl = document.getElementById('recordStatus_' + questionId);
-        const recorderContainer = document.getElementById('voiceRecorder_' + questionId);
-        const waveEl = document.getElementById('recordingWave_' + questionId);
-        const timerEl = document.getElementById('recordingTimer_' + questionId);
-        if (btnRecord) { btnRecord.classList.remove('recording'); btnRecord.innerHTML = '<i class="fas fa-microphone"></i>'; }
-        if (waveEl) waveEl.style.display = 'none';
-        if (timerEl) timerEl.style.display = 'none';
-        if (recorderContainer) { recorderContainer.style.borderColor = 'var(--primary)'; recorderContainer.style.background = 'transparent'; }
-        if (statusEl) { statusEl.textContent = '{% trans "Enregistrement terminé !" %}'; statusEl.style.color = 'var(--success)'; }
-        if (recordingTimers[questionId]) { clearInterval(recordingTimers[questionId]); recordingTimers[questionId] = null; }
-    }
-}
-
-function toggleRecording(questionId) { if (isRecording[questionId]) stopRecording(questionId); else startRecording(questionId); }
-
-function initRecordButtons() {
-    document.querySelectorAll('.btn-record').forEach(function(btn) {
-        const questionId = btn.id.replace('btnRecord_', '');
-        if (isTouchDevice) {
-            btn.addEventListener('touchstart', function(e) { e.preventDefault(); e.stopPropagation(); startRecording(questionId); }, { passive: false });
-            btn.addEventListener('touchend', function(e) { e.preventDefault(); e.stopPropagation(); stopRecording(questionId); });
-            btn.addEventListener('touchcancel', function(e) { stopRecording(questionId); });
-            btn.addEventListener('mousedown', function(e) { e.preventDefault(); startRecording(questionId); });
-            btn.addEventListener('mouseup', function(e) { e.preventDefault(); stopRecording(questionId); });
-        } else {
-            btn.addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); toggleRecording(questionId); });
+        
+        if (!btnRecord || isRecording[questionId]) return;
+        
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            currentStreams[questionId] = stream;
+            audioChunks[questionId] = [];
+            
+            mediaRecorders[questionId] = new MediaRecorder(stream);
+            
+            mediaRecorders[questionId].ondataavailable = function(e) {
+                if (e.data.size > 0) audioChunks[questionId].push(e.data);
+            };
+            
+            mediaRecorders[questionId].onstop = function() {
+                const blob = new Blob(audioChunks[questionId], { type: 'audio/webm' });
+                const file = new File([blob], 'enregistrement_q' + questionId + '.webm', { type: 'audio/webm' });
+                
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                document.getElementById('audioFile_' + questionId).files = dataTransfer.files;
+                
+                const previewEl = document.getElementById('audioPreview_' + questionId);
+                previewEl.src = URL.createObjectURL(blob);
+                previewEl.style.display = 'block';
+                
+                if (currentStreams[questionId]) {
+                    currentStreams[questionId].getTracks().forEach(t => t.stop());
+                    currentStreams[questionId] = null;
+                }
+            };
+            
+            mediaRecorders[questionId].start();
+            isRecording[questionId] = true;
+            
+            btnRecord.classList.add('recording');
+            btnRecord.innerHTML = '<i class="fas fa-stop"></i>';
+            
+            const waveEl = document.getElementById('recordingWave_' + questionId);
+            const timerEl = document.getElementById('recordingTimer_' + questionId);
+            if (waveEl) waveEl.style.display = 'flex';
+            if (timerEl) timerEl.style.display = 'block';
+            if (statusEl) { statusEl.textContent = 'Enregistrement en cours...'; statusEl.style.color = 'var(--danger)'; }
+            
+            recordingSeconds[questionId] = 0;
+            recordingTimers[questionId] = setInterval(function() {
+                recordingSeconds[questionId]++;
+                const mins = String(Math.floor(recordingSeconds[questionId] / 60)).padStart(2, '0');
+                const secs = String(recordingSeconds[questionId] % 60).padStart(2, '0');
+                if (timerEl) timerEl.textContent = mins + ':' + secs;
+            }, 1000);
+            
+        } catch (err) {
+            if (statusEl) { statusEl.textContent = 'Impossible d\'accéder au microphone.'; statusEl.style.color = 'var(--danger)'; }
         }
-        btn.addEventListener('contextmenu', function(e) { e.preventDefault(); });
-    });
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    detectTouchDevice();
-    startQuizTimer();
-    initRecordButtons();
-    updateAnsweredCount();
-    
-    const slides = document.querySelectorAll('.question-slide');
-    const totalSlides = slides.length;
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const submitBtn = document.getElementById('submitBtn');
-    const progressBar = document.getElementById('progressBar');
-    const progressPercent = document.getElementById('progressPercent');
-    const currentQuestionNum = document.getElementById('currentQuestionNum');
-    const quizDots = document.querySelectorAll('.quiz-dot');
-    let currentSlide = 0;
-    
-    function updateSlide() {
-        slides.forEach(function(slide, index) { slide.style.display = index === currentSlide ? 'block' : 'none'; });
-        const percent = ((currentSlide + 1) / totalSlides) * 100;
-        progressBar.style.width = percent + '%';
-        progressPercent.textContent = Math.round(percent) + '%';
-        currentQuestionNum.textContent = currentSlide + 1;
-        quizDots.forEach(function(dot, index) {
-            if (index === currentSlide) { dot.style.background = 'var(--primary)'; dot.style.borderColor = 'var(--primary)'; dot.style.transform = 'scale(1.3)'; }
-            else if (index < currentSlide) { dot.style.background = 'var(--success)'; dot.style.borderColor = 'var(--success)'; }
-            else { dot.style.background = 'var(--glass-soft)'; dot.style.borderColor = 'var(--glass-brd)'; }
-        });
-        if (currentSlide === 0) prevBtn.style.display = 'none'; else prevBtn.style.display = 'inline-flex';
-        if (currentSlide === totalSlides - 1) { nextBtn.style.display = 'none'; submitBtn.style.display = 'inline-flex'; }
-        else { nextBtn.style.display = 'inline-flex'; submitBtn.style.display = 'none'; }
-        updateAnsweredCount();
     }
-    
-    // Update count lè w reponn
-    document.querySelectorAll('.option-input, .form-control').forEach(function(input) {
-        input.addEventListener('change', updateAnsweredCount);
-        input.addEventListener('input', updateAnsweredCount);
+
+    function stopRecording(questionId) {
+        if (isRecording[questionId] && mediaRecorders[questionId]) {
+            try { mediaRecorders[questionId].stop(); } catch (err) {}
+            isRecording[questionId] = false;
+            
+            const btnRecord = document.getElementById('btnRecord_' + questionId);
+            const statusEl = document.getElementById('recordStatus_' + questionId);
+            const waveEl = document.getElementById('recordingWave_' + questionId);
+            const timerEl = document.getElementById('recordingTimer_' + questionId);
+            
+            if (btnRecord) { btnRecord.classList.remove('recording'); btnRecord.innerHTML = '<i class="fas fa-microphone"></i>'; }
+            if (waveEl) waveEl.style.display = 'none';
+            if (timerEl) timerEl.style.display = 'none';
+            if (statusEl) { statusEl.textContent = 'Enregistrement terminé !'; statusEl.style.color = 'var(--success)'; }
+            
+            if (recordingTimers[questionId]) { clearInterval(recordingTimers[questionId]); recordingTimers[questionId] = null; }
+        }
+    }
+
+    // ===== INIT BOUTON RECORD =====
+    function initRecordButtons() {
+        document.querySelectorAll('.btn-record').forEach(function(btn) {
+            const questionId = btn.id.replace('btnRecord_', '');
+            
+            if (isTouchDevice) {
+                btn.ontouchstart = function(e) { e.preventDefault(); startRecording(questionId); };
+                btn.ontouchend = function(e) { e.preventDefault(); stopRecording(questionId); };
+                btn.ontouchcancel = function(e) { stopRecording(questionId); };
+                btn.onmousedown = function(e) { e.preventDefault(); startRecording(questionId); };
+                btn.onmouseup = function(e) { e.preventDefault(); stopRecording(questionId); };
+            } else {
+                btn.onclick = function(e) {
+                    e.preventDefault();
+                    if (isRecording[questionId]) { stopRecording(questionId); }
+                    else { startRecording(questionId); }
+                };
+            }
+        });
+    }
+
+    // ===== PAGINATION =====
+    function initPagination() {
+        const slides = document.querySelectorAll('.question-slide');
+        const totalSlides = slides.length;
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const submitBtn = document.getElementById('submitBtn');
+        const progressBar = document.getElementById('progressBar');
+        const progressPercent = document.getElementById('progressPercent');
+        const currentQuestionNum = document.getElementById('currentQuestionNum');
+        const quizDots = document.querySelectorAll('.quiz-dot');
+        let currentSlide = 0;
+        
+        function updateSlide() {
+            slides.forEach(function(slide, index) { slide.style.display = index === currentSlide ? 'block' : 'none'; });
+            const percent = ((currentSlide + 1) / totalSlides) * 100;
+            progressBar.style.width = percent + '%';
+            progressPercent.textContent = Math.round(percent) + '%';
+            currentQuestionNum.textContent = currentSlide + 1;
+            
+            quizDots.forEach(function(dot, index) {
+                if (index === currentSlide) { dot.style.background = 'var(--primary)'; dot.style.borderColor = 'var(--primary)'; }
+                else if (index < currentSlide) { dot.style.background = 'var(--success)'; dot.style.borderColor = 'var(--success)'; }
+                else { dot.style.background = 'var(--glass-soft)'; dot.style.borderColor = 'var(--glass-brd)'; }
+            });
+            
+            if (currentSlide === 0) prevBtn.style.display = 'none'; else prevBtn.style.display = 'inline-flex';
+            if (currentSlide === totalSlides - 1) { nextBtn.style.display = 'none'; submitBtn.style.display = 'inline-flex'; }
+            else { nextBtn.style.display = 'inline-flex'; submitBtn.style.display = 'none'; }
+        }
+        
+        nextBtn.addEventListener('click', function() { if (currentSlide < totalSlides - 1) { currentSlide++; updateSlide(); } });
+        prevBtn.addEventListener('click', function() { if (currentSlide > 0) { currentSlide--; updateSlide(); } });
+        quizDots.forEach(function(dot) { dot.addEventListener('click', function() { currentSlide = parseInt(this.getAttribute('data-dot')) - 1; updateSlide(); }); });
+        submitBtn.addEventListener('click', function(e) { if (!confirm("{% trans 'Êtes-vous sûr de vouloir soumettre ce quiz ?' %}")) e.preventDefault(); });
+        updateSlide();
+    }
+
+    // ===== INIT =====
+    document.addEventListener('DOMContentLoaded', function() {
+        startQuizTimer();
+        initRecordButtons();
+        initPagination();
     });
-    
-    nextBtn.addEventListener('click', function() { if (currentSlide < totalSlides - 1) { currentSlide++; updateSlide(); } });
-    prevBtn.addEventListener('click', function() { if (currentSlide > 0) { currentSlide--; updateSlide(); } });
-    quizDots.forEach(function(dot) { dot.addEventListener('click', function() { currentSlide = parseInt(this.getAttribute('data-dot')) - 1; updateSlide(); }); });
-    submitBtn.addEventListener('click', function(e) { if (!confirm("{% trans 'Êtes-vous sûr de vouloir soumettre ce quiz ? Les questions non répondues auront 0 point.' %}")) e.preventDefault(); });
-    updateSlide();
-});
+})();
 </script>
 
 <style>
@@ -427,7 +376,6 @@ document.addEventListener('DOMContentLoaded', function() {
 .quiz-dot:hover { transform: scale(1.3) !important; }
 .question-slide { animation: fadeUp 0.3s ease; }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-@keyframes timerPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 .btn-record {
     width: 80px; height: 80px; border-radius: 50%;
     background: var(--danger); color: #fff; border: none;
