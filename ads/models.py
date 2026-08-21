@@ -22,3 +22,9 @@ class Banner(models.Model):
 
     def __str__(self):
         return self.titre
+    
+    def get_image_url(self):
+        """Retounen URL imaj la si li egziste"""
+        if self.image and self.image.name:
+            return self.image.url
+        return None
