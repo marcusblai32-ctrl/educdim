@@ -13,6 +13,12 @@ def corriger_tentative(tentative):
         except ReponseUtilisateur.DoesNotExist:
             continue
 
+        # ===== NOUVO: Si gen pwen manyèl, itilize yo =====
+        if reponse_utilisateur.points_attribues is not None:
+            points_obtenus += float(reponse_utilisateur.points_attribues)
+            continue
+        # ===== FEN NOUVO =====
+
         # ===== TYPES AVEC REPONSES (CHOIX) =====
         if question.type_question in ['single', 'vrai_faux']:
             bonne_reponse = question.reponses.filter(est_correcte=True).first()
