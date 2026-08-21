@@ -14,5 +14,5 @@ urlpatterns = [
 
     # ===== NOUVO: Wout pou koreksyon staff =====
     path('correction/', views.tentative_list, name='tentative_list'),
-    path('correction/<int:tentative_pk>/', views.corriger_tentative, name='corriger_tentative'),
+    path('correction/<int:tentative_pk>/', views.corriger_tentative_view, name='corriger_tentative'),  # <--- Non chanje
 ]
