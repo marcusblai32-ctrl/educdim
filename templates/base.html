@@ -64,7 +64,6 @@
                         <span>{% trans "Progression" %}</span>
                     </a>
 
-                    {# ===== CHAT DROPDOWN ===== #}
                     <div class="nav-dropdown">
                         <button type="button" class="nav-dropdown-btn" id="chatDropdownBtn">
                             <i class="fas fa-comments"></i>
@@ -81,7 +80,6 @@
                         </div>
                     </div>
 
-                    {# ===== NOTIFICATIONS ===== #}
                     <a href="{% url 'notifications:list' %}" class="nav-link notification-link">
                         <i class="fas fa-bell"></i>
                         <span>{% trans "Notifications" %}</span>
@@ -101,7 +99,6 @@
                         </a>
                     {% endif %}
 
-                    {# ===== USER DROPDOWN ===== #}
                     <div class="user-dropdown">
                         <button type="button" class="dropbtn" id="userDropdownBtn">
                             <i class="fas fa-user-circle"></i>
@@ -146,7 +143,6 @@
                 {% endif %}
             </nav>
 
-            {# ===== LANG SWITCHER ===== #}
             <div class="lang-switcher">
                 <form action="{% url 'set_language' %}" method="post">
                     {% csrf_token %}
@@ -165,28 +161,32 @@
         </div>
     </header>
 
-    {# ===== EVENEMENT BANNER ===== #}
+    {# ===== EVENEMENT BANNER — KORIJE ===== #}
     {% if theme.evenement_actif %}
-        <div class="evenement-banner">
-            {% if theme.get_evenement_banner %}
-                <img src="{{ theme.get_evenement_banner }}" alt="{{ theme.evenement_nom }}">
-            {% elif theme.evenement_banner %}
-                <img src="{{ theme.evenement_banner.url }}" alt="{{ theme.evenement_nom }}">
-            {% endif %}
+    <div class="evenement-banner" style="display:block; background:linear-gradient(135deg, var(--primary), var(--secondary)); color:#fff; padding:1.5rem; text-align:center; position:relative; overflow:hidden;">
+        {% if theme.get_evenement_banner %}
+            <img src="{{ theme.get_evenement_banner }}" alt="{{ theme.evenement_nom }}" style="max-width:100%; border-radius:var(--radius-sm);">
+        {% endif %}
 
-            <h2 class="evenement-glow">
-                {% if theme.get_evenement_logo %}
-                    <img src="{{ theme.get_evenement_logo }}" alt="{{ theme.evenement_nom }}">
-                {% elif theme.evenement_logo %}
-                    <img src="{{ theme.evenement_logo.url }}" alt="{{ theme.evenement_nom }}">
-                {% endif %}
-                {{ theme.evenement_nom }}
-            </h2>
-            <p>{{ theme.evenement_message }}</p>
-            {% if theme.evenement_hashtag %}
-                <div class="hashtag">#{{ theme.evenement_hashtag }}</div>
+        <h2 class="evenement-glow" style="font-family:var(--font-display); font-size:1.5rem; text-shadow:0 0 24px rgba(255,255,255,0.55); display:flex; align-items:center; justify-content:center; gap:0.6rem; flex-wrap:wrap; margin:0.5rem 0;">
+            {% if theme.get_evenement_logo %}
+                <img src="{{ theme.get_evenement_logo }}" alt="{{ theme.evenement_nom }}" style="max-height:50px; max-width:100px; object-fit:contain;">
             {% endif %}
-        </div>
+            {{ theme.evenement_nom|default:"Évènement spécial" }}
+        </h2>
+        
+        {% if theme.evenement_message %}
+        <p style="color:rgba(255,255,255,0.9); margin:0.5rem 0; font-size:1rem;">
+            {{ theme.evenement_message }}
+        </p>
+        {% endif %}
+        
+        {% if theme.evenement_hashtag %}
+            <div class="hashtag" style="display:inline-block; margin-top:0.6rem; padding:0.3rem 1rem; border-radius:50px; background:rgba(255,255,255,0.2); font-weight:600;">
+                #{{ theme.evenement_hashtag }}
+            </div>
+        {% endif %}
+    </div>
     {% endif %}
 
     {# ===== BREADCRUMB ===== #}
@@ -206,9 +206,7 @@
         </nav>
     {% endif %}
 
-    {# ===== MAIN ===== #}
     <main>
-        {# ===== MESSAGES ===== #}
         {% block messages %}
             {% if messages %}
                 <div class="messages-container">
@@ -227,7 +225,6 @@
         {% block content %}{% endblock %}
     </main>
 
-    {# ===== FOOTER ===== #}
     <footer>
         <div class="footer-container">
             <nav>
@@ -254,13 +251,8 @@
         </div>
     </footer>
 
-    {# ========================================== #}
-    {# JAVASCRIPT #}
-    {# ========================================== #}
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    {# SEUL main.js gère tout - PA gen script inline ankò #}
     <script src="{% static 'js/main.js' %}"></script>
 
     {% block extra_js %}{% endblock %}
