@@ -1,4 +1,3 @@
-import base64
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -6,6 +5,7 @@ from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.http import JsonResponse
 from django.core.files.base import ContentFile
+from django.contrib.admin.views.decorators import staff_member_required
 from .models import Quiz, Question, Reponse, TentativeQuiz, ReponseUtilisateur
 from .services import corriger_tentative, get_upload_fields_for_question
 
@@ -42,10 +42,10 @@ def take_quiz(request, tentative_pk):
     reponses_utilisateur = {
         ru.question_id: ru for ru in ReponseUtilisateur.objects.filter(tentative=tentative)
     }
-    
+
     # Pase durée quiz la (an minit)
     quiz_duree = tentative.quiz.duree_quiz if tentative.quiz.duree_quiz else 15
-    
+
     return render(request, 'quiz/take_quiz.html', {
         'tentative': tentative,
         'questions': questions,
@@ -125,3 +125,56 @@ def get_question_upload_type(request, question_id):
     if upload_info:
         return JsonResponse({'field_name': upload_info[0], 'label': upload_info[1], 'accept': upload_info[2], 'accept_mime': upload_info[3]})
     return JsonResponse({'error': 'Not an upload type'}, status=400)
+
+
+# ===== NOUVO: VUE POU KOREKSYON STAFF =====
+@staff_member_required
+def tentative_list(request):
+    """Lis tout tentatives soumises."""
+    tentatives = TentativeQuiz.objects.filter(date_soumission__isnull=False).select_related('utilisateur', 'quiz')
+    # Ou kapab ajoute filt si vle: quiz_id = request.GET.get('quiz') ...
+    return render(request, 'quiz/correction/tentative_list.html', {'tentatives': tentatives})
+
+
+@staff_member_required
+def corriger_tentative(request, tentative_pk):
+    """Koreksyon yon tentative espesifik."""
+    tentative = get_object_or_404(TentativeQuiz, pk=tentative_pk, date_soumission__isnull=False)
+    questions = tentative.quiz.questions.all().order_by('ordre')
+    reponses_utilisateur = ReponseUtilisateur.objects.filter(tentative=tentative).select_related('question')
+
+    if request.method == 'POST':
+        for ru in reponses_utilisateur:
+            points_key = f'points_{ru.id}'
+            if points_key in request.POST:
+                val = request.POST[points_key].strip()
+                ru.points_attribues = float(val) if val else None
+                ru.save()
+        # Rekalkile nòt la
+        corriger_tentative(tentative)
+        messages.success(request, _("Koreksyon anrejistre epi nòt rekalkile."))
+        return redirect('quiz:corriger_tentative', tentative_pk=tentative.pk)
+
+    # Prepare done pou template
+    question_data = []
+    for q in questions:
+        ru = next((r for r in reponses_utilisateur if r.question_id == q.id), None)
+        selected_reponses = ru.reponses_selectionnees.all() if ru else []
+        upload_fields = {
+            'audio': ru.audio_reponse if ru else None,
+            'video': ru.video_reponse if ru else None,
+            'image': ru.image_reponse if ru else None,
+            'fichier': ru.fichier_reponse if ru else None,
+            'texte': ru.texte_reponse if ru else None,
+        }
+        question_data.append({
+            'question': q,
+            'reponse_utilisateur': ru,
+            'selected_reponses': selected_reponses,
+            'upload_fields': upload_fields,
+        })
+
+    return render(request, 'quiz/correction/corriger_tentative.html', {
+        'tentative': tentative,
+        'question_data': question_data,
+    })
