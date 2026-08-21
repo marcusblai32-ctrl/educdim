@@ -192,38 +192,22 @@ let quizTimer = null;
 
 function startQuizTimer() {
     const timerEl = document.getElementById('timer');
-    
     const initialMins = Math.floor(quizTimeLeft / 60);
     const initialSecs = quizTimeLeft % 60;
     timerEl.textContent = String(initialMins).padStart(2, '0') + ':' + String(initialSecs).padStart(2, '0');
-    
     quizTimer = setInterval(function() {
         quizTimeLeft--;
-        
-        if (quizTimeLeft <= 0) {
-            clearInterval(quizTimer);
-            timerEl.textContent = '00:00';
-            timerEl.style.color = 'var(--danger)';
-            document.getElementById('quizForm').submit();
-            return;
-        }
-        
+        if (quizTimeLeft <= 0) { clearInterval(quizTimer); timerEl.textContent = '00:00'; timerEl.style.color = 'var(--danger)'; document.getElementById('quizForm').submit(); return; }
         const mins = String(Math.floor(quizTimeLeft / 60)).padStart(2, '0');
         const secs = String(quizTimeLeft % 60).padStart(2, '0');
         timerEl.textContent = mins + ':' + secs;
-        
-        if (quizTimeLeft <= 60) {
-            timerEl.style.color = 'var(--danger)';
-            timerEl.style.fontWeight = '800';
-        } else if (quizTimeLeft <= 120) {
-            timerEl.style.color = 'var(--warning)';
-            timerEl.style.fontWeight = '700';
-        }
+        if (quizTimeLeft <= 60) { timerEl.style.color = 'var(--danger)'; timerEl.style.fontWeight = '800'; }
+        else if (quizTimeLeft <= 120) { timerEl.style.color = 'var(--warning)'; timerEl.style.fontWeight = '700'; }
     }, 1000);
 }
 
 // ============================================
-// ANREJISTREMAN VWA — ADAPTATIF
+// ANREJISTREMAN VWA — INIVÈSÈL
 // ============================================
 let mediaRecorders = {};
 let audioChunks = {};
@@ -235,111 +219,118 @@ let isTouchDevice = false;
 const MAX_RECORDING_SECONDS = 180;
 
 function detectTouchDevice() {
-    isTouchDevice = ('ontouchstart' in window) || 
-                    (navigator.maxTouchPoints > 0) || 
-                    (navigator.msMaxTouchPoints > 0);
+    isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
+}
+
+function isMediaRecorderSupported() {
+    return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder);
+}
+
+function getBestMimeType() {
+    const types = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg;codecs=opus', ''];
+    for (const type of types) { if (type === '' || MediaRecorder.isTypeSupported(type)) return type; }
+    return '';
+}
+
+function getFileExtension(mimeType) {
+    if (mimeType.includes('mp4') || mimeType.includes('aac')) return 'm4a';
+    if (mimeType.includes('ogg')) return 'ogg';
+    if (mimeType.includes('webm')) return 'webm';
+    return 'webm';
 }
 
 async function startRecording(questionId) {
+    if (isRecording[questionId]) return;
     const btnRecord = document.getElementById('btnRecord_' + questionId);
     const statusEl = document.getElementById('recordStatus_' + questionId);
     const recorderContainer = document.getElementById('voiceRecorder_' + questionId);
     const waveEl = document.getElementById('recordingWave_' + questionId);
     const timerEl = document.getElementById('recordingTimer_' + questionId);
-    
-    if (!btnRecord || isRecording[questionId]) return;
-    
+    if (!btnRecord) return;
+    if (!isMediaRecorderSupported()) {
+        statusEl.textContent = '{% trans "Votre navigateur ne supporte pas l\'enregistrement audio." %}';
+        statusEl.style.color = 'var(--warning)';
+        return;
+    }
     try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        let stream;
+        try { stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } }); }
+        catch (mediaErr) { stream = await navigator.mediaDevices.getUserMedia({ audio: true }); }
         currentStreams[questionId] = stream;
         audioChunks[questionId] = [];
-        
-        let mimeType = '';
-        const options = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg;codecs=opus'];
-        for (const type of options) {
-            if (MediaRecorder.isTypeSupported(type)) { mimeType = type; break; }
-        }
-        
-        mediaRecorders[questionId] = mimeType ? new MediaRecorder(stream, { mimeType: mimeType }) : new MediaRecorder(stream);
-        
-        mediaRecorders[questionId].ondataavailable = function(e) {
-            if (e.data.size > 0) audioChunks[questionId].push(e.data);
-        };
-        
+        const mimeType = getBestMimeType();
+        try { mediaRecorders[questionId] = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream); }
+        catch (recErr) { mediaRecorders[questionId] = new MediaRecorder(stream); }
+        mediaRecorders[questionId].ondataavailable = function(e) { if (e.data.size > 0) audioChunks[questionId].push(e.data); };
         mediaRecorders[questionId].onstop = function() {
-            const blob = new Blob(audioChunks[questionId], { type: mediaRecorders[questionId].mimeType || 'audio/webm' });
-            const file = new File([blob], 'enregistrement_q' + questionId + '_' + Date.now() + '.webm', { type: blob.type });
-            const dataTransfer = new DataTransfer();
-            dataTransfer.items.add(file);
-            const fileInput = document.getElementById('audioFile_' + questionId);
-            fileInput.files = dataTransfer.files;
+            const actualMime = mediaRecorders[questionId].mimeType || 'audio/webm';
+            const blob = new Blob(audioChunks[questionId], { type: actualMime });
+            const ext = getFileExtension(actualMime);
+            const file = new File([blob], 'enregistrement_q' + questionId + '_' + Date.now() + '.' + ext, { type: actualMime });
+            try { const dataTransfer = new DataTransfer(); dataTransfer.items.add(file); const fileInput = document.getElementById('audioFile_' + questionId); fileInput.files = dataTransfer.files; } catch (dtErr) {}
             const previewEl = document.getElementById('audioPreview_' + questionId);
             previewEl.src = URL.createObjectURL(blob);
             previewEl.style.display = 'block';
-            if (currentStreams[questionId]) {
-                currentStreams[questionId].getTracks().forEach(track => track.stop());
-                currentStreams[questionId] = null;
-            }
+            if (currentStreams[questionId]) { currentStreams[questionId].getTracks().forEach(track => track.stop()); currentStreams[questionId] = null; }
         };
-        
         mediaRecorders[questionId].start();
         isRecording[questionId] = true;
-        
         btnRecord.classList.add('recording');
         btnRecord.innerHTML = '<i class="fas fa-stop"></i>';
         waveEl.style.display = 'flex';
         timerEl.style.display = 'block';
         recorderContainer.style.borderColor = 'var(--danger)';
-        recorderContainer.style.background = 'rgba(239, 68, 68, 0.05)';
         statusEl.textContent = '{% trans "Enregistrement en cours..." %}';
         statusEl.style.color = 'var(--danger)';
-        
         recordingSeconds[questionId] = 0;
-        clearInterval(recordingTimers[questionId]);
         recordingTimers[questionId] = setInterval(function() {
             recordingSeconds[questionId]++;
             const mins = String(Math.floor(recordingSeconds[questionId] / 60)).padStart(2, '0');
             const secs = String(recordingSeconds[questionId] % 60).padStart(2, '0');
             timerEl.textContent = mins + ':' + secs;
-            if (recordingSeconds[questionId] >= MAX_RECORDING_SECONDS) {
-                stopRecording(questionId);
-                statusEl.textContent = '{% trans "Limite atteinte (3 min max)" %}';
-                statusEl.style.color = 'var(--danger)';
-            }
+            if (recordingSeconds[questionId] >= MAX_RECORDING_SECONDS) stopRecording(questionId);
         }, 1000);
-        
     } catch (err) {
         console.error('Erreur:', err);
-        alert('{% trans "Impossible d\'accéder au microphone." %}');
+        statusEl.textContent = '{% trans "Impossible d\'accéder au microphone." %}';
+        statusEl.style.color = 'var(--danger)';
     }
 }
 
 function stopRecording(questionId) {
     if (isRecording[questionId] && mediaRecorders[questionId]) {
-        mediaRecorders[questionId].stop();
+        try { mediaRecorders[questionId].stop(); } catch (err) {}
         isRecording[questionId] = false;
-        
         const btnRecord = document.getElementById('btnRecord_' + questionId);
         const statusEl = document.getElementById('recordStatus_' + questionId);
         const recorderContainer = document.getElementById('voiceRecorder_' + questionId);
         const waveEl = document.getElementById('recordingWave_' + questionId);
         const timerEl = document.getElementById('recordingTimer_' + questionId);
-        
-        btnRecord.classList.remove('recording');
-        btnRecord.innerHTML = '<i class="fas fa-microphone"></i>';
-        waveEl.style.display = 'none';
-        timerEl.style.display = 'none';
-        recorderContainer.style.borderColor = 'var(--primary)';
-        recorderContainer.style.background = 'transparent';
-        statusEl.textContent = '{% trans "Enregistrement terminé !" %}';
-        statusEl.style.color = 'var(--success)';
-        
+        if (btnRecord) { btnRecord.classList.remove('recording'); btnRecord.innerHTML = '<i class="fas fa-microphone"></i>'; }
+        if (waveEl) waveEl.style.display = 'none';
+        if (timerEl) timerEl.style.display = 'none';
+        if (recorderContainer) { recorderContainer.style.borderColor = 'var(--primary)'; recorderContainer.style.background = 'transparent'; }
+        if (statusEl) { statusEl.textContent = '{% trans "Enregistrement terminé !" %}'; statusEl.style.color = 'var(--success)'; }
         if (recordingTimers[questionId]) { clearInterval(recordingTimers[questionId]); recordingTimers[questionId] = null; }
     }
 }
 
-function toggleRecording(questionId) {
-    if (isRecording[questionId]) { stopRecording(questionId); } else { startRecording(questionId); }
+function toggleRecording(questionId) { if (isRecording[questionId]) stopRecording(questionId); else startRecording(questionId); }
+
+function initRecordButtons() {
+    document.querySelectorAll('.btn-record').forEach(function(btn) {
+        const questionId = btn.id.replace('btnRecord_', '');
+        if (isTouchDevice) {
+            btn.addEventListener('touchstart', function(e) { e.preventDefault(); e.stopPropagation(); startRecording(questionId); }, { passive: false });
+            btn.addEventListener('touchend', function(e) { e.preventDefault(); e.stopPropagation(); stopRecording(questionId); });
+            btn.addEventListener('touchcancel', function(e) { e.preventDefault(); stopRecording(questionId); });
+            btn.addEventListener('mousedown', function(e) { e.preventDefault(); startRecording(questionId); });
+            btn.addEventListener('mouseup', function(e) { e.preventDefault(); stopRecording(questionId); });
+        } else {
+            btn.addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); toggleRecording(questionId); });
+        }
+        btn.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+    });
 }
 
 // ============================================
@@ -348,20 +339,7 @@ function toggleRecording(questionId) {
 document.addEventListener('DOMContentLoaded', function() {
     detectTouchDevice();
     startQuizTimer();
-    
-    document.querySelectorAll('.btn-record').forEach(function(btn) {
-        const questionId = btn.id.replace('btnRecord_', '');
-        if (isTouchDevice) {
-            btn.addEventListener('pointerdown', function(e) { e.preventDefault(); startRecording(questionId); });
-            btn.addEventListener('pointerup', function(e) { e.preventDefault(); stopRecording(questionId); });
-            btn.addEventListener('pointerleave', function(e) { stopRecording(questionId); });
-            btn.addEventListener('pointercancel', function(e) { stopRecording(questionId); });
-            btn.addEventListener('contextmenu', function(e) { e.preventDefault(); });
-        } else {
-            btn.addEventListener('click', function(e) { e.preventDefault(); toggleRecording(questionId); });
-        }
-    });
-    
+    initRecordButtons();
     const slides = document.querySelectorAll('.question-slide');
     const totalSlides = slides.length;
     const prevBtn = document.getElementById('prevBtn');
@@ -372,7 +350,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const currentQuestionNum = document.getElementById('currentQuestionNum');
     const quizDots = document.querySelectorAll('.quiz-dot');
     let currentSlide = 0;
-
     function updateSlide() {
         slides.forEach(function(slide, index) { slide.style.display = index === currentSlide ? 'block' : 'none'; });
         const percent = ((currentSlide + 1) / totalSlides) * 100;
@@ -388,7 +365,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (currentSlide === totalSlides - 1) { nextBtn.style.display = 'none'; submitBtn.style.display = 'inline-flex'; }
         else { nextBtn.style.display = 'inline-flex'; submitBtn.style.display = 'none'; }
     }
-
     nextBtn.addEventListener('click', function() { if (currentSlide < totalSlides - 1) { currentSlide++; updateSlide(); } });
     prevBtn.addEventListener('click', function() { if (currentSlide > 0) { currentSlide--; updateSlide(); } });
     quizDots.forEach(function(dot) { dot.addEventListener('click', function() { currentSlide = parseInt(this.getAttribute('data-dot')) - 1; updateSlide(); }); });
@@ -402,30 +378,22 @@ document.addEventListener('DOMContentLoaded', function() {
 .quiz-dot:hover { transform: scale(1.3) !important; }
 .question-slide { animation: fadeUp 0.3s ease; }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-
 .btn-record {
-    width: 70px; height: 70px; border-radius: 50%;
+    width: 80px; height: 80px; border-radius: 50%;
     background: var(--danger); color: #fff; border: none;
-    font-size: 1.8rem; cursor: pointer;
-    transition: all 0.3s ease;
+    font-size: 2rem; cursor: pointer;
     display: inline-flex; align-items: center; justify-content: center;
     box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
-    user-select: none; -webkit-user-select: none;
-    touch-action: none;
+    touch-action: none; -webkit-touch-callout: none;
+    -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
+    -webkit-tap-highlight-color: transparent; -ms-touch-action: none;
 }
 .btn-record:hover { transform: scale(1.05); }
 .btn-record:active { transform: scale(0.95); }
 .btn-record.recording { background: #666; animation: pulse-rec 1s infinite; }
-@keyframes pulse-rec {
-    0% { box-shadow: 0 0 0 0 rgba(239,68,68,0.5); }
-    70% { box-shadow: 0 0 0 15px rgba(239,68,68,0); }
-    100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); }
-}
+@keyframes pulse-rec { 0% { box-shadow: 0 0 0 0 rgba(239,68,68,0.5); } 70% { box-shadow: 0 0 0 15px rgba(239,68,68,0); } 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); } }
 .recording-wave { display: flex; align-items: center; justify-content: center; gap: 4px; height: 50px; margin-top: 1rem; }
-.recording-wave .wave-bar {
-    width: 5px; height: 10px; background: var(--danger);
-    border-radius: 5px; animation: wave-bounce 1s ease-in-out infinite;
-}
+.recording-wave .wave-bar { width: 5px; height: 10px; background: var(--danger); border-radius: 5px; animation: wave-bounce 1s ease-in-out infinite; }
 .recording-wave .wave-bar:nth-child(1) { animation-delay: 0s; height: 15px; }
 .recording-wave .wave-bar:nth-child(2) { animation-delay: 0.1s; height: 25px; }
 .recording-wave .wave-bar:nth-child(3) { animation-delay: 0.2s; height: 35px; }
@@ -436,9 +404,6 @@ document.addEventListener('DOMContentLoaded', function() {
 .recording-wave .wave-bar:nth-child(8) { animation-delay: 0.3s; height: 25px; }
 .recording-wave .wave-bar:nth-child(9) { animation-delay: 0.2s; height: 15px; }
 .recording-wave .wave-bar:nth-child(10) { animation-delay: 0.1s; height: 10px; }
-@keyframes wave-bounce {
-    0%, 100% { transform: scaleY(0.5); opacity: 0.5; }
-    50% { transform: scaleY(1); opacity: 1; }
-}
+@keyframes wave-bounce { 0%, 100% { transform: scaleY(0.5); opacity: 0.5; } 50% { transform: scaleY(1); opacity: 1; } }
 </style>
 {% endblock %}
