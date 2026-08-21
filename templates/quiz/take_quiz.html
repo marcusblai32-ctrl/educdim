@@ -185,11 +185,10 @@
 
 <script>
 // ============================================
-// TIMER QUIZ — DESANN (admin defini)
+// TIMER QUIZ
 // ============================================
 let quizTimeLeft = {{ quiz_duree }} * 60;
 let quizTimer = null;
-
 function startQuizTimer() {
     const timerEl = document.getElementById('timer');
     const initialMins = Math.floor(quizTimeLeft / 60);
@@ -197,17 +196,17 @@ function startQuizTimer() {
     timerEl.textContent = String(initialMins).padStart(2, '0') + ':' + String(initialSecs).padStart(2, '0');
     quizTimer = setInterval(function() {
         quizTimeLeft--;
-        if (quizTimeLeft <= 0) { clearInterval(quizTimer); timerEl.textContent = '00:00'; timerEl.style.color = 'var(--danger)'; document.getElementById('quizForm').submit(); return; }
+        if (quizTimeLeft <= 0) { clearInterval(quizTimer); timerEl.textContent = '00:00'; document.getElementById('quizForm').submit(); return; }
         const mins = String(Math.floor(quizTimeLeft / 60)).padStart(2, '0');
         const secs = String(quizTimeLeft % 60).padStart(2, '0');
         timerEl.textContent = mins + ':' + secs;
-        if (quizTimeLeft <= 60) { timerEl.style.color = 'var(--danger)'; timerEl.style.fontWeight = '800'; }
-        else if (quizTimeLeft <= 120) { timerEl.style.color = 'var(--warning)'; timerEl.style.fontWeight = '700'; }
+        if (quizTimeLeft <= 60) { timerEl.style.color = 'var(--danger)'; }
+        else if (quizTimeLeft <= 120) { timerEl.style.color = 'var(--warning)'; }
     }, 1000);
 }
 
 // ============================================
-// ANREJISTREMAN VWA — INIVÈSÈL
+// ANREJISTREMAN VWA — AK DIAGNOSTIK
 // ============================================
 let mediaRecorders = {};
 let audioChunks = {};
@@ -219,69 +218,83 @@ let isTouchDevice = false;
 const MAX_RECORDING_SECONDS = 180;
 
 function detectTouchDevice() {
-    isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
-}
-
-function isMediaRecorderSupported() {
-    return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder);
-}
-
-function getBestMimeType() {
-    const types = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg;codecs=opus', ''];
-    for (const type of types) { if (type === '' || MediaRecorder.isTypeSupported(type)) return type; }
-    return '';
-}
-
-function getFileExtension(mimeType) {
-    if (mimeType.includes('mp4') || mimeType.includes('aac')) return 'm4a';
-    if (mimeType.includes('ogg')) return 'ogg';
-    if (mimeType.includes('webm')) return 'webm';
-    return 'webm';
+    isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
 }
 
 async function startRecording(questionId) {
-    if (isRecording[questionId]) return;
+    console.log('=== START RECORDING Q' + questionId + ' ===');
+    
     const btnRecord = document.getElementById('btnRecord_' + questionId);
     const statusEl = document.getElementById('recordStatus_' + questionId);
     const recorderContainer = document.getElementById('voiceRecorder_' + questionId);
     const waveEl = document.getElementById('recordingWave_' + questionId);
     const timerEl = document.getElementById('recordingTimer_' + questionId);
-    if (!btnRecord) return;
-    if (!isMediaRecorderSupported()) {
-        statusEl.textContent = '{% trans "Votre navigateur ne supporte pas l\'enregistrement audio." %}';
-        statusEl.style.color = 'var(--warning)';
+    
+    if (!btnRecord) { console.error('Bouton pa jwenn'); return; }
+    if (isRecording[questionId]) { console.log('Deja anrejistre'); return; }
+    
+    if (!window.MediaRecorder) {
+        statusEl.textContent = 'Navigatè pa sipòte MediaRecorder';
         return;
     }
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        statusEl.textContent = 'Navigatè pa sipòte getUserMedia';
+        return;
+    }
+    
     try {
-        let stream;
-        try { stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } }); }
-        catch (mediaErr) { stream = await navigator.mediaDevices.getUserMedia({ audio: true }); }
+        console.log('Mande pèmisyon mic...');
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        console.log('✅ Pèmisyon aksepte!');
+        
         currentStreams[questionId] = stream;
         audioChunks[questionId] = [];
-        const mimeType = getBestMimeType();
-        try { mediaRecorders[questionId] = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream); }
-        catch (recErr) { mediaRecorders[questionId] = new MediaRecorder(stream); }
-        mediaRecorders[questionId].ondataavailable = function(e) { if (e.data.size > 0) audioChunks[questionId].push(e.data); };
+        
+        let mimeType = '';
+        const options = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4'];
+        for (const type of options) {
+            if (MediaRecorder.isTypeSupported(type)) { mimeType = type; break; }
+        }
+        
+        mediaRecorders[questionId] = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream);
+        
+        mediaRecorders[questionId].ondataavailable = function(e) {
+            if (e.data.size > 0) audioChunks[questionId].push(e.data);
+        };
+        
         mediaRecorders[questionId].onstop = function() {
-            const actualMime = mediaRecorders[questionId].mimeType || 'audio/webm';
-            const blob = new Blob(audioChunks[questionId], { type: actualMime });
-            const ext = getFileExtension(actualMime);
-            const file = new File([blob], 'enregistrement_q' + questionId + '_' + Date.now() + '.' + ext, { type: actualMime });
-            try { const dataTransfer = new DataTransfer(); dataTransfer.items.add(file); const fileInput = document.getElementById('audioFile_' + questionId); fileInput.files = dataTransfer.files; } catch (dtErr) {}
+            console.log('Anrejistreman kanpe');
+            const blob = new Blob(audioChunks[questionId], { type: mediaRecorders[questionId].mimeType || 'audio/webm' });
+            const file = new File([blob], 'enregistrement_q' + questionId + '_' + Date.now() + '.webm', { type: blob.type });
+            
+            try {
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                document.getElementById('audioFile_' + questionId).files = dataTransfer.files;
+            } catch (dtErr) {}
+            
             const previewEl = document.getElementById('audioPreview_' + questionId);
             previewEl.src = URL.createObjectURL(blob);
             previewEl.style.display = 'block';
-            if (currentStreams[questionId]) { currentStreams[questionId].getTracks().forEach(track => track.stop()); currentStreams[questionId] = null; }
+            
+            if (currentStreams[questionId]) {
+                currentStreams[questionId].getTracks().forEach(track => track.stop());
+                currentStreams[questionId] = null;
+            }
         };
+        
+        console.log('Kòmanse anrejistreman...');
         mediaRecorders[questionId].start();
         isRecording[questionId] = true;
+        
         btnRecord.classList.add('recording');
         btnRecord.innerHTML = '<i class="fas fa-stop"></i>';
         waveEl.style.display = 'flex';
         timerEl.style.display = 'block';
         recorderContainer.style.borderColor = 'var(--danger)';
-        statusEl.textContent = '{% trans "Enregistrement en cours..." %}';
+        statusEl.textContent = 'Enregistrement en cours...';
         statusEl.style.color = 'var(--danger)';
+        
         recordingSeconds[questionId] = 0;
         recordingTimers[questionId] = setInterval(function() {
             recordingSeconds[questionId]++;
@@ -290,9 +303,14 @@ async function startRecording(questionId) {
             timerEl.textContent = mins + ':' + secs;
             if (recordingSeconds[questionId] >= MAX_RECORDING_SECONDS) stopRecording(questionId);
         }, 1000);
+        
+        console.log('✅ TOUT OK!');
+        
     } catch (err) {
-        console.error('Erreur:', err);
-        statusEl.textContent = '{% trans "Impossible d\'accéder au microphone." %}';
+        console.error('❌ ERÈ:', err.name, err.message);
+        if (err.name === 'NotAllowedError') statusEl.textContent = 'Pèmisyon refize. Ale nan paramèt navigatè a.';
+        else if (err.name === 'NotFoundError') statusEl.textContent = 'Pa gen mic trovè.';
+        else statusEl.textContent = 'Erè: ' + err.message;
         statusEl.style.color = 'var(--danger)';
     }
 }
@@ -310,7 +328,7 @@ function stopRecording(questionId) {
         if (waveEl) waveEl.style.display = 'none';
         if (timerEl) timerEl.style.display = 'none';
         if (recorderContainer) { recorderContainer.style.borderColor = 'var(--primary)'; recorderContainer.style.background = 'transparent'; }
-        if (statusEl) { statusEl.textContent = '{% trans "Enregistrement terminé !" %}'; statusEl.style.color = 'var(--success)'; }
+        if (statusEl) { statusEl.textContent = 'Enregistrement terminé !'; statusEl.style.color = 'var(--success)'; }
         if (recordingTimers[questionId]) { clearInterval(recordingTimers[questionId]); recordingTimers[questionId] = null; }
     }
 }
@@ -323,7 +341,7 @@ function initRecordButtons() {
         if (isTouchDevice) {
             btn.addEventListener('touchstart', function(e) { e.preventDefault(); e.stopPropagation(); startRecording(questionId); }, { passive: false });
             btn.addEventListener('touchend', function(e) { e.preventDefault(); e.stopPropagation(); stopRecording(questionId); });
-            btn.addEventListener('touchcancel', function(e) { e.preventDefault(); stopRecording(questionId); });
+            btn.addEventListener('touchcancel', function(e) { stopRecording(questionId); });
             btn.addEventListener('mousedown', function(e) { e.preventDefault(); startRecording(questionId); });
             btn.addEventListener('mouseup', function(e) { e.preventDefault(); stopRecording(questionId); });
         } else {
@@ -358,8 +376,8 @@ document.addEventListener('DOMContentLoaded', function() {
         currentQuestionNum.textContent = currentSlide + 1;
         quizDots.forEach(function(dot, index) {
             if (index === currentSlide) { dot.style.background = 'var(--primary)'; dot.style.borderColor = 'var(--primary)'; dot.style.transform = 'scale(1.3)'; }
-            else if (index < currentSlide) { dot.style.background = 'var(--success)'; dot.style.borderColor = 'var(--success)'; dot.style.transform = 'scale(1)'; }
-            else { dot.style.background = 'var(--glass-soft)'; dot.style.borderColor = 'var(--glass-brd)'; dot.style.transform = 'scale(1)'; }
+            else if (index < currentSlide) { dot.style.background = 'var(--success)'; dot.style.borderColor = 'var(--success)'; }
+            else { dot.style.background = 'var(--glass-soft)'; dot.style.borderColor = 'var(--glass-brd)'; }
         });
         if (currentSlide === 0) prevBtn.style.display = 'none'; else prevBtn.style.display = 'inline-flex';
         if (currentSlide === totalSlides - 1) { nextBtn.style.display = 'none'; submitBtn.style.display = 'inline-flex'; }
