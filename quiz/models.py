@@ -34,14 +34,14 @@ class Quiz(models.Model):
     description = models.TextField(blank=True)
     publie = models.BooleanField(default=False)
     pourcentage_reussite = models.PositiveIntegerField(default=70)
-    
+
     # ===== NOUVO: Durée du quiz en minutes (admin defini) =====
     duree_quiz = models.PositiveIntegerField(
         default=15,
         verbose_name="Durée du quiz (minutes)",
         help_text="Temps limite pour compléter le quiz en minutes."
     )
-    
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     # Medya miltip
@@ -95,7 +95,7 @@ class Quiz(models.Model):
         elif self.lecon:
             return "lecon"
         return "inconnu"
-    
+
     def get_duree_seconds(self):
         """Retounen durée quiz la an segonn."""
         return self.duree_quiz * 60
@@ -192,6 +192,12 @@ class ReponseUtilisateur(models.Model):
     video_reponse = models.FileField(upload_to='quiz/reponses/video/', blank=True, null=True, verbose_name="Réponse vidéo")
     image_reponse = models.ImageField(upload_to='quiz/reponses/images/', blank=True, null=True, verbose_name="Réponse image")
     fichier_reponse = models.FileField(upload_to='quiz/reponses/fichiers/', blank=True, null=True, verbose_name="Réponse fichier")
+
+    # ===== NOUVO: Pwen manyèl pou koreksyon =====
+    points_attribues = models.DecimalField(
+        max_digits=5, decimal_places=2, null=True, blank=True,
+        verbose_name="Points attribués (manuel)"
+    )
 
     class Meta:
         unique_together = ('tentative', 'question')
