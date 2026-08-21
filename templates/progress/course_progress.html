@@ -5,6 +5,7 @@
 
 {% block extra_css %}
 <style>
+    /* ===== STYLES ===== */
     .course-progress-container {
         max-width: 900px;
         margin: 0 auto;
@@ -285,55 +286,21 @@
         box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
     }
     
-    /* ===== RESPONSIVE ===== */
     @media (max-width: 768px) {
-        .course-progress-container {
-            padding: 1rem;
-        }
-        
-        .course-progress-header h1 {
-            font-size: 1.5rem;
-        }
-        
-        .overall-progress-card .progress-percentage {
-            font-size: 1.5rem;
-        }
-        
-        .lesson-item {
-            flex-direction: column;
-            align-items: stretch;
-        }
-        
-        .lesson-item .lesson-actions {
-            justify-content: flex-start;
-        }
-        
-        .actions-footer {
-            flex-direction: column;
-        }
-        
-        .actions-footer .btn {
-            justify-content: center;
-            width: 100%;
-        }
+        .course-progress-container { padding: 1rem; }
+        .course-progress-header h1 { font-size: 1.5rem; }
+        .overall-progress-card .progress-percentage { font-size: 1.5rem; }
+        .lesson-item { flex-direction: column; align-items: stretch; }
+        .lesson-item .lesson-actions { justify-content: flex-start; }
+        .actions-footer { flex-direction: column; }
+        .actions-footer .btn { justify-content: center; width: 100%; }
     }
     
     @media (max-width: 480px) {
-        .course-progress-container {
-            padding: 0.5rem;
-        }
-        
-        .overall-progress-card {
-            padding: 1rem;
-        }
-        
-        .lesson-item {
-            padding: 0.8rem;
-        }
-        
-        .lesson-item .lesson-info .lesson-title {
-            font-size: 0.9rem;
-        }
+        .course-progress-container { padding: 0.5rem; }
+        .overall-progress-card { padding: 1rem; }
+        .lesson-item { padding: 0.8rem; }
+        .lesson-item .lesson-info .lesson-title { font-size: 0.9rem; }
     }
 </style>
 {% endblock %}
@@ -348,7 +315,8 @@
         </h1>
         <p class="subtitle">
             <i class="fas fa-layer-group"></i> 
-            {{ lecons_data|length }} {% trans "leçons" %}
+            {{ lecons_data|length }} {% trans "leçons" %} · 
+            <span id="completedCount">0</span> {% trans "terminées" %}
         </p>
     </div>
 
@@ -359,12 +327,12 @@
                 <i class="fas fa-circle-check"></i>
                 {% trans "Progression globale" %}
             </h3>
-            <span class="progress-percentage {% if progres_cours.est_termine %}completed{% endif %}" id="overallPercentage">
+            <span class="progress-percentage" id="overallPercentage">
                 {{ progres_cours.pourcentage|floatformat:0 }}%
             </span>
         </div>
         <div class="progress-bar-big">
-            <div class="fill {% if progres_cours.est_termine %}completed{% endif %}" 
+            <div class="fill" 
                  id="overallProgressFill"
                  data-progress="{{ progres_cours.pourcentage|floatformat:0 }}"
                  style="width: 0%;">
@@ -465,6 +433,45 @@
     (function() {
         'use strict';
 
+        // ===== UPDATE COMPLETED COUNT =====
+        function updateStats() {
+            const items = document.querySelectorAll('.lesson-item');
+            const completed = document.querySelectorAll('.lesson-item.completed');
+            const total = items.length;
+            
+            // Update completed count
+            const countEl = document.getElementById('completedCount');
+            if (countEl) {
+                countEl.textContent = completed.length;
+            }
+            
+            // Update percentage
+            if (total > 0) {
+                const percentage = Math.round((completed.length / total) * 100);
+                const percentageEl = document.getElementById('overallPercentage');
+                const fillEl = document.getElementById('overallProgressFill');
+                
+                if (percentageEl) {
+                    percentageEl.textContent = percentage + '%';
+                    if (percentage === 100) {
+                        percentageEl.classList.add('completed');
+                    } else {
+                        percentageEl.classList.remove('completed');
+                    }
+                }
+                
+                if (fillEl) {
+                    fillEl.style.width = percentage + '%';
+                    fillEl.setAttribute('data-progress', percentage);
+                    if (percentage === 100) {
+                        fillEl.classList.add('completed');
+                    } else {
+                        fillEl.classList.remove('completed');
+                    }
+                }
+            }
+        }
+
         // ===== PROGRESS BAR ANIMATION =====
         function animateProgressBar() {
             const fill = document.getElementById('overallProgressFill');
@@ -486,11 +493,9 @@
             observer.observe(fill);
         }
 
-        // ===== CONFIRMATION AVANT TERMINER =====
+        // ===== CONFIRMATION =====
         function setupConfirmDialog() {
-            const forms = document.querySelectorAll('.complete-form');
-            
-            forms.forEach(function(form) {
+            document.querySelectorAll('.complete-form').forEach(function(form) {
                 form.addEventListener('submit', function(e) {
                     if (!confirm('{% trans "Êtes-vous sûr de vouloir terminer cette leçon?" %}')) {
                         e.preventDefault();
@@ -500,41 +505,9 @@
             });
         }
 
-        // ===== UPDATE PROGRESS STATS =====
-        function updateProgressStats() {
-            const items = document.querySelectorAll('.lesson-item');
-            const completed = document.querySelectorAll('.lesson-item.completed');
-            const total = items.length;
-            
-            if (total > 0) {
-                const completedCount = completed.length;
-                const percentage = Math.round((completedCount / total) * 100);
-                
-                const percentageEl = document.getElementById('overallPercentage');
-                const fillEl = document.getElementById('overallProgressFill');
-                
-                if (percentageEl) {
-                    percentageEl.textContent = percentage + '%';
-                    if (percentage === 100) {
-                        percentageEl.classList.add('completed');
-                    }
-                }
-                
-                if (fillEl) {
-                    fillEl.style.width = percentage + '%';
-                    fillEl.setAttribute('data-progress', percentage);
-                    if (percentage === 100) {
-                        fillEl.classList.add('completed');
-                    }
-                }
-            }
-        }
-
-        // ===== BUTTON LOADING STATE =====
+        // ===== BUTTON LOADING =====
         function setupCompleteButtons() {
-            const forms = document.querySelectorAll('.complete-form');
-            
-            forms.forEach(function(form) {
+            document.querySelectorAll('.complete-form').forEach(function(form) {
                 form.addEventListener('submit', function(e) {
                     const btn = this.querySelector('.complete-btn');
                     if (btn) {
@@ -550,7 +523,21 @@
             animateProgressBar();
             setupConfirmDialog();
             setupCompleteButtons();
-            updateProgressStats();
+            updateStats();
+        });
+
+        document.addEventListener('htmx:afterSwap', function() {
+            animateProgressBar();
+            setupConfirmDialog();
+            setupCompleteButtons();
+            updateStats();
+        });
+        
+        document.addEventListener('turbo:load', function() {
+            animateProgressBar();
+            setupConfirmDialog();
+            setupCompleteButtons();
+            updateStats();
         });
 
     })();
