@@ -24,6 +24,89 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+    <style>
+        /* ===== BANNIERES STYLES ===== */
+        .banner-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .banner-container .banner {
+            display: block;
+            border-radius: var(--radius, 8px);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 0.5rem 0;
+        }
+        
+        .banner-container .banner:hover {
+            transform: scale(1.01);
+            box-shadow: var(--shadow, 0 4px 20px rgba(0,0,0,0.08));
+        }
+        
+        .banner-container .banner img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .banner-container .banner-header {
+            margin-bottom: 1rem;
+        }
+        
+        .banner-container .banner-footer {
+            margin-top: 1rem;
+        }
+        
+        .banner-container .banner-sidebar {
+            margin: 1rem 0;
+        }
+        
+        .banner-container .banner-sidebar img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius, 8px);
+        }
+        
+        .banner-container .banner-empty {
+            display: none;
+        }
+        
+        /* Sidebar layout */
+        .main-with-sidebar {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .main-with-sidebar .sidebar {
+            flex: 0 0 250px;
+            max-width: 100%;
+        }
+        
+        .main-with-sidebar .main-content {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-with-sidebar {
+                flex-direction: column;
+            }
+            .main-with-sidebar .sidebar {
+                flex: 1;
+                order: 2;
+            }
+            .main-with-sidebar .main-content {
+                order: 1;
+            }
+        }
+    </style>
+
     {% block extra_head %}{% endblock %}
 </head>
 <body>
@@ -161,6 +244,18 @@
         </div>
     </header>
 
+    {# ===== BANNIERES HEADER ===== #}
+    {% if banners_header %}
+    <div class="banner-container banner-header">
+        {% for banner in banners_header %}
+            <a href="{{ banner.lien }}" class="banner" {% if banner.lien %}target="_blank"{% endif %}>
+                <img src="{{ banner.image.url }}" alt="{{ banner.titre }}" 
+                     style="width:100%; height:auto; max-height:{{ banner.hauteur }}px; object-fit:cover;">
+            </a>
+        {% endfor %}
+    </div>
+    {% endif %}
+
     {# ===== EVENEMENT BANNER ===== #}
     {% if theme and theme.evenement_actif %}
     <div class="evenement-banner" style="display:block; background:linear-gradient(135deg, var(--primary), var(--secondary)); color:#fff; padding:1.5rem; text-align:center; position:relative; overflow:hidden;">
@@ -206,24 +301,51 @@
         </nav>
     {% endif %}
 
-    <main>
-        {% block messages %}
-            {% if messages %}
-                <div class="messages-container">
-                    {% for message in messages %}
-                        <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
-                            <span>{{ message }}</span>
-                            <button type="button" class="close-alert" aria-label="Close">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endblock %}
+    {# ===== MAIN CONTENT WITH SIDEBAR ===== #}
+    <div class="main-with-sidebar">
+        {% if banners_sidebar %}
+        <aside class="sidebar">
+            <div class="banner-container banner-sidebar">
+                {% for banner in banners_sidebar %}
+                    <a href="{{ banner.lien }}" class="banner" {% if banner.lien %}target="_blank"{% endif %}>
+                        <img src="{{ banner.image.url }}" alt="{{ banner.titre }}" style="width:100%; height:auto; border-radius:var(--radius, 8px);">
+                    </a>
+                {% endfor %}
+            </div>
+        </aside>
+        {% endif %}
+        
+        <main class="main-content">
+            {% block messages %}
+                {% if messages %}
+                    <div class="messages-container">
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+                                <span>{{ message }}</span>
+                                <button type="button" class="close-alert" aria-label="Close">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endblock %}
 
-        {% block content %}{% endblock %}
-    </main>
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    {# ===== BANNIERES FOOTER ===== #}
+    {% if banners_footer %}
+    <div class="banner-container banner-footer">
+        {% for banner in banners_footer %}
+            <a href="{{ banner.lien }}" class="banner" {% if banner.lien %}target="_blank"{% endif %}>
+                <img src="{{ banner.image.url }}" alt="{{ banner.titre }}" 
+                     style="width:100%; height:auto; max-height:{{ banner.hauteur }}px; object-fit:cover; border-radius:var(--radius, 8px);">
+            </a>
+        {% endfor %}
+    </div>
+    {% endif %}
 
     <footer>
         <div class="footer-container">
