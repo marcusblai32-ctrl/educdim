@@ -53,7 +53,6 @@ def corriger_tentative(tentative):
 
             # Pour l'instant, on ne donne pas de points automatiquement.
             # L'instructeur doit corriger manuellement.
-            # On pourrait ajouter un champ "points_manuel" plus tard.
             if has_response:
                 # On ne donne pas de points automatiquement
                 pass
