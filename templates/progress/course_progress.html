@@ -14,13 +14,13 @@
     .course-progress-header {
         margin-bottom: 2rem;
         padding-bottom: 1.5rem;
-        border-bottom: 2px solid var(--border, #dee2e6);
+        border-bottom: 2px solid #dee2e6;
     }
     
     .course-progress-header h1 {
         font-size: 2rem;
         font-weight: 700;
-        color: var(--text, #212529);
+        color: #212529;
         display: flex;
         align-items: center;
         gap: 0.75rem;
@@ -28,21 +28,21 @@
     }
     
     .course-progress-header h1 .icon {
-        color: var(--primary, #1a1a2e);
+        color: #1a1a2e;
     }
     
     .course-progress-header .subtitle {
-        color: var(--text-muted, #6c757d);
+        color: #6c757d;
         margin-top: 0.3rem;
     }
     
-    /* Overall Progress */
+    /* ===== OVERALL PROGRESS ===== */
     .overall-progress-card {
         padding: 1.5rem;
-        background: var(--light, #f8f9fa);
-        border-radius: var(--radius, 8px);
+        background: #f8f9fa;
+        border-radius: 8px;
         margin-bottom: 2rem;
-        border: 1px solid var(--border, #dee2e6);
+        border: 1px solid #dee2e6;
     }
     
     .overall-progress-card .progress-header {
@@ -64,23 +64,23 @@
     }
     
     .overall-progress-card .progress-header h3 i {
-        color: var(--success, #28a745);
+        color: #28a745;
     }
     
     .overall-progress-card .progress-percentage {
         font-size: 2rem;
         font-weight: 700;
-        color: var(--primary, #1a1a2e);
+        color: #1a1a2e;
     }
     
     .overall-progress-card .progress-percentage.completed {
-        color: var(--success, #28a745);
+        color: #28a745;
     }
     
     .overall-progress-card .progress-bar-big {
         width: 100%;
         height: 14px;
-        background: var(--border, #dee2e6);
+        background: #dee2e6;
         border-radius: 50px;
         overflow: hidden;
     }
@@ -90,14 +90,14 @@
         border-radius: 50px;
         transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
         width: 0%;
-        background: linear-gradient(90deg, var(--primary, #1a1a2e), var(--info, #17a2b8));
+        background: linear-gradient(90deg, #1a1a2e, #17a2b8);
     }
     
     .overall-progress-card .progress-bar-big .fill.completed {
-        background: linear-gradient(90deg, var(--success, #28a745), var(--info, #17a2b8));
+        background: linear-gradient(90deg, #28a745, #17a2b8);
     }
     
-    /* Lessons List */
+    /* ===== LESSONS LIST ===== */
     .lessons-section h2 {
         font-size: 1.3rem;
         font-weight: 600;
@@ -110,7 +110,7 @@
     .lessons-section h2 .count {
         font-size: 0.8rem;
         font-weight: 400;
-        color: var(--text-muted, #6c757d);
+        color: #6c757d;
     }
     
     .lesson-item {
@@ -120,27 +120,27 @@
         flex-wrap: wrap;
         gap: 1rem;
         padding: 1rem 1.2rem;
-        background: var(--white, #ffffff);
-        border: 1px solid var(--border, #dee2e6);
-        border-radius: var(--radius, 8px);
-        border-left: 4px solid var(--border, #dee2e6);
+        background: #ffffff;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        border-left: 4px solid #dee2e6;
         transition: all 0.3s ease;
         margin-bottom: 0.8rem;
     }
     
     .lesson-item:hover {
         transform: translateY(-2px);
-        box-shadow: var(--shadow, 0 4px 20px rgba(0,0,0,0.08));
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     }
     
     .lesson-item.completed {
-        border-left-color: var(--success, #28a745);
-        background: var(--success-bg-subtle, #f0fff4);
+        border-left-color: #28a745;
+        background: #f0fff4;
     }
     
     .lesson-item.in-progress {
-        border-left-color: var(--warning, #ffc107);
-        background: var(--warning-bg-subtle, #fff8e1);
+        border-left-color: #ffc107;
+        background: #fff8e1;
     }
     
     .lesson-item .lesson-info {
@@ -156,9 +156,9 @@
         text-align: center;
     }
     
-    .lesson-item .lesson-info .status-icon.completed { color: var(--success, #28a745); }
-    .lesson-item .lesson-info .status-icon.in-progress { color: var(--warning, #ffc107); }
-    .lesson-item .lesson-info .status-icon.pending { color: var(--border, #dee2e6); }
+    .lesson-item .lesson-info .status-icon.completed { color: #28a745; }
+    .lesson-item .lesson-info .status-icon.in-progress { color: #ffc107; }
+    .lesson-item .lesson-info .status-icon.pending { color: #dee2e6; }
     
     .lesson-item .lesson-info .lesson-title {
         margin: 0;
@@ -168,7 +168,7 @@
     
     .lesson-item .lesson-info .lesson-meta {
         font-size: 0.8rem;
-        color: var(--text-muted, #6c757d);
+        color: #6c757d;
     }
     
     .lesson-item .lesson-actions {
@@ -186,16 +186,16 @@
         color: #fff;
     }
     
-    .lesson-item .lesson-actions .badge.success { background: var(--success, #28a745); }
-    .lesson-item .lesson-actions .badge.warning { background: var(--warning, #ffc107); color: #212529; }
-    .lesson-item .lesson-actions .badge.secondary { background: var(--secondary, #6c757d); }
+    .lesson-item .lesson-actions .badge.success { background: #28a745; }
+    .lesson-item .lesson-actions .badge.warning { background: #ffc107; color: #212529; }
+    .lesson-item .lesson-actions .badge.secondary { background: #6c757d; }
     
     .lesson-item .lesson-actions .btn {
         display: inline-flex;
         align-items: center;
         gap: 0.3rem;
         padding: 0.3rem 0.8rem;
-        border-radius: var(--radius, 4px);
+        border-radius: 4px;
         font-size: 0.85rem;
         text-decoration: none;
         border: 1px solid transparent;
@@ -205,23 +205,23 @@
     
     .lesson-item .lesson-actions .btn-outline {
         background: transparent;
-        color: var(--text, #212529);
-        border-color: var(--border, #dee2e6);
+        color: #212529;
+        border-color: #dee2e6;
     }
     
     .lesson-item .lesson-actions .btn-outline:hover {
-        background: var(--light, #f8f9fa);
-        border-color: var(--primary, #1a1a2e);
+        background: #f8f9fa;
+        border-color: #1a1a2e;
     }
     
     .lesson-item .lesson-actions .btn-success {
-        background: var(--success, #28a745);
+        background: #28a745;
         color: #fff;
-        border-color: var(--success, #28a745);
+        border-color: #28a745;
     }
     
     .lesson-item .lesson-actions .btn-success:hover {
-        background: var(--success-hover, #218838);
+        background: #218838;
         transform: scale(1.05);
     }
     
@@ -231,14 +231,14 @@
         transform: none;
     }
     
-    /* Actions Footer */
+    /* ===== ACTIONS FOOTER ===== */
     .actions-footer {
         margin-top: 2rem;
         display: flex;
         gap: 1rem;
         flex-wrap: wrap;
         padding-top: 1.5rem;
-        border-top: 1px solid var(--border, #dee2e6);
+        border-top: 1px solid #dee2e6;
     }
     
     .actions-footer .btn {
@@ -246,7 +246,7 @@
         align-items: center;
         gap: 0.5rem;
         padding: 0.6rem 1.5rem;
-        border-radius: var(--radius, 4px);
+        border-radius: 4px;
         font-size: 0.95rem;
         text-decoration: none;
         border: 1px solid transparent;
@@ -254,38 +254,38 @@
     }
     
     .actions-footer .btn-secondary {
-        background: var(--secondary, #6c757d);
+        background: #6c757d;
         color: #fff;
     }
     
     .actions-footer .btn-secondary:hover {
-        background: var(--secondary-hover, #5a6268);
+        background: #5a6268;
         transform: translateY(-2px);
     }
     
     .actions-footer .btn-primary {
-        background: var(--primary, #1a1a2e);
+        background: #1a1a2e;
         color: #fff;
     }
     
     .actions-footer .btn-primary:hover {
-        background: var(--primary-hover, #2d2d4a);
+        background: #2d2d4a;
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(26, 26, 46, 0.3);
     }
     
     .actions-footer .btn-success {
-        background: var(--success, #28a745);
+        background: #28a745;
         color: #fff;
     }
     
     .actions-footer .btn-success:hover {
-        background: var(--success-hover, #218838);
+        background: #218838;
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
     }
     
-    /* Responsive */
+    /* ===== RESPONSIVE ===== */
     @media (max-width: 768px) {
         .course-progress-container {
             padding: 1rem;
@@ -335,34 +335,6 @@
             font-size: 0.9rem;
         }
     }
-    
-    /* Dark Mode */
-    [data-bs-theme="dark"] .overall-progress-card {
-        background: var(--dark, #2d2d2d);
-        border-color: var(--border, #444);
-    }
-    
-    [data-bs-theme="dark"] .lesson-item {
-        background: var(--dark, #2d2d2d);
-        border-color: var(--border, #444);
-    }
-    
-    [data-bs-theme="dark"] .lesson-item.completed {
-        background: var(--success-bg-subtle, #1a3a2a);
-    }
-    
-    [data-bs-theme="dark"] .lesson-item.in-progress {
-        background: var(--warning-bg-subtle, #3a3a1a);
-    }
-    
-    [data-bs-theme="dark"] .lesson-item .lesson-actions .btn-outline {
-        color: var(--text, #e0e0e0);
-        border-color: var(--border, #444);
-    }
-    
-    [data-bs-theme="dark"] .lesson-item .lesson-actions .btn-outline:hover {
-        background: var(--dark, #3a3a3a);
-    }
 </style>
 {% endblock %}
 
@@ -376,8 +348,7 @@
         </h1>
         <p class="subtitle">
             <i class="fas fa-layer-group"></i> 
-            {{ lecons_data|length }} {% trans "leçons" %} · 
-            <span id="completedCount">{{ lecons_data|length_custom }}</span> {% trans "terminées" %}
+            {{ lecons_data|length }} {% trans "leçons" %}
         </p>
     </div>
 
@@ -399,7 +370,7 @@
                  style="width: 0%;">
             </div>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted, #6c757d); margin-top: 0.3rem;">
+        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #6c757d; margin-top: 0.3rem;">
             <span>0%</span>
             <span>100%</span>
         </div>
@@ -408,7 +379,7 @@
     <!-- ===== LISTE LECONS ===== -->
     <div class="lessons-section">
         <h2>
-            <i class="fas fa-list-ul" style="color: var(--primary, #1a1a2e);"></i>
+            <i class="fas fa-list-ul" style="color: #1a1a2e;"></i>
             {% trans "Leçons" %}
             <span class="count">({{ lecons_data|length }})</span>
         </h2>
@@ -464,7 +435,7 @@
                 </div>
             </div>
             {% empty %}
-            <div style="text-align: center; padding: 2rem; color: var(--text-muted, #6c757d);">
+            <div style="text-align: center; padding: 2rem; color: #6c757d;">
                 <i class="fas fa-book-open" style="font-size: 2rem; display: block; margin-bottom: 0.5rem;"></i>
                 {% trans "Aucune leçon disponible pour ce cours." %}
             </div>
@@ -494,9 +465,7 @@
     (function() {
         'use strict';
 
-        // ============================================
-        // 1. PROGRESS BAR ANIMATION
-        // ============================================
+        // ===== PROGRESS BAR ANIMATION =====
         function animateProgressBar() {
             const fill = document.getElementById('overallProgressFill');
             if (!fill) return;
@@ -517,26 +486,7 @@
             observer.observe(fill);
         }
 
-        // ============================================
-        // 2. AJOUTE ANIMATION SOU BOUTON TERMINER
-        // ============================================
-        function setupCompleteButtons() {
-            const forms = document.querySelectorAll('.complete-form');
-            
-            forms.forEach(function(form) {
-                form.addEventListener('submit', function(e) {
-                    const btn = this.querySelector('.complete-btn');
-                    if (btn) {
-                        btn.disabled = true;
-                        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {% trans "Traitement..." %}';
-                    }
-                });
-            });
-        }
-
-        // ============================================
-        // 3. CONFIRMATION AVANT TERMINER
-        // ============================================
+        // ===== CONFIRMATION AVANT TERMINER =====
         function setupConfirmDialog() {
             const forms = document.querySelectorAll('.complete-form');
             
@@ -550,9 +500,7 @@
             });
         }
 
-        // ============================================
-        // 4. UPDATE PROGRESS STATS
-        // ============================================
+        // ===== UPDATE PROGRESS STATS =====
         function updateProgressStats() {
             const items = document.querySelectorAll('.lesson-item');
             const completed = document.querySelectorAll('.lesson-item.completed');
@@ -562,10 +510,8 @@
                 const completedCount = completed.length;
                 const percentage = Math.round((completedCount / total) * 100);
                 
-                // Mete ajou pousantaj la
                 const percentageEl = document.getElementById('overallPercentage');
                 const fillEl = document.getElementById('overallProgressFill');
-                const countEl = document.getElementById('completedCount');
                 
                 if (percentageEl) {
                     percentageEl.textContent = percentage + '%';
@@ -581,35 +527,29 @@
                         fillEl.classList.add('completed');
                     }
                 }
-                
-                if (countEl) {
-                    countEl.textContent = completedCount;
-                }
             }
         }
 
-        // ============================================
-        // 5. INITIALIZATION
-        // ============================================
+        // ===== BUTTON LOADING STATE =====
+        function setupCompleteButtons() {
+            const forms = document.querySelectorAll('.complete-form');
+            
+            forms.forEach(function(form) {
+                form.addEventListener('submit', function(e) {
+                    const btn = this.querySelector('.complete-btn');
+                    if (btn) {
+                        btn.disabled = true;
+                        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {% trans "Traitement..." %}';
+                    }
+                });
+            });
+        }
+
+        // ===== INIT =====
         document.addEventListener('DOMContentLoaded', function() {
             animateProgressBar();
-            setupCompleteButtons();
             setupConfirmDialog();
-            updateProgressStats();
-        });
-
-        // Re-run when content changes
-        document.addEventListener('htmx:afterSwap', function() {
-            animateProgressBar();
             setupCompleteButtons();
-            setupConfirmDialog();
-            updateProgressStats();
-        });
-        
-        document.addEventListener('turbo:load', function() {
-            animateProgressBar();
-            setupCompleteButtons();
-            setupConfirmDialog();
             updateProgressStats();
         });
 
