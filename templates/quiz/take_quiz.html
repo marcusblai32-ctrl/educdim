@@ -10,7 +10,7 @@
         <h1 style="font-size: 1.8rem; font-weight: 800; font-family: var(--font-display);">{{ tentative.quiz.titre }}</h1>
         <div style="display: flex; justify-content: center; align-items: center; gap: 1.5rem; flex-wrap: wrap; margin-top: 0.8rem;">
             <span style="color: var(--text-muted); font-size: 0.9rem;">
-                <i class="fas fa-clock"></i> {% trans "Temps restant" %}: <span id="timer">--:--</span>
+                <i class="fas fa-clock"></i> {% trans "Temps restant" %}: <span id="timer" style="font-weight:700; color:var(--primary);">--:--</span>
             </span>
             <span style="color: var(--text-muted); font-size: 0.9rem;">
                 <i class="fas fa-list"></i> {{ total_questions }} {% trans "questions" %}
@@ -72,7 +72,6 @@
                     </div>
                     {% endif %}
 
-                    <!-- ===== SINGLE / VRAI-FAUX ===== -->
                     {% if question.type_question == 'single' or question.type_question == 'vrai_faux' %}
                     <div class="options-list" style="display: flex; flex-direction: column; gap: 0.5rem;">
                         {% for reponse in question.reponses.all %}
@@ -83,7 +82,6 @@
                         {% endfor %}
                     </div>
 
-                    <!-- ===== MULTIPLE ===== -->
                     {% elif question.type_question == 'multiple' %}
                     <div class="options-list" style="display: flex; flex-direction: column; gap: 0.5rem;">
                         {% for reponse in question.reponses.all %}
@@ -94,30 +92,22 @@
                         {% endfor %}
                     </div>
 
-                    <!-- ===== TEXTE À TROUS ===== -->
                     {% elif question.type_question == 'texte_trous' %}
                     <div class="form-group">
                         <input type="text" name="question_{{ question.id }}_texte" class="form-control" placeholder="{% trans 'Écrivez votre réponse...' %}" style="width: 100%; padding:0.7rem 1rem; border:1.5px solid var(--border); border-radius:var(--radius-sm); font-size:0.95rem;">
                     </div>
 
-                    <!-- ===== TEXTE LIBRE ===== -->
                     {% elif question.type_question == 'texte_libre' %}
                     <div class="form-group">
                         <textarea name="question_{{ question.id }}_texte_libre" class="form-control" rows="4" placeholder="{% trans 'Écrivez votre réponse ici...' %}" style="width: 100%; padding:0.7rem 1rem; border:1.5px solid var(--border); border-radius:var(--radius-sm); font-size:0.95rem;"></textarea>
                     </div>
 
-                    <!-- ===== AUDIO RECORDING ===== -->
                     {% elif question.type_question == 'audio_reponse' %}
                     <div class="voice-recorder" id="voiceRecorder_{{ question.id }}" style="border: 2px dashed var(--primary); border-radius: var(--radius-sm); padding: 1.5rem; text-align: center; transition: all 0.3s ease;">
                         <i class="fas fa-microphone" style="font-size: 2.5rem; color: var(--danger); margin-bottom: 0.5rem;"></i>
                         <p style="font-weight: 600; margin-bottom: 1rem;">{% trans "Enregistrez votre réponse audio" %}</p>
                         
-                        <button type="button" class="btn-record" id="btnRecord_{{ question.id }}"
-                                onmousedown="startRecording({{ question.id }})"
-                                onmouseup="stopRecording({{ question.id }})"
-                                onmouseleave="stopRecording({{ question.id }})"
-                                ontouchstart="startRecording({{ question.id }}); event.preventDefault();"
-                                ontouchend="stopRecording({{ question.id }})">
+                        <button type="button" class="btn-record" id="btnRecord_{{ question.id }}">
                             <i class="fas fa-microphone"></i>
                         </button>
                         
@@ -125,28 +115,25 @@
                             <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
                             <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
                             <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
-                            <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
-                            <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                            <div class="wave-bar"></div>
                         </div>
                         
                         <div id="recordingTimer_{{ question.id }}" style="display:none; margin-top:0.5rem; font-size:1.2rem; font-weight:800; color:var(--danger); font-family:var(--font-display);">00:00</div>
                         
                         <p id="recordStatus_{{ question.id }}" style="margin-top:0.75rem; color:var(--text-muted); font-size:0.9rem;">
-                            {% trans "Maintenez le bouton pour enregistrer" %}
+                            {% trans "Maintenez le bouton pour enregistrer (cliquez sur ordinateur)" %}
                         </p>
                         
                         <audio id="audioPreview_{{ question.id }}" controls style="display:none; margin:1rem auto; width:100%; max-width:400px;"></audio>
                         
-                        <input type="hidden" name="question_{{ question.id }}_audio_blob" id="audioBlob_{{ question.id }}">
-                        <input type="hidden" name="question_{{ question.id }}_audio_filename" id="audioFilename_{{ question.id }}">
+                        <input type="file" name="question_{{ question.id }}_audio" id="audioFile_{{ question.id }}" accept="audio/*" style="display:none;">
                         
                         <div style="margin-top:1rem; border-top:1px solid var(--border); padding-top:1rem;">
                             <p style="font-size:0.85rem; color:var(--text-muted);">{% trans "Ou téléchargez un fichier audio" %}</p>
-                            <input type="file" name="question_{{ question.id }}_audio" accept="audio/*" class="form-control" style="margin-top:0.3rem;">
+                            <input type="file" name="question_{{ question.id }}_audio_upload" accept="audio/*" class="form-control" style="margin-top:0.3rem;">
                         </div>
                     </div>
 
-                    <!-- ===== VIDEO ===== -->
                     {% elif question.type_question == 'video_reponse' %}
                     <div class="upload-area" style="border: 2px dashed var(--glass-brd); border-radius: var(--radius-sm); padding: 1.5rem; text-align: center;">
                         <i class="fas fa-video" style="font-size: 2.5rem; color: var(--primary); opacity: 0.5; margin-bottom: 0.5rem;"></i>
@@ -154,7 +141,6 @@
                         <input type="file" name="question_{{ question.id }}_video" accept="video/*" class="form-control" style="margin-top: 0.5rem;">
                     </div>
 
-                    <!-- ===== IMAGE ===== -->
                     {% elif question.type_question == 'image_reponse' %}
                     <div class="upload-area" style="border: 2px dashed var(--glass-brd); border-radius: var(--radius-sm); padding: 1.5rem; text-align: center;">
                         <i class="fas fa-image" style="font-size: 2.5rem; color: var(--primary); opacity: 0.5; margin-bottom: 0.5rem;"></i>
@@ -162,7 +148,6 @@
                         <input type="file" name="question_{{ question.id }}_image" accept="image/*" class="form-control" style="margin-top: 0.5rem;">
                     </div>
 
-                    <!-- ===== FICHIER ===== -->
                     {% elif question.type_question == 'fichier_reponse' %}
                     <div class="upload-area" style="border: 2px dashed var(--glass-brd); border-radius: var(--radius-sm); padding: 1.5rem; text-align: center;">
                         <i class="fas fa-file" style="font-size: 2.5rem; color: var(--primary); opacity: 0.5; margin-bottom: 0.5rem;"></i>
@@ -177,7 +162,6 @@
             {% endfor %}
         </div>
 
-        <!-- Navigation -->
         <div class="quiz-navigation" style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;">
             <button type="button" id="prevBtn" class="btn btn-secondary btn-lg" style="min-width: 150px; display: none;">
                 <i class="fas fa-arrow-left"></i> {% trans "Précédent" %}
@@ -201,13 +185,60 @@
 
 <script>
 // ============================================
-// ANREJISTREMAN VWA — KLIK-KENBE
+// TIMER QUIZ — DESANN (admin defini)
+// ============================================
+let quizTimeLeft = {{ quiz_duree }} * 60;
+let quizTimer = null;
+
+function startQuizTimer() {
+    const timerEl = document.getElementById('timer');
+    
+    const initialMins = Math.floor(quizTimeLeft / 60);
+    const initialSecs = quizTimeLeft % 60;
+    timerEl.textContent = String(initialMins).padStart(2, '0') + ':' + String(initialSecs).padStart(2, '0');
+    
+    quizTimer = setInterval(function() {
+        quizTimeLeft--;
+        
+        if (quizTimeLeft <= 0) {
+            clearInterval(quizTimer);
+            timerEl.textContent = '00:00';
+            timerEl.style.color = 'var(--danger)';
+            document.getElementById('quizForm').submit();
+            return;
+        }
+        
+        const mins = String(Math.floor(quizTimeLeft / 60)).padStart(2, '0');
+        const secs = String(quizTimeLeft % 60).padStart(2, '0');
+        timerEl.textContent = mins + ':' + secs;
+        
+        if (quizTimeLeft <= 60) {
+            timerEl.style.color = 'var(--danger)';
+            timerEl.style.fontWeight = '800';
+        } else if (quizTimeLeft <= 120) {
+            timerEl.style.color = 'var(--warning)';
+            timerEl.style.fontWeight = '700';
+        }
+    }, 1000);
+}
+
+// ============================================
+// ANREJISTREMAN VWA — ADAPTATIF
 // ============================================
 let mediaRecorders = {};
 let audioChunks = {};
 let isRecording = {};
 let recordingTimers = {};
 let recordingSeconds = {};
+let currentStreams = {};
+let isTouchDevice = false;
+const MAX_RECORDING_SECONDS = 180;
+
+function detectTouchDevice() {
+    isTouchDevice = ('ontouchstart' in window) || 
+                    (navigator.maxTouchPoints > 0) || 
+                    (navigator.msMaxTouchPoints > 0);
+}
 
 async function startRecording(questionId) {
     const btnRecord = document.getElementById('btnRecord_' + questionId);
@@ -220,30 +251,35 @@ async function startRecording(questionId) {
     
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        
+        currentStreams[questionId] = stream;
         audioChunks[questionId] = [];
-        mediaRecorders[questionId] = new MediaRecorder(stream);
+        
+        let mimeType = '';
+        const options = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg;codecs=opus'];
+        for (const type of options) {
+            if (MediaRecorder.isTypeSupported(type)) { mimeType = type; break; }
+        }
+        
+        mediaRecorders[questionId] = mimeType ? new MediaRecorder(stream, { mimeType: mimeType }) : new MediaRecorder(stream);
         
         mediaRecorders[questionId].ondataavailable = function(e) {
             if (e.data.size > 0) audioChunks[questionId].push(e.data);
         };
         
         mediaRecorders[questionId].onstop = function() {
-            const audioBlob = new Blob(audioChunks[questionId], { type: 'audio/webm' });
+            const blob = new Blob(audioChunks[questionId], { type: mediaRecorders[questionId].mimeType || 'audio/webm' });
+            const file = new File([blob], 'enregistrement_q' + questionId + '_' + Date.now() + '.webm', { type: blob.type });
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            const fileInput = document.getElementById('audioFile_' + questionId);
+            fileInput.files = dataTransfer.files;
             const previewEl = document.getElementById('audioPreview_' + questionId);
-            const blobInput = document.getElementById('audioBlob_' + questionId);
-            const filenameInput = document.getElementById('audioFilename_' + questionId);
-            
-            previewEl.src = URL.createObjectURL(audioBlob);
+            previewEl.src = URL.createObjectURL(blob);
             previewEl.style.display = 'block';
-            
-            const reader = new FileReader();
-            reader.readAsDataURL(audioBlob);
-            reader.onloadend = function() {
-                blobInput.value = reader.result;
-                filenameInput.value = 'enregistrement_q' + questionId + '_' + Date.now() + '.webm';
-                console.log('✅ Audio base64 saved!');
-            };
+            if (currentStreams[questionId]) {
+                currentStreams[questionId].getTracks().forEach(track => track.stop());
+                currentStreams[questionId] = null;
+            }
         };
         
         mediaRecorders[questionId].start();
@@ -259,15 +295,21 @@ async function startRecording(questionId) {
         statusEl.style.color = 'var(--danger)';
         
         recordingSeconds[questionId] = 0;
+        clearInterval(recordingTimers[questionId]);
         recordingTimers[questionId] = setInterval(function() {
             recordingSeconds[questionId]++;
             const mins = String(Math.floor(recordingSeconds[questionId] / 60)).padStart(2, '0');
             const secs = String(recordingSeconds[questionId] % 60).padStart(2, '0');
             timerEl.textContent = mins + ':' + secs;
+            if (recordingSeconds[questionId] >= MAX_RECORDING_SECONDS) {
+                stopRecording(questionId);
+                statusEl.textContent = '{% trans "Limite atteinte (3 min max)" %}';
+                statusEl.style.color = 'var(--danger)';
+            }
         }, 1000);
         
     } catch (err) {
-        console.error('❌ Erreur:', err);
+        console.error('Erreur:', err);
         alert('{% trans "Impossible d\'accéder au microphone." %}');
     }
 }
@@ -292,21 +334,34 @@ function stopRecording(questionId) {
         statusEl.textContent = '{% trans "Enregistrement terminé !" %}';
         statusEl.style.color = 'var(--success)';
         
-        if (recordingTimers[questionId]) {
-            clearInterval(recordingTimers[questionId]);
-            recordingTimers[questionId] = null;
-        }
-        
-        if (mediaRecorders[questionId].stream) {
-            mediaRecorders[questionId].stream.getTracks().forEach(track => track.stop());
-        }
+        if (recordingTimers[questionId]) { clearInterval(recordingTimers[questionId]); recordingTimers[questionId] = null; }
     }
 }
 
+function toggleRecording(questionId) {
+    if (isRecording[questionId]) { stopRecording(questionId); } else { startRecording(questionId); }
+}
+
 // ============================================
-// PAGINATION
+// PAGINATION + INIT
 // ============================================
 document.addEventListener('DOMContentLoaded', function() {
+    detectTouchDevice();
+    startQuizTimer();
+    
+    document.querySelectorAll('.btn-record').forEach(function(btn) {
+        const questionId = btn.id.replace('btnRecord_', '');
+        if (isTouchDevice) {
+            btn.addEventListener('pointerdown', function(e) { e.preventDefault(); startRecording(questionId); });
+            btn.addEventListener('pointerup', function(e) { e.preventDefault(); stopRecording(questionId); });
+            btn.addEventListener('pointerleave', function(e) { stopRecording(questionId); });
+            btn.addEventListener('pointercancel', function(e) { stopRecording(questionId); });
+            btn.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+        } else {
+            btn.addEventListener('click', function(e) { e.preventDefault(); toggleRecording(questionId); });
+        }
+    });
+    
     const slides = document.querySelectorAll('.question-slide');
     const totalSlides = slides.length;
     const prevBtn = document.getElementById('prevBtn');
@@ -319,52 +374,25 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentSlide = 0;
 
     function updateSlide() {
-        slides.forEach(function(slide, index) {
-            slide.style.display = index === currentSlide ? 'block' : 'none';
-        });
+        slides.forEach(function(slide, index) { slide.style.display = index === currentSlide ? 'block' : 'none'; });
         const percent = ((currentSlide + 1) / totalSlides) * 100;
         progressBar.style.width = percent + '%';
         progressPercent.textContent = Math.round(percent) + '%';
         currentQuestionNum.textContent = currentSlide + 1;
         quizDots.forEach(function(dot, index) {
-            if (index === currentSlide) {
-                dot.style.background = 'var(--primary)';
-                dot.style.borderColor = 'var(--primary)';
-                dot.style.transform = 'scale(1.3)';
-            } else if (index < currentSlide) {
-                dot.style.background = 'var(--success)';
-                dot.style.borderColor = 'var(--success)';
-            } else {
-                dot.style.background = 'var(--glass-soft)';
-                dot.style.borderColor = 'var(--glass-brd)';
-            }
+            if (index === currentSlide) { dot.style.background = 'var(--primary)'; dot.style.borderColor = 'var(--primary)'; dot.style.transform = 'scale(1.3)'; }
+            else if (index < currentSlide) { dot.style.background = 'var(--success)'; dot.style.borderColor = 'var(--success)'; dot.style.transform = 'scale(1)'; }
+            else { dot.style.background = 'var(--glass-soft)'; dot.style.borderColor = 'var(--glass-brd)'; dot.style.transform = 'scale(1)'; }
         });
-        if (currentSlide === 0) prevBtn.style.display = 'none';
-        else prevBtn.style.display = 'inline-flex';
-        if (currentSlide === totalSlides - 1) {
-            nextBtn.style.display = 'none';
-            submitBtn.style.display = 'inline-flex';
-        } else {
-            nextBtn.style.display = 'inline-flex';
-            submitBtn.style.display = 'none';
-        }
+        if (currentSlide === 0) prevBtn.style.display = 'none'; else prevBtn.style.display = 'inline-flex';
+        if (currentSlide === totalSlides - 1) { nextBtn.style.display = 'none'; submitBtn.style.display = 'inline-flex'; }
+        else { nextBtn.style.display = 'inline-flex'; submitBtn.style.display = 'none'; }
     }
 
-    nextBtn.addEventListener('click', function() {
-        if (currentSlide < totalSlides - 1) { currentSlide++; updateSlide(); }
-    });
-    prevBtn.addEventListener('click', function() {
-        if (currentSlide > 0) { currentSlide--; updateSlide(); }
-    });
-    quizDots.forEach(function(dot) {
-        dot.addEventListener('click', function() {
-            currentSlide = parseInt(this.getAttribute('data-dot')) - 1;
-            updateSlide();
-        });
-    });
-    submitBtn.addEventListener('click', function(e) {
-        if (!confirm("{% trans 'Êtes-vous sûr de vouloir soumettre ce quiz ?' %}")) e.preventDefault();
-    });
+    nextBtn.addEventListener('click', function() { if (currentSlide < totalSlides - 1) { currentSlide++; updateSlide(); } });
+    prevBtn.addEventListener('click', function() { if (currentSlide > 0) { currentSlide--; updateSlide(); } });
+    quizDots.forEach(function(dot) { dot.addEventListener('click', function() { currentSlide = parseInt(this.getAttribute('data-dot')) - 1; updateSlide(); }); });
+    submitBtn.addEventListener('click', function(e) { if (!confirm("{% trans 'Êtes-vous sûr de vouloir soumettre ce quiz ?' %}")) e.preventDefault(); });
     updateSlide();
 });
 </script>
@@ -383,16 +411,16 @@ document.addEventListener('DOMContentLoaded', function() {
     display: inline-flex; align-items: center; justify-content: center;
     box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
     user-select: none; -webkit-user-select: none;
-    touch-action: manipulation;
+    touch-action: none;
 }
-.btn-record:hover { transform: scale(1.05); box-shadow: 0 8px 25px rgba(239,68,68,0.5); }
+.btn-record:hover { transform: scale(1.05); }
+.btn-record:active { transform: scale(0.95); }
 .btn-record.recording { background: #666; animation: pulse-rec 1s infinite; }
 @keyframes pulse-rec {
     0% { box-shadow: 0 0 0 0 rgba(239,68,68,0.5); }
     70% { box-shadow: 0 0 0 15px rgba(239,68,68,0); }
     100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); }
 }
-
 .recording-wave { display: flex; align-items: center; justify-content: center; gap: 4px; height: 50px; margin-top: 1rem; }
 .recording-wave .wave-bar {
     width: 5px; height: 10px; background: var(--danger);
@@ -408,11 +436,6 @@ document.addEventListener('DOMContentLoaded', function() {
 .recording-wave .wave-bar:nth-child(8) { animation-delay: 0.3s; height: 25px; }
 .recording-wave .wave-bar:nth-child(9) { animation-delay: 0.2s; height: 15px; }
 .recording-wave .wave-bar:nth-child(10) { animation-delay: 0.1s; height: 10px; }
-.recording-wave .wave-bar:nth-child(11) { animation-delay: 0.2s; height: 20px; }
-.recording-wave .wave-bar:nth-child(12) { animation-delay: 0.3s; height: 30px; }
-.recording-wave .wave-bar:nth-child(13) { animation-delay: 0.4s; height: 40px; }
-.recording-wave .wave-bar:nth-child(14) { animation-delay: 0.3s; height: 30px; }
-.recording-wave .wave-bar:nth-child(15) { animation-delay: 0.2s; height: 20px; }
 @keyframes wave-bounce {
     0%, 100% { transform: scaleY(0.5); opacity: 0.5; }
     50% { transform: scaleY(1); opacity: 1; }
