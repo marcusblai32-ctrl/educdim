@@ -5,15 +5,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{{ theme.site_name|default:'EducDim' }}{% endblock %}</title>
-    <meta name="description" content="{{ meta_description|default:theme.site_description }}">
+    <title>{% block title %}{% if theme %}{{ theme.site_name|default:'EducDim' }}{% else %}EducDim{% endif %}{% endblock %}</title>
+    <meta name="description" content="{{ meta_description|default:theme.site_description|default:'' }}">
     <meta name="keywords" content="{{ meta_keywords|default:'e-learning, cours en ligne, éducation' }}">
 
     {# ===== FAVICON ===== #}
-    {% if theme.get_favicon %}
+    {% if theme and theme.get_favicon %}
         <link rel="icon" type="image/x-icon" href="{{ theme.get_favicon }}">
         <link rel="shortcut icon" type="image/x-icon" href="{{ theme.get_favicon }}">
-    {% elif theme.favicon %}
+    {% elif theme and theme.favicon %}
         <link rel="icon" type="image/x-icon" href="{{ theme.favicon.url }}">
         <link rel="shortcut icon" type="image/x-icon" href="{{ theme.favicon.url }}">
     {% endif %}
@@ -37,14 +37,14 @@
     <header class="main-header" id="mainHeader">
         <div class="header-container">
             <a href="{% url 'home' %}" class="logo">
-                {% if theme.get_logo %}
+                {% if theme and theme.get_logo %}
                     <img src="{{ theme.get_logo }}" alt="{{ theme.site_name|default:'EducDim' }}">
                     <span>{{ theme.site_name|default:'EducDim' }}</span>
-                {% elif theme.logo %}
+                {% elif theme and theme.logo %}
                     <img src="{{ theme.logo.url }}" alt="{{ theme.site_name|default:'EducDim' }}">
                     <span>{{ theme.site_name|default:'EducDim' }}</span>
                 {% else %}
-                    <span>{{ theme.site_name|default:'EducDim' }}</span>
+                    <span>EducDim</span>
                 {% endif %}
             </a>
 
@@ -161,8 +161,8 @@
         </div>
     </header>
 
-    {# ===== EVENEMENT BANNER — KORIJE ===== #}
-    {% if theme.evenement_actif %}
+    {# ===== EVENEMENT BANNER ===== #}
+    {% if theme and theme.evenement_actif %}
     <div class="evenement-banner" style="display:block; background:linear-gradient(135deg, var(--primary), var(--secondary)); color:#fff; padding:1.5rem; text-align:center; position:relative; overflow:hidden;">
         {% if theme.get_evenement_banner %}
             <img src="{{ theme.get_evenement_banner }}" alt="{{ theme.evenement_nom }}" style="max-width:100%; border-radius:var(--radius-sm);">
@@ -174,13 +174,13 @@
             {% endif %}
             {{ theme.evenement_nom|default:"Évènement spécial" }}
         </h2>
-        
+
         {% if theme.evenement_message %}
         <p style="color:rgba(255,255,255,0.9); margin:0.5rem 0; font-size:1rem;">
             {{ theme.evenement_message }}
         </p>
         {% endif %}
-        
+
         {% if theme.evenement_hashtag %}
             <div class="hashtag" style="display:inline-block; margin-top:0.6rem; padding:0.3rem 1rem; border-radius:50px; background:rgba(255,255,255,0.2); font-weight:600;">
                 #{{ theme.evenement_hashtag }}
@@ -245,8 +245,8 @@
                 </a>
             </nav>
             <p>
-                &copy; {{ theme.site_name|default:'EducDim' }} - 
-                {{ theme.footer_text|default:_('Tous droits réservés') }}
+                &copy; {% if theme %}{{ theme.site_name|default:'EducDim' }}{% else %}EducDim{% endif %} - 
+                {% if theme %}{{ theme.footer_text|default:_('Tous droits réservés') }}{% else %}{% trans "Tous droits réservés" %}{% endif %}
             </p>
         </div>
     </footer>
