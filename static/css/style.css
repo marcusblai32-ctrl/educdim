@@ -1613,3 +1613,116 @@ input[type="file"][data-error]::before {
     background: var(--bs-danger-bg-subtle, #3a1a1a);
     color: var(--bs-danger, #dc3545);
 }
+
+/* ============================================
+   PASSWORD FIELD WITH EYE ICON - FIX
+   ============================================ */
+
+.password-field {
+    position: relative;
+    width: 100%;
+}
+
+.password-field input[type="password"],
+.password-field input[type="text"] {
+    width: 100%;
+    padding: 0.75rem 3.2rem 0.75rem 1rem !important;
+    border: 2px solid var(--border, #dee2e6);
+    border-radius: var(--radius-sm, 8px);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    background: var(--white, #ffffff);
+    color: var(--text, #212529);
+    height: 50px;
+    font-family: inherit;
+}
+
+.password-field input:focus {
+    border-color: var(--primary, #1a1a2e);
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(26, 26, 46, 0.08);
+}
+
+.password-field input::placeholder {
+    color: var(--text-muted, #6c757d);
+    opacity: 0.6;
+}
+
+.password-field .toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted, #6c757d);
+    font-size: 1.15rem;
+    padding: 6px;
+    transition: all 0.3s ease;
+    z-index: 2;
+    border-radius: 50%;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+}
+
+.password-field .toggle-password:hover {
+    color: var(--primary, #1a1a2e);
+    background: rgba(26, 26, 46, 0.06);
+}
+
+.password-field .toggle-password:active {
+    transform: translateY(-50%) scale(0.9);
+}
+
+.password-field .toggle-password:focus {
+    outline: none;
+}
+
+.password-field .toggle-password i {
+    font-size: 1.15rem;
+    pointer-events: none;
+}
+
+.password-field .toggle-password.visible i {
+    color: var(--primary, #1a1a2e);
+}
+
+@media (max-width: 480px) {
+    .password-field input[type="password"],
+    .password-field input[type="text"] {
+        height: 44px;
+        font-size: 0.95rem;
+        padding: 0.6rem 2.8rem 0.6rem 0.8rem !important;
+    }
+    .password-field .toggle-password {
+        width: 32px;
+        height: 32px;
+        right: 8px;
+        font-size: 1rem;
+    }
+    .password-field .toggle-password i {
+        font-size: 1rem;
+    }
+}
+
+[data-bs-theme="dark"] .password-field input[type="password"],
+[data-bs-theme="dark"] .password-field input[type="text"] {
+    background: var(--dark, #2d2d2d);
+    border-color: var(--border, #444);
+    color: var(--text, #e0e0e0);
+}
+
+[data-bs-theme="dark"] .password-field input:focus {
+    border-color: var(--primary, #1a1a2e);
+    box-shadow: 0 0 0 4px rgba(26, 26, 46, 0.15);
+}
+
+[data-bs-theme="dark"] .password-field .toggle-password:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
