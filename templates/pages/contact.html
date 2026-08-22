@@ -13,32 +13,8 @@
         {{ theme.contact_page_subtitle|default:_("Nous sommes là pour vous aider.") }}
     </p>
 
-    <!-- ===== ADRÈS AK MAP ANSANM ===== -->
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-bottom:2rem;">
-        <!-- Adresse -->
-        <div style="background:var(--glass-soft); border-radius:var(--radius); padding:1.5rem; text-align:center; border:1px solid var(--glass-brd-soft); transition:var(--transition); display:flex; flex-direction:column; justify-content:center;">
-            <div style="width:50px; height:50px; border-radius:50%; background:var(--success); display:flex; align-items:center; justify-content:center; margin:0 auto 1rem;">
-                <i class="fas fa-map-marker-alt" style="color:#fff; font-size:1.3rem;"></i>
-            </div>
-            <h3 style="font-size:1.1rem; margin-bottom:0.5rem;">{% trans "Adresse" %}</h3>
-            <p style="color:var(--text-muted); margin:0;">{{ theme.contact_address|default:"Port-au-Prince, Haïti" }}</p>
-        </div>
-
-        <!-- Google Maps -->
-        {% if theme.contact_map_embed %}
-        <div style="border-radius:var(--radius); overflow:hidden; min-height:200px;">
-            {{ theme.contact_map_embed|safe }}
-        </div>
-        {% else %}
-        <div style="background:var(--glass-soft); border-radius:var(--radius); padding:1.5rem; text-align:center; border:1px solid var(--glass-brd-soft); display:flex; flex-direction:column; justify-content:center; align-items:center; min-height:200px; color:var(--text-muted);">
-            <i class="fas fa-map" style="font-size:2.5rem; opacity:0.3; margin-bottom:0.5rem;"></i>
-            <p>{% trans "Aucune carte disponible." %}</p>
-        </div>
-        {% endif %}
-    </div>
-
-    <!-- ===== LÒT ENFÒMASYON YO ===== -->
-    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:1.5rem;">
+    <!-- ===== LÒT ENFÒMASYON YO (Téléphone, Heures, Email) ===== -->
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:1.5rem; margin-bottom:2rem;">
         <!-- Téléphone -->
         <div style="background:var(--glass-soft); border-radius:var(--radius); padding:1.5rem; text-align:center; border:1px solid var(--glass-brd-soft); transition:var(--transition);">
             <div style="width:45px; height:45px; border-radius:50%; background:var(--primary); display:flex; align-items:center; justify-content:center; margin:0 auto 0.8rem;">
@@ -70,14 +46,38 @@
             </p>
         </div>
     </div>
+
+    <!-- ===== ADRÈS AK MAP ANSANM ANBA ===== -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+        <!-- Adresse -->
+        <div style="background:var(--glass-soft); border-radius:var(--radius); padding:1.5rem; text-align:center; border:1px solid var(--glass-brd-soft); transition:var(--transition); display:flex; flex-direction:column; justify-content:center;">
+            <div style="width:50px; height:50px; border-radius:50%; background:var(--success); display:flex; align-items:center; justify-content:center; margin:0 auto 1rem;">
+                <i class="fas fa-map-marker-alt" style="color:#fff; font-size:1.3rem;"></i>
+            </div>
+            <h3 style="font-size:1.1rem; margin-bottom:0.5rem;">{% trans "Adresse" %}</h3>
+            <p style="color:var(--text-muted); margin:0;">{{ theme.contact_address|default:"Port-au-Prince, Haïti" }}</p>
+        </div>
+
+        <!-- Google Maps -->
+        {% if theme.contact_map_embed %}
+        <div style="border-radius:var(--radius); overflow:hidden; min-height:200px;">
+            {{ theme.contact_map_embed|safe }}
+        </div>
+        {% else %}
+        <div style="background:var(--glass-soft); border-radius:var(--radius); padding:1.5rem; text-align:center; border:1px solid var(--glass-brd-soft); display:flex; flex-direction:column; justify-content:center; align-items:center; min-height:200px; color:var(--text-muted);">
+            <i class="fas fa-map" style="font-size:2.5rem; opacity:0.3; margin-bottom:0.5rem;"></i>
+            <p>{% trans "Aucune carte disponible." %}</p>
+        </div>
+        {% endif %}
+    </div>
 </div>
 
 <style>
     @media (max-width: 768px) {
-        .card > div:first-of-type {
+        .card > div:last-of-type {
             grid-template-columns: 1fr !important;
         }
-        .card > div:first-of-type .map-container {
+        .card > div:last-of-type .map-container {
             min-height: 200px !important;
         }
     }
