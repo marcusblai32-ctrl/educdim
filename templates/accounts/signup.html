@@ -13,23 +13,33 @@
     .password-field input[type="password"],
     .password-field input[type="text"] {
         width: 100%;
-        padding: 0.7rem 3rem 0.7rem 1rem;
-        border: 1px solid var(--border, #dee2e6);
-        border-radius: var(--radius, 4px);
+        padding: 0.7rem 3.2rem 0.7rem 1rem;
+        border: 2px solid var(--border, #dee2e6);
+        border-radius: var(--radius, 8px);
         font-size: 1rem;
-        transition: border-color 0.3s;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         box-sizing: border-box;
+        background: var(--white, #ffffff);
+        color: var(--text, #212529);
+        height: 50px;
+        font-family: inherit;
     }
 
     .password-field input:focus {
         border-color: var(--primary, #1a1a2e);
         outline: none;
-        box-shadow: 0 0 0 3px rgba(26, 26, 46, 0.1);
+        box-shadow: 0 0 0 4px rgba(26, 26, 46, 0.08), 0 2px 8px rgba(0,0,0,0.05);
+        transform: translateY(-1px);
+    }
+
+    .password-field input::placeholder {
+        color: var(--text-muted, #6c757d);
+        opacity: 0.7;
     }
 
     .toggle-password {
         position: absolute;
-        right: 12px;
+        right: 14px;
         top: 50%;
         transform: translateY(-50%);
         background: none;
@@ -37,81 +47,208 @@
         cursor: pointer;
         color: var(--text-muted, #6c757d);
         font-size: 1.1rem;
-        padding: 5px 8px;
-        transition: color 0.3s;
+        padding: 8px;
+        transition: all 0.3s ease;
         z-index: 2;
-        border-radius: 4px;
+        border-radius: 50%;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
     }
 
     .toggle-password:hover {
         color: var(--primary, #1a1a2e);
-        background: rgba(26, 26, 46, 0.05);
+        background: rgba(26, 26, 46, 0.06);
+        transform: translateY(-50%) scale(1.05);
+    }
+
+    .toggle-password:active {
+        transform: translateY(-50%) scale(0.92);
     }
 
     .toggle-password:focus {
         outline: none;
-        box-shadow: 0 0 0 2px rgba(26, 26, 46, 0.2);
+        box-shadow: 0 0 0 3px rgba(26, 26, 46, 0.12);
+    }
+
+    .toggle-password i {
+        font-size: 1.2rem;
+        transition: transform 0.3s ease;
+        pointer-events: none;
+    }
+
+    .toggle-password.visible i {
+        color: var(--primary, #1a1a2e);
+    }
+
+    .auth-container .card {
+        animation: slideUp 0.5s ease-out;
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Form row responsive */
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    @media (max-width: 600px) {
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .password-field input {
+            height: 44px;
+            font-size: 0.95rem;
+            padding: 0.6rem 2.8rem 0.6rem 0.8rem;
+        }
+        .toggle-password {
+            width: 34px;
+            height: 34px;
+            right: 10px;
+            font-size: 1rem;
+        }
+        .toggle-password i {
+            font-size: 1rem;
+        }
+        .auth-container .card {
+            padding: 1.5rem !important;
+        }
+    }
+
+    [data-bs-theme="dark"] .password-field input {
+        background: var(--dark, #2d2d2d);
+        border-color: var(--border, #444);
+        color: var(--text, #e0e0e0);
+    }
+
+    [data-bs-theme="dark"] .password-field input:focus {
+        border-color: var(--primary, #1a1a2e);
+        box-shadow: 0 0 0 4px rgba(26, 26, 46, 0.15);
+    }
+
+    [data-bs-theme="dark"] .toggle-password:hover {
+        background: rgba(255,255,255,0.06);
     }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="auth-container">
-  <div class="card">
+  <div class="card" style="max-width:500px; margin:0 auto; padding:2rem 2.5rem;">
     <div class="text-center" style="margin-bottom:2rem;">
-      <h1 style="font-size:2rem; font-weight:800;"><i class="fas fa-user-plus" style="color:var(--success);"></i> {% trans "Creer un compte" %}</h1>
-      <p style="color:var(--text-muted);">{% trans "Rejoignez notre communaute d'apprenants" %}</p>
+      <div style="width:70px; height:70px; border-radius:50%; background:var(--success); display:flex; align-items:center; justify-content:center; margin:0 auto 1rem; box-shadow:0 8px 24px rgba(40,167,69,0.2);">
+        <i class="fas fa-user-plus" style="color:#fff; font-size:2rem;"></i>
+      </div>
+      <h1 style="font-size:1.8rem; font-weight:700; margin:0;">{% trans "Creer un compte" %}</h1>
+      <p style="color:var(--text-muted); margin-top:0.3rem;">{% trans "Rejoignez notre communaute d'apprenants" %}</p>
     </div>
+
     <form method="post">
       {% csrf_token %}
       {{ form.non_field_errors }}
-      <div class="form-group">
-        <label for="id_email">{% trans "Email" %} <span class="required-star">*</span></label>
-        <input type="email" name="email" id="id_email" class="form-control" placeholder="exemple@email.com" required value="{{ form.email.value|default:'' }}">
+
+      <div class="form-group" style="margin-bottom:1.2rem;">
+        <label for="id_email" style="display:block; margin-bottom:0.4rem; font-weight:500; font-size:0.9rem;">
+          {% trans "Email" %} <span style="color:var(--danger);">*</span>
+        </label>
+        <input type="email" name="email" id="id_email" class="form-control" 
+               style="width:100%; padding:0.7rem 1rem; border:2px solid var(--border, #dee2e6); border-radius:var(--radius,8px); font-size:1rem; transition:all 0.3s; box-sizing:border-box; height:50px;"
+               placeholder="exemple@email.com" required value="{{ form.email.value|default:'' }}">
         {{ form.email.errors }}
       </div>
-      <div class="form-row" style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+
+      <div class="form-row" style="margin-bottom:1.2rem;">
         <div class="form-group">
-          <label for="id_first_name">{% trans "Prenom" %} <span class="required-star">*</span></label>
-          <input type="text" name="first_name" id="id_first_name" class="form-control" placeholder="Jean" required value="{{ form.first_name.value|default:'' }}">
+          <label for="id_first_name" style="display:block; margin-bottom:0.4rem; font-weight:500; font-size:0.9rem;">
+            {% trans "Prenom" %} <span style="color:var(--danger);">*</span>
+          </label>
+          <input type="text" name="first_name" id="id_first_name" class="form-control" 
+                 style="width:100%; padding:0.7rem 1rem; border:2px solid var(--border, #dee2e6); border-radius:var(--radius,8px); font-size:1rem; transition:all 0.3s; box-sizing:border-box; height:50px;"
+                 placeholder="Jean" required value="{{ form.first_name.value|default:'' }}">
           {{ form.first_name.errors }}
         </div>
         <div class="form-group">
-          <label for="id_last_name">{% trans "Nom" %} <span class="required-star">*</span></label>
-          <input type="text" name="last_name" id="id_last_name" class="form-control" placeholder="Dupont" required value="{{ form.last_name.value|default:'' }}">
+          <label for="id_last_name" style="display:block; margin-bottom:0.4rem; font-weight:500; font-size:0.9rem;">
+            {% trans "Nom" %} <span style="color:var(--danger);">*</span>
+          </label>
+          <input type="text" name="last_name" id="id_last_name" class="form-control" 
+                 style="width:100%; padding:0.7rem 1rem; border:2px solid var(--border, #dee2e6); border-radius:var(--radius,8px); font-size:1rem; transition:all 0.3s; box-sizing:border-box; height:50px;"
+                 placeholder="Dupont" required value="{{ form.last_name.value|default:'' }}">
           {{ form.last_name.errors }}
         </div>
       </div>
-      <div class="form-group">
-        <label for="id_birth_year">{% trans "Annee de naissance" %} <span class="required-star">*</span></label>
-        <input type="number" name="birth_year" id="id_birth_year" class="form-control" placeholder="2000" min="1900" max="2026" required value="{{ form.birth_year.value|default:'' }}">
+
+      <div class="form-group" style="margin-bottom:1.2rem;">
+        <label for="id_birth_year" style="display:block; margin-bottom:0.4rem; font-weight:500; font-size:0.9rem;">
+          {% trans "Annee de naissance" %} <span style="color:var(--danger);">*</span>
+        </label>
+        <input type="number" name="birth_year" id="id_birth_year" class="form-control" 
+               style="width:100%; padding:0.7rem 1rem; border:2px solid var(--border, #dee2e6); border-radius:var(--radius,8px); font-size:1rem; transition:all 0.3s; box-sizing:border-box; height:50px;"
+               placeholder="2000" min="1900" max="2026" required value="{{ form.birth_year.value|default:'' }}">
         {{ form.birth_year.errors }}
       </div>
-      <div class="form-group">
-        <label for="id_password1">{% trans "Mot de passe" %} <span class="required-star">*</span></label>
+
+      <div class="form-group" style="margin-bottom:1.2rem;">
+        <label for="id_password1" style="display:block; margin-bottom:0.4rem; font-weight:500; font-size:0.9rem;">
+          {% trans "Mot de passe" %} <span style="color:var(--danger);">*</span>
+        </label>
         <div class="password-field">
-          <input type="password" name="password1" id="id_password1" class="form-control" placeholder="{% trans 'Min 8 caracteres, avec majuscule, minuscule, chiffre et caractere special' %}" required>
+          <input type="password" name="password1" id="id_password1" class="form-control" 
+                 placeholder="{% trans 'Min 8 caracteres...' %}" required>
           <button type="button" class="toggle-password" id="togglePassword1" aria-label="Afficher le mot de passe">
             <i class="fas fa-eye"></i>
           </button>
         </div>
-        <small style="color:var(--text-muted); font-size:0.8rem;"><i class="fas fa-info-circle"></i> {% trans "Minimum 8 caracteres, une majuscule, une minuscule, un chiffre et un caractere special" %}</small>
+        <small style="color:var(--text-muted); font-size:0.8rem; display:block; margin-top:0.3rem;">
+          <i class="fas fa-info-circle"></i> {% trans "Minimum 8 caracteres, une majuscule, une minuscule, un chiffre et un caractere special" %}
+        </small>
         {{ form.password1.errors }}
       </div>
-      <div class="form-group">
-        <label for="id_password2">{% trans "Confirmer le mot de passe" %} <span class="required-star">*</span></label>
+
+      <div class="form-group" style="margin-bottom:1.5rem;">
+        <label for="id_password2" style="display:block; margin-bottom:0.4rem; font-weight:500; font-size:0.9rem;">
+          {% trans "Confirmer le mot de passe" %} <span style="color:var(--danger);">*</span>
+        </label>
         <div class="password-field">
-          <input type="password" name="password2" id="id_password2" class="form-control" placeholder="{% trans 'Repetez le mot de passe' %}" required>
+          <input type="password" name="password2" id="id_password2" class="form-control" 
+                 placeholder="{% trans 'Repetez le mot de passe' %}" required>
           <button type="button" class="toggle-password" id="togglePassword2" aria-label="Afficher le mot de passe">
             <i class="fas fa-eye"></i>
           </button>
         </div>
         {{ form.password2.errors }}
       </div>
-      <button type="submit" class="btn btn-success btn-block btn-lg"><i class="fas fa-rocket"></i> {% trans "Creer mon compte" %}</button>
+
+      <button type="submit" class="btn btn-success btn-block btn-lg" 
+              style="width:100%; padding:0.9rem; background:var(--success, #28a745); color:#fff; border:none; border-radius:var(--radius,8px); font-size:1.05rem; font-weight:600; cursor:pointer; transition:all 0.3s ease; box-shadow:0 4px 12px rgba(40,167,69,0.25); display:flex; align-items:center; justify-content:center; gap:0.6rem;">
+        <i class="fas fa-rocket"></i> {% trans "Creer mon compte" %}
+      </button>
     </form>
-    <div style="margin-top:1.5rem; text-align:center; border-top:1px solid var(--border); padding-top:1.5rem;">
-      <p style="color:var(--text-muted);">{% trans "Deja un compte ?" %} <a href="{% url 'accounts:login' %}" style="font-weight:600;"><i class="fas fa-sign-in-alt"></i> {% trans "Se connecter" %}</a></p>
+
+    <div style="margin-top:1.8rem; text-align:center; border-top:1px solid var(--border); padding-top:1.5rem;">
+      <p style="color:var(--text-muted); margin:0;">
+        {% trans "Deja un compte ?" %} 
+        <a href="{% url 'accounts:login' %}" style="color:var(--primary); text-decoration:none; font-weight:600; transition:color 0.3s;">
+          <i class="fas fa-sign-in-alt"></i> {% trans "Se connecter" %}
+        </a>
+      </p>
     </div>
   </div>
 </div>
@@ -123,10 +260,12 @@
         const password1 = document.getElementById('id_password1');
         if (toggle1 && password1) {
             toggle1.addEventListener('click', function() {
-                const type = password1.getAttribute('type') === 'password' ? 'text' : 'password';
-                password1.setAttribute('type', type);
-                this.querySelector('i').classList.toggle('fa-eye');
-                this.querySelector('i').classList.toggle('fa-eye-slash');
+                const isPassword = password1.getAttribute('type') === 'password';
+                password1.setAttribute('type', isPassword ? 'text' : 'password');
+                const icon = this.querySelector('i');
+                icon.classList.toggle('fa-eye');
+                icon.classList.toggle('fa-eye-slash');
+                this.classList.toggle('visible');
             });
         }
 
@@ -135,10 +274,12 @@
         const password2 = document.getElementById('id_password2');
         if (toggle2 && password2) {
             toggle2.addEventListener('click', function() {
-                const type = password2.getAttribute('type') === 'password' ? 'text' : 'password';
-                password2.setAttribute('type', type);
-                this.querySelector('i').classList.toggle('fa-eye');
-                this.querySelector('i').classList.toggle('fa-eye-slash');
+                const isPassword = password2.getAttribute('type') === 'password';
+                password2.setAttribute('type', isPassword ? 'text' : 'password');
+                const icon = this.querySelector('i');
+                icon.classList.toggle('fa-eye');
+                icon.classList.toggle('fa-eye-slash');
+                this.classList.toggle('visible');
             });
         }
     });
