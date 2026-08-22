@@ -4,7 +4,7 @@
 {% block title %}{{ theme.contact_page_title|default:_("Contactez-nous") }} - {{ theme.site_name }}{% endblock %}
 
 {% block content %}
-<div class="card" style="max-width:800px; margin:0 auto;">
+<div class="card" style="max-width:900px; margin:0 auto;">
     <h1 style="text-align:center; margin-bottom:1rem;">
         <i class="fas fa-envelope" style="color:var(--primary);"></i> 
         {{ theme.contact_page_title|default:_("Contactez-nous") }}
@@ -13,18 +13,10 @@
         {{ theme.contact_page_subtitle|default:_("Nous sommes là pour vous aider.") }}
     </p>
 
-    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:1.5rem;">
-        <!-- Téléphone -->
-        <div style="background:var(--glass-soft); border-radius:var(--radius); padding:1.5rem; text-align:center; border:1px solid var(--glass-brd-soft); transition:var(--transition);">
-            <div style="width:50px; height:50px; border-radius:50%; background:var(--primary); display:flex; align-items:center; justify-content:center; margin:0 auto 1rem;">
-                <i class="fas fa-phone" style="color:#fff; font-size:1.3rem;"></i>
-            </div>
-            <h3 style="font-size:1.1rem; margin-bottom:0.5rem;">{% trans "Téléphone" %}</h3>
-            <p style="color:var(--text-muted); margin:0;">{{ theme.contact_phone|default:"+509 0000-0000" }}</p>
-        </div>
-
+    <!-- ===== ADRÈS AK MAP ANSANM ===== -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-bottom:2rem;">
         <!-- Adresse -->
-        <div style="background:var(--glass-soft); border-radius:var(--radius); padding:1.5rem; text-align:center; border:1px solid var(--glass-brd-soft); transition:var(--transition);">
+        <div style="background:var(--glass-soft); border-radius:var(--radius); padding:1.5rem; text-align:center; border:1px solid var(--glass-brd-soft); transition:var(--transition); display:flex; flex-direction:column; justify-content:center;">
             <div style="width:50px; height:50px; border-radius:50%; background:var(--success); display:flex; align-items:center; justify-content:center; margin:0 auto 1rem;">
                 <i class="fas fa-map-marker-alt" style="color:#fff; font-size:1.3rem;"></i>
             </div>
@@ -32,33 +24,62 @@
             <p style="color:var(--text-muted); margin:0;">{{ theme.contact_address|default:"Port-au-Prince, Haïti" }}</p>
         </div>
 
+        <!-- Google Maps -->
+        {% if theme.contact_map_embed %}
+        <div style="border-radius:var(--radius); overflow:hidden; min-height:200px;">
+            {{ theme.contact_map_embed|safe }}
+        </div>
+        {% else %}
+        <div style="background:var(--glass-soft); border-radius:var(--radius); padding:1.5rem; text-align:center; border:1px solid var(--glass-brd-soft); display:flex; flex-direction:column; justify-content:center; align-items:center; min-height:200px; color:var(--text-muted);">
+            <i class="fas fa-map" style="font-size:2.5rem; opacity:0.3; margin-bottom:0.5rem;"></i>
+            <p>{% trans "Aucune carte disponible." %}</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- ===== LÒT ENFÒMASYON YO ===== -->
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:1.5rem;">
+        <!-- Téléphone -->
+        <div style="background:var(--glass-soft); border-radius:var(--radius); padding:1.5rem; text-align:center; border:1px solid var(--glass-brd-soft); transition:var(--transition);">
+            <div style="width:45px; height:45px; border-radius:50%; background:var(--primary); display:flex; align-items:center; justify-content:center; margin:0 auto 0.8rem;">
+                <i class="fas fa-phone" style="color:#fff; font-size:1.2rem;"></i>
+            </div>
+            <h3 style="font-size:1rem; margin-bottom:0.3rem;">{% trans "Téléphone" %}</h3>
+            <p style="color:var(--text-muted); margin:0; font-size:0.9rem;">{{ theme.contact_phone|default:"+509 0000-0000" }}</p>
+        </div>
+
         <!-- Heures d'ouverture -->
         <div style="background:var(--glass-soft); border-radius:var(--radius); padding:1.5rem; text-align:center; border:1px solid var(--glass-brd-soft); transition:var(--transition);">
-            <div style="width:50px; height:50px; border-radius:50%; background:var(--warning); display:flex; align-items:center; justify-content:center; margin:0 auto 1rem;">
-                <i class="fas fa-clock" style="color:#fff; font-size:1.3rem;"></i>
+            <div style="width:45px; height:45px; border-radius:50%; background:var(--warning); display:flex; align-items:center; justify-content:center; margin:0 auto 0.8rem;">
+                <i class="fas fa-clock" style="color:#fff; font-size:1.2rem;"></i>
             </div>
-            <h3 style="font-size:1.1rem; margin-bottom:0.5rem;">{% trans "Heures d'ouverture" %}</h3>
-            <p style="color:var(--text-muted); margin:0;">{{ theme.contact_hours|default:"Lun-Ven: 8h - 17h" }}</p>
+            <h3 style="font-size:1rem; margin-bottom:0.3rem;">{% trans "Heures d'ouverture" %}</h3>
+            <p style="color:var(--text-muted); margin:0; font-size:0.9rem;">{{ theme.contact_hours|default:"Lun-Ven: 8h - 17h" }}</p>
         </div>
 
         <!-- Email -->
         <div style="background:var(--glass-soft); border-radius:var(--radius); padding:1.5rem; text-align:center; border:1px solid var(--glass-brd-soft); transition:var(--transition);">
-            <div style="width:50px; height:50px; border-radius:50%; background:var(--info); display:flex; align-items:center; justify-content:center; margin:0 auto 1rem;">
-                <i class="fas fa-envelope" style="color:#fff; font-size:1.3rem;"></i>
+            <div style="width:45px; height:45px; border-radius:50%; background:var(--info); display:flex; align-items:center; justify-content:center; margin:0 auto 0.8rem;">
+                <i class="fas fa-envelope" style="color:#fff; font-size:1.2rem;"></i>
             </div>
-            <h3 style="font-size:1.1rem; margin-bottom:0.5rem;">{% trans "Email" %}</h3>
-            <p style="color:var(--text-muted); margin:0;">
+            <h3 style="font-size:1rem; margin-bottom:0.3rem;">{% trans "Email" %}</h3>
+            <p style="color:var(--text-muted); margin:0; font-size:0.9rem;">
                 <a href="mailto:{{ theme.contact_email }}" style="color:var(--primary); text-decoration:none;">
                     {{ theme.contact_email|default:"contact@educdim.com" }}
                 </a>
             </p>
         </div>
     </div>
-
-    {% if theme.contact_map_embed %}
-    <div style="margin-top:2rem; border-radius:var(--radius); overflow:hidden;">
-        {{ theme.contact_map_embed|safe }}
-    </div>
-    {% endif %}
 </div>
+
+<style>
+    @media (max-width: 768px) {
+        .card > div:first-of-type {
+            grid-template-columns: 1fr !important;
+        }
+        .card > div:first-of-type .map-container {
+            min-height: 200px !important;
+        }
+    }
+</style>
 {% endblock %}
