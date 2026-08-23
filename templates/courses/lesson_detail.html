@@ -397,19 +397,6 @@
 <div class="lesson-detail-container">
     <div class="card" style="padding: 2rem;">
 
-        <!-- ===== BREADCRUMB ===== -->
-        <nav class="breadcrumb-lesson">
-            <a href="{% url 'courses:course_list' %}"><i class="fas fa-home"></i> {% trans "Cours" %}</a>
-            <span class="separator">&gt;</span>
-            <a href="{% url 'courses:course_detail' lecon.module.unite.cours.pk %}">{{ lecon.module.unite.cours.titre }}</a>
-            <span class="separator">&gt;</span>
-            <a href="{% url 'courses:unit_detail' lecon.module.unite.pk %}">{{ lecon.module.unite.titre }}</a>
-            <span class="separator">&gt;</span>
-            <a href="{% url 'courses:module_detail' lecon.module.pk %}">{{ lecon.module.titre }}</a>
-            <span class="separator">&gt;</span>
-            <span class="current">{{ lecon.titre }}</span>
-        </nav>
-
         <!-- ===== HEADER ===== -->
         <div class="lesson-header">
             <h1>{{ lecon.titre }} <span style="font-size: 0.9rem; font-weight: 400; color: var(--text-muted, #6c757d);">({% trans "Leçon" %} {{ lecon.ordre }})</span></h1>
