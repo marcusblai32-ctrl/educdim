@@ -11,6 +11,22 @@
         padding: 0 1rem;
     }
 
+    .module-content-card {
+        background: var(--glass);
+        backdrop-filter: blur(var(--blur)) saturate(150%);
+        -webkit-backdrop-filter: blur(var(--blur)) saturate(150%);
+        border: 1px solid var(--glass-brd);
+        border-radius: var(--radius);
+        box-shadow: var(--glass-sh);
+        padding: 2.5rem;
+        transition: var(--transition);
+        margin-bottom: 2rem;
+    }
+
+    .module-content-card:hover {
+        box-shadow: var(--shadow-hover);
+    }
+
     .module-header {
         margin-bottom: 2rem;
         padding-bottom: 1.5rem;
@@ -40,7 +56,7 @@
         color: var(--primary, #1a1a2e);
     }
 
-    /* Breadcrumb */
+    /* ===== BREADCRUMB ===== */
     .breadcrumb-module {
         display: flex;
         flex-wrap: wrap;
@@ -73,7 +89,70 @@
         font-weight: 500;
     }
 
-    /* Quiz du module (anba) */
+    /* ===== LECONS ===== */
+    .lessons-section h2 {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text, #212529);
+        font-family: var(--font-display);
+    }
+
+    .lessons-section h2 i {
+        color: var(--primary, #1a1a2e);
+    }
+
+    .lesson-list-module {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .lesson-list-module li {
+        padding: 0.7rem 0.8rem;
+        border-bottom: 1px solid var(--border, #dee2e6);
+        transition: var(--transition);
+    }
+
+    .lesson-list-module li:last-child {
+        border-bottom: none;
+    }
+
+    .lesson-list-module li:hover {
+        background: var(--glass-soft);
+        border-radius: var(--radius-sm, 4px);
+        padding-left: 1.2rem;
+    }
+
+    .lesson-list-module li a {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text, #212529);
+        text-decoration: none;
+        transition: var(--transition);
+    }
+
+    .lesson-list-module li a i {
+        color: var(--primary, #1a1a2e);
+        width: 20px;
+        text-align: center;
+    }
+
+    .lesson-list-module li a:hover {
+        color: var(--primary, #1a1a2e);
+    }
+
+    .lesson-list-module .empty-lessons {
+        padding: 0.6rem 0.8rem;
+        color: var(--text-muted, #6c757d);
+        font-style: italic;
+    }
+
+    /* ===== QUIZ SECTION ===== */
     .quiz-section {
         margin-top: 2rem;
         padding-top: 1.5rem;
@@ -158,70 +237,29 @@
         color: var(--primary, #1a1a2e);
     }
 
-    /* Lessons list */
-    .lessons-section h2 {
-        font-size: 1.3rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        color: var(--text, #212529);
-        font-family: var(--font-display);
-    }
-
-    .lessons-section h2 i {
-        color: var(--primary, #1a1a2e);
-    }
-
-    .lesson-list-module {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    .lesson-list-module li {
-        padding: 0.7rem 0.8rem;
-        border-bottom: 1px solid var(--border, #dee2e6);
-        transition: var(--transition);
-    }
-
-    .lesson-list-module li:last-child {
-        border-bottom: none;
-    }
-
-    .lesson-list-module li:hover {
-        background: var(--glass-soft);
+    .quiz-card-module .btn-start-quiz {
+        padding: 0.3rem 0.8rem;
+        font-size: 0.75rem;
+        background: var(--primary, #1a1a2e);
+        color: #fff;
         border-radius: var(--radius-sm, 4px);
-        padding-left: 1.2rem;
-    }
-
-    .lesson-list-module li a {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        color: var(--text, #212529);
         text-decoration: none;
         transition: var(--transition);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        border: none;
+        cursor: pointer;
+        font-family: var(--font-body);
+        font-weight: 600;
     }
 
-    .lesson-list-module li a i {
-        color: var(--primary, #1a1a2e);
-        width: 20px;
-        text-align: center;
+    .quiz-card-module .btn-start-quiz:hover {
+        background: var(--primary-hover, #2d2d4a);
+        transform: translateY(-2px);
     }
 
-    .lesson-list-module li a:hover {
-        color: var(--primary, #1a1a2e);
-    }
-
-    .lesson-list-module .empty-lessons {
-        padding: 0.6rem 0.8rem;
-        color: var(--text-muted, #6c757d);
-        font-style: italic;
-    }
-
-    /* Actions footer */
+    /* ===== ACTIONS ===== */
     .module-actions {
         margin-top: 2rem;
         display: flex;
@@ -231,7 +269,7 @@
         border-top: 1px solid var(--border, #dee2e6);
     }
 
-    .module-actions .btn {
+    .module-actions .btn-action {
         display: inline-flex;
         align-items: center;
         gap: 0.4rem;
@@ -242,31 +280,37 @@
         transition: var(--transition);
         border: none;
         cursor: pointer;
+        font-family: var(--font-body);
+        font-weight: 600;
     }
 
-    .module-actions .btn-secondary {
+    .module-actions .btn-action-secondary {
         background: var(--secondary, #6c757d);
         color: #fff;
     }
 
-    .module-actions .btn-secondary:hover {
+    .module-actions .btn-action-secondary:hover {
         background: var(--secondary-hover, #5a6268);
         transform: translateY(-2px);
     }
 
-    .module-actions .btn-primary {
+    .module-actions .btn-action-primary {
         background: var(--primary, #1a1a2e);
         color: #fff;
     }
 
-    .module-actions .btn-primary:hover {
+    .module-actions .btn-action-primary:hover {
         background: var(--primary-hover, #2d2d4a);
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(26, 26, 46, 0.3);
     }
 
-    /* Responsive */
+    /* ===== RESPONSIVE ===== */
     @media (max-width: 768px) {
+        .module-content-card {
+            padding: 1.5rem;
+        }
+
         .module-header h1 {
             font-size: 1.4rem;
         }
@@ -279,13 +323,17 @@
             flex-direction: column;
         }
 
-        .module-actions .btn {
+        .module-actions .btn-action {
             justify-content: center;
             width: 100%;
         }
     }
 
     @media (max-width: 480px) {
+        .module-content-card {
+            padding: 1rem;
+        }
+
         .module-header h1 {
             font-size: 1.2rem;
         }
@@ -303,8 +351,18 @@
 
 {% block content %}
 <div class="module-detail-container">
-    <div class="card" style="padding: 2rem;">
+    <div class="module-content-card">
 
+        <!-- ===== BREADCRUMB ===== -->
+        <nav class="breadcrumb-module">
+            <a href="{% url 'courses:course_list' %}"><i class="fas fa-home"></i> {% trans "Cours" %}</a>
+            <span class="separator">&gt;</span>
+            <a href="{% url 'courses:course_detail' module.unite.cours.pk %}">{{ module.unite.cours.titre }}</a>
+            <span class="separator">&gt;</span>
+            <a href="{% url 'courses:unit_detail' module.unite.pk %}">{{ module.unite.titre }}</a>
+            <span class="separator">&gt;</span>
+            <span class="current">{{ module.titre }}</span>
+        </nav>
 
         <!-- ===== HEADER ===== -->
         <div class="module-header">
@@ -366,7 +424,7 @@
                         <span class="quiz-percent">
                             <i class="fas fa-percent"></i> {{ quiz.pourcentage_reussite }}% {% trans "réussite" %}
                         </span>
-                        <a href="{% url 'quiz:start' quiz.pk %}" class="btn btn-primary btn-sm" style="padding: 0.3rem 0.8rem; font-size: 0.75rem; background: var(--primary); color: #fff; border-radius: var(--radius-sm, 4px); text-decoration: none; transition: var(--transition); display: inline-flex; align-items: center; gap: 0.3rem;">
+                        <a href="{% url 'quiz:start' quiz.pk %}" class="btn-start-quiz">
                             <i class="fas fa-play"></i> {% trans "Commencer" %}
                         </a>
                     </div>
@@ -378,18 +436,19 @@
 
         <!-- ===== ACTIONS ===== -->
         <div class="module-actions">
-            <a href="{% url 'courses:unit_detail' module.unite.pk %}" class="btn btn-secondary">
+            <a href="{% url 'courses:unit_detail' module.unite.pk %}" class="btn-action btn-action-secondary">
                 <i class="fas fa-arrow-left"></i> {% trans "Retour à l'unité" %}
             </a>
-            <a href="{% url 'courses:course_detail' module.unite.cours.pk %}" class="btn btn-primary">
+            <a href="{% url 'courses:course_detail' module.unite.cours.pk %}" class="btn-action btn-action-primary">
                 <i class="fas fa-book"></i> {% trans "Voir le cours" %}
             </a>
             {% if lecons.first %}
-            <a href="{% url 'courses:lesson_detail' lecons.first.pk %}" class="btn btn-primary">
+            <a href="{% url 'courses:lesson_detail' lecons.first.pk %}" class="btn-action btn-action-primary">
                 <i class="fas fa-play"></i> {% trans "Commencer la première leçon" %}
             </a>
             {% endif %}
         </div>
+
     </div>
 </div>
 {% endblock %}
