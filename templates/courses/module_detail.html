@@ -305,16 +305,6 @@
 <div class="module-detail-container">
     <div class="card" style="padding: 2rem;">
 
-        <!-- ===== BREADCRUMB ===== -->
-        <nav class="breadcrumb-module">
-            <a href="{% url 'courses:course_list' %}"><i class="fas fa-home"></i> {% trans "Cours" %}</a>
-            <span class="separator">&gt;</span>
-            <a href="{% url 'courses:course_detail' module.unite.cours.pk %}">{{ module.unite.cours.titre }}</a>
-            <span class="separator">&gt;</span>
-            <a href="{% url 'courses:unit_detail' module.unite.pk %}">{{ module.unite.titre }}</a>
-            <span class="separator">&gt;</span>
-            <span class="current">{{ module.titre }}</span>
-        </nav>
 
         <!-- ===== HEADER ===== -->
         <div class="module-header">
