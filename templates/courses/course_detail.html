@@ -368,60 +368,39 @@
         margin-bottom: 1.5rem;
     }
 
-    .content-card .card-header-actions .btn-start {
-        background: linear-gradient(135deg, var(--success), #4ade80);
-        color: #fff;
-        padding: 0.7rem 1.8rem;
-        border-radius: 50px;
-        border: none;
-        font-weight: 600;
-        font-size: 0.95rem;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.6rem;
-        text-decoration: none;
-        transition: var(--transition);
-        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.25);
-        font-family: var(--font-body);
-        cursor: pointer;
+    /* ===== BOUTON VÈ ===== */
+    .btn-start-vert {
+        background: linear-gradient(135deg, #22c55e, #4ade80) !important;
+        color: #fff !important;
+        padding: 0.7rem 1.8rem !important;
+        border-radius: 50px !important;
+        border: none !important;
+        font-weight: 600 !important;
+        font-size: 0.95rem !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 0.6rem !important;
+        text-decoration: none !important;
+        transition: all 0.3s ease !important;
+        box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3) !important;
+        font-family: var(--font-body) !important;
+        cursor: pointer !important;
     }
 
-    .content-card .card-header-actions .btn-start:hover {
-        transform: translateY(-3px) scale(1.02);
-        box-shadow: 0 8px 25px rgba(40, 167, 69, 0.35);
+    .btn-start-vert:hover {
+        transform: translateY(-3px) scale(1.02) !important;
+        box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4) !important;
     }
 
-    .content-card .card-header-actions .btn-start i {
-        color: #fff;
+    .btn-start-vert i {
+        color: #fff !important;
     }
 
-    .content-card .card-header-actions .btn-start:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
+    .btn-start-vert:disabled {
+        opacity: 0.5 !important;
+        cursor: not-allowed !important;
         transform: none !important;
         box-shadow: none !important;
-    }
-
-    .content-card .card-header-actions .btn-start.btn-primary-start {
-        background: linear-gradient(135deg, var(--primary), #8aa0ff);
-        box-shadow: 0 4px 15px rgba(26, 26, 46, 0.25);
-    }
-
-    .content-card .card-header-actions .btn-start.btn-primary-start:hover {
-        box-shadow: 0 8px 25px rgba(26, 26, 46, 0.35);
-    }
-
-    .content-card .card-header-actions .btn-start.btn-secondary-start {
-        background: var(--glass-2);
-        color: var(--text);
-        box-shadow: none;
-        backdrop-filter: blur(10px);
-        border: 1px solid var(--glass-brd);
-    }
-
-    .content-card .card-header-actions .btn-start.btn-secondary-start:hover {
-        background: var(--glass-soft);
-        box-shadow: var(--shadow);
     }
 
     /* ===== QUIZ GRID ===== */
@@ -640,7 +619,7 @@
             align-items: stretch;
         }
 
-        .content-card .card-header-actions .btn-start {
+        .content-card .card-header-actions .btn-start-vert {
             justify-content: center;
         }
 
@@ -793,25 +772,25 @@
                 {% if user.is_authenticated %}
                     {% if inscription_approuvee or a_acces_abonnement %}
                         {% if cours.unites.first %}
-                        <a href="{% url 'courses:unit_detail' cours.unites.first.pk %}" class="btn-start">
+                        <a href="{% url 'courses:unit_detail' cours.unites.first.pk %}" class="btn-start-vert">
                             <i class="fas fa-play"></i> {% trans "Commencer le cours" %}
                         </a>
                         {% else %}
-                        <button class="btn-start" disabled>
+                        <button class="btn-start-vert" disabled>
                             <i class="fas fa-clock"></i> {% trans "Cours en préparation" %}
                         </button>
                         {% endif %}
                     {% elif prerequis_completed %}
-                    <a href="{% url 'enrollments:enroll_course' cours.pk %}" class="btn-start btn-primary-start">
+                    <a href="{% url 'enrollments:enroll_course' cours.pk %}" class="btn-start-vert">
                         <i class="fas fa-user-plus"></i> {% trans "S'inscrire maintenant" %}
                     </a>
                     {% else %}
-                    <button class="btn-start btn-secondary-start" disabled>
+                    <button class="btn-start-vert" disabled>
                         <i class="fas fa-lock"></i> {% trans "Prérequis manquants" %}
                     </button>
                     {% endif %}
                 {% else %}
-                <a href="{% url 'accounts:login' %}?next={{ request.path }}" class="btn-start btn-primary-start">
+                <a href="{% url 'accounts:login' %}?next={{ request.path }}" class="btn-start-vert">
                     <i class="fas fa-sign-in-alt"></i> {% trans "Se connecter" %}
                 </a>
                 {% endif %}
