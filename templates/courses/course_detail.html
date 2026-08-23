@@ -5,68 +5,6 @@
 
 {% block extra_css %}
 <style>
-    /* ===== DESCRIPTION STYLES ===== */
-    .course-detail-description {
-        max-width: 800px;
-        margin: 0 auto;
-        text-align: left;
-        line-height: 1.8;
-        color: var(--text, #212529);
-    }
-
-    .course-detail-description p {
-        margin-bottom: 1.2rem;
-        line-height: 1.8;
-    }
-
-    .course-detail-description br {
-        display: block;
-        content: "";
-        margin-top: 0.5rem;
-    }
-
-    .course-detail-description ul,
-    .course-detail-description ol {
-        padding-left: 1.5rem;
-        margin-bottom: 1rem;
-    }
-
-    .course-detail-description li {
-        margin-bottom: 0.3rem;
-    }
-
-    .course-detail-description h2,
-    .course-detail-description h3,
-    .course-detail-description h4 {
-        margin-top: 1.2rem;
-        margin-bottom: 0.5rem;
-        font-family: var(--font-display);
-    }
-
-    .course-detail-description img {
-        max-width: 100%;
-        height: auto;
-        border-radius: var(--radius, 8px);
-        margin: 0.5rem 0;
-    }
-
-    .course-detail-description blockquote {
-        border-left: 4px solid var(--primary, #1a1a2e);
-        padding-left: 1rem;
-        margin-left: 0;
-        color: var(--text-muted, #6c757d);
-        font-style: italic;
-    }
-
-    .course-detail-description a {
-        color: var(--primary, #1a1a2e);
-        text-decoration: none;
-    }
-
-    .course-detail-description a:hover {
-        text-decoration: underline;
-    }
-
     /* ===== COURSE DETAIL ===== */
     .course-detail-container {
         max-width: 1200px;
@@ -124,6 +62,97 @@
         text-decoration: underline;
     }
 
+    /* ===== DESCRIPTION ===== */
+    .course-detail-description {
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: left;
+        line-height: 1.8;
+        color: var(--text, #212529);
+    }
+
+    .course-detail-description h2 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        font-family: var(--font-display);
+    }
+
+    .course-detail-description h3 {
+        font-size: 1.4rem;
+        font-weight: 600;
+        margin-top: 1.5rem;
+        margin-bottom: 0.8rem;
+        font-family: var(--font-display);
+    }
+
+    .course-detail-description h4 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-top: 1.2rem;
+        margin-bottom: 0.5rem;
+        font-family: var(--font-display);
+    }
+
+    .course-detail-description p {
+        margin-bottom: 1rem;
+        line-height: 1.8;
+    }
+
+    .course-detail-description ul,
+    .course-detail-description ol {
+        padding-left: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .course-detail-description li {
+        margin-bottom: 0.3rem;
+    }
+
+    .course-detail-description img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius, 8px);
+        margin: 0.5rem 0;
+    }
+
+    .course-detail-description blockquote {
+        border-left: 4px solid var(--primary, #1a1a2e);
+        padding-left: 1rem;
+        margin-left: 0;
+        color: var(--text-muted, #6c757d);
+        font-style: italic;
+    }
+
+    .course-detail-description a {
+        color: var(--primary, #1a1a2e);
+        text-decoration: none;
+    }
+
+    .course-detail-description a:hover {
+        text-decoration: underline;
+    }
+
+    .course-detail-description table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 1rem;
+    }
+
+    .course-detail-description th,
+    .course-detail-description td {
+        border: 1px solid var(--border, #dee2e6);
+        padding: 0.5rem 0.8rem;
+        text-align: left;
+    }
+
+    .course-detail-description th {
+        background: var(--glass-soft);
+        font-weight: 600;
+    }
+
+    /* ===== PREREQUISITES ===== */
     .prerequisites-box {
         background: var(--glass-soft);
         backdrop-filter: blur(10px);
@@ -186,6 +215,11 @@
         text-decoration: none;
     }
 
+    .prereq-link:hover {
+        text-decoration: underline;
+    }
+
+    /* ===== NAVIGATION ===== */
     .course-navigation {
         display: flex;
         gap: 1rem;
@@ -194,6 +228,7 @@
         justify-content: center;
     }
 
+    /* ===== ACTIONS ===== */
     .course-actions {
         display: flex;
         gap: 1rem;
@@ -202,6 +237,12 @@
         justify-content: center;
     }
 
+    .course-actions .btn {
+        min-width: 200px;
+        justify-content: center;
+    }
+
+    /* ===== SECTION CARD ===== */
     .section-card-title {
         font-size: 1.4rem;
         font-weight: 700;
@@ -251,6 +292,7 @@
     .quiz-card h3 a {
         color: var(--text);
         text-decoration: none;
+        transition: var(--transition);
     }
 
     .quiz-card h3 a:hover {
@@ -315,6 +357,7 @@
     .unit-card h3 a {
         color: var(--text);
         text-decoration: none;
+        transition: var(--transition);
     }
 
     .unit-card h3 a:hover {
@@ -358,6 +401,7 @@
 
         .course-actions .btn {
             width: 100%;
+            min-width: unset;
             justify-content: center;
         }
 
@@ -382,6 +426,18 @@
         .course-detail-description {
             font-size: 0.95rem;
         }
+
+        .course-detail-description h2 {
+            font-size: 1.4rem;
+        }
+
+        .course-detail-description h3 {
+            font-size: 1.2rem;
+        }
+
+        .course-detail-description h4 {
+            font-size: 1rem;
+        }
     }
 
     @media (max-width: 480px) {
@@ -403,6 +459,10 @@
         }
 
         .quiz-card {
+            padding: 1rem;
+        }
+
+        .prerequisites-box {
             padding: 1rem;
         }
     }
@@ -436,9 +496,9 @@
             </p>
             {% endif %}
 
-            <!-- ===== DESCRIPTION KORIJE ===== -->
+            <!-- ===== DESCRIPTION AVEC SAFE ===== -->
             <div class="course-detail-description">
-                {{ cours.description|linebreaks }}
+                {{ cours.description|safe }}
             </div>
 
             <!-- Prérequis -->
