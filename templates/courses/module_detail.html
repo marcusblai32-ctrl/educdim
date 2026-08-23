@@ -5,265 +5,287 @@
 
 {% block extra_css %}
 <style>
-    .module-wrap {
-        max-width: 900px;
-        margin: 0 auto;
-        padding: 0 1rem;
-    }
+/* ============================================================
+   MODULE DETAIL - STYLE SPESIFIK (san konfli)
+   ============================================================ */
 
-    .module-wrap .module-card {
-        background: var(--glass);
-        backdrop-filter: blur(var(--blur)) saturate(150%);
-        border: 1px solid var(--glass-brd);
-        border-radius: var(--radius);
-        box-shadow: var(--glass-sh);
-        padding: 2.5rem;
-        transition: var(--transition);
-        margin-bottom: 2rem;
-    }
-    .module-wrap .module-card:hover { box-shadow: var(--shadow-hover); }
+/* --- Conteneur --- */
+.md-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
 
-    .module-header {
-        margin-bottom: 2rem;
-        padding-bottom: 1.5rem;
-        border-bottom: 1px solid var(--border);
-    }
-    .module-header h1 {
-        font-size: 1.8rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-        color: var(--text);
-        font-family: var(--font-display);
-    }
-    .module-header .module-desc {
-        color: var(--text-muted);
-        margin-bottom: 0.5rem;
-        line-height: 1.6;
-    }
-    .module-header .module-meta {
-        font-size: 0.85rem;
-        color: var(--text-muted);
-    }
-    .module-header .module-meta i { color: var(--primary); }
+/* --- Card prensipal --- */
+.md-card {
+    background: var(--glass);
+    backdrop-filter: blur(var(--blur)) saturate(150%);
+    border: 1px solid var(--glass-brd);
+    border-radius: var(--radius);
+    box-shadow: var(--glass-sh);
+    padding: 2.5rem;
+    transition: var(--transition);
+    margin-bottom: 2rem;
+}
+.md-card:hover {
+    box-shadow: var(--shadow-hover);
+}
 
-    .breadcrumb-mod {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 0.3rem;
-        padding: 0.6rem 0;
-        margin-bottom: 1.5rem;
-        font-size: 0.85rem;
-        color: var(--text-muted);
-        border-bottom: 1px solid var(--border);
-    }
-    .breadcrumb-mod a {
-        color: var(--primary);
-        text-decoration: none;
-        transition: var(--transition);
-    }
-    .breadcrumb-mod a:hover { text-decoration: underline; }
-    .breadcrumb-mod .sep { color: var(--text-muted); margin: 0 0.2rem; }
-    .breadcrumb-mod .current { color: var(--text); font-weight: 500; }
+/* --- Breadcrumb --- */
+.md-breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.6rem 0;
+    margin-bottom: 1.5rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+}
+.md-breadcrumb a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: var(--transition);
+}
+.md-breadcrumb a:hover { text-decoration: underline; }
+.md-breadcrumb .sep {
+    color: var(--text-muted);
+    margin: 0 0.2rem;
+}
+.md-breadcrumb .current {
+    color: var(--text);
+    font-weight: 500;
+}
 
-    .lessons-section h2 {
-        font-size: 1.3rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        color: var(--text);
-        font-family: var(--font-display);
-    }
-    .lessons-section h2 i { color: var(--primary); }
+/* --- Header module --- */
+.md-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+}
+.md-header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+    font-family: var(--font-display);
+}
+.md-header .md-desc {
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+}
+.md-header .md-meta {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+.md-header .md-meta i { color: var(--primary); }
 
-    .lesson-list-mod {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-    .lesson-list-mod li {
-        padding: 0.7rem 0.8rem;
-        border-bottom: 1px solid var(--border);
-        transition: var(--transition);
-    }
-    .lesson-list-mod li:last-child { border-bottom: none; }
-    .lesson-list-mod li:hover {
-        background: var(--glass-soft);
-        border-radius: var(--radius-sm, 4px);
-        padding-left: 1.2rem;
-    }
-    .lesson-list-mod li a {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        color: var(--text);
-        text-decoration: none;
-        transition: var(--transition);
-    }
-    .lesson-list-mod li a i {
-        color: var(--primary);
-        width: 20px;
-        text-align: center;
-    }
-    .lesson-list-mod li a:hover { color: var(--primary); }
-    .lesson-list-mod .empty {
-        padding: 0.6rem 0.8rem;
-        color: var(--text-muted);
-        font-style: italic;
-    }
+/* --- Seksyon leçons --- */
+.md-lessons h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text);
+    font-family: var(--font-display);
+}
+.md-lessons h2 i { color: var(--primary); }
 
-    .quiz-section-mod {
-        margin-top: 2rem;
-        padding-top: 1.5rem;
-        border-top: 1px solid var(--border);
-    }
-    .quiz-section-mod h2 {
-        font-size: 1.3rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        color: var(--text);
-        font-family: var(--font-display);
-    }
-    .quiz-section-mod h2 i { color: var(--primary); }
+.md-lesson-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.md-lesson-list li {
+    padding: 0.7rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+    transition: var(--transition);
+}
+.md-lesson-list li:last-child { border-bottom: none; }
+.md-lesson-list li:hover {
+    background: var(--glass-soft);
+    border-radius: var(--radius-sm);
+    padding-left: 1.2rem;
+}
+.md-lesson-list li a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text);
+    text-decoration: none;
+    transition: var(--transition);
+}
+.md-lesson-list li a i {
+    color: var(--primary);
+    width: 20px;
+    text-align: center;
+}
+.md-lesson-list li a:hover { color: var(--primary); }
+.md-lesson-list .md-empty {
+    padding: 0.6rem 0.8rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
 
-    .quiz-grid-mod {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 1rem;
-    }
-    .quiz-card-mod {
-        background: var(--glass-soft);
-        border-radius: var(--radius-sm, 8px);
-        padding: 1rem;
-        border: 1px solid var(--glass-brd-soft);
-        transition: var(--transition);
-    }
-    .quiz-card-mod:hover {
-        border-color: color-mix(in srgb, var(--primary) 30%, transparent);
-        transform: translateY(-3px);
-        box-shadow: var(--shadow);
-    }
-    .quiz-card-mod h3 {
-        font-size: 1rem;
-        margin: 0 0 0.3rem;
-        color: var(--text);
-    }
-    .quiz-card-mod h3 a {
-        color: var(--text);
-        text-decoration: none;
-        transition: var(--transition);
-    }
-    .quiz-card-mod h3 a:hover { color: var(--primary); }
-    .quiz-card-mod .q-desc {
-        color: var(--text-muted);
-        font-size: 0.85rem;
-        margin: 0 0 0.5rem;
-    }
-    .quiz-card-mod .q-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 0.5rem;
-        flex-wrap: wrap;
-        gap: 0.3rem;
-    }
-    .quiz-card-mod .q-percent {
-        color: var(--text-muted);
-        font-size: 0.75rem;
-        display: flex;
-        align-items: center;
-        gap: 0.3rem;
-    }
-    .quiz-card-mod .q-percent i { color: var(--primary); }
-    .quiz-card-mod .btn-start-q {
-        padding: 0.3rem 0.8rem;
-        font-size: 0.75rem;
-        background: var(--primary);
-        color: #fff;
-        border-radius: var(--radius-sm, 4px);
-        text-decoration: none;
-        transition: var(--transition);
-        display: inline-flex;
-        align-items: center;
-        gap: 0.3rem;
-        border: none;
-        cursor: pointer;
-        font-family: var(--font-body);
-        font-weight: 600;
-    }
-    .quiz-card-mod .btn-start-q:hover {
-        background: var(--primary-hover);
-        transform: translateY(-2px);
-    }
+/* --- Seksyon Quiz --- */
+.md-quiz-section {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+}
+.md-quiz-section h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text);
+    font-family: var(--font-display);
+}
+.md-quiz-section h2 i { color: var(--primary); }
 
-    .module-actions {
-        margin-top: 2rem;
-        display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
-        padding-top: 1.5rem;
-        border-top: 1px solid var(--border);
-    }
-    .module-actions .btn-act {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
-        padding: 0.6rem 1.2rem;
-        border-radius: var(--radius-sm, 4px);
-        font-size: 0.9rem;
-        text-decoration: none;
-        transition: var(--transition);
-        border: none;
-        cursor: pointer;
-        font-family: var(--font-body);
-        font-weight: 600;
-    }
-    .module-actions .btn-act-sec {
-        background: var(--secondary);
-        color: #fff;
-    }
-    .module-actions .btn-act-sec:hover {
-        background: var(--secondary-hover);
-        transform: translateY(-2px);
-    }
-    .module-actions .btn-act-pri {
-        background: var(--primary);
-        color: #fff;
-    }
-    .module-actions .btn-act-pri:hover {
-        background: var(--primary-hover);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(26, 26, 46, 0.3);
-    }
-    .module-actions .btn-act-pri i { color: #fff; }
-    .module-actions .btn-act-sec i { color: #fff; }
+.md-quiz-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+}
+.md-quiz-item {
+    background: var(--glass-soft);
+    border-radius: var(--radius-sm);
+    padding: 1rem;
+    border: 1px solid var(--glass-brd-soft);
+    transition: var(--transition);
+}
+.md-quiz-item:hover {
+    border-color: color-mix(in srgb, var(--primary) 30%, transparent);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+}
+.md-quiz-item h3 {
+    font-size: 1rem;
+    margin: 0 0 0.3rem;
+    color: var(--text);
+}
+.md-quiz-item h3 a {
+    color: var(--text);
+    text-decoration: none;
+    transition: var(--transition);
+}
+.md-quiz-item h3 a:hover { color: var(--primary); }
+.md-quiz-item .md-q-desc {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin: 0 0 0.5rem;
+}
+.md-quiz-item .md-q-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+}
+.md-quiz-item .md-q-percent {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+.md-quiz-item .md-q-percent i { color: var(--primary); }
+.md-quiz-item .md-btn-start {
+    padding: 0.3rem 0.8rem;
+    font-size: 0.75rem;
+    background: var(--primary);
+    color: #fff;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-weight: 600;
+}
+.md-quiz-item .md-btn-start:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+}
 
-    @media (max-width: 768px) {
-        .module-wrap .module-card { padding: 1.5rem; }
-        .module-header h1 { font-size: 1.4rem; }
-        .quiz-grid-mod { grid-template-columns: 1fr; }
-        .module-actions { flex-direction: column; }
-        .module-actions .btn-act { justify-content: center; width: 100%; }
-    }
+/* --- Bouton aksyon --- */
+.md-actions {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+}
+.md-actions .md-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: var(--transition);
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-weight: 600;
+}
+.md-actions .md-btn i { color: #fff; }
+.md-actions .md-btn-sec {
+    background: var(--secondary);
+    color: #fff;
+}
+.md-actions .md-btn-sec:hover {
+    background: var(--secondary-hover);
+    transform: translateY(-2px);
+}
+.md-actions .md-btn-pri {
+    background: var(--primary);
+    color: #fff;
+}
+.md-actions .md-btn-pri:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(26, 26, 46, 0.3);
+}
+.md-actions .md-btn-pri i,
+.md-actions .md-btn-sec i { color: #fff; }
 
-    @media (max-width: 480px) {
-        .module-wrap .module-card { padding: 1rem; }
-        .module-header h1 { font-size: 1.2rem; }
-        .breadcrumb-mod { font-size: 0.75rem; }
-        .quiz-card-mod { padding: 0.8rem; }
-    }
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .md-card { padding: 1.5rem; }
+    .md-header h1 { font-size: 1.4rem; }
+    .md-quiz-grid { grid-template-columns: 1fr; }
+    .md-actions { flex-direction: column; }
+    .md-actions .md-btn { justify-content: center; width: 100%; }
+}
+
+@media (max-width: 480px) {
+    .md-card { padding: 1rem; }
+    .md-header h1 { font-size: 1.2rem; }
+    .md-breadcrumb { font-size: 0.75rem; }
+    .md-quiz-item { padding: 0.8rem; }
+}
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="module-wrap">
-    <div class="module-card">
-        <nav class="breadcrumb-mod">
+<div class="md-wrap">
+    <div class="md-card">
+        <!-- Breadcrumb -->
+        <nav class="md-breadcrumb">
             <a href="{% url 'courses:course_list' %}"><i class="fas fa-home"></i> {% trans "Cours" %}</a>
             <span class="sep">&gt;</span>
             <a href="{% url 'courses:course_detail' module.unite.cours.pk %}">{{ module.unite.cours.titre }}</a>
@@ -273,18 +295,20 @@
             <span class="current">{{ module.titre }}</span>
         </nav>
 
-        <div class="module-header">
+        <!-- Header -->
+        <div class="md-header">
             <h1>{{ module.titre }} <span style="font-size: 0.9rem; font-weight: 400; color: var(--text-muted);">({% trans "Module" %} {{ module.ordre }})</span></h1>
-            <p class="module-desc">{{ module.description }}</p>
-            <div class="module-meta">
+            <p class="md-desc">{{ module.description }}</p>
+            <div class="md-meta">
                 <i class="fas fa-book-open"></i> {{ lecons|length }} {% trans "leçons" %}
                 {% if quizzes_module %}&nbsp;·&nbsp; <i class="fas fa-question-circle"></i> {{ quizzes_module|length }} {% trans "quiz" %}{% endif %}
             </div>
         </div>
 
-        <div class="lessons-section">
+        <!-- Leçons -->
+        <div class="md-lessons">
             <h2><i class="fas fa-list-ul"></i> {% trans "Leçons" %} <span style="font-size: 0.8rem; font-weight: 400; color: var(--text-muted);">({{ lecons|length }})</span></h2>
-            <ul class="lesson-list-mod">
+            <ul class="md-lesson-list">
                 {% for lecon in lecons %}
                 <li>
                     <a href="{% url 'courses:lesson_detail' lecon.pk %}">
@@ -293,22 +317,23 @@
                     </a>
                 </li>
                 {% empty %}
-                <li class="empty"><i class="fas fa-info-circle" style="color: var(--text-muted);"></i> {% trans "Aucune leçon dans ce module." %}</li>
+                <li class="md-empty"><i class="fas fa-info-circle" style="color: var(--text-muted);"></i> {% trans "Aucune leçon dans ce module." %}</li>
                 {% endfor %}
             </ul>
         </div>
 
+        <!-- Quiz -->
         {% if quizzes_module %}
-        <div class="quiz-section-mod">
+        <div class="md-quiz-section">
             <h2><i class="fas fa-question-circle"></i> {% trans "Quiz du module" %} <span style="font-size: 0.8rem; font-weight: 400; color: var(--text-muted);">({{ quizzes_module|length }})</span></h2>
-            <div class="quiz-grid-mod">
+            <div class="md-quiz-grid">
                 {% for quiz in quizzes_module %}
-                <div class="quiz-card-mod">
+                <div class="md-quiz-item">
                     <h3><a href="{% url 'quiz:detail' quiz.pk %}">{% if quiz.titre %}{{ quiz.titre }}{% else %}{% trans "Quiz" %} {{ forloop.counter }}{% endif %}</a></h3>
-                    {% if quiz.description %}<p class="q-desc">{{ quiz.description|truncatechars:100 }}</p>{% endif %}
-                    <div class="q-footer">
-                        <span class="q-percent"><i class="fas fa-percent"></i> {{ quiz.pourcentage_reussite }}% {% trans "réussite" %}</span>
-                        <a href="{% url 'quiz:start' quiz.pk %}" class="btn-start-q"><i class="fas fa-play"></i> {% trans "Commencer" %}</a>
+                    {% if quiz.description %}<p class="md-q-desc">{{ quiz.description|truncatechars:100 }}</p>{% endif %}
+                    <div class="md-q-footer">
+                        <span class="md-q-percent"><i class="fas fa-percent"></i> {{ quiz.pourcentage_reussite }}% {% trans "réussite" %}</span>
+                        <a href="{% url 'quiz:start' quiz.pk %}" class="md-btn-start"><i class="fas fa-play"></i> {% trans "Commencer" %}</a>
                     </div>
                 </div>
                 {% endfor %}
@@ -316,11 +341,12 @@
         </div>
         {% endif %}
 
-        <div class="module-actions">
-            <a href="{% url 'courses:unit_detail' module.unite.pk %}" class="btn-act btn-act-sec"><i class="fas fa-arrow-left"></i> {% trans "Retour à l'unité" %}</a>
-            <a href="{% url 'courses:course_detail' module.unite.cours.pk %}" class="btn-act btn-act-pri"><i class="fas fa-book"></i> {% trans "Voir le cours" %}</a>
+        <!-- Actions -->
+        <div class="md-actions">
+            <a href="{% url 'courses:unit_detail' module.unite.pk %}" class="md-btn md-btn-sec"><i class="fas fa-arrow-left"></i> {% trans "Retour à l'unité" %}</a>
+            <a href="{% url 'courses:course_detail' module.unite.cours.pk %}" class="md-btn md-btn-pri"><i class="fas fa-book"></i> {% trans "Voir le cours" %}</a>
             {% if lecons.first %}
-            <a href="{% url 'courses:lesson_detail' lecons.first.pk %}" class="btn-act btn-act-pri"><i class="fas fa-play"></i> {% trans "Commencer la première leçon" %}</a>
+            <a href="{% url 'courses:lesson_detail' lecons.first.pk %}" class="md-btn md-btn-pri"><i class="fas fa-play"></i> {% trans "Commencer la première leçon" %}</a>
             {% endif %}
         </div>
     </div>
