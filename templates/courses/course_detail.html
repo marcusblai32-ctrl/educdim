@@ -5,691 +5,679 @@
 
 {% block extra_css %}
 <style>
-/* ============================================================
-   COURSE DETAIL - STYLE SPESIFIK (san konfli)
-   ============================================================ */
+    /* ===== COURSE DETAIL ===== */
+    .course-detail-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1.5rem;
+    }
 
-/* --- Conteneur prensipal --- */
-.cd-container {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 1.5rem;
-}
+    .course-detail-header {
+        display: block;
+        width: 100%;
+    }
 
-/* --- Cards --- */
-.cd-card {
-    background: var(--glass);
-    backdrop-filter: blur(var(--blur)) saturate(150%);
-    border: 1px solid var(--glass-brd);
-    border-radius: var(--radius);
-    box-shadow: var(--glass-sh);
-    padding: 2.5rem;
-    transition: var(--transition);
-    margin-bottom: 2rem;
-}
-.cd-card:hover {
-    box-shadow: var(--shadow-hover);
-}
+    .course-detail-main {
+        width: 100%;
+    }
 
-/* --- Badges --- */
-.cd-badges {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    margin-bottom: 1.2rem;
-    justify-content: center;
-}
-.cd-badges .badge {
-    font-size: 0.75rem;
-    padding: 0.35rem 0.9rem;
-    border-radius: 50px;
-    font-weight: 600;
-    letter-spacing: 0.3px;
-}
+    .course-detail-badges {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin-bottom: 1.2rem;
+        justify-content: center;
+    }
 
-/* --- Tit --- */
-.cd-title {
-    font-size: 2.4rem;
-    font-weight: 800;
-    margin-bottom: 0.8rem;
-    font-family: var(--font-display);
-    text-align: center;
-    color: var(--text);
-    line-height: 1.2;
-}
+    .course-detail-title {
+        font-size: 2.2rem;
+        font-weight: 800;
+        margin-bottom: 0.8rem;
+        font-family: var(--font-display);
+        text-align: center;
+        color: var(--text, #212529);
+    }
 
-.cd-position {
-    color: var(--text-muted);
-    font-size: 1rem;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-.cd-position i { color: var(--primary); }
+    .course-detail-position {
+        color: var(--text-muted);
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
 
-/* --- Deskripsyon --- */
-.cd-description {
-    max-width: 900px;
-    margin: 0 auto;
-    text-align: left;
-    line-height: 1.9;
-    color: var(--text);
-    font-size: 1.05rem;
-}
-.cd-description h2 {
-    font-size: 1.8rem;
-    font-weight: 700;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-    font-family: var(--font-display);
-    color: var(--primary);
-}
-.cd-description h3 {
-    font-size: 1.4rem;
-    font-weight: 600;
-    margin-top: 1.5rem;
-    margin-bottom: 0.8rem;
-    font-family: var(--font-display);
-    color: var(--text);
-}
-.cd-description h4 {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-top: 1.2rem;
-    margin-bottom: 0.5rem;
-    font-family: var(--font-display);
-    color: var(--primary);
-}
-.cd-description p {
-    margin-bottom: 1rem;
-    line-height: 1.9;
-    color: var(--text);
-}
-.cd-description ul, .cd-description ol {
-    padding-left: 1.5rem;
-    margin-bottom: 1rem;
-    color: var(--text);
-}
-.cd-description li {
-    margin-bottom: 0.4rem;
-    color: var(--text);
-}
-.cd-description img {
-    max-width: 100%;
-    height: auto;
-    border-radius: var(--radius, 8px);
-    margin: 0.5rem 0;
-}
-.cd-description blockquote {
-    border-left: 4px solid var(--primary);
-    padding-left: 1rem;
-    margin-left: 0;
-    color: var(--text-muted);
-    font-style: italic;
-}
-.cd-description a {
-    color: var(--primary);
-    text-decoration: none;
-    transition: var(--transition);
-}
-.cd-description a:hover { text-decoration: underline; }
-.cd-description table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 1rem;
-}
-.cd-description th, .cd-description td {
-    border: 1px solid var(--border);
-    padding: 0.5rem 0.8rem;
-    text-align: left;
-}
-.cd-description th {
-    background: var(--glass-soft);
-    font-weight: 600;
-    color: var(--text);
-}
-.cd-description td { color: var(--text); }
+    .course-detail-position i {
+        color: var(--primary);
+    }
 
-/* --- Prérequis --- */
-.cd-prereq-box {
-    background: var(--glass-soft);
-    backdrop-filter: blur(10px);
-    padding: 1.2rem 1.5rem;
-    border-radius: var(--radius-sm);
-    margin-bottom: 1.8rem;
-    border: 1px solid var(--glass-brd-soft);
-    max-width: 900px;
-    margin-left: auto;
-    margin-right: auto;
-}
-.cd-prereq-box h4 {
-    margin-bottom: 0.6rem;
-    font-size: 1.05rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: var(--font-display);
-    justify-content: center;
-    color: var(--text);
-}
-.cd-prereq-box h4 i { color: var(--primary); }
-.cd-prereq-completed {
-    color: var(--success);
-    margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-weight: 500;
-    justify-content: center;
-}
-.cd-prereq-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-.cd-prereq-list li {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.3rem 0;
-    color: var(--text);
-}
-.cd-prereq-missing { color: var(--danger); }
-.cd-prereq-success { color: var(--success); }
-.cd-prereq-title-muted { color: var(--text-muted); }
-.cd-prereq-title { font-weight: 500; color: var(--text); }
-.cd-prereq-link {
-    color: var(--primary);
-    font-size: 0.85rem;
-    margin-left: 0.5rem;
-    font-weight: 600;
-    text-decoration: none;
-}
-.cd-prereq-link:hover { text-decoration: underline; }
+    .course-detail-link {
+        color: var(--primary);
+        font-weight: 600;
+        text-decoration: none;
+    }
 
-/* --- Navigasyon ant kou --- */
-.cd-nav-courses {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-    margin-bottom: 1.5rem;
-    justify-content: center;
-}
-.cd-nav-courses .btn {
-    padding: 0.4rem 1.2rem;
-    font-size: 0.85rem;
-    border-radius: 50px;
-}
+    .course-detail-link:hover {
+        text-decoration: underline;
+    }
 
-/* --- Bouton aksyon --- */
-.cd-actions {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-    margin-top: 1.5rem;
-    justify-content: center;
-}
-.cd-actions .btn {
-    min-width: 200px;
-    justify-content: center;
-    border-radius: 50px;
-    padding: 0.8rem 2rem;
-    font-weight: 600;
-    transition: var(--transition);
-}
-.cd-actions .btn-lg { padding: 1rem 2.5rem; font-size: 1.1rem; }
-.cd-actions .btn-success {
-    background: linear-gradient(135deg, var(--success), #4ade80);
-    border: none;
-    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
-    color: #fff;
-}
-.cd-actions .btn-success:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
-}
-.cd-actions .btn-primary {
-    background: linear-gradient(135deg, var(--primary), #8aa0ff);
-    border: none;
-    box-shadow: 0 4px 15px rgba(26, 26, 46, 0.25);
-    color: #fff;
-}
-.cd-actions .btn-primary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(26, 26, 46, 0.35);
-}
-.cd-actions .btn-secondary {
-    border: none;
-    background: var(--glass-2);
-    backdrop-filter: blur(10px);
-    color: var(--text);
-}
-.cd-actions .btn-secondary:hover {
-    background: var(--glass-soft);
-    transform: translateY(-3px);
-}
-.cd-actions .btn-danger {
-    background: linear-gradient(135deg, var(--danger), #fb7185);
-    border: none;
-    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.25);
-    color: #fff;
-}
-.cd-actions .btn-danger:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(220, 53, 69, 0.35);
-}
-.cd-actions .btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none !important;
-}
+    /* ===== DESCRIPTION ===== */
+    .course-detail-description {
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: left;
+        line-height: 1.8;
+        color: var(--text, #212529);
+    }
 
-/* --- Tit seksyon --- */
-.cd-section-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 1.2rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: var(--font-display);
-    justify-content: center;
-    color: var(--text);
-}
-.cd-section-title i { color: var(--primary); }
+    .course-detail-description h2 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        font-family: var(--font-display);
+        color: var(--primary, #1a1a2e);
+    }
 
-/* --- Kontni kou (unites) --- */
-.cd-content {
-    background: var(--glass);
-    backdrop-filter: blur(var(--blur)) saturate(150%);
-    border: 1px solid var(--glass-brd);
-    border-radius: var(--radius);
-    box-shadow: var(--glass-sh);
-    padding: 2.5rem;
-    transition: var(--transition);
-    margin-bottom: 2rem;
-}
-.cd-content:hover { box-shadow: var(--shadow-hover); }
+    .course-detail-description h3 {
+        font-size: 1.4rem;
+        font-weight: 600;
+        margin-top: 1.5rem;
+        margin-bottom: 0.8rem;
+        font-family: var(--font-display);
+        color: var(--text, #212529);
+    }
 
-.cd-content-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-}
-.cd-content-header .cd-section-title {
-    margin-bottom: 0;
-}
+    .course-detail-description h4 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-top: 1.2rem;
+        margin-bottom: 0.5rem;
+        font-family: var(--font-display);
+        color: var(--primary, #1a1a2e);
+    }
 
-/* --- Bouton vèt "Commencer" --- */
-.cd-btn-start {
-    background: linear-gradient(135deg, #22c55e, #4ade80) !important;
-    color: #fff !important;
-    padding: 0.7rem 1.8rem !important;
-    border-radius: 50px !important;
-    border: none !important;
-    font-weight: 600 !important;
-    font-size: 0.95rem !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    gap: 0.6rem !important;
-    text-decoration: none !important;
-    transition: all 0.3s ease !important;
-    box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3) !important;
-    font-family: var(--font-body) !important;
-    cursor: pointer !important;
-}
-.cd-btn-start:hover {
-    transform: translateY(-3px) scale(1.02) !important;
-    box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4) !important;
-}
-.cd-btn-start i { color: #fff !important; }
-.cd-btn-start:disabled {
-    opacity: 0.5 !important;
-    cursor: not-allowed !important;
-    transform: none !important;
-    box-shadow: none !important;
-}
+    .course-detail-description p {
+        margin-bottom: 1rem;
+        line-height: 1.8;
+        color: var(--text, #212529);
+    }
 
-/* --- Lis units --- */
-.cd-units-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-    max-width: 900px;
-    margin: 0 auto;
-}
-.cd-unit-item {
-    background: var(--glass-soft);
-    border-radius: var(--radius-sm);
-    padding: 1.2rem 1.5rem;
-    border: 1px solid var(--glass-brd-soft);
-    transition: var(--transition);
-}
-.cd-unit-item:hover {
-    border-color: color-mix(in srgb, var(--primary) 30%, transparent);
-    background: var(--glass-2);
-    transform: translateX(5px);
-}
-.cd-unit-item h3 {
-    font-size: 1.1rem;
-    font-weight: 700;
-    margin-bottom: 0.2rem;
-    color: var(--text);
-}
-.cd-unit-item h3 a {
-    color: var(--text);
-    text-decoration: none;
-    transition: var(--transition);
-}
-.cd-unit-item h3 a:hover { color: var(--primary); }
-.cd-unit-item p {
-    color: var(--text-muted);
-    font-size: 0.88rem;
-    margin-bottom: 0.4rem;
-}
-.cd-unit-meta {
-    color: var(--text-muted);
-    font-size: 0.78rem;
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
-}
-.cd-unit-meta i { color: var(--primary); }
-.cd-empty {
-    color: var(--text-muted);
-    text-align: center;
-    padding: 1rem;
-}
+    .course-detail-description ul,
+    .course-detail-description ol {
+        padding-left: 1.5rem;
+        margin-bottom: 1rem;
+        color: var(--text, #212529);
+    }
 
-/* --- Quiz Grid --- */
-.cd-quiz-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-    justify-items: center;
-}
-.cd-quiz-item {
-    background: var(--glass-soft);
-    border-radius: var(--radius-sm);
-    padding: 1.5rem 1.8rem;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--glass-brd-soft);
-    transition: var(--transition);
-    width: 100%;
-    min-height: 180px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-.cd-quiz-item:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-hover);
-    border-color: color-mix(in srgb, var(--primary) 30%, transparent);
-}
-.cd-quiz-item h3 {
-    font-size: 1.15rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    text-align: left;
-    color: var(--text);
-}
-.cd-quiz-item h3 a {
-    color: var(--text);
-    text-decoration: none;
-    transition: var(--transition);
-}
-.cd-quiz-item h3 a:hover { color: var(--primary); }
-.cd-quiz-item p {
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    margin-bottom: 0.8rem;
-    text-align: left;
-    flex-grow: 1;
-    line-height: 1.5;
-}
-.cd-quiz-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.8rem;
-    margin-top: 0.8rem;
-    border-top: 1px solid var(--glass-brd-soft);
-    padding-top: 0.8rem;
-}
-.cd-quiz-footer .percent {
-    color: var(--text-muted);
-    font-size: 0.8rem;
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
-}
-.cd-quiz-footer .badge {
-    font-size: 0.7rem;
-    padding: 0.25rem 0.7rem;
-    border-radius: 50px;
-}
-.cd-quiz-footer .btn-sm {
-    padding: 0.35rem 1.2rem;
-    font-size: 0.8rem;
-    border-radius: 50px;
-    font-weight: 600;
-    transition: var(--transition);
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-}
-.cd-quiz-footer .btn-sm:hover { transform: translateY(-2px); }
-.cd-quiz-footer .btn-primary {
-    background: var(--primary);
-    color: #fff;
-    border: none;
-}
-.cd-quiz-footer .btn-primary:hover {
-    background: var(--primary-hover);
-}
-.cd-quiz-footer .btn-secondary {
-    background: var(--glass-2);
-    color: var(--text);
-    border: 1px solid var(--glass-brd);
-}
-.cd-quiz-footer .btn-secondary:hover {
-    background: var(--glass-soft);
-}
+    .course-detail-description li {
+        margin-bottom: 0.3rem;
+        color: var(--text, #212529);
+    }
 
-/* --- Responsive --- */
-@media (max-width: 768px) {
-    .cd-title { font-size: 1.6rem; }
-    .cd-actions { flex-direction: column; align-items: stretch; }
-    .cd-actions .btn { width: 100%; min-width: unset; justify-content: center; }
-    .cd-nav-courses { flex-direction: column; align-items: stretch; }
-    .cd-nav-courses .btn { width: 100%; justify-content: center; }
-    .cd-quiz-grid { grid-template-columns: 1fr; }
-    .cd-container { padding: 0 1rem; }
-    .cd-description { font-size: 0.95rem; }
-    .cd-description h2 { font-size: 1.4rem; }
-    .cd-description h3 { font-size: 1.2rem; }
-    .cd-description h4 { font-size: 1rem; }
-    .cd-card { padding: 1.5rem; }
-    .cd-content { padding: 1.5rem; }
-    .cd-content-header { flex-direction: column; align-items: stretch; }
-    .cd-content-header .cd-btn-start { justify-content: center; }
-    .cd-quiz-item { padding: 1.2rem; min-height: 150px; }
-}
+    .course-detail-description img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius, 8px);
+        margin: 0.5rem 0;
+    }
 
-@media (max-width: 480px) {
-    .cd-title { font-size: 1.3rem; }
-    .cd-badges { gap: 0.3rem; }
-    .cd-badges .badge { font-size: 0.6rem; padding: 0.2rem 0.5rem; }
-    .cd-unit-item { padding: 1rem; }
-    .cd-quiz-item { padding: 1rem; min-height: 130px; }
-    .cd-prereq-box { padding: 1rem; }
-    .cd-card { padding: 1rem; }
-    .cd-content { padding: 1rem; }
-    .cd-quiz-grid { gap: 1rem; }
-}
+    .course-detail-description blockquote {
+        border-left: 4px solid var(--primary, #1a1a2e);
+        padding-left: 1rem;
+        margin-left: 0;
+        color: var(--text-muted, #6c757d);
+        font-style: italic;
+    }
+
+    .course-detail-description a {
+        color: var(--primary, #1a1a2e);
+        text-decoration: none;
+    }
+
+    .course-detail-description a:hover {
+        text-decoration: underline;
+    }
+
+    .course-detail-description table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 1rem;
+    }
+
+    .course-detail-description th,
+    .course-detail-description td {
+        border: 1px solid var(--border, #dee2e6);
+        padding: 0.5rem 0.8rem;
+        text-align: left;
+    }
+
+    .course-detail-description th {
+        background: var(--glass-soft);
+        font-weight: 600;
+        color: var(--text, #212529);
+    }
+
+    .course-detail-description td {
+        color: var(--text, #212529);
+    }
+
+    /* ===== PREREQUISITES ===== */
+    .prerequisites-box {
+        background: var(--glass-soft);
+        backdrop-filter: blur(10px);
+        padding: 1.2rem 1.5rem;
+        border-radius: var(--radius-sm);
+        margin-bottom: 1.8rem;
+        border: 1px solid var(--glass-brd-soft);
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .prerequisites-box h4 {
+        margin-bottom: 0.6rem;
+        font-size: 1.05rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: var(--font-display);
+        justify-content: center;
+        color: var(--text, #212529);
+    }
+
+    .prerequisites-box h4 i {
+        color: var(--primary);
+    }
+
+    .prerequisites-completed {
+        color: var(--success);
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 500;
+        justify-content: center;
+    }
+
+    .prerequisites-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .prerequisites-list li {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.3rem 0;
+        color: var(--text, #212529);
+    }
+
+    .prereq-missing { color: var(--danger); }
+    .prereq-success { color: var(--success); }
+    .prereq-title-muted { color: var(--text-muted); }
+    .prereq-title { font-weight: 500; color: var(--text, #212529); }
+
+    .prereq-link {
+        color: var(--primary);
+        font-size: 0.85rem;
+        margin-left: 0.5rem;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .prereq-link:hover {
+        text-decoration: underline;
+    }
+
+    /* ===== NAVIGATION ===== */
+    .course-navigation {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-bottom: 1.5rem;
+        justify-content: center;
+    }
+
+    /* ===== ACTIONS ===== */
+    .course-actions {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-top: 1.5rem;
+        justify-content: center;
+    }
+
+    .course-actions .btn {
+        min-width: 200px;
+        justify-content: center;
+    }
+
+    /* ===== SECTION CARD ===== */
+    .section-card-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 1.2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: var(--font-display);
+        justify-content: center;
+        color: var(--text, #212529);
+    }
+
+    .section-card-title i {
+        color: var(--primary);
+    }
+
+    /* ===== QUIZ GRID ===== */
+    .quiz-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.2rem;
+        justify-items: center;
+    }
+
+    .quiz-card {
+        background: var(--glass-soft);
+        border-radius: var(--radius-sm);
+        padding: 1.2rem;
+        box-shadow: var(--shadow);
+        border: 1px solid var(--glass-brd-soft);
+        transition: var(--transition);
+        width: 100%;
+    }
+
+    .quiz-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-hover);
+        border-color: color-mix(in srgb, var(--primary) 30%, transparent);
+    }
+
+    .quiz-card h3 {
+        font-size: 1.05rem;
+        font-weight: 700;
+        margin-bottom: 0.3rem;
+        text-align: center;
+        color: var(--text, #212529);
+    }
+
+    .quiz-card h3 a {
+        color: var(--text);
+        text-decoration: none;
+        transition: var(--transition);
+    }
+
+    .quiz-card h3 a:hover {
+        color: var(--primary);
+    }
+
+    .quiz-card p {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        margin-bottom: 0.8rem;
+        text-align: center;
+    }
+
+    .quiz-card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 0.8rem;
+        border-top: 1px solid var(--glass-brd-soft);
+        padding-top: 0.6rem;
+    }
+
+    .quiz-percent {
+        color: var(--text-muted);
+        font-size: 0.78rem;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    /* ===== UNITS LIST ===== */
+    .units-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .unit-card {
+        background: var(--glass-soft);
+        border-radius: var(--radius-sm);
+        padding: 1.2rem 1.5rem;
+        border: 1px solid var(--glass-brd-soft);
+        transition: var(--transition);
+    }
+
+    .unit-card:hover {
+        border-color: color-mix(in srgb, var(--primary) 30%, transparent);
+        background: var(--glass-2);
+        transform: translateX(5px);
+    }
+
+    .unit-card h3 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 0.2rem;
+        color: var(--text, #212529);
+    }
+
+    .unit-card h3 a {
+        color: var(--text);
+        text-decoration: none;
+        transition: var(--transition);
+    }
+
+    .unit-card h3 a:hover {
+        color: var(--primary);
+    }
+
+    .unit-card p {
+        color: var(--text-muted);
+        font-size: 0.88rem;
+        margin-bottom: 0.4rem;
+    }
+
+    .unit-modules {
+        color: var(--text-muted);
+        font-size: 0.78rem;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    .unit-modules i {
+        color: var(--primary);
+    }
+
+    .empty-units {
+        color: var(--text-muted);
+        text-align: center;
+        padding: 1rem;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+        .course-detail-title {
+            font-size: 1.6rem;
+        }
+
+        .course-actions {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .course-actions .btn {
+            width: 100%;
+            min-width: unset;
+            justify-content: center;
+        }
+
+        .course-navigation {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .course-navigation .btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .quiz-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .course-detail-container {
+            padding: 0 1rem;
+        }
+
+        .course-detail-description {
+            font-size: 0.95rem;
+        }
+
+        .course-detail-description h2 {
+            font-size: 1.4rem;
+        }
+
+        .course-detail-description h3 {
+            font-size: 1.2rem;
+        }
+
+        .course-detail-description h4 {
+            font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .course-detail-title {
+            font-size: 1.3rem;
+        }
+
+        .course-detail-badges {
+            gap: 0.3rem;
+        }
+
+        .course-detail-badges .badge {
+            font-size: 0.6rem;
+            padding: 0.2rem 0.5rem;
+        }
+
+        .unit-card {
+            padding: 1rem;
+        }
+
+        .quiz-card {
+            padding: 1rem;
+        }
+
+        .prerequisites-box {
+            padding: 1rem;
+        }
+    }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="cd-container">
-    <!-- ===== DETAIL CARD ===== -->
-    <div class="cd-card">
-        <!-- Badges -->
-        <div class="cd-badges">
-            {% if cours.nivo %}<span class="badge badge-primary">{{ cours.nivo.get_nom_display }}</span>{% endif %}
-            {% if cours.categorie %}<span class="badge badge-secondary">{{ cours.categorie.nom }}</span>{% endif %}
-            {% if cours.est_payant %}<span class="badge badge-warning">{% trans "Payant" %} - {{ cours.prix }} HTG</span>{% else %}<span class="badge badge-success">{% trans "Gratuit" %}</span>{% endif %}
-            {% if cours.publie %}<span class="badge badge-primary">{% trans "Publié" %}</span>{% endif %}
-            {% if cours.learning_path %}<span class="badge badge-secondary"><i class="fas fa-road"></i> {{ cours.learning_path.nom }}</span>{% endif %}
-        </div>
-
-        <h1 class="cd-title">{{ cours.titre }}</h1>
-
-        {% if position_display %}
-        <p class="cd-position">
-            <i class="fas fa-road"></i> {{ position_display }}
-            {% if cours.learning_path %}
-            - <a href="{% url 'courses:learning_path_detail' cours.learning_path.pk %}" style="color:var(--primary);text-decoration:none;">{{ cours.learning_path.nom }}</a>
-            {% endif %}
-        </p>
-        {% endif %}
-
-        <div class="cd-description">{{ cours.description|linebreaks }}</div>
-
-        {% if prerequisites %}
-        <div class="cd-prereq-box">
-            <h4><i class="fas fa-list-check"></i> {% trans "Prérequis" %}</h4>
-            {% if prerequis_completed %}
-            <p class="cd-prereq-completed"><i class="fas fa-check-circle"></i> {% trans "Vous avez complété tous les prérequis !" %}</p>
-            {% else %}
-            <ul class="cd-prereq-list">
-                {% for prereq in prerequisites %}
-                <li>
-                    {% if prereq.prerequis in prerequis_missing %}
-                    <span class="cd-prereq-missing"><i class="fas fa-times-circle"></i></span>
-                    <span class="cd-prereq-title-muted">{{ prereq.prerequis.titre }}</span>
-                    <a href="{% url 'courses:course_detail' prereq.prerequis.pk %}" class="cd-prereq-link"><i class="fas fa-arrow-right"></i> {% trans "Voir" %}</a>
-                    {% else %}
-                    <span class="cd-prereq-success"><i class="fas fa-check-circle"></i></span>
-                    <span class="cd-prereq-title">{{ prereq.prerequis.titre }}</span>
-                    {% endif %}
-                </li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-        </div>
-        {% endif %}
-
-        {% if previous_course or next_course %}
-        <div class="cd-nav-courses">
-            {% if previous_course %}
-            <a href="{% url 'courses:course_detail' previous_course.pk %}" class="btn btn-outline btn-sm"><i class="fas fa-arrow-left"></i> {{ previous_course.titre }}</a>
-            {% endif %}
-            {% if next_course %}
-            <a href="{% url 'courses:course_detail' next_course.pk %}" class="btn btn-outline btn-sm">{{ next_course.titre }} <i class="fas fa-arrow-right"></i></a>
-            {% endif %}
-        </div>
-        {% endif %}
-
-        <div class="cd-actions">
-            {% if user.is_authenticated %}
-                {% if inscription_approuvee or a_acces_abonnement %}
-                    <a href="{% if cours.unites.first %}{% url 'courses:unit_detail' cours.unites.first.pk %}{% else %}#{% endif %}" class="btn btn-success btn-lg"><i class="fas fa-play"></i> {% if cours.unites.first %}{% trans "Commencer le cours" %}{% else %}{% trans "Cours en préparation" %}{% endif %}</a>
-                {% elif prerequis_completed %}
-                <a href="{% url 'enrollments:enroll_course' cours.pk %}" class="btn btn-primary btn-lg"><i class="fas fa-user-plus"></i> {% trans "S'inscrire" %}</a>
-                {% else %}
-                <button class="btn btn-secondary btn-lg" disabled><i class="fas fa-lock"></i> {% trans "Prérequis manquants" %}</button>
-                {% endif %}
-            {% else %}
-            <a href="{% url 'accounts:login' %}?next={{ request.path }}" class="btn btn-primary btn-lg"><i class="fas fa-sign-in-alt"></i> {% trans "Se connecter pour s'inscrire" %}</a>
-            {% endif %}
-            {% if user.is_staff %}
-            <a href="{% url 'courses:course_edit' cours.pk %}" class="btn btn-secondary"><i class="fas fa-edit"></i> {% trans "Modifier" %}</a>
-            <a href="{% url 'courses:course_delete' cours.pk %}" class="btn btn-danger"><i class="fas fa-trash"></i> {% trans "Supprimer" %}</a>
-            <a href="{% url 'courses:toggle_inscription' cours.pk %}" class="btn btn-secondary"><i class="fas fa-toggle-{% if cours.inscription_ouverte %}on{% else %}off{% endif %}"></i> {% if cours.inscription_ouverte %}{% trans "Fermer inscriptions" %}{% else %}{% trans "Ouvrir inscriptions" %}{% endif %}</a>
-            {% endif %}
-        </div>
-    </div>
-
-    <!-- ===== CONTENU ===== -->
-    <div class="cd-content">
-        <div class="cd-content-header">
-            <h2 class="cd-section-title" style="margin-bottom:0;"><i class="fas fa-list-ul"></i> {% trans "Contenu du cours" %}</h2>
-            {% if user.is_authenticated %}
-                {% if inscription_approuvee or a_acces_abonnement %}
-                    {% if cours.unites.first %}
-                    <a href="{% url 'courses:unit_detail' cours.unites.first.pk %}" class="cd-btn-start"><i class="fas fa-play"></i> {% trans "Commencer le cours" %}</a>
-                    {% else %}
-                    <button class="cd-btn-start" disabled><i class="fas fa-clock"></i> {% trans "Cours en préparation" %}</button>
-                    {% endif %}
-                {% elif prerequis_completed %}
-                <a href="{% url 'enrollments:enroll_course' cours.pk %}" class="cd-btn-start"><i class="fas fa-user-plus"></i> {% trans "S'inscrire maintenant" %}</a>
-                {% else %}
-                <button class="cd-btn-start" disabled><i class="fas fa-lock"></i> {% trans "Prérequis manquants" %}</button>
-                {% endif %}
-            {% else %}
-            <a href="{% url 'accounts:login' %}?next={{ request.path }}" class="cd-btn-start"><i class="fas fa-sign-in-alt"></i> {% trans "Se connecter" %}</a>
-            {% endif %}
-        </div>
-
-        {% if unites %}
-        <div class="cd-units-list">
-            {% for unite in unites %}
-            <div class="cd-unit-item">
-                <h3><a href="{% url 'courses:unit_detail' unite.pk %}">{{ unite.titre }}</a></h3>
-                {% if unite.description %}<p>{{ unite.description }}</p>{% endif %}
-                <span class="cd-unit-meta"><i class="fas fa-book-open"></i> {{ unite.modules.count }} {% trans "modules" %}</span>
+<div class="course-detail-container">
+    <!-- ===== COURSE HEADER ===== -->
+    <div class="course-detail-header">
+        <div class="course-detail-main">
+            <!-- Badges -->
+            <div class="course-detail-badges">
+                {% if cours.nivo %}<span class="badge badge-primary">{{ cours.nivo.get_nom_display }}</span>{% endif %}
+                {% if cours.categorie %}<span class="badge badge-secondary">{{ cours.categorie.nom }}</span>{% endif %}
+                {% if cours.est_payant %}<span class="badge badge-warning">{% trans "Payant" %} - {{ cours.prix }} HTG</span>{% else %}<span class="badge badge-success">{% trans "Gratuit" %}</span>{% endif %}
+                {% if cours.publie %}<span class="badge badge-primary">{% trans "Publié" %}</span>{% endif %}
+                {% if cours.learning_path %}<span class="badge badge-secondary"><i class="fas fa-road"></i> {{ cours.learning_path.nom }}</span>{% endif %}
             </div>
-            {% endfor %}
+
+            <!-- Titre -->
+            <h1 class="course-detail-title">{{ cours.titre }}</h1>
+
+            <!-- Learning Path & Position -->
+            {% if position_display %}
+            <p class="course-detail-position">
+                <i class="fas fa-road"></i> {{ position_display }}
+                {% if cours.learning_path %}
+                - <a href="{% url 'courses:learning_path_detail' cours.learning_path.pk %}" class="course-detail-link">{{ cours.learning_path.nom }}</a>
+                {% endif %}
+            </p>
+            {% endif %}
+
+            <!-- ===== DESCRIPTION AVEC LINEBREAKS ===== -->
+            <div class="course-detail-description">
+                {{ cours.description|linebreaks }}
+            </div>
+
+            <!-- Prérequis -->
+            {% if prerequisites %}
+            <div class="prerequisites-box">
+                <h4><i class="fas fa-list-check"></i> {% trans "Prérequis" %}</h4>
+                {% if prerequis_completed %}
+                <p class="prerequisites-completed">
+                    <i class="fas fa-check-circle"></i> {% trans "Vous avez complété tous les prérequis !" %}
+                </p>
+                {% else %}
+                <ul class="prerequisites-list">
+                    {% for prereq in prerequisites %}
+                    <li>
+                        {% if prereq.prerequis in prerequis_missing %}
+                        <span class="prereq-missing"><i class="fas fa-times-circle"></i></span>
+                        <span class="prereq-title-muted">{{ prereq.prerequis.titre }}</span>
+                        <a href="{% url 'courses:course_detail' prereq.prerequis.pk %}" class="prereq-link">
+                            <i class="fas fa-arrow-right"></i> {% trans "Voir" %}
+                        </a>
+                        {% else %}
+                        <span class="prereq-success"><i class="fas fa-check-circle"></i></span>
+                        <span class="prereq-title">{{ prereq.prerequis.titre }}</span>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <!-- Navigation cours précédent/suivant -->
+            {% if previous_course or next_course %}
+            <div class="course-navigation">
+                {% if previous_course %}
+                <a href="{% url 'courses:course_detail' previous_course.pk %}" class="btn btn-outline btn-sm">
+                    <i class="fas fa-arrow-left"></i> {{ previous_course.titre }}
+                </a>
+                {% endif %}
+                {% if next_course %}
+                <a href="{% url 'courses:course_detail' next_course.pk %}" class="btn btn-outline btn-sm">
+                    {{ next_course.titre }} <i class="fas fa-arrow-right"></i>
+                </a>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <!-- ===== ACTIONS ===== -->
+            <div class="course-actions">
+                {% if user.is_authenticated %}
+                    {% if inscription_approuvee or a_acces_abonnement %}
+                        {% if cours.unites.first %}
+                        <a href="{% url 'courses:unit_detail' cours.unites.first.pk %}" class="btn btn-success btn-lg">
+                            <i class="fas fa-play"></i> {% trans "Commencer le cours" %}
+                        </a>
+                        {% else %}
+                        <button class="btn btn-secondary btn-lg" disabled>
+                            <i class="fas fa-clock"></i> {% trans "Cours en préparation" %}
+                        </button>
+                        {% endif %}
+                    {% elif prerequis_completed %}
+                    <a href="{% url 'enrollments:enroll_course' cours.pk %}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-user-plus"></i> {% trans "S'inscrire" %}
+                    </a>
+                    {% else %}
+                    <button class="btn btn-secondary btn-lg" disabled>
+                        <i class="fas fa-lock"></i> {% trans "Prérequis manquants" %}
+                    </button>
+                    {% endif %}
+                {% else %}
+                <a href="{% url 'accounts:login' %}?next={{ request.path }}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-sign-in-alt"></i> {% trans "Se connecter pour s'inscrire" %}
+                </a>
+                {% endif %}
+
+                {% if user.is_staff %}
+                <a href="{% url 'courses:course_edit' cours.pk %}" class="btn btn-secondary">
+                    <i class="fas fa-edit"></i> {% trans "Modifier" %}
+                </a>
+                <a href="{% url 'courses:course_delete' cours.pk %}" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> {% trans "Supprimer" %}
+                </a>
+                <a href="{% url 'courses:toggle_inscription' cours.pk %}" class="btn btn-secondary">
+                    <i class="fas fa-toggle-{% if cours.inscription_ouverte %}on{% else %}off{% endif %}"></i>
+                    {% if cours.inscription_ouverte %}{% trans "Fermer inscriptions" %}{% else %}{% trans "Ouvrir inscriptions" %}{% endif %}
+                </a>
+                {% endif %}
+            </div>
         </div>
-        {% else %}
-        <p class="cd-empty">{% trans "Aucune unité disponible pour ce cours." %}</p>
-        {% endif %}
     </div>
 
-    <!-- ===== QUIZ ===== -->
-    {% if quizzes %}
-    <div class="cd-card">
-        <h2 class="cd-section-title"><i class="fas fa-question-circle"></i> {% trans "Quiz du cours" %}</h2>
-        <div class="cd-quiz-grid">
-            {% for quiz in quizzes %}
-            <div class="cd-quiz-item">
-                <h3><a href="{% url 'quiz:detail' quiz.pk %}">{{ quiz.titre }}</a></h3>
-                {% if quiz.description %}<p>{{ quiz.description|truncatechars:100 }}</p>{% endif %}
-                <div class="cd-quiz-footer">
-                    <span class="percent"><i class="fas fa-percent"></i> {{ quiz.pourcentage_reussite }}% {% trans "réussite" %}</span>
-                    {% if user.is_authenticated %}
-                        {% with tentative_quiz=quiz.pk %}
-                            {% for key, value in user_tentatives.items %}
-                                {% if key == tentative_quiz %}
-                                    {% if value.date_soumission %}
-                                        {% if value.reussi %}
-                                        <span class="badge badge-success"><i class="fas fa-check-circle"></i> {% trans "Réussi" %} ({{ value.score|floatformat:0 }}%)</span>
-                                        {% else %}
-                                        <span class="badge badge-danger"><i class="fas fa-times-circle"></i> {% trans "Échoué" %} ({{ value.score|floatformat:0 }}%)</span>
-                                        {% endif %}
-                                    {% else %}
-                                    <a href="{% url 'quiz:start' quiz.pk %}" class="btn btn-primary btn-sm"><i class="fas fa-play"></i> {% trans "Commencer" %}</a>
-                                    {% endif %}
-                                {% endif %}
-                            {% empty %}
-                            <a href="{% url 'quiz:start' quiz.pk %}" class="btn btn-primary btn-sm"><i class="fas fa-play"></i> {% trans "Commencer" %}</a>
-                            {% endfor %}
-                        {% endwith %}
-                    {% else %}
-                    <a href="{% url 'accounts:login' %}?next={% url 'quiz:detail' quiz.pk %}" class="btn btn-secondary btn-sm"><i class="fas fa-sign-in-alt"></i> {% trans "Se connecter" %}</a>
+    <!-- ===== CONTENU DU COURS ===== -->
+    <div class="course-detail-container" style="margin-top: 2rem;">
+        <div class="card">
+            <h2 class="section-card-title">
+                <i class="fas fa-list-ul"></i> {% trans "Contenu du cours" %}
+            </h2>
+            {% if unites %}
+            <div class="units-list">
+                {% for unite in unites %}
+                <div class="unit-card">
+                    <h3><a href="{% url 'courses:unit_detail' unite.pk %}">{{ unite.titre }}</a></h3>
+                    {% if unite.description %}
+                    <p>{{ unite.description }}</p>
                     {% endif %}
+                    <span class="unit-modules">
+                        <i class="fas fa-book-open"></i> {{ unite.modules.count }} {% trans "modules" %}
+                    </span>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
+            {% else %}
+            <p class="empty-units">{% trans "Aucune unité disponible pour ce cours." %}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- ===== QUIZ DU COURS (ANBA) ===== -->
+    {% if quizzes %}
+    <div class="course-detail-container" style="margin-top: 2rem;">
+        <div class="card">
+            <h2 class="section-card-title">
+                <i class="fas fa-question-circle"></i> {% trans "Quiz du cours" %}
+            </h2>
+            <div class="quiz-grid">
+                {% for quiz in quizzes %}
+                <div class="quiz-card">
+                    <h3><a href="{% url 'quiz:detail' quiz.pk %}">{{ quiz.titre }}</a></h3>
+                    {% if quiz.description %}
+                    <p>{{ quiz.description|truncatechars:100 }}</p>
+                    {% endif %}
+                    <div class="quiz-card-footer">
+                        <span class="quiz-percent">
+                            <i class="fas fa-percent"></i> {{ quiz.pourcentage_reussite }}% {% trans "réussite" %}
+                        </span>
+                        {% if user.is_authenticated %}
+                            {% with tentative_quiz=quiz.pk %}
+                                {% for key, value in user_tentatives.items %}
+                                    {% if key == tentative_quiz %}
+                                        {% if value.date_soumission %}
+                                            {% if value.reussi %}
+                                            <span class="badge badge-success"><i class="fas fa-check-circle"></i> {% trans "Réussi" %} ({{ value.score|floatformat:0 }}%)</span>
+                                            {% else %}
+                                            <span class="badge badge-danger"><i class="fas fa-times-circle"></i> {% trans "Échoué" %} ({{ value.score|floatformat:0 }}%)</span>
+                                            {% endif %}
+                                        {% else %}
+                                        <a href="{% url 'quiz:start' quiz.pk %}" class="btn btn-primary btn-sm"><i class="fas fa-play"></i> {% trans "Commencer" %}</a>
+                                        {% endif %}
+                                    {% endif %}
+                                {% empty %}
+                                <a href="{% url 'quiz:start' quiz.pk %}" class="btn btn-primary btn-sm"><i class="fas fa-play"></i> {% trans "Commencer" %}</a>
+                                {% endfor %}
+                            {% endwith %}
+                        {% else %}
+                        <a href="{% url 'accounts:login' %}?next={% url 'quiz:detail' quiz.pk %}" class="btn btn-secondary btn-sm">
+                            <i class="fas fa-sign-in-alt"></i> {% trans "Se connecter" %}
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
     {% endif %}
