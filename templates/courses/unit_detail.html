@@ -5,11 +5,6 @@
 
 {% block content %}
 <div class="card">
-    <nav class="breadcrumb">
-        <a href="{% url 'courses:course_list' %}">{% trans "Cours" %}</a> &gt;
-        <a href="{% url 'courses:course_detail' unite.cours.pk %}">{{ unite.cours.titre }}</a> &gt;
-        <span>{{ unite.titre }}</span>
-    </nav>
     <h1>{{ unite.titre }} ({% trans "Unité" %} {{ unite.ordre }})</h1>
     <p>{{ unite.description }}</p>
     <h2>{% trans "Modules" %}</h2>
