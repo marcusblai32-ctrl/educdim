@@ -260,7 +260,7 @@
         border-radius: 50px;
     }
 
-    /* ===== ACTIONS ===== */
+    /* ===== ACTIONS (STAFF ONLY) ===== */
     .course-actions {
         display: flex;
         gap: 1rem;
@@ -270,39 +270,13 @@
     }
 
     .course-actions .btn {
-        min-width: 200px;
+        min-width: 160px;
         justify-content: center;
         border-radius: 50px;
-        padding: 0.8rem 2rem;
+        padding: 0.6rem 1.5rem;
         font-weight: 600;
         transition: var(--transition);
-    }
-
-    .course-actions .btn-lg {
-        padding: 1rem 2.5rem;
-        font-size: 1.1rem;
-    }
-
-    .course-actions .btn-success {
-        background: linear-gradient(135deg, var(--success), #4ade80);
-        border: none;
-        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
-    }
-
-    .course-actions .btn-success:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
-    }
-
-    .course-actions .btn-primary {
-        background: linear-gradient(135deg, var(--primary), #8aa0ff);
-        border: none;
-        box-shadow: 0 4px 15px rgba(26, 26, 46, 0.25);
-    }
-
-    .course-actions .btn-primary:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(26, 26, 46, 0.35);
+        font-size: 0.85rem;
     }
 
     .course-actions .btn-secondary {
@@ -326,6 +300,17 @@
     .course-actions .btn-danger:hover {
         transform: translateY(-3px);
         box-shadow: 0 8px 25px rgba(220, 53, 69, 0.35);
+    }
+
+    .course-actions .btn-outline {
+        background: transparent;
+        border: 1.5px solid var(--primary);
+        color: var(--primary);
+    }
+
+    .course-actions .btn-outline:hover {
+        background: var(--primary);
+        color: #fff;
     }
 
     /* ===== SECTION CARD ===== */
@@ -398,6 +383,7 @@
         transition: var(--transition);
         box-shadow: 0 4px 15px rgba(40, 167, 69, 0.25);
         font-family: var(--font-body);
+        cursor: pointer;
     }
 
     .content-card .card-header-actions .btn-start:hover {
@@ -413,6 +399,29 @@
         opacity: 0.5;
         cursor: not-allowed;
         transform: none !important;
+        box-shadow: none !important;
+    }
+
+    .content-card .card-header-actions .btn-start.btn-primary-start {
+        background: linear-gradient(135deg, var(--primary), #8aa0ff);
+        box-shadow: 0 4px 15px rgba(26, 26, 46, 0.25);
+    }
+
+    .content-card .card-header-actions .btn-start.btn-primary-start:hover {
+        box-shadow: 0 8px 25px rgba(26, 26, 46, 0.35);
+    }
+
+    .content-card .card-header-actions .btn-start.btn-secondary-start {
+        background: var(--glass-2);
+        color: var(--text);
+        box-shadow: none;
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--glass-brd);
+    }
+
+    .content-card .card-header-actions .btn-start.btn-secondary-start:hover {
+        background: var(--glass-soft);
+        box-shadow: var(--shadow);
     }
 
     /* ===== QUIZ GRID ===== */
@@ -756,28 +765,8 @@
             </div>
             {% endif %}
 
-            <!-- ===== ACTIONS ===== -->
+            <!-- ===== ACTIONS (STAFF ONLY) ===== -->
             <div class="course-actions">
-                {% if user.is_authenticated %}
-                    {% if inscription_approuvee or a_acces_abonnement %}
-                        <a href="{% if cours.unites.first %}{% url 'courses:unit_detail' cours.unites.first.pk %}{% else %}#{% endif %}" class="btn btn-success btn-lg">
-                            <i class="fas fa-play"></i> {% if cours.unites.first %}{% trans "Commencer le cours" %}{% else %}{% trans "Cours en préparation" %}{% endif %}
-                        </a>
-                    {% elif prerequis_completed %}
-                    <a href="{% url 'enrollments:enroll_course' cours.pk %}" class="btn btn-primary btn-lg">
-                        <i class="fas fa-user-plus"></i> {% trans "S'inscrire" %}
-                    </a>
-                    {% else %}
-                    <button class="btn btn-secondary btn-lg" disabled>
-                        <i class="fas fa-lock"></i> {% trans "Prérequis manquants" %}
-                    </button>
-                    {% endif %}
-                {% else %}
-                <a href="{% url 'accounts:login' %}?next={{ request.path }}" class="btn btn-primary btn-lg">
-                    <i class="fas fa-sign-in-alt"></i> {% trans "Se connecter pour s'inscrire" %}
-                </a>
-                {% endif %}
-
                 {% if user.is_staff %}
                 <a href="{% url 'courses:course_edit' cours.pk %}" class="btn btn-secondary">
                     <i class="fas fa-edit"></i> {% trans "Modifier" %}
@@ -785,7 +774,7 @@
                 <a href="{% url 'courses:course_delete' cours.pk %}" class="btn btn-danger">
                     <i class="fas fa-trash"></i> {% trans "Supprimer" %}
                 </a>
-                <a href="{% url 'courses:toggle_inscription' cours.pk %}" class="btn btn-secondary">
+                <a href="{% url 'courses:toggle_inscription' cours.pk %}" class="btn btn-outline">
                     <i class="fas fa-toggle-{% if cours.inscription_ouverte %}on{% else %}off{% endif %}"></i>
                     {% if cours.inscription_ouverte %}{% trans "Fermer inscriptions" %}{% else %}{% trans "Ouvrir inscriptions" %}{% endif %}
                 </a>
@@ -813,16 +802,16 @@
                         </button>
                         {% endif %}
                     {% elif prerequis_completed %}
-                    <a href="{% url 'enrollments:enroll_course' cours.pk %}" class="btn-start">
+                    <a href="{% url 'enrollments:enroll_course' cours.pk %}" class="btn-start btn-primary-start">
                         <i class="fas fa-user-plus"></i> {% trans "S'inscrire maintenant" %}
                     </a>
                     {% else %}
-                    <button class="btn-start" disabled>
+                    <button class="btn-start btn-secondary-start" disabled>
                         <i class="fas fa-lock"></i> {% trans "Prérequis manquants" %}
                     </button>
                     {% endif %}
                 {% else %}
-                <a href="{% url 'accounts:login' %}?next={{ request.path }}" class="btn-start">
+                <a href="{% url 'accounts:login' %}?next={{ request.path }}" class="btn-start btn-primary-start">
                     <i class="fas fa-sign-in-alt"></i> {% trans "Se connecter" %}
                 </a>
                 {% endif %}
