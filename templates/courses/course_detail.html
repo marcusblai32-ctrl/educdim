@@ -5,20 +5,11 @@
 
 {% block extra_css %}
 <style>
-    /* ===== COURSE DETAIL ===== */
+    /* ===== SEUL CSS SPÉCIFIQUE À COURSE DETAIL ===== */
     .course-detail-container {
         max-width: 1200px;
         margin: 2rem auto;
         padding: 0 1.5rem;
-    }
-
-    .course-detail-header {
-        display: block;
-        width: 100%;
-    }
-
-    .course-detail-main {
-        width: 100%;
     }
 
     .course-detail-badges {
@@ -27,14 +18,6 @@
         flex-wrap: wrap;
         margin-bottom: 1.2rem;
         justify-content: center;
-    }
-
-    .course-detail-badges .badge {
-        font-size: 0.75rem;
-        padding: 0.35rem 0.9rem;
-        border-radius: 50px;
-        font-weight: 600;
-        letter-spacing: 0.3px;
     }
 
     .course-detail-title {
@@ -153,29 +136,6 @@
         text-decoration: underline;
     }
 
-    .course-detail-description table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 1rem;
-    }
-
-    .course-detail-description th,
-    .course-detail-description td {
-        border: 1px solid var(--border, #dee2e6);
-        padding: 0.5rem 0.8rem;
-        text-align: left;
-    }
-
-    .course-detail-description th {
-        background: var(--glass-soft);
-        font-weight: 600;
-        color: var(--text, #212529);
-    }
-
-    .course-detail-description td {
-        color: var(--text, #212529);
-    }
-
     /* ===== PREREQUISITES ===== */
     .prerequisites-box {
         background: var(--glass-soft);
@@ -245,92 +205,7 @@
         text-decoration: underline;
     }
 
-    /* ===== NAVIGATION ===== */
-    .course-navigation {
-        display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
-        margin-bottom: 1.5rem;
-        justify-content: center;
-    }
-
-    .course-navigation .btn {
-        padding: 0.4rem 1.2rem;
-        font-size: 0.85rem;
-        border-radius: 50px;
-    }
-
-    /* ===== ACTIONS (STAFF ONLY) ===== */
-    .course-actions {
-        display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
-        margin-top: 1.5rem;
-        justify-content: center;
-    }
-
-    .course-actions .btn {
-        min-width: 160px;
-        justify-content: center;
-        border-radius: 50px;
-        padding: 0.6rem 1.5rem;
-        font-weight: 600;
-        transition: var(--transition);
-        font-size: 0.85rem;
-    }
-
-    .course-actions .btn-secondary {
-        border: none;
-        background: var(--glass-2);
-        backdrop-filter: blur(10px);
-        transition: var(--transition);
-    }
-
-    .course-actions .btn-secondary:hover {
-        background: var(--glass-soft);
-        transform: translateY(-3px);
-    }
-
-    .course-actions .btn-danger {
-        background: linear-gradient(135deg, var(--danger), #fb7185);
-        border: none;
-        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.25);
-    }
-
-    .course-actions .btn-danger:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(220, 53, 69, 0.35);
-    }
-
-    .course-actions .btn-outline {
-        background: transparent;
-        border: 1.5px solid var(--primary);
-        color: var(--primary);
-    }
-
-    .course-actions .btn-outline:hover {
-        background: var(--primary);
-        color: #fff;
-    }
-
-    /* ===== SECTION CARD ===== */
-    .section-card-title {
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin-bottom: 1.2rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-family: var(--font-display);
-        justify-content: center;
-        color: var(--text, #212529);
-    }
-
-    .section-card-title i {
-        color: var(--primary);
-    }
-
-    /* ===== CONTENU CARD AVEC BOUTON ===== */
+    /* ===== CONTENU CARD AVEC BOUTON VÈ ===== */
     .content-card {
         background: var(--glass);
         backdrop-filter: blur(var(--blur)) saturate(150%);
@@ -342,17 +217,6 @@
         transition: var(--transition);
         position: relative;
         overflow: hidden;
-    }
-
-    .content-card::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        right: -50%;
-        width: 100%;
-        height: 100%;
-        background: radial-gradient(circle, rgba(91, 118, 247, 0.03), transparent 70%);
-        pointer-events: none;
     }
 
     .content-card:hover {
@@ -401,92 +265,6 @@
         cursor: not-allowed !important;
         transform: none !important;
         box-shadow: none !important;
-    }
-
-    /* ===== UNIT CARD ===== */
-    .units-list {
-        display: flex;
-        flex-direction: column;
-        gap: 0.8rem;
-        max-width: 900px;
-        margin: 0 auto;
-    }
-
-    .unit-card {
-        background: var(--glass-soft);
-        border-radius: var(--radius-sm);
-        padding: 1.2rem 1.5rem;
-        border: 1px solid var(--glass-brd-soft);
-        transition: var(--transition);
-    }
-
-    .unit-card:hover {
-        border-color: color-mix(in srgb, var(--primary) 30%, transparent);
-        background: var(--glass-2);
-        transform: translateX(5px);
-    }
-
-    .unit-card h3 {
-        font-size: 1.1rem;
-        font-weight: 700;
-        margin-bottom: 0.2rem;
-        color: var(--text, #212529);
-    }
-
-    .unit-card h3 a {
-        color: var(--text);
-        text-decoration: none;
-        transition: var(--transition);
-    }
-
-    .unit-card h3 a:hover {
-        color: var(--primary);
-    }
-
-    .unit-card .unit-description {
-        color: var(--text-muted, #6c757d);
-        font-size: 0.92rem;
-        line-height: 1.7;
-        margin: 0.3rem 0 0.6rem;
-    }
-
-    .unit-card .unit-description p {
-        margin-bottom: 0.5rem;
-        color: var(--text-muted, #6c757d);
-    }
-
-    .unit-card .unit-description strong {
-        color: var(--text, #212529);
-        font-weight: 600;
-    }
-
-    .unit-card .unit-description ul,
-    .unit-card .unit-description ol {
-        padding-left: 1.2rem;
-        margin: 0.3rem 0;
-    }
-
-    .unit-card .unit-description li {
-        margin-bottom: 0.2rem;
-    }
-
-    .unit-card .unit-modules {
-        color: var(--text-muted);
-        font-size: 0.78rem;
-        display: flex;
-        align-items: center;
-        gap: 0.3rem;
-        margin-top: 0.5rem;
-    }
-
-    .unit-card .unit-modules i {
-        color: var(--primary);
-    }
-
-    .empty-units {
-        color: var(--text-muted);
-        text-align: center;
-        padding: 1rem;
     }
 
     /* ===== QUIZ GRID ===== */
@@ -563,22 +341,68 @@
         gap: 0.3rem;
     }
 
-    .quiz-card-footer .badge {
-        font-size: 0.7rem;
-        padding: 0.25rem 0.7rem;
-        border-radius: 50px;
+    /* ===== UNITS LIST ===== */
+    .units-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        max-width: 900px;
+        margin: 0 auto;
     }
 
-    .quiz-card-footer .btn-sm {
-        padding: 0.35rem 1.2rem;
-        font-size: 0.8rem;
-        border-radius: 50px;
-        font-weight: 600;
+    .unit-card {
+        background: var(--glass-soft);
+        border-radius: var(--radius-sm);
+        padding: 1.2rem 1.5rem;
+        border: 1px solid var(--glass-brd-soft);
         transition: var(--transition);
     }
 
-    .quiz-card-footer .btn-sm:hover {
-        transform: translateY(-2px);
+    .unit-card:hover {
+        border-color: color-mix(in srgb, var(--primary) 30%, transparent);
+        background: var(--glass-2);
+        transform: translateX(5px);
+    }
+
+    .unit-card h3 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 0.2rem;
+        color: var(--text, #212529);
+    }
+
+    .unit-card h3 a {
+        color: var(--text);
+        text-decoration: none;
+        transition: var(--transition);
+    }
+
+    .unit-card h3 a:hover {
+        color: var(--primary);
+    }
+
+    .unit-card p {
+        color: var(--text-muted);
+        font-size: 0.88rem;
+        margin-bottom: 0.4rem;
+    }
+
+    .unit-modules {
+        color: var(--text-muted);
+        font-size: 0.78rem;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    .unit-modules i {
+        color: var(--primary);
+    }
+
+    .empty-units {
+        color: var(--text-muted);
+        text-align: center;
+        padding: 1rem;
     }
 
     /* ===== RESPONSIVE ===== */
@@ -593,17 +417,6 @@
         }
 
         .course-actions .btn {
-            width: 100%;
-            min-width: unset;
-            justify-content: center;
-        }
-
-        .course-navigation {
-            flex-direction: column;
-            align-items: stretch;
-        }
-
-        .course-navigation .btn {
             width: 100%;
             justify-content: center;
         }
@@ -649,10 +462,6 @@
             padding: 1.2rem;
             min-height: 150px;
         }
-
-        .unit-card {
-            padding: 1rem;
-        }
     }
 
     @media (max-width: 480px) {
@@ -670,7 +479,7 @@
         }
 
         .unit-card {
-            padding: 0.8rem;
+            padding: 1rem;
         }
 
         .quiz-card {
@@ -688,10 +497,6 @@
 
         .quiz-grid {
             gap: 1rem;
-        }
-
-        .unit-card .unit-description {
-            font-size: 0.85rem;
         }
     }
 </style>
@@ -832,9 +637,7 @@
                 <div class="unit-card">
                     <h3><a href="{% url 'courses:unit_detail' unite.pk %}">{{ unite.titre }}</a></h3>
                     {% if unite.description %}
-                    <div class="unit-description">
-                        {{ unite.description|linebreaks }}
-                    </div>
+                    <p>{{ unite.description }}</p>
                     {% endif %}
                     <span class="unit-modules">
                         <i class="fas fa-book-open"></i> {{ unite.modules.count }} {% trans "modules" %}
