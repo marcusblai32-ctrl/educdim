@@ -5,16 +5,15 @@
 
 {% block extra_css %}
 <style>
-    .module-detail-container {
+    .module-wrap {
         max-width: 900px;
         margin: 0 auto;
         padding: 0 1rem;
     }
 
-    .module-content-card {
+    .module-wrap .module-card {
         background: var(--glass);
         backdrop-filter: blur(var(--blur)) saturate(150%);
-        -webkit-backdrop-filter: blur(var(--blur)) saturate(150%);
         border: 1px solid var(--glass-brd);
         border-radius: var(--radius);
         box-shadow: var(--glass-sh);
@@ -22,42 +21,32 @@
         transition: var(--transition);
         margin-bottom: 2rem;
     }
-
-    .module-content-card:hover {
-        box-shadow: var(--shadow-hover);
-    }
+    .module-wrap .module-card:hover { box-shadow: var(--shadow-hover); }
 
     .module-header {
         margin-bottom: 2rem;
         padding-bottom: 1.5rem;
-        border-bottom: 1px solid var(--border, #dee2e6);
+        border-bottom: 1px solid var(--border);
     }
-
     .module-header h1 {
         font-size: 1.8rem;
         font-weight: 700;
         margin-bottom: 0.5rem;
-        color: var(--text, #212529);
+        color: var(--text);
         font-family: var(--font-display);
     }
-
-    .module-header .module-description {
-        color: var(--text-muted, #6c757d);
+    .module-header .module-desc {
+        color: var(--text-muted);
         margin-bottom: 0.5rem;
         line-height: 1.6;
     }
-
     .module-header .module-meta {
         font-size: 0.85rem;
-        color: var(--text-muted, #6c757d);
+        color: var(--text-muted);
     }
+    .module-header .module-meta i { color: var(--primary); }
 
-    .module-header .module-meta i {
-        color: var(--primary, #1a1a2e);
-    }
-
-    /* ===== BREADCRUMB ===== */
-    .breadcrumb-module {
+    .breadcrumb-mod {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
@@ -65,31 +54,18 @@
         padding: 0.6rem 0;
         margin-bottom: 1.5rem;
         font-size: 0.85rem;
-        color: var(--text-muted, #6c757d);
-        border-bottom: 1px solid var(--border, #dee2e6);
+        color: var(--text-muted);
+        border-bottom: 1px solid var(--border);
     }
-
-    .breadcrumb-module a {
-        color: var(--primary, #1a1a2e);
+    .breadcrumb-mod a {
+        color: var(--primary);
         text-decoration: none;
         transition: var(--transition);
     }
+    .breadcrumb-mod a:hover { text-decoration: underline; }
+    .breadcrumb-mod .sep { color: var(--text-muted); margin: 0 0.2rem; }
+    .breadcrumb-mod .current { color: var(--text); font-weight: 500; }
 
-    .breadcrumb-module a:hover {
-        text-decoration: underline;
-    }
-
-    .breadcrumb-module .separator {
-        color: var(--text-muted, #6c757d);
-        margin: 0 0.2rem;
-    }
-
-    .breadcrumb-module .current {
-        color: var(--text, #212529);
-        font-weight: 500;
-    }
-
-    /* ===== LECONS ===== */
     .lessons-section h2 {
         font-size: 1.3rem;
         font-weight: 600;
@@ -97,126 +73,98 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        color: var(--text, #212529);
+        color: var(--text);
         font-family: var(--font-display);
     }
+    .lessons-section h2 i { color: var(--primary); }
 
-    .lessons-section h2 i {
-        color: var(--primary, #1a1a2e);
-    }
-
-    .lesson-list-module {
+    .lesson-list-mod {
         list-style: none;
         padding: 0;
         margin: 0;
     }
-
-    .lesson-list-module li {
+    .lesson-list-mod li {
         padding: 0.7rem 0.8rem;
-        border-bottom: 1px solid var(--border, #dee2e6);
+        border-bottom: 1px solid var(--border);
         transition: var(--transition);
     }
-
-    .lesson-list-module li:last-child {
-        border-bottom: none;
-    }
-
-    .lesson-list-module li:hover {
+    .lesson-list-mod li:last-child { border-bottom: none; }
+    .lesson-list-mod li:hover {
         background: var(--glass-soft);
         border-radius: var(--radius-sm, 4px);
         padding-left: 1.2rem;
     }
-
-    .lesson-list-module li a {
+    .lesson-list-mod li a {
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        color: var(--text, #212529);
+        color: var(--text);
         text-decoration: none;
         transition: var(--transition);
     }
-
-    .lesson-list-module li a i {
-        color: var(--primary, #1a1a2e);
+    .lesson-list-mod li a i {
+        color: var(--primary);
         width: 20px;
         text-align: center;
     }
-
-    .lesson-list-module li a:hover {
-        color: var(--primary, #1a1a2e);
-    }
-
-    .lesson-list-module .empty-lessons {
+    .lesson-list-mod li a:hover { color: var(--primary); }
+    .lesson-list-mod .empty {
         padding: 0.6rem 0.8rem;
-        color: var(--text-muted, #6c757d);
+        color: var(--text-muted);
         font-style: italic;
     }
 
-    /* ===== QUIZ SECTION ===== */
-    .quiz-section {
+    .quiz-section-mod {
         margin-top: 2rem;
         padding-top: 1.5rem;
-        border-top: 1px solid var(--border, #dee2e6);
+        border-top: 1px solid var(--border);
     }
-
-    .quiz-section h2 {
+    .quiz-section-mod h2 {
         font-size: 1.3rem;
         font-weight: 600;
         margin-bottom: 1rem;
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        color: var(--text, #212529);
+        color: var(--text);
         font-family: var(--font-display);
     }
+    .quiz-section-mod h2 i { color: var(--primary); }
 
-    .quiz-section h2 i {
-        color: var(--primary, #1a1a2e);
-    }
-
-    .quiz-grid-module {
+    .quiz-grid-mod {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
         gap: 1rem;
     }
-
-    .quiz-card-module {
+    .quiz-card-mod {
         background: var(--glass-soft);
         border-radius: var(--radius-sm, 8px);
         padding: 1rem;
         border: 1px solid var(--glass-brd-soft);
         transition: var(--transition);
     }
-
-    .quiz-card-module:hover {
+    .quiz-card-mod:hover {
         border-color: color-mix(in srgb, var(--primary) 30%, transparent);
         transform: translateY(-3px);
-        box-shadow: var(--shadow, 0 4px 20px rgba(0,0,0,0.08));
+        box-shadow: var(--shadow);
     }
-
-    .quiz-card-module h3 {
+    .quiz-card-mod h3 {
         font-size: 1rem;
         margin: 0 0 0.3rem;
-        color: var(--text, #212529);
+        color: var(--text);
     }
-
-    .quiz-card-module h3 a {
+    .quiz-card-mod h3 a {
         color: var(--text);
         text-decoration: none;
         transition: var(--transition);
     }
-
-    .quiz-card-module h3 a:hover {
-        color: var(--primary, #1a1a2e);
-    }
-
-    .quiz-card-module .quiz-desc {
-        color: var(--text-muted, #6c757d);
+    .quiz-card-mod h3 a:hover { color: var(--primary); }
+    .quiz-card-mod .q-desc {
+        color: var(--text-muted);
         font-size: 0.85rem;
         margin: 0 0 0.5rem;
     }
-
-    .quiz-card-module .quiz-footer {
+    .quiz-card-mod .q-footer {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -224,23 +172,18 @@
         flex-wrap: wrap;
         gap: 0.3rem;
     }
-
-    .quiz-card-module .quiz-percent {
-        color: var(--text-muted, #6c757d);
+    .quiz-card-mod .q-percent {
+        color: var(--text-muted);
         font-size: 0.75rem;
         display: flex;
         align-items: center;
         gap: 0.3rem;
     }
-
-    .quiz-card-module .quiz-percent i {
-        color: var(--primary, #1a1a2e);
-    }
-
-    .quiz-card-module .btn-start-quiz {
+    .quiz-card-mod .q-percent i { color: var(--primary); }
+    .quiz-card-mod .btn-start-q {
         padding: 0.3rem 0.8rem;
         font-size: 0.75rem;
-        background: var(--primary, #1a1a2e);
+        background: var(--primary);
         color: #fff;
         border-radius: var(--radius-sm, 4px);
         text-decoration: none;
@@ -253,23 +196,20 @@
         font-family: var(--font-body);
         font-weight: 600;
     }
-
-    .quiz-card-module .btn-start-quiz:hover {
-        background: var(--primary-hover, #2d2d4a);
+    .quiz-card-mod .btn-start-q:hover {
+        background: var(--primary-hover);
         transform: translateY(-2px);
     }
 
-    /* ===== ACTIONS ===== */
     .module-actions {
         margin-top: 2rem;
         display: flex;
         gap: 1rem;
         flex-wrap: wrap;
         padding-top: 1.5rem;
-        border-top: 1px solid var(--border, #dee2e6);
+        border-top: 1px solid var(--border);
     }
-
-    .module-actions .btn-action {
+    .module-actions .btn-act {
         display: inline-flex;
         align-items: center;
         gap: 0.4rem;
@@ -283,150 +223,90 @@
         font-family: var(--font-body);
         font-weight: 600;
     }
-
-    .module-actions .btn-action-secondary {
-        background: var(--secondary, #6c757d);
+    .module-actions .btn-act-sec {
+        background: var(--secondary);
         color: #fff;
     }
-
-    .module-actions .btn-action-secondary:hover {
-        background: var(--secondary-hover, #5a6268);
+    .module-actions .btn-act-sec:hover {
+        background: var(--secondary-hover);
         transform: translateY(-2px);
     }
-
-    .module-actions .btn-action-primary {
-        background: var(--primary, #1a1a2e);
+    .module-actions .btn-act-pri {
+        background: var(--primary);
         color: #fff;
     }
-
-    .module-actions .btn-action-primary:hover {
-        background: var(--primary-hover, #2d2d4a);
+    .module-actions .btn-act-pri:hover {
+        background: var(--primary-hover);
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(26, 26, 46, 0.3);
     }
 
-    /* ===== RESPONSIVE ===== */
     @media (max-width: 768px) {
-        .module-content-card {
-            padding: 1.5rem;
-        }
-
-        .module-header h1 {
-            font-size: 1.4rem;
-        }
-
-        .quiz-grid-module {
-            grid-template-columns: 1fr;
-        }
-
-        .module-actions {
-            flex-direction: column;
-        }
-
-        .module-actions .btn-action {
-            justify-content: center;
-            width: 100%;
-        }
+        .module-wrap .module-card { padding: 1.5rem; }
+        .module-header h1 { font-size: 1.4rem; }
+        .quiz-grid-mod { grid-template-columns: 1fr; }
+        .module-actions { flex-direction: column; }
+        .module-actions .btn-act { justify-content: center; width: 100%; }
     }
 
     @media (max-width: 480px) {
-        .module-content-card {
-            padding: 1rem;
-        }
-
-        .module-header h1 {
-            font-size: 1.2rem;
-        }
-
-        .breadcrumb-module {
-            font-size: 0.75rem;
-        }
-
-        .quiz-card-module {
-            padding: 0.8rem;
-        }
+        .module-wrap .module-card { padding: 1rem; }
+        .module-header h1 { font-size: 1.2rem; }
+        .breadcrumb-mod { font-size: 0.75rem; }
+        .quiz-card-mod { padding: 0.8rem; }
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="module-detail-container">
-    <div class="module-content-card">
-
-        <!-- ===== BREADCRUMB ===== -->
-        <nav class="breadcrumb-module">
+<div class="module-wrap">
+    <div class="module-card">
+        <nav class="breadcrumb-mod">
             <a href="{% url 'courses:course_list' %}"><i class="fas fa-home"></i> {% trans "Cours" %}</a>
-            <span class="separator">&gt;</span>
+            <span class="sep">&gt;</span>
             <a href="{% url 'courses:course_detail' module.unite.cours.pk %}">{{ module.unite.cours.titre }}</a>
-            <span class="separator">&gt;</span>
+            <span class="sep">&gt;</span>
             <a href="{% url 'courses:unit_detail' module.unite.pk %}">{{ module.unite.titre }}</a>
-            <span class="separator">&gt;</span>
+            <span class="sep">&gt;</span>
             <span class="current">{{ module.titre }}</span>
         </nav>
 
-        <!-- ===== HEADER ===== -->
         <div class="module-header">
-            <h1>{{ module.titre }} <span style="font-size: 0.9rem; font-weight: 400; color: var(--text-muted, #6c757d);">({% trans "Module" %} {{ module.ordre }})</span></h1>
-            <p class="module-description">{{ module.description }}</p>
+            <h1>{{ module.titre }} <span style="font-size: 0.9rem; font-weight: 400; color: var(--text-muted);">({% trans "Module" %} {{ module.ordre }})</span></h1>
+            <p class="module-desc">{{ module.description }}</p>
             <div class="module-meta">
                 <i class="fas fa-book-open"></i> {{ lecons|length }} {% trans "leçons" %}
-                {% if quizzes_module %}
-                &nbsp;·&nbsp; <i class="fas fa-question-circle"></i> {{ quizzes_module|length }} {% trans "quiz" %}
-                {% endif %}
+                {% if quizzes_module %}&nbsp;·&nbsp; <i class="fas fa-question-circle"></i> {{ quizzes_module|length }} {% trans "quiz" %}{% endif %}
             </div>
         </div>
 
-        <!-- ===== LECONS ===== -->
         <div class="lessons-section">
-            <h2>
-                <i class="fas fa-list-ul"></i> {% trans "Leçons" %}
-                <span style="font-size: 0.8rem; font-weight: 400; color: var(--text-muted, #6c757d);">({{ lecons|length }})</span>
-            </h2>
-            <ul class="lesson-list-module">
+            <h2><i class="fas fa-list-ul"></i> {% trans "Leçons" %} <span style="font-size: 0.8rem; font-weight: 400; color: var(--text-muted);">({{ lecons|length }})</span></h2>
+            <ul class="lesson-list-mod">
                 {% for lecon in lecons %}
                 <li>
                     <a href="{% url 'courses:lesson_detail' lecon.pk %}">
-                        <i class="fas fa-book"></i>
-                        {{ lecon.titre }}
-                        <span style="font-size: 0.75rem; color: var(--text-muted, #6c757d); margin-left: auto;">
-                            {% trans "Leçon" %} {{ lecon.ordre }}
-                        </span>
+                        <i class="fas fa-book"></i> {{ lecon.titre }}
+                        <span style="font-size: 0.75rem; color: var(--text-muted); margin-left: auto;">{% trans "Leçon" %} {{ lecon.ordre }}</span>
                     </a>
                 </li>
                 {% empty %}
-                <li class="empty-lessons">
-                    <i class="fas fa-info-circle" style="color: var(--text-muted, #6c757d);"></i>
-                    {% trans "Aucune leçon dans ce module." %}
-                </li>
+                <li class="empty"><i class="fas fa-info-circle" style="color: var(--text-muted);"></i> {% trans "Aucune leçon dans ce module." %}</li>
                 {% endfor %}
             </ul>
         </div>
 
-        <!-- ===== QUIZ DU MODULE (ANBA TOU) ===== -->
         {% if quizzes_module %}
-        <div class="quiz-section">
-            <h2>
-                <i class="fas fa-question-circle"></i> {% trans "Quiz du module" %}
-                <span style="font-size: 0.8rem; font-weight: 400; color: var(--text-muted, #6c757d);">({{ quizzes_module|length }})</span>
-            </h2>
-            <div class="quiz-grid-module">
+        <div class="quiz-section-mod">
+            <h2><i class="fas fa-question-circle"></i> {% trans "Quiz du module" %} <span style="font-size: 0.8rem; font-weight: 400; color: var(--text-muted);">({{ quizzes_module|length }})</span></h2>
+            <div class="quiz-grid-mod">
                 {% for quiz in quizzes_module %}
-                <div class="quiz-card-module">
-                    <h3>
-                        <a href="{% url 'quiz:detail' quiz.pk %}">
-                            {% if quiz.titre %}{{ quiz.titre }}{% else %}{% trans "Quiz" %} {{ forloop.counter }}{% endif %}
-                        </a>
-                    </h3>
-                    {% if quiz.description %}
-                    <p class="quiz-desc">{{ quiz.description|truncatechars:100 }}</p>
-                    {% endif %}
-                    <div class="quiz-footer">
-                        <span class="quiz-percent">
-                            <i class="fas fa-percent"></i> {{ quiz.pourcentage_reussite }}% {% trans "réussite" %}
-                        </span>
-                        <a href="{% url 'quiz:start' quiz.pk %}" class="btn-start-quiz">
-                            <i class="fas fa-play"></i> {% trans "Commencer" %}
-                        </a>
+                <div class="quiz-card-mod">
+                    <h3><a href="{% url 'quiz:detail' quiz.pk %}">{% if quiz.titre %}{{ quiz.titre }}{% else %}{% trans "Quiz" %} {{ forloop.counter }}{% endif %}</a></h3>
+                    {% if quiz.description %}<p class="q-desc">{{ quiz.description|truncatechars:100 }}</p>{% endif %}
+                    <div class="q-footer">
+                        <span class="q-percent"><i class="fas fa-percent"></i> {{ quiz.pourcentage_reussite }}% {% trans "réussite" %}</span>
+                        <a href="{% url 'quiz:start' quiz.pk %}" class="btn-start-q"><i class="fas fa-play"></i> {% trans "Commencer" %}</a>
                     </div>
                 </div>
                 {% endfor %}
@@ -434,21 +314,13 @@
         </div>
         {% endif %}
 
-        <!-- ===== ACTIONS ===== -->
         <div class="module-actions">
-            <a href="{% url 'courses:unit_detail' module.unite.pk %}" class="btn-action btn-action-secondary">
-                <i class="fas fa-arrow-left"></i> {% trans "Retour à l'unité" %}
-            </a>
-            <a href="{% url 'courses:course_detail' module.unite.cours.pk %}" class="btn-action btn-action-primary">
-                <i class="fas fa-book"></i> {% trans "Voir le cours" %}
-            </a>
+            <a href="{% url 'courses:unit_detail' module.unite.pk %}" class="btn-act btn-act-sec"><i class="fas fa-arrow-left"></i> {% trans "Retour à l'unité" %}</a>
+            <a href="{% url 'courses:course_detail' module.unite.cours.pk %}" class="btn-act btn-act-pri"><i class="fas fa-book"></i> {% trans "Voir le cours" %}</a>
             {% if lecons.first %}
-            <a href="{% url 'courses:lesson_detail' lecons.first.pk %}" class="btn-action btn-action-primary">
-                <i class="fas fa-play"></i> {% trans "Commencer la première leçon" %}
-            </a>
+            <a href="{% url 'courses:lesson_detail' lecons.first.pk %}" class="btn-act btn-act-pri"><i class="fas fa-play"></i> {% trans "Commencer la première leçon" %}</a>
             {% endif %}
         </div>
-
     </div>
 </div>
 {% endblock %}
