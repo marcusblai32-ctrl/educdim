@@ -5,14 +5,6 @@
 
 {% block content %}
 <div class="card">
-    <nav class="breadcrumb">
-        <a href="{% url 'courses:course_list' %}">{% trans "Cours" %}</a> &gt;
-        <a href="{% url 'courses:course_detail' section.lecon.module.unite.cours.pk %}">{{ section.lecon.module.unite.cours.titre }}</a> &gt;
-        <a href="{% url 'courses:unit_detail' section.lecon.module.unite.pk %}">{{ section.lecon.module.unite.titre }}</a> &gt;
-        <a href="{% url 'courses:module_detail' section.lecon.module.pk %}">{{ section.lecon.module.titre }}</a> &gt;
-        <a href="{% url 'courses:lesson_detail' section.lecon.pk %}">{{ section.lecon.titre }}</a> &gt;
-        <span>{{ section.titre }}</span>
-    </nav>
     <h1>{{ section.titre }} ({{ section.get_type_section_display }})</h1>
     <h2>{% trans "Contenus" %}</h2>
     {% for contenu in contenus %}
