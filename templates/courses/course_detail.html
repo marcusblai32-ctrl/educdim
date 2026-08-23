@@ -65,11 +65,12 @@
 
     /* ===== DESCRIPTION ===== */
     .course-detail-description {
-        max-width: 800px;
+        max-width: 900px;
         margin: 0 auto;
         text-align: left;
         line-height: 1.8;
         color: var(--text, #212529);
+        font-size: 1.05rem;
     }
 
     .course-detail-description h2 {
@@ -172,7 +173,7 @@
         border-radius: var(--radius-sm);
         margin-bottom: 1.8rem;
         border: 1px solid var(--glass-brd-soft);
-        max-width: 800px;
+        max-width: 900px;
         margin-left: auto;
         margin-right: auto;
     }
@@ -258,7 +259,7 @@
 
     /* ===== SECTION CARD ===== */
     .section-card-title {
-        font-size: 1.4rem;
+        font-size: 1.5rem;
         font-weight: 700;
         margin-bottom: 1.2rem;
         display: flex;
@@ -273,22 +274,26 @@
         color: var(--primary);
     }
 
-    /* ===== QUIZ GRID ===== */
+    /* ===== QUIZ GRID - PI LAJ ===== */
     .quiz-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 1.2rem;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 1.5rem;
         justify-items: center;
     }
 
     .quiz-card {
         background: var(--glass-soft);
         border-radius: var(--radius-sm);
-        padding: 1.2rem;
+        padding: 1.5rem 1.8rem;
         box-shadow: var(--shadow);
         border: 1px solid var(--glass-brd-soft);
         transition: var(--transition);
         width: 100%;
+        min-height: 180px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
     .quiz-card:hover {
@@ -298,10 +303,10 @@
     }
 
     .quiz-card h3 {
-        font-size: 1.05rem;
+        font-size: 1.15rem;
         font-weight: 700;
-        margin-bottom: 0.3rem;
-        text-align: center;
+        margin-bottom: 0.5rem;
+        text-align: left;
         color: var(--text, #212529);
     }
 
@@ -317,9 +322,11 @@
 
     .quiz-card p {
         color: var(--text-muted);
-        font-size: 0.85rem;
+        font-size: 0.9rem;
         margin-bottom: 0.8rem;
-        text-align: center;
+        text-align: left;
+        flex-grow: 1;
+        line-height: 1.5;
     }
 
     .quiz-card-footer {
@@ -327,18 +334,28 @@
         justify-content: space-between;
         align-items: center;
         flex-wrap: wrap;
-        gap: 0.5rem;
+        gap: 0.8rem;
         margin-top: 0.8rem;
         border-top: 1px solid var(--glass-brd-soft);
-        padding-top: 0.6rem;
+        padding-top: 0.8rem;
     }
 
     .quiz-percent {
         color: var(--text-muted);
-        font-size: 0.78rem;
+        font-size: 0.8rem;
         display: flex;
         align-items: center;
         gap: 0.3rem;
+    }
+
+    .quiz-card-footer .badge {
+        font-size: 0.7rem;
+        padding: 0.25rem 0.7rem;
+    }
+
+    .quiz-card-footer .btn-sm {
+        padding: 0.35rem 1.2rem;
+        font-size: 0.8rem;
     }
 
     /* ===== UNITS LIST ===== */
@@ -346,7 +363,7 @@
         display: flex;
         flex-direction: column;
         gap: 0.8rem;
-        max-width: 800px;
+        max-width: 900px;
         margin: 0 auto;
     }
 
@@ -405,6 +422,11 @@
         padding: 1rem;
     }
 
+    /* ===== CARD PADDING ===== */
+    .card {
+        padding: 2.5rem;
+    }
+
     /* ===== RESPONSIVE ===== */
     @media (max-width: 768px) {
         .course-detail-title {
@@ -455,6 +477,15 @@
         .course-detail-description h4 {
             font-size: 1rem;
         }
+
+        .card {
+            padding: 1.5rem;
+        }
+
+        .quiz-card {
+            padding: 1.2rem;
+            min-height: 150px;
+        }
     }
 
     @media (max-width: 480px) {
@@ -477,10 +508,19 @@
 
         .quiz-card {
             padding: 1rem;
+            min-height: 130px;
         }
 
         .prerequisites-box {
             padding: 1rem;
+        }
+
+        .card {
+            padding: 1rem;
+        }
+
+        .quiz-grid {
+            gap: 1rem;
         }
     }
 </style>
