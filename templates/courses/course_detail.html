@@ -35,6 +35,7 @@
         margin-bottom: 0.8rem;
         font-family: var(--font-display);
         text-align: center;
+        color: var(--text, #212529);
     }
 
     .course-detail-position {
@@ -605,80 +606,80 @@
             </div>
         </div>
     </div>
-</div>
 
-<!-- ===== QUIZ DU COURS ===== -->
-{% if quizzes %}
-<div class="course-detail-container">
-    <div class="card">
-        <h2 class="section-card-title">
-            <i class="fas fa-question-circle"></i> {% trans "Quiz du cours" %}
-        </h2>
-        <div class="quiz-grid">
-            {% for quiz in quizzes %}
-            <div class="quiz-card">
-                <h3><a href="{% url 'quiz:detail' quiz.pk %}">{{ quiz.titre }}</a></h3>
-                {% if quiz.description %}
-                <p>{{ quiz.description|truncatechars:100 }}</p>
-                {% endif %}
-                <div class="quiz-card-footer">
-                    <span class="quiz-percent">
-                        <i class="fas fa-percent"></i> {{ quiz.pourcentage_reussite }}% {% trans "réussite" %}
-                    </span>
-                    {% if user.is_authenticated %}
-                        {% with tentative_quiz=quiz.pk %}
-                            {% for key, value in user_tentatives.items %}
-                                {% if key == tentative_quiz %}
-                                    {% if value.date_soumission %}
-                                        {% if value.reussi %}
-                                        <span class="badge badge-success"><i class="fas fa-check-circle"></i> {% trans "Réussi" %} ({{ value.score|floatformat:0 }}%)</span>
-                                        {% else %}
-                                        <span class="badge badge-danger"><i class="fas fa-times-circle"></i> {% trans "Échoué" %} ({{ value.score|floatformat:0 }}%)</span>
-                                        {% endif %}
-                                    {% else %}
-                                    <a href="{% url 'quiz:start' quiz.pk %}" class="btn btn-primary btn-sm"><i class="fas fa-play"></i> {% trans "Commencer" %}</a>
-                                    {% endif %}
-                                {% endif %}
-                            {% empty %}
-                            <a href="{% url 'quiz:start' quiz.pk %}" class="btn btn-primary btn-sm"><i class="fas fa-play"></i> {% trans "Commencer" %}</a>
-                            {% endfor %}
-                        {% endwith %}
-                    {% else %}
-                    <a href="{% url 'accounts:login' %}?next={% url 'quiz:detail' quiz.pk %}" class="btn btn-secondary btn-sm">
-                        <i class="fas fa-sign-in-alt"></i> {% trans "Se connecter" %}
-                    </a>
+    <!-- ===== CONTENU DU COURS ===== -->
+    <div class="course-detail-container" style="margin-top: 2rem;">
+        <div class="card">
+            <h2 class="section-card-title">
+                <i class="fas fa-list-ul"></i> {% trans "Contenu du cours" %}
+            </h2>
+            {% if unites %}
+            <div class="units-list">
+                {% for unite in unites %}
+                <div class="unit-card">
+                    <h3><a href="{% url 'courses:unit_detail' unite.pk %}">{{ unite.titre }}</a></h3>
+                    {% if unite.description %}
+                    <p>{{ unite.description }}</p>
                     {% endif %}
+                    <span class="unit-modules">
+                        <i class="fas fa-book-open"></i> {{ unite.modules.count }} {% trans "modules" %}
+                    </span>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
+            {% else %}
+            <p class="empty-units">{% trans "Aucune unité disponible pour ce cours." %}</p>
+            {% endif %}
         </div>
     </div>
-</div>
-{% endif %}
 
-<!-- ===== CONTENU DU COURS ===== -->
-<div class="course-detail-container">
-    <div class="card">
-        <h2 class="section-card-title">
-            <i class="fas fa-list-ul"></i> {% trans "Contenu du cours" %}
-        </h2>
-        {% if unites %}
-        <div class="units-list">
-            {% for unite in unites %}
-            <div class="unit-card">
-                <h3><a href="{% url 'courses:unit_detail' unite.pk %}">{{ unite.titre }}</a></h3>
-                {% if unite.description %}
-                <p>{{ unite.description }}</p>
-                {% endif %}
-                <span class="unit-modules">
-                    <i class="fas fa-book-open"></i> {{ unite.modules.count }} {% trans "modules" %}
-                </span>
+    <!-- ===== QUIZ DU COURS (ANBA) ===== -->
+    {% if quizzes %}
+    <div class="course-detail-container" style="margin-top: 2rem;">
+        <div class="card">
+            <h2 class="section-card-title">
+                <i class="fas fa-question-circle"></i> {% trans "Quiz du cours" %}
+            </h2>
+            <div class="quiz-grid">
+                {% for quiz in quizzes %}
+                <div class="quiz-card">
+                    <h3><a href="{% url 'quiz:detail' quiz.pk %}">{{ quiz.titre }}</a></h3>
+                    {% if quiz.description %}
+                    <p>{{ quiz.description|truncatechars:100 }}</p>
+                    {% endif %}
+                    <div class="quiz-card-footer">
+                        <span class="quiz-percent">
+                            <i class="fas fa-percent"></i> {{ quiz.pourcentage_reussite }}% {% trans "réussite" %}
+                        </span>
+                        {% if user.is_authenticated %}
+                            {% with tentative_quiz=quiz.pk %}
+                                {% for key, value in user_tentatives.items %}
+                                    {% if key == tentative_quiz %}
+                                        {% if value.date_soumission %}
+                                            {% if value.reussi %}
+                                            <span class="badge badge-success"><i class="fas fa-check-circle"></i> {% trans "Réussi" %} ({{ value.score|floatformat:0 }}%)</span>
+                                            {% else %}
+                                            <span class="badge badge-danger"><i class="fas fa-times-circle"></i> {% trans "Échoué" %} ({{ value.score|floatformat:0 }}%)</span>
+                                            {% endif %}
+                                        {% else %}
+                                        <a href="{% url 'quiz:start' quiz.pk %}" class="btn btn-primary btn-sm"><i class="fas fa-play"></i> {% trans "Commencer" %}</a>
+                                        {% endif %}
+                                    {% endif %}
+                                {% empty %}
+                                <a href="{% url 'quiz:start' quiz.pk %}" class="btn btn-primary btn-sm"><i class="fas fa-play"></i> {% trans "Commencer" %}</a>
+                                {% endfor %}
+                            {% endwith %}
+                        {% else %}
+                        <a href="{% url 'accounts:login' %}?next={% url 'quiz:detail' quiz.pk %}" class="btn btn-secondary btn-sm">
+                            <i class="fas fa-sign-in-alt"></i> {% trans "Se connecter" %}
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
-        {% else %}
-        <p class="empty-units">{% trans "Aucune unité disponible pour ce cours." %}</p>
-        {% endif %}
     </div>
+    {% endif %}
 </div>
 {% endblock %}
