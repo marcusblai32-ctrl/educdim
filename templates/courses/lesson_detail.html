@@ -3,12 +3,403 @@
 
 {% block title %}{{ lecon.titre }}{% endblock %}
 
+{% block extra_css %}
+<style>
+    .lesson-detail-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+
+    /* ===== BREADCRUMB ===== */
+    .breadcrumb-lesson {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.6rem 0;
+        margin-bottom: 1.5rem;
+        font-size: 0.85rem;
+        color: var(--text-muted, #6c757d);
+        border-bottom: 1px solid var(--border, #dee2e6);
+    }
+
+    .breadcrumb-lesson a {
+        color: var(--primary, #1a1a2e);
+        text-decoration: none;
+        transition: var(--transition);
+    }
+
+    .breadcrumb-lesson a:hover {
+        text-decoration: underline;
+    }
+
+    .breadcrumb-lesson .separator {
+        color: var(--text-muted, #6c757d);
+        margin: 0 0.2rem;
+    }
+
+    .breadcrumb-lesson .current {
+        color: var(--text, #212529);
+        font-weight: 500;
+    }
+
+    /* ===== HEADER ===== */
+    .lesson-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .lesson-header h1 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin: 0;
+        color: var(--text, #212529);
+        font-family: var(--font-display);
+    }
+
+    .lesson-header .lesson-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.3rem 0.8rem;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #fff;
+        background: var(--primary, #1a1a2e);
+    }
+
+    .lesson-description {
+        color: var(--text-muted, #6c757d);
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+    }
+
+    /* ===== CONTENU ===== */
+    .lesson-content {
+        margin: 1.5rem 0;
+        padding: 1.5rem;
+        background: var(--glass-soft);
+        border-radius: var(--radius, 8px);
+        border: 1px solid var(--glass-brd-soft);
+        line-height: 1.8;
+        color: var(--text, #212529);
+    }
+
+    .lesson-content p {
+        margin-bottom: 1rem;
+    }
+
+    .lesson-content h2,
+    .lesson-content h3,
+    .lesson-content h4 {
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+        font-family: var(--font-display);
+    }
+
+    .lesson-content ul,
+    .lesson-content ol {
+        padding-left: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .lesson-content li {
+        margin-bottom: 0.3rem;
+    }
+
+    .lesson-content img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius, 4px);
+    }
+
+    /* ===== SECTIONS ===== */
+    .sections-section {
+        margin-top: 2rem;
+    }
+
+    .sections-section h2 {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text, #212529);
+        font-family: var(--font-display);
+    }
+
+    .sections-section h2 i {
+        color: var(--primary, #1a1a2e);
+    }
+
+    .section-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .section-list li {
+        padding: 0.6rem 0.8rem;
+        border-bottom: 1px solid var(--border, #dee2e6);
+        transition: var(--transition);
+    }
+
+    .section-list li:last-child {
+        border-bottom: none;
+    }
+
+    .section-list li:hover {
+        background: var(--glass-soft);
+        border-radius: var(--radius-sm, 4px);
+        padding-left: 1.2rem;
+    }
+
+    .section-list li a {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text, #212529);
+        text-decoration: none;
+        transition: var(--transition);
+    }
+
+    .section-list li a i {
+        color: var(--primary, #1a1a2e);
+        width: 20px;
+        text-align: center;
+    }
+
+    .section-list li a:hover {
+        color: var(--primary, #1a1a2e);
+    }
+
+    .section-list .empty-sections {
+        padding: 0.6rem 0.8rem;
+        color: var(--text-muted, #6c757d);
+        font-style: italic;
+    }
+
+    /* ===== QUIZ SECTION (ANBA) ===== */
+    .quiz-section-lesson {
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border, #dee2e6);
+    }
+
+    .quiz-section-lesson h2 {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text, #212529);
+        font-family: var(--font-display);
+    }
+
+    .quiz-section-lesson h2 i {
+        color: var(--primary, #1a1a2e);
+    }
+
+    .quiz-grid-lesson {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1rem;
+    }
+
+    .quiz-card-lesson {
+        background: var(--glass-soft);
+        border-radius: var(--radius-sm, 8px);
+        padding: 1rem;
+        border: 1px solid var(--glass-brd-soft);
+        transition: var(--transition);
+    }
+
+    .quiz-card-lesson:hover {
+        border-color: color-mix(in srgb, var(--primary) 30%, transparent);
+        transform: translateY(-3px);
+        box-shadow: var(--shadow, 0 4px 20px rgba(0,0,0,0.08));
+    }
+
+    .quiz-card-lesson h3 {
+        font-size: 1rem;
+        margin: 0 0 0.3rem;
+        color: var(--text, #212529);
+    }
+
+    .quiz-card-lesson h3 a {
+        color: var(--text);
+        text-decoration: none;
+        transition: var(--transition);
+    }
+
+    .quiz-card-lesson h3 a:hover {
+        color: var(--primary, #1a1a2e);
+    }
+
+    .quiz-card-lesson .quiz-desc {
+        color: var(--text-muted, #6c757d);
+        font-size: 0.85rem;
+        margin: 0 0 0.5rem;
+    }
+
+    .quiz-card-lesson .quiz-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 0.5rem;
+        flex-wrap: wrap;
+        gap: 0.3rem;
+    }
+
+    .quiz-card-lesson .quiz-percent {
+        color: var(--text-muted, #6c757d);
+        font-size: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    .quiz-card-lesson .quiz-percent i {
+        color: var(--primary, #1a1a2e);
+    }
+
+    .quiz-card-lesson .btn-sm {
+        padding: 0.3rem 0.8rem;
+        font-size: 0.75rem;
+        background: var(--primary, #1a1a2e);
+        color: #fff;
+        border-radius: var(--radius-sm, 4px);
+        text-decoration: none;
+        transition: var(--transition);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        border: none;
+        cursor: pointer;
+    }
+
+    .quiz-card-lesson .btn-sm:hover {
+        background: var(--primary-hover, #2d2d4a);
+        transform: translateY(-2px);
+    }
+
+    /* ===== ACTIONS ===== */
+    .lesson-actions {
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border, #dee2e6);
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .lesson-actions .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.6rem 1.2rem;
+        border-radius: var(--radius-sm, 4px);
+        font-size: 0.9rem;
+        text-decoration: none;
+        transition: var(--transition);
+        border: none;
+        cursor: pointer;
+    }
+
+    .lesson-actions .btn-success {
+        background: var(--success, #28a745);
+        color: #fff;
+    }
+
+    .lesson-actions .btn-success:hover {
+        background: var(--success-hover, #218838);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+    }
+
+    .lesson-actions .btn-secondary {
+        background: var(--secondary, #6c757d);
+        color: #fff;
+    }
+
+    .lesson-actions .btn-secondary:hover {
+        background: var(--secondary-hover, #5a6268);
+        transform: translateY(-2px);
+    }
+
+    .lesson-actions .btn-outline {
+        background: transparent;
+        color: var(--text, #212529);
+        border: 1px solid var(--border, #dee2e6);
+    }
+
+    .lesson-actions .btn-outline:hover {
+        background: var(--glass-soft);
+        border-color: var(--primary, #1a1a2e);
+        color: var(--primary, #1a1a2e);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+        .lesson-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .lesson-header h1 {
+            font-size: 1.4rem;
+        }
+
+        .quiz-grid-lesson {
+            grid-template-columns: 1fr;
+        }
+
+        .lesson-actions {
+            flex-direction: column;
+        }
+
+        .lesson-actions .btn {
+            justify-content: center;
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .lesson-header h1 {
+            font-size: 1.2rem;
+        }
+
+        .breadcrumb-lesson {
+            font-size: 0.75rem;
+        }
+
+        .lesson-content {
+            padding: 1rem;
+        }
+
+        .quiz-card-lesson {
+            padding: 0.8rem;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="course-detail-container">
-    <div class="card">
-        <!-- Breadcrumb -->
-        <nav class="breadcrumb">
-            <a href="{% url 'courses:course_list' %}">{% trans "Cours" %}</a>
+<div class="lesson-detail-container">
+    <div class="card" style="padding: 2rem;">
+
+        <!-- ===== BREADCRUMB ===== -->
+        <nav class="breadcrumb-lesson">
+            <a href="{% url 'courses:course_list' %}"><i class="fas fa-home"></i> {% trans "Cours" %}</a>
             <span class="separator">&gt;</span>
             <a href="{% url 'courses:course_detail' lecon.module.unite.cours.pk %}">{{ lecon.module.unite.cours.titre }}</a>
             <span class="separator">&gt;</span>
@@ -16,51 +407,75 @@
             <span class="separator">&gt;</span>
             <a href="{% url 'courses:module_detail' lecon.module.pk %}">{{ lecon.module.titre }}</a>
             <span class="separator">&gt;</span>
-            <span>{{ lecon.titre }}</span>
+            <span class="current">{{ lecon.titre }}</span>
         </nav>
 
-        <!-- Titre ak bouton quiz -->
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-bottom:1rem;">
-            <h1 style="font-size:1.8rem; margin:0;">{{ lecon.titre }} ({% trans "Leçon" %} {{ lecon.ordre }})</h1>
-            {% if quizzes_lecon %}
-            <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
-                {% for quiz in quizzes_lecon %}
-                <a href="{% url 'quiz:detail' quiz.pk %}" class="btn btn-sm btn-primary">
-                    <i class="fas fa-question-circle"></i> {% trans "Voir le quiz" %}
-                </a>
-                {% endfor %}
-            </div>
-            {% endif %}
+        <!-- ===== HEADER ===== -->
+        <div class="lesson-header">
+            <h1>{{ lecon.titre }} <span style="font-size: 0.9rem; font-weight: 400; color: var(--text-muted, #6c757d);">({% trans "Leçon" %} {{ lecon.ordre }})</span></h1>
+            <span class="lesson-badge">
+                <i class="fas fa-book"></i> {% trans "Leçon" %}
+            </span>
         </div>
 
-        <!-- Deskripsyon -->
-        <p style="color:var(--text-muted); margin-bottom:1rem;">{{ lecon.description }}</p>
+        <p class="lesson-description">{{ lecon.description }}</p>
 
-        <!-- Kontni -->
-        <div class="lecon-content" style="margin:1.5rem 0; padding:1rem; background:var(--body-bg); border-radius:var(--radius);">
+        <!-- ===== CONTENU ===== -->
+        {% if lecon.contenu %}
+        <div class="lesson-content">
             {{ lecon.contenu|linebreaks }}
         </div>
+        {% endif %}
 
-        <!-- Quiz leson an -->
-        {% if quizzes_lecon %}
-        <div style="margin-bottom:2rem;">
-            <h2 style="font-size:1.3rem; margin-bottom:1rem; display:flex; align-items:center; gap:0.5rem;">
-                <i class="fas fa-question-circle" style="color:var(--primary);"></i> {% trans "Quiz de la leçon" %}
+        <!-- ===== SECTIONS ===== -->
+        <div class="sections-section">
+            <h2>
+                <i class="fas fa-list-ul"></i> {% trans "Sections" %}
+                <span style="font-size: 0.8rem; font-weight: 400; color: var(--text-muted, #6c757d);">({{ sections|length }})</span>
             </h2>
-            <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:1rem;">
+            <ul class="section-list">
+                {% for section in sections %}
+                <li>
+                    <a href="{% url 'courses:section_detail' section.pk %}">
+                        <i class="fas fa-file-alt"></i>
+                        {{ section.titre }}
+                        <span style="font-size: 0.75rem; color: var(--text-muted, #6c757d); margin-left: auto;">
+                            {{ section.get_type_section_display }}
+                        </span>
+                    </a>
+                </li>
+                {% empty %}
+                <li class="empty-sections">
+                    <i class="fas fa-info-circle" style="color: var(--text-muted, #6c757d);"></i>
+                    {% trans "Aucune section dans cette leçon." %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- ===== QUIZ DE LA LECON (ANBA TOU) ===== -->
+        {% if quizzes_lecon %}
+        <div class="quiz-section-lesson">
+            <h2>
+                <i class="fas fa-question-circle"></i> {% trans "Quiz de la leçon" %}
+                <span style="font-size: 0.8rem; font-weight: 400; color: var(--text-muted, #6c757d);">({{ quizzes_lecon|length }})</span>
+            </h2>
+            <div class="quiz-grid-lesson">
                 {% for quiz in quizzes_lecon %}
-                <div style="background:var(--glass-soft); border-radius:var(--radius-sm); padding:1rem; border:1px solid var(--glass-brd-soft);">
-                    <h3 style="font-size:1rem; margin:0 0 0.3rem;">
-                        <a href="{% url 'quiz:detail' quiz.pk %}" style="color:var(--text); text-decoration:none;">{{ quiz.titre }}</a>
+                <div class="quiz-card-lesson">
+                    <h3>
+                        <a href="{% url 'quiz:detail' quiz.pk %}">
+                            {% if quiz.titre %}{{ quiz.titre }}{% else %}{% trans "Quiz" %} {{ forloop.counter }}{% endif %}
+                        </a>
                     </h3>
                     {% if quiz.description %}
-                    <p style="color:var(--text-muted); font-size:0.85rem; margin:0 0 0.5rem;">{{ quiz.description|truncatechars:100 }}</p>
+                    <p class="quiz-desc">{{ quiz.description|truncatechars:100 }}</p>
                     {% endif %}
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.5rem;">
-                        <span style="color:var(--text-muted); font-size:0.75rem;">
+                    <div class="quiz-footer">
+                        <span class="quiz-percent">
                             <i class="fas fa-percent"></i> {{ quiz.pourcentage_reussite }}% {% trans "réussite" %}
                         </span>
-                        <a href="{% url 'quiz:start' quiz.pk %}" class="btn btn-primary btn-sm">
+                        <a href="{% url 'quiz:start' quiz.pk %}" class="btn-sm">
                             <i class="fas fa-play"></i> {% trans "Commencer" %}
                         </a>
                     </div>
@@ -70,30 +485,26 @@
         </div>
         {% endif %}
 
-        <!-- Sections -->
-        <h2 style="font-size:1.3rem; margin-bottom:1rem;">{% trans "Sections" %}</h2>
-        <ul class="section-list" style="list-style:none; padding:0; margin:0;">
-            {% for section in sections %}
-            <li style="padding:0.5rem 0.75rem; border-bottom:1px solid var(--border);">
-                <a href="{% url 'courses:section_detail' section.pk %}" style="display:flex; align-items:center; gap:0.5rem; color:var(--text); text-decoration:none;">
-                    <i class="fas fa-file-alt" style="color:var(--primary);"></i>
-                    {{ section.titre }} ({{ section.get_type_section_display }})
-                </a>
-            </li>
-            {% empty %}
-            <li style="padding:0.5rem 0.75rem; color:var(--text-muted);">{% trans "Aucune section dans cette leçon." %}</li>
-            {% endfor %}
-        </ul>
-
-        <!-- Bouton fini -->
-        <div style="margin-top:2rem; padding-top:1.5rem; border-top:1px solid var(--border);">
-            <form method="post" action="{% url 'progress:mark_lecon_complete' lecon.pk %}">
+        <!-- ===== ACTIONS ===== -->
+        <div class="lesson-actions">
+            <form method="post" action="{% url 'progress:mark_lecon_complete' lecon.pk %}" style="display: inline;">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-success">
                     <i class="fas fa-check"></i> {% trans "Marquer cette leçon comme terminée" %}
                 </button>
             </form>
+
+            <a href="{% url 'courses:module_detail' lecon.module.pk %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> {% trans "Retour au module" %}
+            </a>
+
+            {% if quizzes_lecon %}
+            <a href="{% url 'quiz:start' quizzes_lecon.first.pk %}" class="btn btn-outline">
+                <i class="fas fa-question-circle"></i> {% trans "Commencer le quiz" %}
+            </a>
+            {% endif %}
         </div>
+
     </div>
 </div>
 {% endblock %}
