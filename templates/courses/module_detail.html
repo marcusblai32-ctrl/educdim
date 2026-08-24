@@ -292,7 +292,7 @@
             </h2>
             <ul class="lesson-list-module">
                 {% for lecon in lecons %}
-                <li>
+                <li class="module-actions">
                     <a href="{% url 'courses:lesson_detail' lecon.pk %}">
                         <i class="fas fa-book"></i>
                         {{ lecon.titre }}
