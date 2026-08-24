@@ -40,38 +40,6 @@
         color: var(--primary, #1a1a2e);
     }
 
-    /* Breadcrumb */
-    .breadcrumb-module {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 0.3rem;
-        padding: 0.6rem 0;
-        margin-bottom: 1.5rem;
-        font-size: 0.85rem;
-        color: var(--text-muted, #6c757d);
-        border-bottom: 1px solid var(--border, #dee2e6);
-    }
-
-    .breadcrumb-module a {
-        color: var(--primary, #1a1a2e);
-        text-decoration: none;
-        transition: var(--transition);
-    }
-
-    .breadcrumb-module a:hover {
-        text-decoration: underline;
-    }
-
-    .breadcrumb-module .separator {
-        color: var(--text-muted, #6c757d);
-        margin: 0 0.2rem;
-    }
-
-    .breadcrumb-module .current {
-        color: var(--text, #212529);
-        font-weight: 500;
-    }
 
     /* Quiz du module (anba) */
     .quiz-section {
@@ -305,17 +273,6 @@
 <div class="module-detail-container">
     <div class="card" style="padding: 2rem;">
 
-        <!-- ===== BREADCRUMB ===== -->
-        <nav class="breadcrumb-module">
-            <a href="{% url 'courses:course_list' %}"><i class="fas fa-home"></i> {% trans "Cours" %}</a>
-            <span class="separator">&gt;</span>
-            <a href="{% url 'courses:course_detail' module.unite.cours.pk %}">{{ module.unite.cours.titre }}</a>
-            <span class="separator">&gt;</span>
-            <a href="{% url 'courses:unit_detail' module.unite.pk %}">{{ module.unite.titre }}</a>
-            <span class="separator">&gt;</span>
-            <span class="current">{{ module.titre }}</span>
-        </nav>
-
         <!-- ===== HEADER ===== -->
         <div class="module-header">
             <h1>{{ module.titre }} <span style="font-size: 0.9rem; font-weight: 400; color: var(--text-muted, #6c757d);">({% trans "Module" %} {{ module.ordre }})</span></h1>
@@ -331,7 +288,6 @@
         <!-- ===== LECONS ===== -->
         <div class="lessons-section">
             <h2>
-                <i class="fas fa-list-ul"></i> {% trans "Leçons" %}
                 <span style="font-size: 0.8rem; font-weight: 400; color: var(--text-muted, #6c757d);">({{ lecons|length }})</span>
             </h2>
             <ul class="lesson-list-module">
@@ -391,9 +347,7 @@
             <a href="{% url 'courses:unit_detail' module.unite.pk %}" class="btn btn-secondary">
                 <i class="fas fa-arrow-left"></i> {% trans "Retour à l'unité" %}
             </a>
-            <a href="{% url 'courses:course_detail' module.unite.cours.pk %}" class="btn btn-primary">
-                <i class="fas fa-book"></i> {% trans "Voir le cours" %}
-            </a>
+
             {% if lecons.first %}
             <a href="{% url 'courses:lesson_detail' lecons.first.pk %}" class="btn btn-primary">
                 <i class="fas fa-play"></i> {% trans "Commencer la première leçon" %}
