@@ -589,7 +589,7 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     padding: 0;
     display: block;
     flex-shrink: 0;
-    border-radius: 0;
+    border-radius: 8px 8px 0 0;
     background: linear-gradient(135deg, #eef1fb, #dce0ec);
 }
 .course-card .no-image {
@@ -603,7 +603,7 @@ label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     margin: 0;
     padding: 0;
     flex-shrink: 0;
-    border-radius: 0;
+    border-radius: 8px 8px 0 0;
 }
 .course-card .no-image i { font-size: 2.5rem; opacity: 0.5; }
 
@@ -1264,6 +1264,7 @@ footer {
     .course-card .course-img,
     .course-card .no-image {
         height: 170px;
+        border-radius: 8px 8px 0 0;
     }
 }
 
@@ -1279,6 +1280,7 @@ footer {
     .course-card .course-img,
     .course-card .no-image {
         height: 180px;
+        border-radius: 8px 8px 0 0;
     }
 }
 
@@ -1295,6 +1297,7 @@ footer {
     .course-card .course-img,
     .course-card .no-image {
         height: 150px;
+        border-radius: 8px 8px 0 0;
     }
 }
 
@@ -1345,7 +1348,7 @@ footer {
     .features-grid, .testimonials-grid { grid-template-columns: 1fr; }
     .course-grid { grid-template-columns: 1fr; padding: 0 1rem; gap: 1.2rem; margin: 1rem auto 3rem; }
     .course-card { min-height: 260px; max-width: 100%; }
-    .course-card .course-img, .course-card .no-image { height: 120px; }
+    .course-card .course-img, .course-card .no-image { height: 120px; border-radius: 8px 8px 0 0; }
     .course-card .course-body { padding: 0.8rem 1rem; }
     .courses-header { flex-direction: column; align-items: center; padding: 0 1rem; }
     .courses-header h1 { font-size: 1.5rem; text-align: center; }
@@ -1372,7 +1375,7 @@ footer {
     .hero-content .hero-stats .stat-number { font-size: 1.5rem; }
     .course-grid { gap: 1rem; padding: 0 0.5rem; }
     .course-card { min-height: 240px; }
-    .course-card .course-img, .course-card .no-image { height: 100px; }
+    .course-card .course-img, .course-card .no-image { height: 100px; border-radius: 8px 8px 0 0; }
     .course-card .course-body { padding: 0.6rem 0.8rem; }
     .course-card .course-body h3 { font-size: 0.85rem; }
     .course-card .course-body .course-description { font-size: 0.7rem; }
