@@ -379,17 +379,6 @@
 <div class="module-detail-container">
     <div class="card">
 
-        <!-- ===== BREADCRUMB ===== -->
-        <nav class="breadcrumb-module">
-            <a href="{% url 'courses:course_list' %}"><i class="fas fa-home"></i> {% trans "Cours" %}</a>
-            <span class="separator">&gt;</span>
-            <a href="{% url 'courses:course_detail' module.unite.cours.pk %}">{{ module.unite.cours.titre }}</a>
-            <span class="separator">&gt;</span>
-            <a href="{% url 'courses:unit_detail' module.unite.pk %}">{{ module.unite.titre }}</a>
-            <span class="separator">&gt;</span>
-            <span class="current">{{ module.titre }}</span>
-        </nav>
-
         <!-- ===== HEADER ===== -->
         <div class="module-header">
             <h1>{{ module.titre }} <span style="font-size: 0.9rem; font-weight: 400; color: var(--text-muted, #6c757d);">({% trans "Module" %} {{ module.ordre }})</span></h1>
@@ -462,9 +451,6 @@
         <div class="module-actions">
             <a href="{% url 'courses:unit_detail' module.unite.pk %}" class="btn btn-secondary">
                 <i class="fas fa-arrow-left"></i> {% trans "Retour à l'unité" %}
-            </a>
-            <a href="{% url 'courses:course_detail' module.unite.cours.pk %}" class="btn btn-primary">
-                <i class="fas fa-book"></i> {% trans "Voir le cours" %}
             </a>
             {% if lecons.first %}
             <a href="{% url 'courses:lesson_detail' lecons.first.pk %}" class="btn btn-primary">
