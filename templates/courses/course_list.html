@@ -3,129 +3,523 @@
 
 {% block title %}{% trans "Cours disponibles" %} - {{ theme.site_name }}{% endblock %}
 
+{% block extra_css %}
+<style>
+    /* ===== COURSES CONTAINER ===== */
+    .courses-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+    }
+
+    .courses-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin: 2rem auto 1.5rem;
+        padding: 0 0.5rem;
+    }
+    .courses-header h1 {
+        font-size: 2rem;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        font-family: var(--font-display);
+        margin: 0;
+    }
+
+    /* ===== FILTERS ===== */
+    .filters-container {
+        max-width: 1200px;
+        margin: 0 auto 1.5rem;
+        padding: 1.25rem 1.5rem;
+        background: var(--glass);
+        backdrop-filter: blur(var(--blur));
+        -webkit-backdrop-filter: blur(var(--blur));
+        border: 1px solid var(--glass-brd);
+        border-radius: var(--radius);
+        box-shadow: var(--glass-sh);
+    }
+    .filters-form {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .search-box {
+        display: flex;
+        flex: 1;
+        min-width: 240px;
+        gap: 0.5rem;
+    }
+    .search-box input {
+        flex: 1;
+        padding: 0.6rem 1rem;
+        border: 1px solid var(--glass-brd);
+        border-radius: var(--radius-sm);
+        background: var(--glass-2);
+        font-size: 0.9rem;
+        font-family: var(--font-body);
+        color: var(--text);
+        transition: var(--transition);
+        outline: none;
+    }
+    .search-box input:focus {
+        border-color: var(--primary);
+        background: #fff;
+    }
+    .search-box button {
+        background: var(--grad-brand);
+        color: #fff;
+        border: none;
+        padding: 0.6rem 1.1rem;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        transition: var(--transition);
+        flex-shrink: 0;
+        font-size: 0.9rem;
+    }
+    .search-box button i { color: #fff; }
+    .search-box button:hover { transform: translateY(-2px); }
+
+    .filter-group select {
+        padding: 0.6rem 2rem 0.6rem 1rem;
+        border: 1px solid var(--glass-brd);
+        border-radius: var(--radius-sm);
+        background: var(--glass-2);
+        font-size: 0.85rem;
+        font-family: var(--font-body);
+        color: var(--text);
+        cursor: pointer;
+        -webkit-appearance: none;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%235a6784' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.7rem center;
+        background-size: 10px;
+        min-width: 160px;
+    }
+    .btn-reset {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.6rem 1.2rem;
+        background: var(--glass-2);
+        border: 1px solid var(--glass-brd);
+        border-radius: var(--radius-sm);
+        color: var(--text-muted);
+        text-decoration: none;
+        transition: var(--transition);
+        cursor: pointer;
+        font-size: 0.85rem;
+    }
+    .btn-reset i { color: var(--text-muted); }
+    .btn-reset:hover { color: var(--danger); border-color: var(--danger); }
+    .btn-reset:hover i { color: var(--danger); }
+
+    /* ===== COURSE GRID ===== */
+    .course-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+        max-width: 1200px;
+        margin: 2rem auto 4rem;
+        padding: 0;
+        align-items: stretch;
+        justify-items: center;
+    }
+
+    /* ===== COURSE CARD ===== */
+    .course-card {
+        background: #ffffff;
+        border: 1px solid #e8e8e8;
+        border-radius: 8px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        height: 100%;
+        min-height: 300px;
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    .course-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    }
+
+    /* ===== IMAGE ===== */
+    .course-card .course-img {
+        width: 100%;
+        height: 160px;
+        object-fit: cover;
+        object-position: center;
+        margin: 0;
+        padding: 0;
+        display: block;
+        flex-shrink: 0;
+        border-radius: 8px 8px 0 0;
+        background: linear-gradient(135deg, #eef1fb, #dce0ec);
+    }
+
+    .course-card .no-image {
+        width: 100%;
+        height: 160px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #eef1fb, #e0e4f0);
+        color: #8c8c8c;
+        margin: 0;
+        padding: 0;
+        flex-shrink: 0;
+        border-radius: 8px 8px 0 0;
+    }
+    .course-card .no-image i {
+        font-size: 2.5rem;
+        opacity: 0.5;
+    }
+
+    /* ===== BODY ===== */
+    .course-card .course-body {
+        padding: 1rem 1.2rem;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    .course-card .course-body .course-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin-bottom: 0.5rem;
+    }
+    .course-card .course-body .course-badges .badge {
+        font-size: 0.6rem;
+        padding: 0.15rem 0.6rem;
+        border-radius: 3px;
+        font-weight: 600;
+    }
+
+    .course-card .course-body h3 {
+        font-size: 1rem;
+        font-weight: 600;
+        margin: 0.3rem 0;
+        line-height: 1.3;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    .course-card .course-body h3 a {
+        text-decoration: none;
+        color: #1c1d1f;
+        transition: color 0.2s;
+    }
+    .course-card .course-body h3 a:hover { color: #5624d0; }
+
+    .course-card .course-body .course-description {
+        font-size: 0.8rem;
+        color: #6a6f73;
+        margin-bottom: 0.8rem;
+        flex-grow: 1;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        line-height: 1.4;
+    }
+
+    .course-card .course-body .course-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 1px solid #f0f0f0;
+        padding-top: 0.6rem;
+        margin-top: auto;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+    .course-card .course-body .course-meta .price {
+        font-weight: 700;
+        font-size: 1rem;
+        color: #1c1d1f;
+    }
+    .course-card .course-body .course-meta .price.free { color: #00875a; }
+    .course-card .course-body .course-meta .duration {
+        font-size: 0.75rem;
+        color: #6a6f73;
+        display: flex;
+        align-items: center;
+        gap: 0.2rem;
+    }
+    .course-card .course-body .course-meta .duration i { color: #6a6f73; }
+
+    .course-card .course-body .course-meta .btn,
+    .course-card .course-body .btn-sm,
+    .course-card .course-body a.btn {
+        background-color: #5624d0;
+        color: white;
+        padding: 0.3rem 0.8rem;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 0.75rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s ease;
+        flex-shrink: 0;
+        border: none;
+        cursor: pointer;
+    }
+    .course-card .course-body .course-meta .btn i,
+    .course-card .course-body .btn-sm i,
+    .course-card .course-body a.btn i { color: #fff; }
+    .course-card .course-body .course-meta .btn:hover,
+    .course-card .course-body .btn-sm:hover,
+    .course-card .course-body a.btn:hover {
+        background-color: #401b9c;
+    }
+
+    .empty-courses {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 3rem 2rem;
+        background: var(--glass);
+        border-radius: var(--radius);
+        border: 1px solid var(--glass-brd);
+    }
+    .empty-courses i { font-size: 3.5rem; color: var(--text-muted); opacity: 0.3; margin-bottom: 1rem; }
+    .empty-courses h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+    .empty-courses p { color: var(--text-muted); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (min-width: 1025px) {
+        .course-grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+        .course-card .course-img,
+        .course-card .no-image {
+            height: 170px;
+        }
+    }
+
+    @media (min-width: 1400px) {
+        .course-grid {
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2.5rem;
+        }
+        .course-card .course-img,
+        .course-card .no-image {
+            height: 180px;
+        }
+    }
+
+    @media (max-width: 1024px) and (min-width: 769px) {
+        .course-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+        .course-card .course-img,
+        .course-card .no-image {
+            height: 150px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .course-grid {
+            grid-template-columns: 1fr;
+            gap: 1.2rem;
+            padding: 0 1rem;
+        }
+        .course-card {
+            min-height: 260px;
+        }
+        .course-card .course-img,
+        .course-card .no-image {
+            height: 120px;
+        }
+        .course-card .course-body {
+            padding: 0.8rem 1rem;
+        }
+        .filters-form {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .search-box,
+        .filter-group select,
+        .btn-reset {
+            width: 100%;
+            min-width: unset;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .course-grid {
+            gap: 1rem;
+            padding: 0 0.5rem;
+        }
+        .course-card {
+            min-height: 240px;
+        }
+        .course-card .course-img,
+        .course-card .no-image {
+            height: 100px;
+        }
+        .course-card .course-body {
+            padding: 0.6rem 0.8rem;
+        }
+        .course-card .course-body h3 {
+            font-size: 0.85rem;
+        }
+        .course-card .course-body .course-description {
+            font-size: 0.7rem;
+        }
+        .course-card .course-body .course-meta .price {
+            font-size: 0.85rem;
+        }
+        .course-card .course-body .course-meta .duration {
+            font-size: 0.7rem;
+        }
+        .course-card .course-body .course-meta .btn,
+        .course-card .course-body .btn-sm,
+        .course-card .course-body a.btn {
+            font-size: 0.7rem;
+            padding: 0.15rem 0.5rem;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div style="max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;">
+<div class="courses-container">
+    <div class="courses-header">
+        <h1>{% trans "Cours disponibles" %}</h1>
+        {% if user.is_staff %}
+        <a href="{% url 'courses:course_add' %}" class="btn btn-success">
+            <i class="fas fa-plus"></i> {% trans "Ajouter un cours" %}
+        </a>
+        {% endif %}
+    </div>
 
-  <div class="courses-header">
-    <h1>{% trans "Cours disponibles" %}</h1>
-    {% if user.is_staff %}
-    <a href="{% url 'courses:course_add' %}" class="btn btn-success">
-      <i class="fas fa-plus"></i> {% trans "Ajouter un cours" %}
-    </a>
-    {% endif %}
-  </div>
-
-  <!-- ===== FILTERS ===== -->
-  <div class="filters-container">
-    <form method="get" class="filters-form">
-      <div class="search-box">
-        <input type="text" name="search" placeholder="{% trans 'Rechercher un cours...' %}" value="{{ search_query }}">
-        <button type="submit"><i class="fas fa-search"></i></button>
-      </div>
-      <div class="filter-group">
-        <select name="category" onchange="this.form.submit()">
-          <option value="">{% trans "Toutes les catégories" %}</option>
-          {% for cat in categories %}
-          <option value="{{ cat.id }}" {% if selected_category == cat.id|stringformat:'s' %}selected{% endif %}>
-          {{ cat.nom }}
-          </option>
-          {% endfor %}
-        </select>
-      </div>
-      <div class="filter-group">
-        <select name="niveau" onchange="this.form.submit()">
-          <option value="">{% trans "Tous les niveaux" %}</option>
-          {% for niv in niveaux %}
-          <option value="{{ niv.id }}" {% if selected_niveau == niv.id|stringformat:'s' %}selected{% endif %}>
-          {{ niv.get_nom_display }}
-          </option>
-          {% endfor %}
-        </select>
-      </div>
-      <div class="filter-group">
-        <select name="learning_path" onchange="this.form.submit()">
-          <option value="">{% trans "Tous les Learning Paths" %}</option>
-          {% for lp in learning_paths %}
-          <option value="{{ lp.id }}" {% if selected_learning_path == lp.id|stringformat:'s' %}selected{% endif %}>
-          {{ lp.nom }}
-          </option>
-          {% endfor %}
-        </select>
-      </div>
-      <div class="filter-group">
-        <select name="prix" onchange="this.form.submit()">
-          <option value="">{% trans "Tous les prix" %}</option>
-          <option value="gratuit" {% if selected_prix == 'gratuit' %}selected{% endif %}>{% trans "Gratuit" %}</option>
-          <option value="payant" {% if selected_prix == 'payant' %}selected{% endif %}>{% trans "Payant" %}</option>
-        </select>
-      </div>
-      {% if search_query or selected_category or selected_niveau or selected_prix or selected_learning_path %}
-      <a href="{% url 'courses:course_list' %}" class="btn btn-sm btn-secondary">
-        <i class="fas fa-times"></i> {% trans "Réinitialiser" %}
-      </a>
-      {% endif %}
-    </form>
-  </div>
-
-  <!-- ===== COURSE GRID ===== -->
-  <div class="course-grid">
-    {% for item in cours %}
-    <div class="card course-card">
-      {% with img=item.cours.get_image %}
-      {% if img %}
-      <img src="{{ img }}" alt="{{ item.cours.titre }}" class="course-img">
-      {% else %}
-      <div class="no-image"><i class="fas fa-book fa-3x"></i></div>
-      {% endif %}
-      {% endwith %}
-      <div class="course-body">
-        <div class="course-badges">
-          {% if item.cours.nivo %}
-          <span class="badge badge-secondary">{{ item.cours.nivo.get_nom_display }}</span>
-          {% endif %}
-          {% if item.cours.categorie %}
-          <span class="badge badge-primary">{{ item.cours.categorie.nom }}</span>
-          {% endif %}
-          {% if item.cours.est_payant %}
-          <span class="badge badge-warning">{% trans "Payant" %}</span>
-          {% else %}
-          <span class="badge badge-success">{% trans "Gratuit" %}</span>
-          {% endif %}
-          {% if item.a_acces %}
-          <span class="badge badge-success">
-            <i class="fas fa-check-circle"></i> {% trans "Accès" %}
-          </span>
-          {% endif %}
-          {% if item.cours.learning_path %}
-          <span class="badge badge-secondary"><i class="fas fa-road"></i> {{ item.cours.learning_path.nom }}</span>
-          {% endif %}
-        </div>
-        <h3><a href="{% url 'courses:course_detail' item.cours.pk %}">{{ item.cours.titre }}</a></h3>
-        <p class="course-description">{{ item.cours.description|truncatechars:100 }}</p>
-        <div class="course-meta">
-          <span class="price {% if not item.cours.est_payant %}free{% endif %}">
-            {% if item.cours.est_payant %}{{ item.cours.prix }} HTG{% else %}{% trans "Gratuit" %}{% endif %}
-          </span>
-          <span class="duration">
-            <i class="fas fa-clock"></i> {{ item.cours.duree }}h
-          </span>
-          <a href="{% url 'courses:course_detail' item.cours.pk %}" class="btn btn-primary btn-sm">
-            {% if item.a_acces %}
-              <i class="fas fa-unlock"></i> {% trans "Accéder" %}
-            {% else %}
-              {% trans "Voir" %}
+    <!-- ===== FILTERS ===== -->
+    <div class="filters-container">
+        <form method="get" class="filters-form">
+            <div class="search-box">
+                <input type="text" name="search" placeholder="{% trans 'Rechercher un cours...' %}" value="{{ search_query }}">
+                <button type="submit"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="filter-group">
+                <select name="category" onchange="this.form.submit()">
+                    <option value="">{% trans "Toutes les catégories" %}</option>
+                    {% for cat in categories %}
+                    <option value="{{ cat.id }}" {% if selected_category == cat.id|stringformat:'s' %}selected{% endif %}>
+                        {{ cat.nom }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="filter-group">
+                <select name="niveau" onchange="this.form.submit()">
+                    <option value="">{% trans "Tous les niveaux" %}</option>
+                    {% for niv in niveaux %}
+                    <option value="{{ niv.id }}" {% if selected_niveau == niv.id|stringformat:'s' %}selected{% endif %}>
+                        {{ niv.get_nom_display }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="filter-group">
+                <select name="learning_path" onchange="this.form.submit()">
+                    <option value="">{% trans "Tous les Learning Paths" %}</option>
+                    {% for lp in learning_paths %}
+                    <option value="{{ lp.id }}" {% if selected_learning_path == lp.id|stringformat:'s' %}selected{% endif %}>
+                        {{ lp.nom }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="filter-group">
+                <select name="prix" onchange="this.form.submit()">
+                    <option value="">{% trans "Tous les prix" %}</option>
+                    <option value="gratuit" {% if selected_prix == 'gratuit' %}selected{% endif %}>{% trans "Gratuit" %}</option>
+                    <option value="payant" {% if selected_prix == 'payant' %}selected{% endif %}>{% trans "Payant" %}</option>
+                </select>
+            </div>
+            {% if search_query or selected_category or selected_niveau or selected_prix or selected_learning_path %}
+            <a href="{% url 'courses:course_list' %}" class="btn-reset">
+                <i class="fas fa-times"></i> {% trans "Réinitialiser" %}
+            </a>
             {% endif %}
-          </a>
+        </form>
+    </div>
+
+    <!-- ===== COURSE GRID ===== -->
+    <div class="course-grid">
+        {% for item in cours %}
+        <div class="course-card">
+            {% with img=item.cours.get_image %}
+            {% if img %}
+            <img src="{{ img }}" alt="{{ item.cours.titre }}" class="course-img">
+            {% else %}
+            <div class="no-image"><i class="fas fa-book"></i></div>
+            {% endif %}
+            {% endwith %}
+            <div class="course-body">
+                <div class="course-badges">
+                    {% if item.cours.nivo %}
+                    <span class="badge badge-secondary">{{ item.cours.nivo.get_nom_display }}</span>
+                    {% endif %}
+                    {% if item.cours.categorie %}
+                    <span class="badge badge-primary">{{ item.cours.categorie.nom }}</span>
+                    {% endif %}
+                    {% if item.cours.est_payant %}
+                    <span class="badge badge-warning">{% trans "Payant" %}</span>
+                    {% else %}
+                    <span class="badge badge-success">{% trans "Gratuit" %}</span>
+                    {% endif %}
+                    {% if item.a_acces %}
+                    <span class="badge badge-success">
+                        <i class="fas fa-check-circle"></i> {% trans "Accès" %}
+                    </span>
+                    {% endif %}
+                    {% if item.cours.learning_path %}
+                    <span class="badge badge-secondary"><i class="fas fa-road"></i> {{ item.cours.learning_path.nom }}</span>
+                    {% endif %}
+                </div>
+                <h3><a href="{% url 'courses:course_detail' item.cours.pk %}">{{ item.cours.titre }}</a></h3>
+                <p class="course-description">{{ item.cours.description|truncatechars:100 }}</p>
+                <div class="course-meta">
+                    <span class="price {% if not item.cours.est_payant %}free{% endif %}">
+                        {% if item.cours.est_payant %}{{ item.cours.prix }} HTG{% else %}{% trans "Gratuit" %}{% endif %}
+                    </span>
+                    <span class="duration">
+                        <i class="fas fa-clock"></i> {{ item.cours.duree }}h
+                    </span>
+                    <a href="{% url 'courses:course_detail' item.cours.pk %}" class="btn btn-primary btn-sm">
+                        {% if item.a_acces %}
+                        <i class="fas fa-unlock"></i> {% trans "Accéder" %}
+                        {% else %}
+                        {% trans "Voir" %}
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
         </div>
-      </div>
+        {% empty %}
+        <div class="empty-courses">
+            <i class="fas fa-book-open"></i>
+            <h3>{% trans "Aucun cours disponible" %}</h3>
+            <p>{% trans "Revenez plus tard, de nouveaux cours seront bientôt disponibles." %}</p>
+        </div>
+        {% endfor %}
     </div>
-    {% empty %}
-    <div class="empty-courses">
-      <i class="fas fa-book-open"></i>
-      <h3>{% trans "Aucun cours disponible" %}</h3>
-      <p>{% trans "Revenez plus tard, de nouveaux cours seront bientôt disponibles." %}</p>
-    </div>
-    {% endfor %}
-  </div>
 </div>
 {% endblock %}
