@@ -27,39 +27,6 @@
         box-shadow: var(--shadow-hover);
     }
 
-    .module-header {
-        margin-bottom: 2rem;
-        padding-bottom: 1.5rem;
-        border-bottom: 1px solid var(--border, #dee2e6);
-    }
-
-    .module-header h1 {
-        font-size: 1.8rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-        color: var(--text, #212529);
-        font-family: var(--font-display);
-    }
-
-    .module-header .module-description {
-        color: var(--text-muted, #6c757d);
-        margin-bottom: 0.5rem;
-        line-height: 1.6;
-    }
-
-    .module-header .module-meta {
-        font-size: 0.85rem;
-        color: var(--text-muted, #6c757d);
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-    }
-
-    .module-header .module-meta i {
-        color: var(--primary, #1a1a2e);
-    }
-
     /* ===== BREADCRUMB ===== */
     .breadcrumb-module {
         display: flex;
@@ -85,6 +52,41 @@
     .breadcrumb-module .current {
         color: var(--text, #212529);
         font-weight: 500;
+    }
+
+    /* ===== HEADER ===== */
+    .module-header {
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border, #dee2e6);
+    }
+
+    .module-header h1 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: var(--text, #212529);
+        font-family: var(--font-display);
+        line-height: 1.2;
+    }
+
+    .module-header .module-description {
+        color: var(--text-muted, #6c757d);
+        margin-bottom: 0.5rem;
+        line-height: 1.6;
+    }
+
+    .module-header .module-meta {
+        font-size: 0.85rem;
+        color: var(--text-muted, #6c757d);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .module-header .module-meta i {
+        color: var(--primary, #1a1a2e);
     }
 
     /* ===== LECONS ===== */
@@ -155,6 +157,7 @@
         font-size: 0.75rem;
         color: var(--text-muted, #6c757d);
         margin-left: auto;
+        flex-shrink: 0;
     }
 
     .lesson-list-module .empty-lessons {
@@ -275,7 +278,7 @@
         margin-top: 2rem;
         display: flex;
         flex-wrap: wrap;
-        gap: 1.5rem;
+        gap: 1rem;
         padding-top: 1.5rem;
         border-top: 1px solid var(--border, #dee2e6);
     }
@@ -285,17 +288,17 @@
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
-        padding: 0.7rem 1.8rem;
+        padding: 0.7rem 1.5rem;
         border-radius: var(--radius-sm, 8px);
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         font-weight: 600;
         text-decoration: none;
         transition: var(--transition);
         border: none;
         cursor: pointer;
         font-family: var(--font-body);
-        min-width: 200px;
-        flex: 1 1 auto;
+        min-width: 180px;
+        flex: 0 1 auto;
     }
 
     .module-actions .btn-secondary {
@@ -365,7 +368,7 @@
         }
 
         .module-actions .btn {
-            padding: 0.6rem 1.2rem;
+            padding: 0.6rem 1rem;
             font-size: 0.85rem;
         }
     }
@@ -469,6 +472,7 @@
             </a>
             {% endif %}
         </div>
+
     </div>
 </div>
 {% endblock %}
