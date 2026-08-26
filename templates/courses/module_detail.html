@@ -27,33 +27,6 @@
         box-shadow: var(--shadow-hover);
     }
 
-    /* ===== BREADCRUMB ===== */
-    .breadcrumb-module {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 0.3rem;
-        padding: 0.6rem 0;
-        margin-bottom: 1.5rem;
-        font-size: 0.85rem;
-        color: var(--text-muted, #6c757d);
-        border-bottom: 1px solid var(--border, #dee2e6);
-    }
-    .breadcrumb-module a {
-        color: var(--primary, #1a1a2e);
-        text-decoration: none;
-        transition: var(--transition);
-    }
-    .breadcrumb-module a:hover { text-decoration: underline; }
-    .breadcrumb-module .separator {
-        color: var(--text-muted, #6c757d);
-        margin: 0 0.2rem;
-    }
-    .breadcrumb-module .current {
-        color: var(--text, #212529);
-        font-weight: 500;
-    }
-
     /* ===== HEADER ===== */
     .module-header {
         margin-bottom: 2rem;
@@ -288,16 +261,16 @@
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
-        padding: 0.7rem 1.5rem;
+        padding: 0.7rem 1.8rem;
         border-radius: var(--radius-sm, 8px);
-        font-size: 0.9rem;
+        font-size: 0.95rem;
         font-weight: 600;
         text-decoration: none;
         transition: var(--transition);
         border: none;
         cursor: pointer;
         font-family: var(--font-body);
-        min-width: 180px;
+        min-width: 200px;
         flex: 0 1 auto;
     }
 
@@ -359,16 +332,12 @@
             font-size: 1.2rem;
         }
 
-        .breadcrumb-module {
-            font-size: 0.75rem;
-        }
-
         .quiz-card-module {
             padding: 0.8rem;
         }
 
         .module-actions .btn {
-            padding: 0.6rem 1rem;
+            padding: 0.6rem 1.2rem;
             font-size: 0.85rem;
         }
     }
@@ -402,7 +371,7 @@
                 <li>
                     <a href="{% url 'courses:lesson_detail' lecon.pk %}">
                         <i class="fas fa-book"></i>
-                        {{ lecon.titre }}
+                        <span>{{ lecon.titre }}</span>
                         <span class="lesson-order">{% trans "Leçon" %} {{ lecon.ordre }}</span>
                     </a>
                 </li>
