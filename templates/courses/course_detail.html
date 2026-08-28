@@ -12,6 +12,128 @@
         padding: 0 1.5rem;
     }
 
+    /* ===== CARD ===== */
+    .card {
+        background: var(--glass);
+        backdrop-filter: blur(var(--blur)) saturate(150%);
+        -webkit-backdrop-filter: blur(var(--blur)) saturate(150%);
+        border: 1px solid var(--glass-brd);
+        border-radius: var(--radius);
+        box-shadow: var(--glass-sh);
+        padding: 2.5rem;
+        transition: var(--transition);
+        margin-bottom: 2rem;
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .card:hover {
+        box-shadow: var(--shadow-hover);
+    }
+
+    /* ===== CONTENT CARD (pi laj) ===== */
+    .content-card {
+        background: var(--glass);
+        backdrop-filter: blur(var(--blur)) saturate(150%);
+        -webkit-backdrop-filter: blur(var(--blur)) saturate(150%);
+        border: 1px solid var(--glass-brd);
+        border-radius: var(--radius);
+        box-shadow: var(--glass-sh);
+        padding: 2.5rem;
+        transition: var(--transition);
+        margin-bottom: 2rem;
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .content-card:hover {
+        box-shadow: var(--shadow-hover);
+    }
+
+    .content-card .card-body {
+        flex: 1;
+    }
+
+    /* ===== COURSE ACTIONS ANBA ===== */
+    .course-actions-bottom {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--glass-brd-soft);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .course-actions-bottom .btn {
+        min-width: 220px;
+        justify-content: center;
+        border-radius: 50px;
+        padding: 0.9rem 2.2rem;
+        font-weight: 600;
+        transition: var(--transition);
+        font-family: var(--font-body);
+        border: none;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+        font-size: 1rem;
+    }
+
+    .course-actions-bottom .btn-lg {
+        padding: 1rem 2.5rem;
+        font-size: 1.1rem;
+    }
+
+    .course-actions-bottom .btn-success {
+        background: linear-gradient(135deg, var(--success), #4ade80);
+        color: #fff;
+        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+    }
+
+    .course-actions-bottom .btn-success:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+    }
+
+    .course-actions-bottom .btn-primary {
+        background: linear-gradient(135deg, var(--primary), #8aa0ff);
+        color: #fff;
+        box-shadow: 0 4px 15px rgba(26, 26, 46, 0.25);
+    }
+
+    .course-actions-bottom .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(26, 26, 46, 0.35);
+    }
+
+    .course-actions-bottom .btn-secondary {
+        background: var(--glass-2);
+        color: var(--text);
+        border: 1px solid var(--glass-brd);
+        backdrop-filter: blur(10px);
+    }
+
+    .course-actions-bottom .btn-secondary:hover {
+        background: var(--glass-soft);
+        transform: translateY(-3px);
+    }
+
+    .course-actions-bottom .btn-secondary:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none !important;
+        box-shadow: none !important;
+    }
+
+    /* ===== COURSE HEADER ===== */
     .course-detail-header {
         display: block;
         width: 100%;
@@ -257,7 +379,7 @@
         border-radius: 50px;
     }
 
-    /* ===== COURSE ACTIONS ANLÈ (sèlman staff) ===== */
+    /* ===== COURSE ACTIONS ANLÈ (staff) ===== */
     .course-actions-top {
         display: flex;
         flex-wrap: wrap;
@@ -322,127 +444,6 @@
 
     .section-card-title i {
         color: var(--primary);
-    }
-
-    /* ===== CARD ===== */
-    .card {
-        background: var(--glass);
-        backdrop-filter: blur(var(--blur)) saturate(150%);
-        -webkit-backdrop-filter: blur(var(--blur)) saturate(150%);
-        border: 1px solid var(--glass-brd);
-        border-radius: var(--radius);
-        box-shadow: var(--glass-sh);
-        padding: 2.5rem;
-        transition: var(--transition);
-        margin-bottom: 2rem;
-        max-width: 1200px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .card:hover {
-        box-shadow: var(--shadow-hover);
-    }
-
-    /* ===== CARD CONTENU AVEC COURSE ACTIONS ANBA ===== */
-    .content-card {
-        background: var(--glass);
-        backdrop-filter: blur(var(--blur)) saturate(150%);
-        -webkit-backdrop-filter: blur(var(--blur)) saturate(150%);
-        border: 1px solid var(--glass-brd);
-        border-radius: var(--radius);
-        box-shadow: var(--glass-sh);
-        padding: 2.5rem;
-        transition: var(--transition);
-        margin-bottom: 2rem;
-        max-width: 1200px;
-        margin-left: auto;
-        margin-right: auto;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .content-card:hover {
-        box-shadow: var(--shadow-hover);
-    }
-
-    .content-card .card-body {
-        flex: 1;
-    }
-
-    /* ===== COURSE ACTIONS ANBA (bouton commencer) ===== */
-    .course-actions-bottom {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        margin-top: 2rem;
-        padding-top: 1.5rem;
-        border-top: 1px solid var(--glass-brd-soft);
-        justify-content: center;
-        align-items: center;
-    }
-
-    .course-actions-bottom .btn {
-        min-width: 220px;
-        justify-content: center;
-        border-radius: 50px;
-        padding: 0.9rem 2.2rem;
-        font-weight: 600;
-        transition: var(--transition);
-        font-family: var(--font-body);
-        border: none;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        text-decoration: none;
-        font-size: 1rem;
-    }
-
-    .course-actions-bottom .btn-lg {
-        padding: 1rem 2.5rem;
-        font-size: 1.1rem;
-    }
-
-    .course-actions-bottom .btn-success {
-        background: linear-gradient(135deg, var(--success), #4ade80);
-        color: #fff;
-        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
-    }
-
-    .course-actions-bottom .btn-success:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
-    }
-
-    .course-actions-bottom .btn-primary {
-        background: linear-gradient(135deg, var(--primary), #8aa0ff);
-        color: #fff;
-        box-shadow: 0 4px 15px rgba(26, 26, 46, 0.25);
-    }
-
-    .course-actions-bottom .btn-primary:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(26, 26, 46, 0.35);
-    }
-
-    .course-actions-bottom .btn-secondary {
-        background: var(--glass-2);
-        color: var(--text);
-        border: 1px solid var(--glass-brd);
-        backdrop-filter: blur(10px);
-    }
-
-    .course-actions-bottom .btn-secondary:hover {
-        background: var(--glass-soft);
-        transform: translateY(-3px);
-    }
-
-    .course-actions-bottom .btn-secondary:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-        transform: none !important;
-        box-shadow: none !important;
     }
 
     /* ===== QUIZ GRID ===== */
@@ -733,7 +734,8 @@
 
 {% block content %}
 <div class="course-detail-container">
-    <!-- ===== COURSE HEADER CARD ===== -->
+
+    <!-- ===== CARD 1: ENFÒMASYON COURS ===== -->
     <div class="card">
         <div class="course-detail-header">
             <div class="course-detail-main">
@@ -809,7 +811,7 @@
                 </div>
                 {% endif %}
 
-                <!-- ===== COURSE ACTIONS ANLÈ (sèlman staff) ===== -->
+                <!-- ===== COURSE ACTIONS ANLÈ (staff) ===== -->
                 <div class="course-actions-top">
                     {% if user.is_staff %}
                     <a href="{% url 'courses:course_edit' cours.pk %}" class="btn btn-secondary">
@@ -828,7 +830,7 @@
         </div>
     </div>
 
-    <!-- ===== CONTENU DU COURS ===== -->
+    <!-- ===== CARD 2: CONTENU COURS + ACTIONS ===== -->
     <div class="content-card">
         <div class="card-body">
             <h2 class="section-card-title">
@@ -853,7 +855,7 @@
             {% endif %}
         </div>
 
-        <!-- ===== COURSE ACTIONS ANBA (bouton commencer) ===== -->
+        <!-- ===== COURSE ACTIONS ANBA ===== -->
         <div class="course-actions-bottom">
             {% if user.is_authenticated %}
                 {% if inscription_approuvee or a_acces_abonnement %}
@@ -883,7 +885,7 @@
         </div>
     </div>
 
-    <!-- ===== QUIZ DU COURS (ANBA) ===== -->
+    <!-- ===== CARD 3: QUIZ DU COURS ===== -->
     {% if quizzes %}
     <div class="card">
         <h2 class="section-card-title">
@@ -933,5 +935,6 @@
         </div>
     </div>
     {% endif %}
+
 </div>
 {% endblock %}
