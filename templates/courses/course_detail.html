@@ -341,8 +341,8 @@
         color: var(--primary);
     }
 
-    /* ===== CONTENU CARD ===== */
-    .card {
+    /* ===== COURSE CARD UNIQUE ===== */
+    .course-detail-card {
         background: var(--glass);
         backdrop-filter: blur(var(--blur)) saturate(150%);
         -webkit-backdrop-filter: blur(var(--blur)) saturate(150%);
@@ -355,51 +355,37 @@
         max-width: 1200px;
         margin-left: auto;
         margin-right: auto;
-    }
-
-    .card:hover {
-        box-shadow: var(--shadow-hover);
-    }
-
-    /* ===== CONTENU CARD AVEC BOUTON ===== */
-    .content-card {
-        background: var(--glass);
-        backdrop-filter: blur(var(--blur)) saturate(150%);
-        -webkit-backdrop-filter: blur(var(--blur)) saturate(150%);
-        border: 1px solid var(--glass-brd);
-        border-radius: var(--radius);
-        box-shadow: var(--glass-sh);
-        padding: 2.5rem;
-        transition: var(--transition);
-        position: relative;
-        overflow: hidden;
-        margin-bottom: 2rem;
-        max-width: 1200px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .content-card:hover {
-        box-shadow: var(--shadow-hover);
-    }
-
-    .content-card .card-header {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
+        flex-direction: column;
+    }
+
+    .course-detail-card:hover {
+        box-shadow: var(--shadow-hover);
+    }
+
+    .course-detail-card .card-body {
+        flex: 1;
+    }
+
+    .course-detail-card .card-footer {
+        padding-top: 1.5rem;
+        margin-top: 1.5rem;
+        border-top: 1px solid var(--glass-brd-soft);
+        display: flex;
+        justify-content: flex-start;
         flex-wrap: wrap;
         gap: 1rem;
-        margin-bottom: 1.5rem;
     }
 
-    .btn-start-vert {
+    /* ===== BOUTON COMMENCER ANBA ===== */
+    .btn-start-bottom {
         background: linear-gradient(135deg, #22c55e, #4ade80) !important;
         color: #fff !important;
-        padding: 0.7rem 1.8rem !important;
+        padding: 0.8rem 2rem !important;
         border-radius: 50px !important;
         border: none !important;
         font-weight: 600 !important;
-        font-size: 0.95rem !important;
+        font-size: 1rem !important;
         display: inline-flex !important;
         align-items: center !important;
         gap: 0.6rem !important;
@@ -410,16 +396,16 @@
         cursor: pointer !important;
     }
 
-    .btn-start-vert:hover {
+    .btn-start-bottom:hover {
         transform: translateY(-3px) scale(1.02) !important;
         box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4) !important;
     }
 
-    .btn-start-vert i {
+    .btn-start-bottom i {
         color: #fff !important;
     }
 
-    .btn-start-vert:disabled {
+    .btn-start-bottom:disabled {
         opacity: 0.5 !important;
         cursor: not-allowed !important;
         transform: none !important;
@@ -645,21 +631,18 @@
             font-size: 1rem;
         }
 
-        .card {
+        .course-detail-card {
             padding: 1.5rem;
         }
 
-        .content-card {
-            padding: 1.5rem;
-        }
-
-        .content-card .card-header {
+        .course-detail-card .card-footer {
             flex-direction: column;
             align-items: stretch;
         }
 
-        .content-card .card-header .btn-start-vert {
+        .course-detail-card .card-footer .btn-start-bottom {
             justify-content: center;
+            width: 100%;
         }
 
         .quiz-card {
@@ -682,11 +665,7 @@
             padding: 0.2rem 0.5rem;
         }
 
-        .card {
-            padding: 1rem;
-        }
-
-        .content-card {
+        .course-detail-card {
             padding: 1rem;
         }
 
@@ -706,15 +685,20 @@
         .quiz-grid {
             gap: 1rem;
         }
+
+        .btn-start-bottom {
+            padding: 0.6rem 1.2rem !important;
+            font-size: 0.85rem !important;
+        }
     }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="course-detail-container">
-    <!-- ===== COURSE HEADER ===== -->
-    <div class="course-detail-header">
-        <div class="course-detail-main">
+    <!-- ===== COURSE CARD UNIQUE ===== -->
+    <div class="course-detail-card">
+        <div class="card-body">
             <!-- Badges -->
             <div class="course-detail-badges">
                 {% if cours.nivo %}<span class="badge badge-primary">{{ cours.nivo.get_nom_display }}</span>{% endif %}
@@ -737,7 +721,7 @@
             </p>
             {% endif %}
 
-            <!-- ===== DESCRIPTION AVEC LINEBREAKS ===== -->
+            <!-- ===== DESCRIPTION ===== -->
             <div class="course-detail-description">
                 {{ cours.description|linebreaks }}
             </div>
@@ -803,107 +787,112 @@
                 {% endif %}
             </div>
         </div>
-    </div>
 
-    <!-- ===== CONTENU DU COURS ===== -->
-    <div class="content-card">
-        <div class="card-header">
-            <h2 class="section-card-title" style="margin-bottom:0;">
-                <i class="fas fa-list-ul"></i> {% trans "Contenu du cours" %}
-            </h2>
+        <!-- ===== FOOTER CARD AVEC BOUTON COMMENCER ===== -->
+        <div class="card-footer">
             {% if user.is_authenticated %}
                 {% if inscription_approuvee or a_acces_abonnement %}
                     {% if cours.unites.first %}
-                    <a href="{% url 'courses:unit_detail' cours.unites.first.pk %}" class="btn-start-vert">
+                    <a href="{% url 'courses:unit_detail' cours.unites.first.pk %}" class="btn-start-bottom">
                         <i class="fas fa-play"></i> {% trans "Commencer le cours" %}
                     </a>
                     {% else %}
-                    <button class="btn-start-vert" disabled>
+                    <button class="btn-start-bottom" disabled>
                         <i class="fas fa-clock"></i> {% trans "Cours en préparation" %}
                     </button>
                     {% endif %}
                 {% elif prerequis_completed %}
-                <a href="{% url 'enrollments:enroll_course' cours.pk %}" class="btn-start-vert">
+                <a href="{% url 'enrollments:enroll_course' cours.pk %}" class="btn-start-bottom">
                     <i class="fas fa-user-plus"></i> {% trans "S'inscrire" %}
                 </a>
                 {% else %}
-                <button class="btn-start-vert" disabled>
+                <button class="btn-start-bottom" disabled>
                     <i class="fas fa-lock"></i> {% trans "Prérequis manquants" %}
                 </button>
                 {% endif %}
             {% else %}
-            <a href="{% url 'accounts:login' %}?next={{ request.path }}" class="btn-start-vert">
+            <a href="{% url 'accounts:login' %}?next={{ request.path }}" class="btn-start-bottom">
                 <i class="fas fa-sign-in-alt"></i> {% trans "Se connecter" %}
             </a>
             {% endif %}
         </div>
+    </div>
 
-        {% if unites %}
-        <div class="units-list">
-            {% for unite in unites %}
-            <div class="unit-card">
-                <h3><a href="{% url 'courses:unit_detail' unite.pk %}">{{ unite.titre }}</a></h3>
-                {% if unite.description %}
-                <p>{{ unite.description }}</p>
-                {% endif %}
-                <span class="unit-modules">
-                    <i class="fas fa-book-open"></i> {{ unite.modules.count }} {% trans "modules" %}
-                </span>
+    <!-- ===== CONTENU DU COURS ===== -->
+    <div class="course-detail-card">
+        <div class="card-body">
+            <h2 class="section-card-title">
+                <i class="fas fa-list-ul"></i> {% trans "Contenu du cours" %}
+            </h2>
+            {% if unites %}
+            <div class="units-list">
+                {% for unite in unites %}
+                <div class="unit-card">
+                    <h3><a href="{% url 'courses:unit_detail' unite.pk %}">{{ unite.titre }}</a></h3>
+                    {% if unite.description %}
+                    <p>{{ unite.description }}</p>
+                    {% endif %}
+                    <span class="unit-modules">
+                        <i class="fas fa-book-open"></i> {{ unite.modules.count }} {% trans "modules" %}
+                    </span>
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
+            {% else %}
+            <p class="empty-units">{% trans "Aucune unité disponible pour ce cours." %}</p>
+            {% endif %}
         </div>
-        {% else %}
-        <p class="empty-units">{% trans "Aucune unité disponible pour ce cours." %}</p>
-        {% endif %}
     </div>
 
     <!-- ===== QUIZ DU COURS (ANBA) ===== -->
     {% if quizzes %}
-    <div class="card">
-        <h2 class="section-card-title">
-            <i class="fas fa-question-circle"></i> {% trans "Quiz du cours" %}
-        </h2>
-        <div class="quiz-grid">
-            {% for quiz in quizzes %}
-            <div class="quiz-card">
-                <h3><a href="{% url 'quiz:detail' quiz.pk %}">{{ quiz.titre }}</a></h3>
-                {% if quiz.description %}
-                <p>{{ quiz.description|truncatechars:100 }}</p>
-                {% endif %}
-                <div class="quiz-card-footer">
-                    <span class="quiz-percent">
-                        <i class="fas fa-percent"></i> {{ quiz.pourcentage_reussite }}% {% trans "réussite" %}
-                    </span>
-                    {% if user.is_authenticated %}
-                        {% with tentative_quiz=quiz.pk %}
-                            {% for key, value in user_tentatives.items %}
-                                {% if key == tentative_quiz %}
-                                    {% if value.date_soumission %}
-                                        {% if value.reussi %}
-                                        <span class="badge badge-success"><i class="fas fa-check-circle"></i> {% trans "Réussi" %} ({{ value.score|floatformat:0 }}%)</span>
-                                        {% else %}
-                                        <span class="badge badge-danger"><i class="fas fa-times-circle"></i> {% trans "Échoué" %} ({{ value.score|floatformat:0 }}%)</span>
-                                        {% endif %}
-                                    {% else %}
-                                    <a href="{% url 'quiz:start' quiz.pk %}" class="btn btn-primary btn-sm">
-                                        <i class="fas fa-play"></i> {% trans "Commencer" %}
-                                    </a>
-                                    {% endif %}
-                                {% endif %}
-                            {% empty %}
-                            <a href="{% url 'quiz:start' quiz.pk %}" class="btn btn-primary btn-sm">
-                                <i class="fas fa-play"></i> {% trans "Commencer" %}
-                            </a>
-                            {% endfor %}
-                        {% endwith %}
-                    {% else %}
-                    <a href="{% url 'accounts:login' %}?next={% url 'quiz:detail' quiz.pk %}" class="btn btn-secondary btn-sm">
-                        <i class="fas fa-sign-in-alt"></i> {% trans "Se connecter" %}
-                    </a>
+    <div class="course-detail-card">
+        <div class="card-body">
+            <h2 class="section-card-title">
+                <i class="fas fa-question-circle"></i> {% trans "Quiz du cours" %}
+            </h2>
+            <div class="quiz-grid">
+                {% for quiz in quizzes %}
+                <div class="quiz-card">
+                    <h3><a href="{% url 'quiz:detail' quiz.pk %}">{{ quiz.titre }}</a></h3>
+                    {% if quiz.description %}
+                    <p>{{ quiz.description|truncatechars:100 }}</p>
                     {% endif %}
+                    <div class="quiz-card-footer">
+                        <span class="quiz-percent">
+                            <i class="fas fa-percent"></i> {{ quiz.pourcentage_reussite }}% {% trans "réussite" %}
+                        </span>
+                        {% if user.is_authenticated %}
+                            {% with tentative_quiz=quiz.pk %}
+                                {% for key, value in user_tentatives.items %}
+                                    {% if key == tentative_quiz %}
+                                        {% if value.date_soumission %}
+                                            {% if value.reussi %}
+                                            <span class="badge badge-success"><i class="fas fa-check-circle"></i> {% trans "Réussi" %} ({{ value.score|floatformat:0 }}%)</span>
+                                            {% else %}
+                                            <span class="badge badge-danger"><i class="fas fa-times-circle"></i> {% trans "Échoué" %} ({{ value.score|floatformat:0 }}%)</span>
+                                            {% endif %}
+                                        {% else %}
+                                        <a href="{% url 'quiz:start' quiz.pk %}" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-play"></i> {% trans "Commencer" %}
+                                        </a>
+                                        {% endif %}
+                                    {% endif %}
+                                {% empty %}
+                                <a href="{% url 'quiz:start' quiz.pk %}" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-play"></i> {% trans "Commencer" %}
+                                </a>
+                                {% endfor %}
+                            {% endwith %}
+                        {% else %}
+                        <a href="{% url 'accounts:login' %}?next={% url 'quiz:detail' quiz.pk %}" class="btn btn-secondary btn-sm">
+                            <i class="fas fa-sign-in-alt"></i> {% trans "Se connecter" %}
+                        </a>
+                        {% endif %}
+                    </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
     </div>
     {% endif %}
