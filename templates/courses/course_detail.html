@@ -294,107 +294,655 @@
         padding: 1.2rem 1.5rem !important;
     }
 
-    /* ===== RESPONSIVE ===== */
+    /* ===== RESPONSIVE - TABLET LANDSCAPE (1024px) ===== */
     @media (max-width: 1024px) {
         .course-detail-container {
-            padding: 0 1rem;
+            padding: 0 1rem !important;
+            margin: 1.5rem auto !important;
         }
+        
         .card {
             width: 85% !important;
+            max-width: 1000px !important;
             padding: 2rem !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            margin-bottom: 1.5rem !important;
+        }
+        
+        .course-detail-title {
+            font-size: 2rem !important;
+            margin-bottom: 0.7rem !important;
+        }
+        
+        .course-detail-position {
+            font-size: 0.9rem !important;
+            gap: 0.3rem !important;
+            margin-bottom: 0.8rem !important;
+        }
+        
+        .course-detail-description {
+            font-size: 1rem !important;
+            max-width: 800px !important;
+            line-height: 1.7 !important;
+        }
+        
+        .prerequisites-box {
+            max-width: 800px !important;
+            padding: 1rem 1.2rem !important;
+            margin-bottom: 1.5rem !important;
+        }
+        
+        .prerequisites-box h4 {
+            font-size: 0.95rem !important;
+        }
+        
+        .prerequisites-list li {
+            font-size: 0.9rem !important;
+        }
+        
+        .quiz-grid {
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+            gap: 1.2rem !important;
+        }
+        
+        .quiz-card {
+            padding: 1.3rem 1.5rem !important;
+            min-height: 160px !important;
+        }
+        
+        .quiz-card h3 {
+            font-size: 1.05rem !important;
+        }
+        
+        .course-actions-bottom .btn {
+            min-width: 200px !important;
+            padding: 0.8rem 1.8rem !important;
+            font-size: 0.95rem !important;
+        }
+        
+        .course-actions-bottom .btn-lg {
+            padding: 0.9rem 2rem !important;
+            font-size: 1rem !important;
+        }
+        
+        .course-actions-top .btn {
+            min-width: 140px !important;
+            padding: 0.5rem 1.2rem !important;
+            font-size: 0.8rem !important;
+            gap: 0.4rem !important;
+        }
+        
+        .units-list {
+            max-width: 800px !important;
+        }
+        
+        .unit-card {
+            padding: 1.1rem 1.3rem !important;
         }
     }
 
+    /* ===== RESPONSIVE - TABLET PORTRAIT (768px) ===== */
     @media (max-width: 768px) {
+        .course-detail-container {
+            margin: 1rem auto !important;
+            padding: 0 0.8rem !important;
+        }
+        
+        .card {
+            width: 92% !important;
+            max-width: 700px !important;
+            padding: 1.5rem !important;
+            margin-bottom: 1.5rem !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+        
         .course-detail-title {
-            font-size: 1.6rem;
+            font-size: 1.6rem !important;
+            margin-bottom: 0.6rem !important;
+            line-height: 1.3 !important;
         }
-
+        
+        .course-detail-position {
+            font-size: 0.9rem !important;
+            gap: 0.3rem !important;
+            flex-wrap: wrap !important;
+        }
+        
+        .course-detail-badges {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 0.4rem !important;
+            justify-content: center !important;
+            margin-bottom: 1rem !important;
+        }
+        
+        .course-detail-badges .badge {
+            font-size: 0.7rem !important;
+            padding: 0.3rem 0.6rem !important;
+        }
+        
+        .course-detail-description {
+            font-size: 0.95rem !important;
+            line-height: 1.6 !important;
+            max-width: 100% !important;
+        }
+        
+        .prerequisites-box {
+            padding: 1rem !important;
+            margin-bottom: 1.5rem !important;
+            max-width: 100% !important;
+        }
+        
+        .prerequisites-box h4 {
+            font-size: 0.95rem !important;
+            gap: 0.4rem !important;
+            margin-bottom: 0.5rem !important;
+        }
+        
+        .prerequisites-list li {
+            padding: 0.25rem 0 !important;
+            font-size: 0.9rem !important;
+            gap: 0.4rem !important;
+        }
+        
+        .prereq-link {
+            font-size: 0.75rem !important;
+            margin-left: 0.3rem !important;
+        }
+        
         .course-actions-top {
-            flex-direction: column;
-            align-items: stretch;
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 0.8rem !important;
+            margin-top: 1rem !important;
         }
-
+        
         .course-actions-top .btn {
-            width: 100%;
-            min-width: unset;
-            justify-content: center;
+            width: 100% !important;
+            min-width: unset !important;
+            justify-content: center !important;
+            padding: 0.7rem 1rem !important;
+            font-size: 0.85rem !important;
         }
-
+        
         .course-actions-bottom {
-            flex-direction: column;
-            align-items: stretch;
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 0.8rem !important;
+            margin-top: 1.5rem !important;
+            padding-top: 1.2rem !important;
         }
-
+        
         .course-actions-bottom .btn {
-            width: 100%;
-            min-width: unset;
-            justify-content: center;
+            width: 100% !important;
+            min-width: unset !important;
+            justify-content: center !important;
+            padding: 0.8rem 1.5rem !important;
+            font-size: 0.95rem !important;
         }
-
+        
+        .course-actions-bottom .btn-lg {
+            padding: 0.9rem 2rem !important;
+            font-size: 1rem !important;
+        }
+        
         .course-navigation {
-            flex-direction: column;
-            align-items: stretch;
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 0.8rem !important;
+            margin: 1.5rem 0 !important;
         }
-
+        
         .course-navigation .btn {
-            width: 100%;
-            justify-content: center;
+            width: 100% !important;
+            justify-content: center !important;
+            padding: 0.7rem 1rem !important;
+            font-size: 0.85rem !important;
         }
-
+        
         .quiz-grid {
             grid-template-columns: 1fr !important;
+            gap: 1rem !important;
         }
-
-        .course-detail-description {
-            font-size: 0.95rem;
-        }
-
-        .card {
-            width: 90% !important;
-            padding: 1.5rem !important;
-        }
-
+        
         .quiz-card {
             padding: 1.2rem !important;
             min-height: 150px !important;
         }
+        
+        .quiz-card h3 {
+            font-size: 1.05rem !important;
+            margin-bottom: 0.5rem !important;
+        }
+        
+        .quiz-card p {
+            font-size: 0.9rem !important;
+            margin-bottom: 0.8rem !important;
+        }
+        
+        .quiz-card-footer {
+            gap: 0.6rem !important;
+            flex-wrap: wrap !important;
+        }
+        
+        .quiz-card-footer .btn-sm {
+            padding: 0.5rem 1rem !important;
+            font-size: 0.8rem !important;
+        }
+        
+        .units-list {
+            max-width: 100% !important;
+        }
+        
+        .unit-card {
+            padding: 1rem 1.2rem !important;
+            margin-bottom: 0.8rem !important;
+        }
+        
+        .unit-card h3 {
+            font-size: 1.05rem !important;
+            margin-bottom: 0.4rem !important;
+        }
+        
+        .unit-card p {
+            font-size: 0.9rem !important;
+            margin-bottom: 0.5rem !important;
+        }
+        
+        .unit-modules {
+            font-size: 0.8rem !important;
+        }
+        
+        .section-card-title {
+            font-size: 1.2rem !important;
+            margin-bottom: 1rem !important;
+        }
+        
+        .empty-units {
+            font-size: 0.95rem !important;
+            padding: 1.5rem !important;
+        }
+        
+        .badge-success, .badge-danger, .badge-warning {
+            font-size: 0.7rem !important;
+            padding: 0.3rem 0.6rem !important;
+        }
     }
 
+    /* ===== RESPONSIVE - MOBILE LARGE (480px) ===== */
     @media (max-width: 480px) {
-        .course-detail-title {
-            font-size: 1.3rem;
+        .course-detail-container {
+            margin: 0.5rem auto !important;
+            padding: 0 0.5rem !important;
         }
-
-        .course-detail-badges {
-            gap: 0.3rem;
-        }
-
-        .course-detail-badges .badge {
-            font-size: 0.6rem;
-            padding: 0.2rem 0.5rem;
-        }
-
+        
         .card {
             width: 95% !important;
+            max-width: 460px !important;
             padding: 1rem !important;
+            margin-bottom: 1rem !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
         }
-
-        .unit-card {
-            padding: 1rem !important;
+        
+        .course-detail-title {
+            font-size: 1.3rem !important;
+            margin-bottom: 0.5rem !important;
+            line-height: 1.3 !important;
         }
-
+        
+        .course-detail-position {
+            font-size: 0.8rem !important;
+            flex-direction: column !important;
+            gap: 0.2rem !important;
+            margin-bottom: 0.8rem !important;
+        }
+        
+        .course-detail-badges {
+            gap: 0.3rem !important;
+            margin-bottom: 0.8rem !important;
+        }
+        
+        .course-detail-badges .badge {
+            font-size: 0.6rem !important;
+            padding: 0.2rem 0.5rem !important;
+        }
+        
+        .course-detail-description {
+            font-size: 0.85rem !important;
+            line-height: 1.5 !important;
+        }
+        
+        .prerequisites-box {
+            padding: 0.8rem !important;
+            margin-bottom: 1rem !important;
+        }
+        
+        .prerequisites-box h4 {
+            font-size: 0.85rem !important;
+            gap: 0.3rem !important;
+        }
+        
+        .prerequisites-list li {
+            padding: 0.2rem 0 !important;
+            font-size: 0.8rem !important;
+            flex-wrap: wrap !important;
+            gap: 0.3rem !important;
+        }
+        
+        .prereq-link {
+            font-size: 0.7rem !important;
+        }
+        
+        .course-actions-top {
+            gap: 0.6rem !important;
+            margin-top: 0.8rem !important;
+        }
+        
+        .course-actions-top .btn {
+            padding: 0.6rem 0.8rem !important;
+            font-size: 0.8rem !important;
+            gap: 0.3rem !important;
+        }
+        
+        .course-actions-bottom {
+            gap: 0.6rem !important;
+            margin-top: 1rem !important;
+            padding-top: 1rem !important;
+        }
+        
+        .course-actions-bottom .btn {
+            padding: 0.7rem 1.2rem !important;
+            font-size: 0.85rem !important;
+            gap: 0.4rem !important;
+        }
+        
+        .course-actions-bottom .btn-lg {
+            padding: 0.8rem 1.5rem !important;
+            font-size: 0.9rem !important;
+        }
+        
+        .course-navigation {
+            gap: 0.6rem !important;
+            margin: 1rem 0 !important;
+        }
+        
+        .course-navigation .btn {
+            padding: 0.6rem 0.8rem !important;
+            font-size: 0.8rem !important;
+            gap: 0.3rem !important;
+        }
+        
+        .quiz-grid {
+            gap: 0.8rem !important;
+        }
+        
         .quiz-card {
             padding: 1rem !important;
             min-height: 130px !important;
         }
+        
+        .quiz-card h3 {
+            font-size: 0.95rem !important;
+            margin-bottom: 0.5rem !important;
+        }
+        
+        .quiz-card p {
+            font-size: 0.8rem !important;
+            margin-bottom: 0.8rem !important;
+        }
+        
+        .quiz-card-footer {
+            gap: 0.4rem !important;
+            font-size: 0.75rem !important;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+        }
+        
+        .quiz-card-footer .btn-sm {
+            padding: 0.4rem 0.8rem !important;
+            font-size: 0.75rem !important;
+            width: 100% !important;
+            justify-content: center !important;
+        }
+        
+        .unit-card {
+            padding: 0.8rem 1rem !important;
+            margin-bottom: 0.6rem !important;
+        }
+        
+        .unit-card h3 {
+            font-size: 0.95rem !important;
+            margin-bottom: 0.3rem !important;
+        }
+        
+        .unit-card p {
+            font-size: 0.8rem !important;
+            margin-bottom: 0.5rem !important;
+        }
+        
+        .unit-modules {
+            font-size: 0.75rem !important;
+        }
+        
+        .section-card-title {
+            font-size: 1.1rem !important;
+            margin-bottom: 1rem !important;
+        }
+        
+        .empty-units {
+            font-size: 0.85rem !important;
+            padding: 1.2rem !important;
+        }
+        
+        .badge-success, .badge-danger, .badge-warning {
+            font-size: 0.65rem !important;
+            padding: 0.25rem 0.5rem !important;
+        }
+    }
 
+    /* ===== RESPONSIVE - MOBILE MEDIUM (360px) ===== */
+    @media (max-width: 360px) {
+        .course-detail-container {
+            padding: 0 0.3rem !important;
+            margin: 0.3rem auto !important;
+        }
+        
+        .card {
+            width: 98% !important;
+            max-width: 350px !important;
+            padding: 0.8rem !important;
+            margin-bottom: 0.8rem !important;
+        }
+        
+        .course-detail-title {
+            font-size: 1.2rem !important;
+            margin-bottom: 0.4rem !important;
+        }
+        
+        .course-detail-position {
+            font-size: 0.75rem !important;
+            margin-bottom: 0.6rem !important;
+        }
+        
+        .course-detail-badges .badge {
+            font-size: 0.55rem !important;
+            padding: 0.2rem 0.4rem !important;
+        }
+        
+        .course-detail-description {
+            font-size: 0.8rem !important;
+            line-height: 1.4 !important;
+        }
+        
         .prerequisites-box {
+            padding: 0.7rem !important;
+            margin-bottom: 0.8rem !important;
+        }
+        
+        .prerequisites-box h4 {
+            font-size: 0.8rem !important;
+        }
+        
+        .prerequisites-list li {
+            font-size: 0.75rem !important;
+            padding: 0.15rem 0 !important;
+        }
+        
+        .prereq-link {
+            font-size: 0.65rem !important;
+        }
+        
+        .course-actions-top .btn,
+        .course-actions-bottom .btn {
+            padding: 0.5rem 0.8rem !important;
+            font-size: 0.75rem !important;
+        }
+        
+        .course-actions-bottom .btn-lg {
+            padding: 0.7rem 1.2rem !important;
+            font-size: 0.8rem !important;
+        }
+        
+        .course-navigation .btn {
+            padding: 0.5rem 0.7rem !important;
+            font-size: 0.75rem !important;
+        }
+        
+        .quiz-card {
+            padding: 0.8rem !important;
+            min-height: 120px !important;
+        }
+        
+        .quiz-card h3 {
+            font-size: 0.9rem !important;
+        }
+        
+        .quiz-card p {
+            font-size: 0.75rem !important;
+        }
+        
+        .quiz-card-footer {
+            font-size: 0.7rem !important;
+        }
+        
+        .unit-card {
+            padding: 0.7rem 0.8rem !important;
+        }
+        
+        .unit-card h3 {
+            font-size: 0.9rem !important;
+        }
+        
+        .unit-card p {
+            font-size: 0.75rem !important;
+        }
+        
+        .section-card-title {
+            font-size: 1rem !important;
+            margin-bottom: 0.8rem !important;
+        }
+        
+        .empty-units {
+            font-size: 0.8rem !important;
             padding: 1rem !important;
         }
+    }
 
-        .quiz-grid {
-            gap: 1rem !important;
+    /* ===== RESPONSIVE - MOBILE SMALL (320px) ===== */
+    @media (max-width: 320px) {
+        .course-detail-container {
+            padding: 0 0.2rem !important;
+            margin: 0.2rem auto !important;
+        }
+        
+        .card {
+            width: 99% !important;
+            max-width: 310px !important;
+            padding: 0.6rem !important;
+            margin-bottom: 0.6rem !important;
+        }
+        
+        .course-detail-title {
+            font-size: 1.1rem !important;
+            margin-bottom: 0.3rem !important;
+        }
+        
+        .course-detail-position {
+            font-size: 0.7rem !important;
+            margin-bottom: 0.5rem !important;
+        }
+        
+        .course-detail-description {
+            font-size: 0.75rem !important;
+            line-height: 1.3 !important;
+        }
+        
+        .prerequisites-box {
+            padding: 0.6rem !important;
+            margin-bottom: 0.7rem !important;
+        }
+        
+        .prerequisites-box h4 {
+            font-size: 0.75rem !important;
+        }
+        
+        .prerequisites-list li {
+            font-size: 0.7rem !important;
+            padding: 0.1rem 0 !important;
+        }
+        
+        .course-actions-top .btn,
+        .course-actions-bottom .btn {
+            padding: 0.4rem 0.7rem !important;
+            font-size: 0.7rem !important;
+        }
+        
+        .course-actions-bottom .btn-lg {
+            padding: 0.6rem 1rem !important;
+            font-size: 0.75rem !important;
+        }
+        
+        .course-navigation .btn {
+            padding: 0.4rem 0.6rem !important;
+            font-size: 0.7rem !important;
+        }
+        
+        .quiz-card {
+            padding: 0.7rem !important;
+            min-height: 110px !important;
+        }
+        
+        .quiz-card h3 {
+            font-size: 0.85rem !important;
+        }
+        
+        .quiz-card p {
+            font-size: 0.7rem !important;
+        }
+        
+        .unit-card {
+            padding: 0.6rem 0.7rem !important;
+        }
+        
+        .unit-card h3 {
+            font-size: 0.85rem !important;
+        }
+        
+        .unit-card p {
+            font-size: 0.7rem !important;
+        }
+        
+        .section-card-title {
+            font-size: 0.95rem !important;
+            margin-bottom: 0.7rem !important;
+        }
+        
+        .empty-units {
+            font-size: 0.75rem !important;
+            padding: 0.8rem !important;
         }
     }
 </style>
