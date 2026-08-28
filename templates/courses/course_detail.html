@@ -5,59 +5,24 @@
 
 {% block extra_css %}
 <style>
-    /* ===== COURSE DETAIL ===== */
+    /* ===== SEUL CSS SPESIFIK POU COURSE DETAIL ===== */
     .course-detail-container {
         max-width: 1320px;
         margin: 2rem auto;
         padding: 0 1.5rem;
     }
 
-    /* ===== CARD - AVEC 10% MARGIN ===== */
+    /* ===== CARD AVEC 10% MARGIN ===== */
     .card {
-        background: var(--glass);
-        backdrop-filter: blur(var(--blur)) saturate(150%);
-        -webkit-backdrop-filter: blur(var(--blur)) saturate(150%);
-        border: 1px solid var(--glass-brd);
-        border-radius: var(--radius);
-        box-shadow: var(--glass-sh);
-        padding: 2.5rem;
-        transition: var(--transition);
-        margin-bottom: 2rem;
+        width: 80% !important;
         max-width: 1200px;
-        margin-left: 10%;
-        margin-right: 10%;
-        width: auto;
-    }
-
-    .card:hover {
-        box-shadow: var(--shadow-hover);
+        margin-left: auto !important;
+        margin-right: auto !important;
+        margin-bottom: 2rem !important;
+        padding: 2.5rem !important;
     }
 
     /* ===== COURSE HEADER ===== */
-    .course-detail-header {
-        display: block;
-        width: 100%;
-    }
-
-    .course-detail-main {
-        width: 100%;
-    }
-
-    .course-detail-badges {
-        display: flex;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-        margin-bottom: 1.2rem;
-        justify-content: center;
-    }
-
-    .course-detail-badges .badge {
-        font-size: 0.75rem;
-        padding: 0.35rem 0.9rem;
-        border-radius: 50px;
-        font-weight: 600;
-    }
-
     .course-detail-title {
         font-size: 2.4rem;
         font-weight: 800;
@@ -93,7 +58,6 @@
         text-decoration: underline;
     }
 
-    /* ===== DESCRIPTION ===== */
     .course-detail-description {
         max-width: 900px;
         margin: 0 auto;
@@ -101,98 +65,6 @@
         line-height: 1.8;
         color: var(--text, #212529);
         font-size: 1.05rem;
-    }
-
-    .course-detail-description h2 {
-        font-size: 1.8rem;
-        font-weight: 700;
-        margin-top: 2rem;
-        margin-bottom: 1rem;
-        font-family: var(--font-display);
-        color: var(--primary, #1a1a2e);
-    }
-
-    .course-detail-description h3 {
-        font-size: 1.4rem;
-        font-weight: 600;
-        margin-top: 1.5rem;
-        margin-bottom: 0.8rem;
-        font-family: var(--font-display);
-        color: var(--text, #212529);
-    }
-
-    .course-detail-description h4 {
-        font-size: 1.1rem;
-        font-weight: 600;
-        margin-top: 1.2rem;
-        margin-bottom: 0.5rem;
-        font-family: var(--font-display);
-        color: var(--primary, #1a1a2e);
-    }
-
-    .course-detail-description p {
-        margin-bottom: 1rem;
-        line-height: 1.8;
-        color: var(--text, #212529);
-    }
-
-    .course-detail-description ul,
-    .course-detail-description ol {
-        padding-left: 1.5rem;
-        margin-bottom: 1rem;
-        color: var(--text, #212529);
-    }
-
-    .course-detail-description li {
-        margin-bottom: 0.3rem;
-        color: var(--text, #212529);
-    }
-
-    .course-detail-description img {
-        max-width: 100%;
-        height: auto;
-        border-radius: var(--radius, 8px);
-        margin: 0.5rem 0;
-    }
-
-    .course-detail-description blockquote {
-        border-left: 4px solid var(--primary, #1a1a2e);
-        padding-left: 1rem;
-        margin-left: 0;
-        color: var(--text-muted, #6c757d);
-        font-style: italic;
-    }
-
-    .course-detail-description a {
-        color: var(--primary, #1a1a2e);
-        text-decoration: none;
-    }
-
-    .course-detail-description a:hover {
-        text-decoration: underline;
-    }
-
-    .course-detail-description table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 1rem;
-    }
-
-    .course-detail-description th,
-    .course-detail-description td {
-        border: 1px solid var(--border, #dee2e6);
-        padding: 0.5rem 0.8rem;
-        text-align: left;
-    }
-
-    .course-detail-description th {
-        background: var(--glass-soft);
-        font-weight: 600;
-        color: var(--text, #212529);
-    }
-
-    .course-detail-description td {
-        color: var(--text, #212529);
     }
 
     /* ===== PREREQUISITES ===== */
@@ -264,72 +136,7 @@
         text-decoration: underline;
     }
 
-    /* ===== NAVIGATION ===== */
-    .course-navigation {
-        display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
-        margin-bottom: 1.5rem;
-        justify-content: center;
-    }
-
-    .course-navigation .btn {
-        padding: 0.4rem 1.2rem;
-        font-size: 0.85rem;
-        border-radius: 50px;
-    }
-
-    /* ===== COURSE ACTIONS ANLÈ (staff) ===== */
-    .course-actions-top {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        margin-top: 1.5rem;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .course-actions-top .btn {
-        min-width: 160px;
-        justify-content: center;
-        border-radius: 50px;
-        padding: 0.6rem 1.5rem;
-        font-weight: 600;
-        transition: var(--transition);
-        font-family: var(--font-body);
-        border: none;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        text-decoration: none;
-        font-size: 0.85rem;
-    }
-
-    .course-actions-top .btn-secondary {
-        background: var(--glass-2);
-        color: var(--text);
-        border: 1px solid var(--glass-brd);
-        backdrop-filter: blur(10px);
-    }
-
-    .course-actions-top .btn-secondary:hover {
-        background: var(--glass-soft);
-        transform: translateY(-3px);
-    }
-
-    .course-actions-top .btn-danger {
-        background: linear-gradient(135deg, var(--danger), #fb7185);
-        color: #fff;
-        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.25);
-    }
-
-    .course-actions-top .btn-danger:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(220, 53, 69, 0.35);
-    }
-
-    /* ===== COURSE ACTIONS ANBA ===== */
+    /* ===== COURSE ACTIONS ANBA (bouton commencer) ===== */
     .course-actions-bottom {
         display: flex;
         flex-wrap: wrap;
@@ -404,187 +211,87 @@
         box-shadow: none !important;
     }
 
-    /* ===== SECTION CARD ===== */
-    .section-card-title {
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin-bottom: 1.2rem;
+    /* ===== COURSE ACTIONS ANLÈ (staff) ===== */
+    .course-actions-top {
         display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 1.5rem;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .course-actions-top .btn {
+        min-width: 160px;
+        justify-content: center;
+        border-radius: 50px;
+        padding: 0.6rem 1.5rem;
+        font-weight: 600;
+        transition: var(--transition);
+        font-family: var(--font-body);
+        border: none;
+        cursor: pointer;
+        display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        font-family: var(--font-display);
-        justify-content: center;
-        color: var(--text, #212529);
+        text-decoration: none;
+        font-size: 0.85rem;
     }
 
-    .section-card-title i {
-        color: var(--primary);
+    .course-actions-top .btn-secondary {
+        background: var(--glass-2);
+        color: var(--text);
+        border: 1px solid var(--glass-brd);
+        backdrop-filter: blur(10px);
     }
 
-    /* ===== QUIZ GRID ===== */
+    .course-actions-top .btn-secondary:hover {
+        background: var(--glass-soft);
+        transform: translateY(-3px);
+    }
+
+    .course-actions-top .btn-danger {
+        background: linear-gradient(135deg, var(--danger), #fb7185);
+        color: #fff;
+        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.25);
+    }
+
+    .course-actions-top .btn-danger:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(220, 53, 69, 0.35);
+    }
+
+    /* ===== QUIZ GRID (pi laj) ===== */
     .quiz-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-        gap: 1.5rem;
-        justify-items: center;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
+        gap: 1.5rem !important;
     }
 
     .quiz-card {
-        background: var(--glass-soft);
-        border-radius: var(--radius-sm);
-        padding: 1.5rem 1.8rem;
-        box-shadow: var(--shadow);
-        border: 1px solid var(--glass-brd-soft);
-        transition: var(--transition);
-        width: 100%;
-        min-height: 180px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-
-    .quiz-card:hover {
-        transform: translateY(-4px);
-        box-shadow: var(--shadow-hover);
-        border-color: color-mix(in srgb, var(--primary) 30%, transparent);
+        padding: 1.5rem 1.8rem !important;
+        min-height: 180px !important;
     }
 
     .quiz-card h3 {
-        font-size: 1.15rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-        text-align: left;
-        color: var(--text, #212529);
-    }
-
-    .quiz-card h3 a {
-        color: var(--text);
-        text-decoration: none;
-        transition: var(--transition);
-    }
-
-    .quiz-card h3 a:hover {
-        color: var(--primary);
+        font-size: 1.15rem !important;
+        text-align: left !important;
     }
 
     .quiz-card p {
-        color: var(--text-muted);
-        font-size: 0.9rem;
-        margin-bottom: 0.8rem;
-        text-align: left;
-        flex-grow: 1;
-        line-height: 1.5;
+        text-align: left !important;
     }
 
     .quiz-card-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 0.8rem;
-        margin-top: 0.8rem;
-        border-top: 1px solid var(--glass-brd-soft);
-        padding-top: 0.8rem;
+        gap: 0.8rem !important;
     }
 
-    .quiz-percent {
-        color: var(--text-muted);
-        font-size: 0.8rem;
-        display: flex;
-        align-items: center;
-        gap: 0.3rem;
-    }
-
-    .quiz-card-footer .badge {
-        font-size: 0.7rem;
-        padding: 0.25rem 0.7rem;
-        border-radius: 50px;
-    }
-
-    .quiz-card-footer .btn-sm {
-        padding: 0.35rem 1.2rem;
-        font-size: 0.8rem;
-        border-radius: 50px;
-        font-weight: 600;
-        transition: var(--transition);
-        background: var(--primary);
-        color: #fff;
-        border: none;
-        cursor: pointer;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.3rem;
-        font-family: var(--font-body);
-    }
-
-    .quiz-card-footer .btn-sm:hover {
-        background: var(--primary-hover);
-        transform: translateY(-2px);
-    }
-
-    /* ===== UNITS LIST ===== */
+    /* ===== UNITS LIST (pi laj) ===== */
     .units-list {
-        display: flex;
-        flex-direction: column;
-        gap: 0.8rem;
-        max-width: 900px;
-        margin: 0 auto;
+        max-width: 900px !important;
     }
 
     .unit-card {
-        background: var(--glass-soft);
-        border-radius: var(--radius-sm);
-        padding: 1.2rem 1.5rem;
-        border: 1px solid var(--glass-brd-soft);
-        transition: var(--transition);
-    }
-
-    .unit-card:hover {
-        border-color: color-mix(in srgb, var(--primary) 30%, transparent);
-        background: var(--glass-2);
-        transform: translateX(5px);
-    }
-
-    .unit-card h3 {
-        font-size: 1.1rem;
-        font-weight: 700;
-        margin-bottom: 0.2rem;
-        color: var(--text, #212529);
-    }
-
-    .unit-card h3 a {
-        color: var(--text);
-        text-decoration: none;
-        transition: var(--transition);
-    }
-
-    .unit-card h3 a:hover {
-        color: var(--primary);
-    }
-
-    .unit-card p {
-        color: var(--text-muted);
-        font-size: 0.88rem;
-        margin-bottom: 0.4rem;
-    }
-
-    .unit-modules {
-        color: var(--text-muted);
-        font-size: 0.78rem;
-        display: flex;
-        align-items: center;
-        gap: 0.3rem;
-    }
-
-    .unit-modules i {
-        color: var(--primary);
-    }
-
-    .empty-units {
-        color: var(--text-muted);
-        text-align: center;
-        padding: 1rem;
+        padding: 1.2rem 1.5rem !important;
     }
 
     /* ===== RESPONSIVE ===== */
@@ -593,7 +300,8 @@
             padding: 0 1rem;
         }
         .card {
-            width: 92%;
+            width: 85% !important;
+            padding: 2rem !important;
         }
     }
 
@@ -635,33 +343,21 @@
         }
 
         .quiz-grid {
-            grid-template-columns: 1fr;
+            grid-template-columns: 1fr !important;
         }
 
         .course-detail-description {
             font-size: 0.95rem;
         }
 
-        .course-detail-description h2 {
-            font-size: 1.4rem;
-        }
-
-        .course-detail-description h3 {
-            font-size: 1.2rem;
-        }
-
-        .course-detail-description h4 {
-            font-size: 1rem;
-        }
-
         .card {
-            padding: 1.5rem;
-            width: 95%;
+            width: 90% !important;
+            padding: 1.5rem !important;
         }
 
         .quiz-card {
-            padding: 1.2rem;
-            min-height: 150px;
+            padding: 1.2rem !important;
+            min-height: 150px !important;
         }
     }
 
@@ -680,25 +376,25 @@
         }
 
         .card {
-            padding: 1rem;
-            width: 98%;
+            width: 95% !important;
+            padding: 1rem !important;
         }
 
         .unit-card {
-            padding: 1rem;
+            padding: 1rem !important;
         }
 
         .quiz-card {
-            padding: 1rem;
-            min-height: 130px;
+            padding: 1rem !important;
+            min-height: 130px !important;
         }
 
         .prerequisites-box {
-            padding: 1rem;
+            padding: 1rem !important;
         }
 
         .quiz-grid {
-            gap: 1rem;
+            gap: 1rem !important;
         }
     }
 </style>
