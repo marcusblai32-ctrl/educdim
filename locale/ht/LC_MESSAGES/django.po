@@ -3,103 +3,104 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: EducDim\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-29 02:54-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2026-08-29 03:00-0400\n"
+"Last-Translator: Marcus Blai <marcusblai32@gmail.com>\n"
+"Language-Team: Kreyòl Ayisyen <ht@li.org>\n"
+"Language: ht\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: .\accounts\validators.py:8
 msgid "Le mot de passe doit contenir au moins 8 caractères."
-msgstr ""
+msgstr "Modpas la dwe gen omwen 8 karaktè."
 
 #: .\accounts\validators.py:10
 msgid "Le mot de passe doit contenir au moins une majuscule."
-msgstr ""
+msgstr "Modpas la dwe gen omwen yon lèt majiskil."
 
 #: .\accounts\validators.py:12
 msgid "Le mot de passe doit contenir au moins une minuscule."
-msgstr ""
+msgstr "Modpas la dwe gen omwen yon lèt miniskil."
 
 #: .\accounts\validators.py:14
 msgid "Le mot de passe doit contenir au moins un chiffre."
-msgstr ""
+msgstr "Modpas la dwe gen omwen yon chif."
 
 #: .\accounts\validators.py:16
 msgid "Le mot de passe doit contenir au moins un caractère spécial."
-msgstr ""
+msgstr "Modpas la dwe gen omwen yon karaktè espesyal."
 
 #: .\accounts\validators.py:19
 msgid ""
 "Votre mot de passe doit contenir au moins 8 caractères, une majuscule, une "
 "minuscule, un chiffre et un caractère spécial."
 msgstr ""
+"Modpas ou dwe gen omwen 8 karaktè, yon majiskil, yon miniskil, yon chif ak "
+"yon karaktè espesyal."
 
 #: .\accounts\views.py:19
 msgid "Compte cree avec succes ! Votre ID est : "
-msgstr ""
+msgstr "Kont kreye ak siksè ! ID ou se : "
 
 #: .\accounts\views.py:37 .\templates\accounts\login.html:53
 msgid "Email/ID ou mot de passe incorrect."
-msgstr ""
+msgstr "Imèl/ID oswa modpas pa kòrèk."
 
 #: .\attendance\views.py:29
 msgid "Une justification existe déjà."
-msgstr ""
+msgstr "Yon jistifikasyon deja egziste."
 
 #: .\attendance\views.py:35
 msgid "Justification soumise avec succès."
-msgstr ""
+msgstr "Jistifikasyon soumèt ak siksè."
 
 #: .\attendance\views.py:47
 msgid "Justification révisée."
-msgstr ""
+msgstr "Jistifikasyon revize."
 
 #: .\chat\views.py:23
 msgid "Vous n'avez pas acces a ce salon."
-msgstr ""
+msgstr "Ou pa gen aksè a salòn sa a."
 
 #: .\chat\views.py:44
 msgid "Message supprime."
-msgstr ""
+msgstr "Mesaj efase."
 
 #: .\chat\views.py:46
 msgid "Vous n'etes pas autorise a supprimer ce message."
-msgstr ""
+msgstr "Ou pa otorize pou efase mesaj sa a."
 
 #: .\chat\views.py:150
 msgid "Vous devez partager un cours pour creer un chat prive."
-msgstr ""
+msgstr "Ou dwe pataje yon kou pou kreye yon chat prive."
 
 #: .\chat\views.py:169
 #, python-brace-format
 msgid "Salon prive cree avec {}."
-msgstr ""
+msgstr "Salòn prive kreye ak {}."
 
 #: .\chat\views.py:176
 msgid "Vous n'etes pas inscrit a ce cours."
-msgstr ""
+msgstr "Ou pa enskri nan kou sa a."
 
 #: .\chat\views.py:193
 msgid "Salon de groupe cree."
-msgstr ""
+msgstr "Salòn gwoup kreye."
 
 #: .\chat\views.py:199
 msgid "Seuls les administrateurs peuvent creer un salon de feedback."
-msgstr ""
+msgstr "Sèlman administratè yo ka kreye yon salòn fidbak."
 
 #: .\chat\views.py:212
 msgid "Salon de feedback cree."
-msgstr ""
+msgstr "Salòn fidbak kreye."
 
 #: .\enrollments\theme_manager\context_processors.py:31
 #: .\templates\admin\dashboard.html:341
@@ -112,18 +113,18 @@ msgstr ""
 #: .\templates\quiz\list.html:24 .\templates\quiz\quiz_detail.html:13
 #: .\templates\quiz\quiz_list.html:24 .\theme_manager\context_processors.py:61
 msgid "Cours"
-msgstr ""
+msgstr "Kou"
 
 #: .\enrollments\theme_manager\context_processors.py:32
 #: .\templates\base.html:199 .\theme_manager\context_processors.py:62
 msgid "Inscriptions"
-msgstr ""
+msgstr "Enskripsyon"
 
 #: .\enrollments\theme_manager\context_processors.py:33
 #: .\templates\base.html:147 .\templates\progress\course_progress.html:4
 #: .\theme_manager\context_processors.py:63
 msgid "Progression"
-msgstr ""
+msgstr "Pwogresyon"
 
 #: .\enrollments\theme_manager\context_processors.py:34
 #: .\templates\courses\lesson_detail.html:453
@@ -133,93 +134,93 @@ msgstr ""
 #: .\templates\quiz\list.html:8 .\templates\quiz\quiz_list.html:8
 #: .\templates\quiz\take_quiz.html:4 .\theme_manager\context_processors.py:64
 msgid "Quiz"
-msgstr ""
+msgstr "Quiz"
 
 #: .\enrollments\theme_manager\context_processors.py:35
 #: .\theme_manager\context_processors.py:65
 msgid "Présences"
-msgstr ""
+msgstr "Prezans"
 
 #: .\enrollments\theme_manager\context_processors.py:36
 #: .\templates\base.html:205 .\templates\theme_manager\theme_preview.html:29
 #: .\theme_manager\context_processors.py:66
 msgid "Badges"
-msgstr ""
+msgstr "Badj"
 
 #: .\enrollments\theme_manager\context_processors.py:37
 #: .\templates\base.html:202 .\templates\ranking\leaderboard.html:4
 #: .\theme_manager\context_processors.py:67
 msgid "Classement"
-msgstr ""
+msgstr "Klasman"
 
 #: .\enrollments\theme_manager\context_processors.py:38
 #: .\templates\base.html:153 .\templates\chat\etudiants_list.html:49
 #: .\theme_manager\context_processors.py:68
 msgid "Chat"
-msgstr ""
+msgstr "Chat"
 
 #: .\enrollments\theme_manager\context_processors.py:39
 #: .\templates\base.html:168 .\templates\notifications\list.html:4
 #: .\templates\notifications\list.html:9
 #: .\theme_manager\context_processors.py:69
 msgid "Notifications"
-msgstr ""
+msgstr "Notifikasyon"
 
 #: .\enrollments\theme_manager\context_processors.py:40
 #: .\templates\base.html:357 .\templates\maintenance.html:27
 #: .\theme_manager\context_processors.py:70
 msgid "Contact"
-msgstr ""
+msgstr "Kontak"
 
 #: .\enrollments\theme_manager\context_processors.py:41
 #: .\templates\base.html:354 .\templates\pages\about.html:4
 #: .\templates\pages\about.html:61 .\templates\pages\about.html:63
 #: .\theme_manager\context_processors.py:71
 msgid "À propos"
-msgstr ""
+msgstr "A pwopo"
 
 #: .\enrollments\theme_manager\context_processors.py:42
 #: .\templates\base.html:363 .\theme_manager\context_processors.py:72
 msgid "Conditions"
-msgstr ""
+msgstr "Kondisyon"
 
 #: .\enrollments\theme_manager\context_processors.py:43
 #: .\templates\base.html:360 .\templates\pages\privacy.html:4
 #: .\theme_manager\context_processors.py:73
 msgid "Confidentialité"
-msgstr ""
+msgstr "Konfidansyalite"
 
 #: .\enrollments\theme_manager\context_processors.py:44
 #: .\templates\base.html:366 .\templates\pages\faq.html:4
 #: .\theme_manager\context_processors.py:74
 msgid "FAQ"
-msgstr ""
+msgstr "FAQ"
 
 #: .\enrollments\theme_manager\context_processors.py:45
 #: .\theme_manager\context_processors.py:75
 msgid "Tableau de bord"
-msgstr ""
+msgstr "Tablodbò"
 
 #: .\enrollments\theme_manager\context_processors.py:46
 #: .\theme_manager\context_processors.py:76
 msgid "Todo"
-msgstr ""
+msgstr "Pou fè"
 
 #: .\enrollments\theme_manager\context_processors.py:47
 #: .\theme_manager\context_processors.py:77 .\theme_manager\models.py:187
 msgid "Thème"
-msgstr ""
+msgstr "Tèm"
 
 #: .\enrollments\theme_manager\context_processors.py:48
 #: .\theme_manager\context_processors.py:78
 msgid "Annonces"
-msgstr ""
+msgstr "Anons"
 
 #: .\enrollments\theme_manager\context_processors.py:50
 #: .\templates\accounts\login.html:4 .\templates\accounts\login.html:14
 #: .\templates\base.html:220 .\theme_manager\context_processors.py:79
 msgid "Connexion"
-msgstr ""
+msgstr "Koneksyon"
 
 #: .\enrollments\theme_manager\context_processors.py:51
 #: .\templates\accounts\signup.html:4
@@ -227,12 +228,12 @@ msgstr ""
 #: .\templates\enrollments\enroll_form.html:8
 #: .\theme_manager\context_processors.py:80
 msgid "Inscription"
-msgstr ""
+msgstr "Enskripsyon"
 
 #: .\enrollments\theme_manager\context_processors.py:52
 #: .\templates\base.html:193 .\theme_manager\context_processors.py:81
 msgid "Profil"
-msgstr ""
+msgstr "Pwofil"
 
 #: .\enrollments\theme_manager\context_processors.py:53
 #: .\templates\courses\course_confirm_delete.html:4
@@ -240,253 +241,253 @@ msgstr ""
 #: .\templates\notifications\list.html:38
 #: .\theme_manager\context_processors.py:82
 msgid "Supprimer"
-msgstr ""
+msgstr "Efase"
 
 #: .\enrollments\theme_manager\context_processors.py:54
 #: .\templates\accounts\password_reset.html:4
 #: .\templates\accounts\password_reset.html:13
 #: .\theme_manager\context_processors.py:83
 msgid "Mot de passe oublié"
-msgstr ""
+msgstr "Modpas bliye"
 
 #: .\enrollments\theme_manager\context_processors.py:55
 #: .\templates\courses\course_list.html:64
 #: .\theme_manager\context_processors.py:84
 msgid "Réinitialiser"
-msgstr ""
+msgstr "Reyinisyalize"
 
 #: .\enrollments\theme_manager\context_processors.py:56
 #: .\templates\courses\course_detail.html:596
 #: .\templates\courses\course_form.html:10
 #: .\theme_manager\context_processors.py:85
 msgid "Modifier"
-msgstr ""
+msgstr "Modifye"
 
 #: .\enrollments\theme_manager\context_processors.py:57
 #: .\theme_manager\context_processors.py:86
 msgid "Ajouter"
-msgstr ""
+msgstr "Ajoute"
 
 #: .\enrollments\theme_manager\context_processors.py:58
 #: .\theme_manager\context_processors.py:87
 msgid "Liste"
-msgstr ""
+msgstr "Lis"
 
 #: .\enrollments\theme_manager\context_processors.py:59
 #: .\templates\subscriptions\detail.html:4
 #: .\theme_manager\context_processors.py:88
 msgid "Détail"
-msgstr ""
+msgstr "Detay"
 
 #: .\enrollments\views.py:25
 msgid "Vous n'avez pas accès à cette inscription."
-msgstr ""
+msgstr "Ou pa gen aksè a enskripsyon sa a."
 
 #: .\enrollments\views.py:40
 msgid "Vous êtes déjà inscrit à ce cours."
-msgstr ""
+msgstr "Ou deja enskri nan kou sa a."
 
 #: .\enrollments\views.py:62
 msgid "Inscription réussie via votre abonnement !"
-msgstr ""
+msgstr "Enskripsyon reyisi atravè abònman ou !"
 
 #: .\enrollments\views.py:91
 msgid "Votre abonnement vous donne accès à ce cours !"
-msgstr ""
+msgstr "Abònman ou ba ou aksè a kou sa a !"
 
 #: .\enrollments\views.py:103
 #, python-brace-format
 msgid "Inscription réussie au cours '{}'."
-msgstr ""
+msgstr "Enskripsyon reyisi nan kou '{}'."
 
 #: .\enrollments\views.py:129 .\subscriptions\views.py:112
 msgid ""
 "Votre demande a été envoyée. Un administrateur vérifiera votre paiement."
-msgstr ""
+msgstr "Demann ou an te voye. Yon administratè ap verifye peman ou."
 
 #: .\notifications\views.py:50
 msgid "Notification supprimée."
-msgstr ""
+msgstr "Notifikasyon efase."
 
 #: .\notifications\views.py:56
 msgid "Toutes les notifications ont été supprimées."
-msgstr ""
+msgstr "Tout notifikasyon yo te efase."
 
 #: .\progress\views.py:124
 msgid "Cette leçon est déjà terminée."
-msgstr ""
+msgstr "Leson sa a deja fini."
 
 #: .\progress\views.py:144
 msgid "Vous devez réussir tous les quiz de cette leçon avant de la terminer."
-msgstr ""
+msgstr "Ou dwe reyisi tout quiz leson sa a anvan ou fini li."
 
 #: .\progress\views.py:160
 msgid "Félicitations! Leçon terminée avec succès."
-msgstr ""
+msgstr "Felisitasyon! Leson fini ak siksè."
 
 #: .\quiz\views.py:38 .\quiz\views.py:62
 msgid "Ce quiz a déjà été soumis."
-msgstr ""
+msgstr "Quiz sa a deja soumèt."
 
 #: .\quiz\views.py:104
 msgid "Quiz soumis avec succès!"
-msgstr ""
+msgstr "Quiz soumèt ak siksè!"
 
 #: .\quiz\views.py:113
 msgid "Vous n'avez pas encore soumis ce quiz."
-msgstr ""
+msgstr "Ou poko soumèt quiz sa a."
 
 #: .\quiz\views.py:154
 msgid "Koreksyon anrejistre epi nòt rekalkile."
-msgstr ""
+msgstr "Koreksyon anrejistre epi nòt rekalkile."
 
 #: .\subscriptions\admin.py:45
 msgid "Nb cours"
-msgstr ""
+msgstr "Kantite kou"
 
 #: .\subscriptions\admin.py:132
 msgid "Approuver le paiement"
-msgstr ""
+msgstr "Apwouve peman an"
 
 #: .\subscriptions\admin.py:156
 msgid "Rejeter le paiement"
-msgstr ""
+msgstr "Rejte peman an"
 
 #: .\subscriptions\admin.py:175
 msgid "Réactiver les accès"
-msgstr ""
+msgstr "Reaktive aksè yo"
 
 #: .\subscriptions\admin.py:191
 msgid "Actif"
-msgstr ""
+msgstr "Aktif"
 
 #: .\subscriptions\forms.py:30
 msgid "L'ID de transaction est requis pour MonCash."
-msgstr ""
+msgstr "ID tranzaksyon an obligatwa pou MonCash."
 
 #: .\subscriptions\forms.py:32
 msgid "Le numéro de téléphone est requis pour MonCash."
-msgstr ""
+msgstr "Nimewo telefòn nan obligatwa pou MonCash."
 
 #: .\subscriptions\forms.py:35
 msgid "La photo de paiement est requise pour NatCash."
-msgstr ""
+msgstr "Foto peman an obligatwa pou NatCash."
 
 #: .\subscriptions\forms.py:68
 #: .\templates\subscriptions\select_courses.html:110
 msgid "Veuillez sélectionner au moins un cours."
-msgstr ""
+msgstr "Tanpri chwazi omwen yon kou."
 
 #: .\subscriptions\views.py:29
 msgid "Ce plan d'abonnement n'existe pas ou n'est plus disponible."
-msgstr ""
+msgstr "Plan abònman sa a pa egziste oswa pa disponib ankò."
 
 #: .\subscriptions\views.py:38
 msgid "Vous avez déjà une demande pour ce plan."
-msgstr ""
+msgstr "Ou deja gen yon demann pou plan sa a."
 
 #: .\subscriptions\views.py:60
 msgid "Abonnement gratuit activé ! Veuillez choisir vos cours."
-msgstr ""
+msgstr "Abònman gratis aktive! Tanpri chwazi kou ou yo."
 
 #: .\subscriptions\views.py:71
 msgid "Abonnement gratuit activé ! Tous les cours sont accessibles."
-msgstr ""
+msgstr "Abònman gratis aktive! Tout kou yo aksesib."
 
 #: .\subscriptions\views.py:96
 #, python-brace-format
 msgid "Abonnement activé ! Veuillez choisir vos cours ({} maximum)."
-msgstr ""
+msgstr "Abònman aktive! Tanpri chwazi kou ou yo ({} maksimòm)."
 
 #: .\subscriptions\views.py:107
 msgid "Abonnement activé ! Tous les cours sont accessibles."
-msgstr ""
+msgstr "Abònman aktive! Tout kou yo aksesib."
 
 #: .\subscriptions\views.py:160
 msgid "Veuillez choisir vos cours pour activer votre abonnement."
-msgstr ""
+msgstr "Tanpri chwazi kou ou yo pou aktive abònman ou."
 
 #: .\subscriptions\views.py:207
 msgid "Ce plan donne accès à tous les cours automatiquement."
-msgstr ""
+msgstr "Plan sa a bay aksè a tout kou otomatikman."
 
 #: .\subscriptions\views.py:213
 msgid "Vous avez déjà sélectionné tous vos cours."
-msgstr ""
+msgstr "Ou deja chwazi tout kou ou yo."
 
 #: .\subscriptions\views.py:222
 #, python-brace-format
 msgid "Vous ne pouvez sélectionner que {} cours maximum."
-msgstr ""
+msgstr "Ou ka chwazi sèlman {} kou maksimòm."
 
 #: .\subscriptions\views.py:242
 msgid "Félicitations ! Tous vos cours ont été activés."
-msgstr ""
+msgstr "Felisitasyon! Tout kou ou yo te aktive."
 
 #: .\subscriptions\views.py:247
 #, python-brace-format
 msgid "{} cours sélectionnés. Il vous reste {} place(s)."
-msgstr ""
+msgstr "{} kou chwazi. Ou rete {} plas."
 
 #: .\subscriptions\views.py:254
 #, python-brace-format
 msgid "Erreur lors de la sélection des cours: {}"
-msgstr ""
+msgstr "Erè pandan seleksyon kou yo: {}"
 
 #: .\subscriptions\views.py:278
 msgid "Cet abonnement est déjà actif."
-msgstr ""
+msgstr "Abònman sa a deja aktif."
 
 #: .\subscriptions\views.py:294
 msgid "Abonnement activé. L'utilisateur doit maintenant choisir ses cours."
-msgstr ""
+msgstr "Abònman aktive. Itilizatè a dwe kounye a chwazi kou li yo."
 
 #: .\subscriptions\views.py:306
 msgid "Abonnement activé et accès créés."
-msgstr ""
+msgstr "Abònman aktive epi aksè kreye."
 
 #: .\templates\accounts\delete_account.html:4
 #: .\templates\accounts\delete_account.html:11
 #: .\templates\accounts\profile.html:33
 msgid "Supprimer mon compte"
-msgstr ""
+msgstr "Efase kont mwen"
 
 #: .\templates\accounts\delete_account.html:14
 msgid "Cette action est irréversible. Toutes vos données seront supprimées."
-msgstr ""
+msgstr "Aksyon sa a irevèsib. Tout done ou yo ap efase."
 
 #: .\templates\accounts\delete_account.html:20
 msgid "En supprimant votre compte, vous perdrez :"
-msgstr ""
+msgstr "Lè ou efase kont ou, ou pral pèdi :"
 
 #: .\templates\accounts\delete_account.html:22
 msgid "Tous vos cours et inscriptions"
-msgstr ""
+msgstr "Tout kou ou yo ak enskripsyon"
 
 #: .\templates\accounts\delete_account.html:23
 #: .\templates\courses\learning_path_detail.html:67
 msgid "Votre progression"
-msgstr ""
+msgstr "Pwogresyon ou"
 
 #: .\templates\accounts\delete_account.html:24
 msgid "Vos badges et points"
-msgstr ""
+msgstr "Badj ou yo ak pwen"
 
 #: .\templates\accounts\delete_account.html:25
 msgid "Tous vos messages"
-msgstr ""
+msgstr "Tout mesaj ou yo"
 
 #: .\templates\accounts\delete_account.html:32
 msgid "Entrez votre mot de passe pour confirmer"
-msgstr ""
+msgstr "Mete modpas ou pou konfime"
 
 #: .\templates\accounts\delete_account.html:35
 msgid "Êtes-vous sûr de vouloir supprimer votre compte ?"
-msgstr ""
+msgstr "Èske ou sèten ou vle efase kont ou ?"
 
 #: .\templates\accounts\delete_account.html:36
 msgid "Supprimer définitivement"
-msgstr ""
+msgstr "Efase definitivman"
 
 #: .\templates\accounts\delete_account.html:39
 #: .\templates\attendance\justification_form.html:16
@@ -495,31 +496,31 @@ msgstr ""
 #: .\templates\courses\course_form.html:101
 #: .\templates\enrollments\enroll_form.html:113
 msgid "Annuler"
-msgstr ""
+msgstr "Anile"
 
 #: .\templates\accounts\login.html:15
 msgid "Connectez-vous pour acceder a vos cours"
-msgstr ""
+msgstr "Konekte ou pou jwenn aksè a kou ou yo"
 
 #: .\templates\accounts\login.html:24
 msgid "Email ou ID utilisateur"
-msgstr ""
+msgstr "Imèl oswa ID itilizatè"
 
 #: .\templates\accounts\login.html:30 .\templates\accounts\signup.html:53
 msgid "Mot de passe"
-msgstr ""
+msgstr "Modpas"
 
 #: .\templates\accounts\login.html:32
 msgid "Votre mot de passe"
-msgstr ""
+msgstr "Modpas ou"
 
 #: .\templates\accounts\login.html:43
 msgid "Se souvenir de moi"
-msgstr ""
+msgstr "Sonje mwen"
 
 #: .\templates\accounts\login.html:46
 msgid "Mot de passe oublie ?"
-msgstr ""
+msgstr "Modpas bliye ?"
 
 #: .\templates\accounts\login.html:59
 #: .\templates\accounts\password_reset.html:35
@@ -527,321 +528,327 @@ msgstr ""
 #: .\templates\accounts\signup.html:86
 #: .\templates\courses\course_detail.html:674
 msgid "Se connecter"
-msgstr ""
+msgstr "Konekte"
 
 #: .\templates\accounts\login.html:65
 msgid "Pas encore de compte ?"
-msgstr ""
+msgstr "Ou poko gen kont ?"
 
 #: .\templates\accounts\login.html:65 .\templates\accounts\signup.html:14
 msgid "Creer un compte"
-msgstr ""
+msgstr "Kreye yon kont"
 
 #: .\templates\accounts\password_reset.html:14
 msgid "Entrez votre adresse email pour recevoir un lien de réinitialisation"
-msgstr ""
+msgstr "Mete adrès imèl ou pou resevwa yon lyen reyinisyalizasyon"
 
 #: .\templates\accounts\password_reset.html:21
 #: .\templates\accounts\signup.html:25 .\templates\pages\contact.html:41
 msgid "Email"
-msgstr ""
+msgstr "Imèl"
 
 #: .\templates\accounts\password_reset.html:23
 msgid "Votre adresse email"
-msgstr ""
+msgstr "Adrès imèl ou"
 
 #: .\templates\accounts\password_reset.html:30
 msgid "Envoyer le lien"
-msgstr ""
+msgstr "Voye lyen an"
 
 #: .\templates\accounts\password_reset.html:34
 msgid "Vous vous souvenez de votre mot de passe ?"
-msgstr ""
+msgstr "Ou sonje modpas ou ?"
 
 #: .\templates\accounts\password_reset_complete.html:4
 msgid "Mot de passe réinitialisé"
-msgstr ""
+msgstr "Modpas reyinisyalize"
 
 #: .\templates\accounts\password_reset_complete.html:13
 msgid "Mot de passe réinitialisé !"
-msgstr ""
+msgstr "Modpas reyinisyalize !"
 
 #: .\templates\accounts\password_reset_complete.html:14
 msgid "Votre mot de passe a été modifié avec succès."
-msgstr ""
+msgstr "Modpas ou te modifye ak siksè."
 
 #: .\templates\accounts\password_reset_complete.html:20
 msgid "Vous pouvez maintenant vous connecter avec votre nouveau mot de passe."
-msgstr ""
+msgstr "Ou ka kounye a konekte ak nouvo modpas ou."
 
 #: .\templates\accounts\password_reset_confirm.html:4
 #: .\templates\accounts\password_reset_confirm.html:13
 #: .\templates\accounts\password_reset_confirm.html:22
 msgid "Nouveau mot de passe"
-msgstr ""
+msgstr "Nouvo modpas"
 
 #: .\templates\accounts\password_reset_confirm.html:14
 msgid "Entrez votre nouveau mot de passe"
-msgstr ""
+msgstr "Mete nouvo modpas ou"
 
 #: .\templates\accounts\password_reset_confirm.html:24
 msgid "Minimum 8 caractères"
-msgstr ""
+msgstr "Omwen 8 karaktè"
 
 #: .\templates\accounts\password_reset_confirm.html:28
 msgid "Votre mot de passe doit contenir au moins 8 caractères."
-msgstr ""
+msgstr "Modpas ou dwe gen omwen 8 karaktè."
 
 #: .\templates\accounts\password_reset_confirm.html:32
 #: .\templates\accounts\signup.html:68
 msgid "Confirmer le mot de passe"
-msgstr ""
+msgstr "Konfime modpas la"
 
 #: .\templates\accounts\password_reset_confirm.html:34
 msgid "Confirmez votre mot de passe"
-msgstr ""
+msgstr "Konfime modpas ou"
 
 #: .\templates\accounts\password_reset_confirm.html:41
 #: .\templates\accounts\password_reset_email.html:76
 msgid "Réinitialiser mon mot de passe"
-msgstr ""
+msgstr "Reyinisyalize modpas mwen"
 
 #: .\templates\accounts\password_reset_confirm.html:48
 msgid "Le lien de réinitialisation est invalide ou a expiré."
-msgstr ""
+msgstr "Lyen reyinisyalizasyon an pa valab oswa ekspire."
 
 #: .\templates\accounts\password_reset_confirm.html:53
 msgid "Demander un nouveau lien"
-msgstr ""
+msgstr "Mande yon nouvo lyen"
 
 #: .\templates\accounts\password_reset_done.html:4
 msgid "Email envoyé"
-msgstr ""
+msgstr "Imèl voye"
 
 #: .\templates\accounts\password_reset_done.html:13
 msgid "Email envoyé !"
-msgstr ""
+msgstr "Imèl voye !"
 
 #: .\templates\accounts\password_reset_done.html:14
 msgid "Un lien de réinitialisation vous a été envoyé par email."
-msgstr ""
+msgstr "Yon lyen reyinisyalizasyon te voye ba ou pa imèl."
 
 #: .\templates\accounts\password_reset_done.html:20
 msgid ""
 "Veuillez vérifier votre boîte de réception et suivre les instructions pour "
 "réinitialiser votre mot de passe."
 msgstr ""
+"Tanpri tcheke bwat resepsyon ou epi swiv enstriksyon yo pou reyinisyalize "
+"modpas ou."
 
 #: .\templates\accounts\password_reset_done.html:27
 msgid ""
 "Si vous ne recevez pas l'email dans quelques minutes, vérifiez vos spams ou "
 "réessayez."
 msgstr ""
+"Si ou pa resevwa imèl la nan kèk minit, tcheke spam ou oswa eseye ankò."
 
 #: .\templates\accounts\password_reset_done.html:33
 msgid "Retour à la connexion"
-msgstr ""
+msgstr "Retounen nan koneksyon"
 
 #: .\templates\accounts\password_reset_email.html:8
 #: .\templates\accounts\password_reset_subject.txt:1
 msgid "Réinitialisation de votre mot de passe"
-msgstr ""
+msgstr "Reyinisyalizasyon modpas ou"
 
 #: .\templates\accounts\password_reset_email.html:69
 msgid "Bonjour"
-msgstr ""
+msgstr "Bonjou"
 
 #: .\templates\accounts\password_reset_email.html:71
 msgid "Nous avons reçu une demande de réinitialisation de votre mot de passe."
-msgstr ""
+msgstr "Nou te resevwa yon demann reyinisyalizasyon modpas ou."
 
 #: .\templates\accounts\password_reset_email.html:73
 msgid ""
 "Cliquez sur le bouton ci-dessous pour réinitialiser votre mot de passe :"
-msgstr ""
+msgstr "Klike sou bouton ki anba a pou reyinisyalize modpas ou :"
 
 #: .\templates\accounts\password_reset_email.html:80
 msgid "Ce lien expire dans 24 heures."
-msgstr ""
+msgstr "Lyen sa a ekspire nan 24 èdtan."
 
 #: .\templates\accounts\password_reset_email.html:83
 msgid ""
 "Si vous n'avez pas demandé cette réinitialisation, ignorez simplement cet "
 "email."
 msgstr ""
+"Si ou pa te mande reyinisyalizasyon sa a, senpleman inyore imèl sa a."
 
 #: .\templates\accounts\password_reset_email.html:85
 msgid "L'équipe"
-msgstr ""
+msgstr "Ekip la"
 
 #: .\templates\accounts\password_reset_email.html:88 .\templates\base.html:371
 msgid "Tous droits réservés"
-msgstr ""
+msgstr "Tout dwa rezève"
 
 #: .\templates\accounts\profile.html:4
 msgid "Mon profil"
-msgstr ""
+msgstr "Pwofil mwen"
 
 #: .\templates\accounts\profile.html:18 .\templates\accounts\signup.html:46
 msgid "Annee de naissance"
-msgstr ""
+msgstr "Ane nesans"
 
 #: .\templates\accounts\profile.html:19
 msgid "Membre depuis"
-msgstr ""
+msgstr "Manm depi"
 
 #: .\templates\accounts\profile.html:24 .\templates\progress\dashboard.html:4
 #: .\templates\progress\dashboard.html:13
 msgid "Ma progression"
-msgstr ""
+msgstr "Pwogresyon mwen"
 
 #: .\templates\accounts\profile.html:25
 #: .\templates\enrollments\enrollment_list.html:4
 #: .\templates\enrollments\enrollment_list.html:9
 msgid "Mes inscriptions"
-msgstr ""
+msgstr "Enskripsyon mwen"
 
 #: .\templates\accounts\profile.html:26 .\templates\ranking\my_rank.html:4
 #: .\templates\ranking\my_rank.html:8
 msgid "Mon classement"
-msgstr ""
+msgstr "Klasman mwen"
 
 #: .\templates\accounts\profile.html:27 .\templates\badges\my_badges.html:4
 #: .\templates\badges\my_badges.html:8
 msgid "Mes badges"
-msgstr ""
+msgstr "Badj mwen"
 
 #: .\templates\accounts\signup.html:15
 msgid "Rejoignez notre communaute d'apprenants"
-msgstr ""
+msgstr "Vin jwenn kominote aprenan nou an"
 
 #: .\templates\accounts\signup.html:33
 msgid "Prenom"
-msgstr ""
+msgstr "Non"
 
 #: .\templates\accounts\signup.html:38
 msgid "Nom"
-msgstr ""
+msgstr "Siyati"
 
 #: .\templates\accounts\signup.html:55
 msgid "Min 8 caracteres..."
-msgstr ""
+msgstr "Omwen 8 karaktè..."
 
 #: .\templates\accounts\signup.html:61
 msgid ""
 "Minimum 8 caracteres, une majuscule, une minuscule, un chiffre et un "
 "caractere special"
 msgstr ""
+"Omwen 8 karaktè, yon majiskil, yon miniskil, yon chif ak yon karaktè "
+"espesyal"
 
 #: .\templates\accounts\signup.html:70
 msgid "Repetez le mot de passe"
-msgstr ""
+msgstr "Repete modpas la"
 
 #: .\templates\accounts\signup.html:80
 msgid "Creer mon compte"
-msgstr ""
+msgstr "Kreye kont mwen"
 
 #: .\templates\accounts\signup.html:86
 msgid "Deja un compte ?"
-msgstr ""
+msgstr "Ou deja gen yon kont ?"
 
 #: .\templates\admin\dashboard.html:4 .\templates\admin\dashboard.html:318
 msgid "Tableau de bord EducDim"
-msgstr ""
+msgstr "Tablodbò EducDim"
 
 #: .\templates\admin\dashboard.html:321
 msgid "Actualiser"
-msgstr ""
+msgstr "Aktialize"
 
 #: .\templates\admin\dashboard.html:331
 msgid "Utilisateurs"
-msgstr ""
+msgstr "Itilizatè"
 
 #: .\templates\admin\dashboard.html:333
 msgid "aujourd'hui"
-msgstr ""
+msgstr "jodi a"
 
 #: .\templates\admin\dashboard.html:343
 #: .\templates\courses\module_detail.html:281
 msgid "leçons"
-msgstr ""
+msgstr "leson"
 
 #: .\templates\admin\dashboard.html:351
 msgid "Revenu total"
-msgstr ""
+msgstr "Revi total"
 
 #: .\templates\admin\dashboard.html:353
 msgid "ce mois"
-msgstr ""
+msgstr "mwa sa a"
 
 #: .\templates\admin\dashboard.html:361
 msgid "Abonnements actifs"
-msgstr ""
+msgstr "Abònman aktif"
 
 #: .\templates\admin\dashboard.html:363
 msgid "croissance"
-msgstr ""
+msgstr "kwasans"
 
 #: .\templates\admin\dashboard.html:371
 msgid "Inscriptions aux cours"
-msgstr ""
+msgstr "Enskripsyon nan kou yo"
 
 #: .\templates\admin\dashboard.html:378
 msgid "Paiements en attente"
-msgstr ""
+msgstr "Peman annatant"
 
 #: .\templates\admin\dashboard.html:385
 msgid "Enseignants"
-msgstr ""
+msgstr "Pwofesè"
 
 #: .\templates\admin\dashboard.html:392
 msgid "Actifs aujourd'hui"
-msgstr ""
+msgstr "Aktif jodi a"
 
 #: .\templates\admin\dashboard.html:399
 msgid "Répartition des cours"
-msgstr ""
+msgstr "Repatisyon kou yo"
 
 #: .\templates\admin\dashboard.html:403
 msgid "Évolution des utilisateurs"
-msgstr ""
+msgstr "Evolisyon itilizatè yo"
 
 #: .\templates\admin\dashboard.html:411
 msgid "Dernière mise à jour"
-msgstr ""
+msgstr "Dènye mizajou"
 
 #: .\templates\attendance\justification_form.html:4
 msgid "Justifier mon absence"
-msgstr ""
+msgstr "Jistifye absans mwen"
 
 #: .\templates\attendance\justification_form.html:8
 msgid "Justification d'absence / retard"
-msgstr ""
+msgstr "Jistifikasyon absans / reta"
 
 #: .\templates\attendance\justification_form.html:12
 #: .\templates\attendance\review_justification.html:11
 #: .\templates\enrollments\enrollment_detail.html:47
 msgid "Raison"
-msgstr ""
+msgstr "Rezon"
 
 #: .\templates\attendance\justification_form.html:15
 #: .\templates\subscriptions\subscribe.html:74
 msgid "Soumettre"
-msgstr ""
+msgstr "Soumèt"
 
 #: .\templates\attendance\review_justification.html:4
 msgid "Réviser la justification"
-msgstr ""
+msgstr "Revize jistifikasyon an"
 
 #: .\templates\attendance\review_justification.html:8
 msgid "Justification de"
-msgstr ""
+msgstr "Jistifikasyon de"
 
 #: .\templates\attendance\review_justification.html:9
 #: .\templates\attendance\session_detail.html:4
 #: .\templates\attendance\student_list.html:16
 msgid "Session"
-msgstr ""
+msgstr "Sesyon"
 
 #: .\templates\attendance\review_justification.html:10
 #: .\templates\attendance\session_detail.html:10
@@ -849,37 +856,37 @@ msgstr ""
 #: .\templates\enrollments\admin_pending.html:23
 #: .\templates\subscriptions\admin_pending.html:23
 msgid "Date"
-msgstr ""
+msgstr "Dat"
 
 #: .\templates\attendance\review_justification.html:15
 msgid "Note admin"
-msgstr ""
+msgstr "Nòt admin"
 
 #: .\templates\attendance\review_justification.html:21
 msgid "Approuver"
-msgstr ""
+msgstr "Apwouve"
 
 #: .\templates\attendance\review_justification.html:24
 #: .\templates\courses\course_form.html:100
 msgid "Enregistrer"
-msgstr ""
+msgstr "Anrejistre"
 
 #: .\templates\attendance\session_detail.html:11
 msgid "Horaire"
-msgstr ""
+msgstr "Orè"
 
 #: .\templates\attendance\session_detail.html:11
 #: .\templates\subscriptions\detail.html:21
 msgid "Fin"
-msgstr ""
+msgstr "Fen"
 
 #: .\templates\attendance\session_detail.html:14
 msgid "Liste des présences"
-msgstr ""
+msgstr "Lis prezans yo"
 
 #: .\templates\attendance\session_detail.html:17
 msgid "Étudiant"
-msgstr ""
+msgstr "Etidyan"
 
 #: .\templates\attendance\session_detail.html:17
 #: .\templates\attendance\session_detail.html:36
@@ -887,11 +894,11 @@ msgstr ""
 #: .\templates\attendance\student_list.html:17
 #: .\templates\subscriptions\my_subscriptions.html:30
 msgid "Statut"
-msgstr ""
+msgstr "Sitati"
 
 #: .\templates\attendance\session_detail.html:17
 msgid "Justification"
-msgstr ""
+msgstr "Jistifikasyon"
 
 #: .\templates\attendance\session_detail.html:25
 #: .\templates\courses\course_detail.html:537
@@ -901,45 +908,45 @@ msgstr ""
 #: .\templates\progress\course_progress.html:90 .\templates\quiz\detail.html:65
 #: .\templates\quiz\quiz_detail.html:65
 msgid "Voir"
-msgstr ""
+msgstr "Wè"
 
 #: .\templates\attendance\session_detail.html:35
 msgid "Mon statut"
-msgstr ""
+msgstr "Sitati mwen"
 
 #: .\templates\attendance\session_detail.html:39
 msgid "Justification soumise le"
-msgstr ""
+msgstr "Jistifikasyon soumèt le"
 
 #: .\templates\attendance\session_detail.html:40
 msgid "Approuvée"
-msgstr ""
+msgstr "Apwouve"
 
 #: .\templates\attendance\session_detail.html:40
 msgid "Refusée"
-msgstr ""
+msgstr "Refize"
 
 #: .\templates\attendance\session_detail.html:40
 msgid "En attente"
-msgstr ""
+msgstr "Annatant"
 
 #: .\templates\attendance\session_detail.html:42
 msgid "Soumettre une justification"
-msgstr ""
+msgstr "Soumèt yon jistifikasyon"
 
 #: .\templates\attendance\session_detail.html:46
 msgid "Vous n'êtes pas enregistré dans cette session."
-msgstr ""
+msgstr "Ou pa anrejistre nan sesyon sa a."
 
 #: .\templates\attendance\student_list.html:4
 #: .\templates\attendance\student_list.html:8
 msgid "Mes présences"
-msgstr ""
+msgstr "Prezans mwen"
 
 #: .\templates\attendance\student_list.html:18
 #: .\templates\enrollments\enrollment_detail.html:35
 msgid "Actions"
-msgstr ""
+msgstr "Aksyon"
 
 #: .\templates\attendance\student_list.html:29
 #: .\templates\badges\badge_list.html:16
@@ -947,131 +954,133 @@ msgstr ""
 #: .\templates\enrollments\enrollment_list.html:33
 #: .\templates\subscriptions\my_subscriptions.html:52
 msgid "Détails"
-msgstr ""
+msgstr "Detay"
 
 #: .\templates\attendance\student_list.html:31
 msgid "Justifier"
-msgstr ""
+msgstr "Jistifye"
 
 #: .\templates\attendance\student_list.html:40
 msgid "Aucune session de présence enregistrée."
-msgstr ""
+msgstr "Pa gen sesyon prezans anrejistre."
 
 #: .\templates\badges\badge_detail.html:11
 msgid "Condition"
-msgstr ""
+msgstr "Kondisyon"
 
 #: .\templates\badges\badge_detail.html:12
 msgid "Objectif"
-msgstr ""
+msgstr "Objektif"
 
 #: .\templates\badges\badge_detail.html:14
 msgid "Retour aux badges"
-msgstr ""
+msgstr "Retounen nan badj yo"
 
 #: .\templates\badges\badge_list.html:4 .\templates\badges\badge_list.html:8
 msgid "Badges disponibles"
-msgstr ""
+msgstr "Badj disponib"
 
 #: .\templates\badges\badge_list.html:21
 msgid "Aucun badge disponible."
-msgstr ""
+msgstr "Pa gen badj disponib."
 
 #: .\templates\badges\my_badges.html:15
 msgid "Obtenu le"
-msgstr ""
+msgstr "Jwenn le"
 
 #: .\templates\badges\my_badges.html:20
 msgid "Vous n'avez pas encore gagné de badge."
-msgstr ""
+msgstr "Ou poko genyen okenn badj."
 
 #: .\templates\badges\my_badges.html:21
 msgid "Voir les badges disponibles"
-msgstr ""
+msgstr "Wè badj ki disponib yo"
 
 #: .\templates\base.html:141
 msgid "Explorer"
-msgstr ""
+msgstr "Eksplore"
 
 #: .\templates\base.html:158
 msgid "Mes salons"
-msgstr ""
+msgstr "Salon mwen yo"
 
 #: .\templates\base.html:161 .\templates\home.html:50
 msgid "Étudiants"
-msgstr ""
+msgstr "Etidyan"
 
 #: .\templates\base.html:177
 msgid "Dashboard"
-msgstr ""
+msgstr "Tablodbò"
 
 #: .\templates\base.html:181
 msgid "Admin"
-msgstr ""
+msgstr "Admin"
 
 #: .\templates\base.html:196 .\templates\subscriptions\list.html:4
 msgid "Abonnements"
-msgstr ""
+msgstr "Abònman"
 
 #: .\templates\base.html:211
 msgid "Déconnexion"
-msgstr ""
+msgstr "Dekoneksyon"
 
 #: .\templates\base.html:224 .\templates\courses\course_access_denied.html:16
 #: .\templates\courses\course_detail.html:581
 msgid "S'inscrire"
-msgstr ""
+msgstr "Enskri"
 
 #: .\templates\base.html:291 .\templates\courses\learning_path_detail.html:11
 #: .\templates\home.html:4
 msgid "Accueil"
-msgstr ""
+msgstr "Akèy"
 
 #: .\templates\chat\etudiants_list.html:4
 msgid "Etudiants"
-msgstr ""
+msgstr "Etidyan"
 
 #: .\templates\chat\etudiants_list.html:4
 msgid "Chat prive"
-msgstr ""
+msgstr "Chat prive"
 
 #: .\templates\chat\etudiants_list.html:9
 msgid "Etudiants dans vos cours"
-msgstr ""
+msgstr "Etidyan nan kou ou yo"
 
 #: .\templates\chat\etudiants_list.html:11
 msgid "Retour aux salons"
-msgstr ""
+msgstr "Retounen nan salon yo"
 
 #: .\templates\chat\etudiants_list.html:16
 msgid ""
 "Voici la liste des etudiants qui partagent au moins un cours avec vous. "
 "Cliquez sur un etudiant pour creer un chat prive."
 msgstr ""
+"Men lis etidyan ki pataje omwen yon kou avèk ou. Klike sou yon etidyan pou "
+"kreye yon chat prive."
 
 #: .\templates\chat\etudiants_list.html:22
 msgid "Rechercher un etudiant..."
-msgstr ""
+msgstr "Chèche yon etidyan..."
 
 #: .\templates\chat\etudiants_list.html:25
 msgid "Rechercher"
-msgstr ""
+msgstr "Chèche"
 
 #: .\templates\chat\etudiants_list.html:29
 msgid "Effacer"
-msgstr ""
+msgstr "Efase"
 
 #: .\templates\chat\etudiants_list.html:53
 msgid "Creer"
-msgstr ""
+msgstr "Kreye"
 
 #: .\templates\chat\etudiants_list.html:65
 msgid "Aucun etudiant ne correspond a votre recherche."
-msgstr ""
+msgstr "Pa gen etidyan ki koresponn ak rechèch ou."
 
 #: .\templates\chat\etudiants_list.html:67
 msgid "Vous n'etes dans aucun cours avec d'autres etudiants pour le moment."
-msgstr ""
+msgstr "Ou pa nan okenn kou ak lòt etidyan pou kounye a."
 
 #: .\templates\chat\etudiants_list.html:72
 #: .\templates\enrollments\enrollment_list.html:11
@@ -1079,84 +1088,84 @@ msgstr ""
 #: .\templates\progress\dashboard.html:110 .\templates\quiz\list.html:38
 #: .\templates\quiz\quiz_list.html:38
 msgid "Explorer les cours"
-msgstr ""
+msgstr "Eksplore kou yo"
 
 #: .\templates\chat\room_detail.html:338
 msgid "Aucun message pour le moment."
-msgstr ""
+msgstr "Pa gen mesaj pou kounye a."
 
 #: .\templates\chat\room_detail.html:339
 msgid "Soyez le premier à envoyer un message !"
-msgstr ""
+msgstr "Se ou ki premye moun ki voye yon mesaj !"
 
 #: .\templates\chat\room_detail.html:361
 msgid "Message"
-msgstr ""
+msgstr "Mesaj"
 
 #: .\templates\chat\room_list.html:4
 msgid "Salons de discussion"
-msgstr ""
+msgstr "Salon diskisyon"
 
 #: .\templates\chat\room_list.html:9
 msgid "Salons de chat"
-msgstr ""
+msgstr "Salon chat"
 
 #: .\templates\chat\room_list.html:12
 msgid "Nouveau chat"
-msgstr ""
+msgstr "Nouvo chat"
 
 #: .\templates\chat\room_list.html:32
 msgid "participants"
-msgstr ""
+msgstr "patisipan"
 
 #: .\templates\chat\room_list.html:41
 msgid "Aucun salon disponible."
-msgstr ""
+msgstr "Pa gen salon disponib."
 
 #: .\templates\chat\room_list.html:43
 msgid "Commencer un chat"
-msgstr ""
+msgstr "Kòmanse yon chat"
 
 #: .\templates\courses\course_access_denied.html:4
 msgid "Accès refusé"
-msgstr ""
+msgstr "Aksè refize"
 
 #: .\templates\courses\course_access_denied.html:10
 msgid "Accès restreint"
-msgstr ""
+msgstr "Aksè restrenn"
 
 #: .\templates\courses\course_access_denied.html:12
 msgid "Vous n'avez pas encore accès à ce cours."
-msgstr ""
+msgstr "Ou poko gen aksè a kou sa a."
 
 #: .\templates\courses\course_access_denied.html:19
 #: .\templates\quiz\detail.html:98 .\templates\quiz\quiz_detail.html:98
 #: .\templates\quiz\result.html:53
 msgid "Retour aux cours"
-msgstr ""
+msgstr "Retounen nan kou yo"
 
 #: .\templates\courses\course_access_denied.html:25
 msgid "Votre inscription est en attente de validation par un administrateur."
-msgstr ""
+msgstr "Enskripsyon ou annatant validasyon yon administratè."
 
 #: .\templates\courses\course_confirm_delete.html:8
 msgid "Confirmation de suppression"
-msgstr ""
+msgstr "Konfimasyon efasman"
 
 #: .\templates\courses\course_confirm_delete.html:9
 msgid "Voulez-vous vraiment supprimer le cours"
-msgstr ""
+msgstr "Èske ou reyèlman vle efase kou a"
 
 #: .\templates\courses\course_confirm_delete.html:12
 msgid "Oui, supprimer"
-msgstr ""
+msgstr "Wi, efase"
 
 #: .\templates\courses\course_detail.html:498
 #: .\templates\courses\course_list.html:59
 #: .\templates\courses\course_list.html:90
 #: .\templates\courses\learning_path_detail.html:103
 msgid "Payant"
-msgstr ""
+msgstr "Peyan"
 
 #: .\templates\courses\course_detail.html:498
 #: .\templates\courses\course_list.html:58
@@ -1166,1455 +1175,1464 @@ msgstr ""
 #: .\templates\subscriptions\list.html:37
 #: .\templates\subscriptions\subscribe.html:19
 msgid "Gratuit"
-msgstr ""
+msgstr "Gratis"
 
 #: .\templates\courses\course_detail.html:499
 #: .\templates\courses\course_form.html:95
 msgid "Publié"
-msgstr ""
+msgstr "Pibliye"
 
 #: .\templates\courses\course_detail.html:524
 msgid "Prérequis"
-msgstr ""
+msgstr "Prekondisyon"
 
 #: .\templates\courses\course_detail.html:527
 msgid "Vous avez complété tous les prérequis !"
-msgstr ""
+msgstr "Ou konplete tout prekondisyon yo !"
 
 #: .\templates\courses\course_detail.html:572
 msgid "Commencer le cours"
-msgstr ""
+msgstr "Kòmanse kou a"
 
 #: .\templates\courses\course_detail.html:576
 msgid "Cours en préparation"
-msgstr ""
+msgstr "Kou an preparasyon"
 
 #: .\templates\courses\course_detail.html:585
 msgid "Prérequis manquants"
-msgstr ""
+msgstr "Prekondisyon ou manke"
 
 #: .\templates\courses\course_detail.html:590
 msgid "Se connecter pour s'inscrire"
-msgstr ""
+msgstr "Konekte pou enskri"
 
 #: .\templates\courses\course_detail.html:603
 msgid "Fermer inscriptions"
-msgstr ""
+msgstr "Fèmen enskripsyon yo"
 
 #: .\templates\courses\course_detail.html:603
 msgid "Ouvrir inscriptions"
-msgstr ""
+msgstr "Louvri enskripsyon yo"
 
 #: .\templates\courses\course_detail.html:614
 msgid "Contenu du cours"
-msgstr ""
+msgstr "Kontni kou a"
 
 #: .\templates\courses\course_detail.html:625
 msgid "modules"
-msgstr ""
+msgstr "modil"
 
 #: .\templates\courses\course_detail.html:631
 msgid "Aucune unité disponible pour ce cours."
-msgstr ""
+msgstr "Pa gen inite disponib pou kou sa a."
 
 #: .\templates\courses\course_detail.html:641
 msgid "Quiz du cours"
-msgstr ""
+msgstr "Quiz kou a"
 
 #: .\templates\courses\course_detail.html:652
 #: .\templates\courses\lesson_detail.html:461
 #: .\templates\courses\module_detail.html:333
 msgid "réussite"
-msgstr ""
+msgstr "reyisit"
 
 #: .\templates\courses\course_detail.html:660
 #: .\templates\quiz\correction\tentative_list.html:15
 #: .\templates\quiz\detail.html:59 .\templates\quiz\list.html:18
 #: .\templates\quiz\quiz_detail.html:59 .\templates\quiz\quiz_list.html:18
 msgid "Réussi"
-msgstr ""
+msgstr "Reyisi"
 
 #: .\templates\courses\course_detail.html:662 .\templates\quiz\detail.html:61
 #: .\templates\quiz\quiz_detail.html:61
 msgid "Échoué"
-msgstr ""
+msgstr "Echwe"
 
 #: .\templates\courses\course_detail.html:665
 #: .\templates\courses\course_detail.html:669
 #: .\templates\courses\lesson_detail.html:464
 #: .\templates\courses\module_detail.html:336
 msgid "Commencer"
-msgstr ""
+msgstr "Kòmanse"
 
 #: .\templates\courses\course_form.html:4
 msgid "Modifier le cours"
-msgstr ""
+msgstr "Modifye kou a"
 
 #: .\templates\courses\course_form.html:4
 msgid "Nouveau cours"
-msgstr ""
+msgstr "Nouvo kou"
 
 #: .\templates\courses\course_form.html:10
 #: .\templates\courses\course_list.html:13
 msgid "Ajouter un cours"
-msgstr ""
+msgstr "Ajoute yon kou"
 
 #: .\templates\courses\course_form.html:11
 msgid "Remplissez les informations du cours"
-msgstr ""
+msgstr "Ranpli enfòmasyon kou a"
 
 #: .\templates\courses\course_form.html:18
 msgid "Titre"
-msgstr ""
+msgstr "Tit"
 
 #: .\templates\courses\course_form.html:24
 msgid "Description"
-msgstr ""
+msgstr "Deskripsyon"
 
 #: .\templates\courses\course_form.html:31
 msgid "URL de l'image"
-msgstr ""
+msgstr "URL imaj la"
 
 #: .\templates\courses\course_form.html:36
 msgid "Image (téléchargée)"
-msgstr ""
+msgstr "Imaj (telechaje)"
 
 #: .\templates\courses\course_form.html:49
 msgid "Prix (HTG)"
-msgstr ""
+msgstr "Pri (HTG)"
 
 #: .\templates\courses\course_form.html:52
 msgid "0 = gratuit"
-msgstr ""
+msgstr "0 = gratis"
 
 #: .\templates\courses\course_form.html:55
 msgid "Durée (heures)"
-msgstr ""
+msgstr "Dire (èdtan)"
 
 #: .\templates\courses\course_form.html:63
 msgid "Catégorie"
-msgstr ""
+msgstr "Kategori"
 
 #: .\templates\courses\course_form.html:68
 #: .\templates\courses\learning_path_detail.html:56
 msgid "Niveau"
-msgstr ""
+msgstr "Nivo"
 
 #: .\templates\courses\course_form.html:76
 msgid "Début des inscriptions"
-msgstr ""
+msgstr "Kòmansman enskripsyon yo"
 
 #: .\templates\courses\course_form.html:81
 msgid "Fin des inscriptions"
-msgstr ""
+msgstr "Fen enskripsyon yo"
 
 #: .\templates\courses\course_form.html:89
 msgid "Inscriptions ouvertes"
-msgstr ""
+msgstr "Enskripsyon yo louvri"
 
 #: .\templates\courses\course_list.html:4
 #: .\templates\courses\course_list.html:10
 msgid "Cours disponibles"
-msgstr ""
+msgstr "Kou disponib"
 
 #: .\templates\courses\course_list.html:22
 msgid "Rechercher un cours..."
-msgstr ""
+msgstr "Chèche yon kou..."
 
 #: .\templates\courses\course_list.html:27
 msgid "Toutes les catégories"
-msgstr ""
+msgstr "Tout kategori yo"
 
 #: .\templates\courses\course_list.html:37
 msgid "Tous les niveaux"
-msgstr ""
+msgstr "Tout nivo yo"
 
 #: .\templates\courses\course_list.html:47
 msgid "Tous les Learning Paths"
-msgstr ""
+msgstr "Tout Learning Paths yo"
 
 #: .\templates\courses\course_list.html:57
 msgid "Tous les prix"
-msgstr ""
+msgstr "Tout pri yo"
 
 #: .\templates\courses\course_list.html:96
 msgid "Accès"
-msgstr ""
+msgstr "Aksè"
 
 #: .\templates\courses\course_list.html:114
 #: .\templates\subscriptions\detail.html:47
 msgid "Accéder"
-msgstr ""
+msgstr "Aksede"
 
 #: .\templates\courses\course_list.html:125
 msgid "Aucun cours disponible"
-msgstr ""
+msgstr "Pa gen kou disponib"
 
 #: .\templates\courses\course_list.html:126
 msgid "Revenez plus tard, de nouveaux cours seront bientôt disponibles."
-msgstr ""
+msgstr "Retounen pita, nouvo kou ap disponib byento."
 
 #: .\templates\courses\learning_path_detail.html:13
 #: .\templates\courses\learning_path_list.html:4
 msgid "Learning Paths"
-msgstr ""
+msgstr "Learning Paths"
 
 #: .\templates\courses\learning_path_detail.html:50
 #: .\templates\subscriptions\list.html:44
 #: .\templates\subscriptions\subscribe.html:25
 msgid "Durée"
-msgstr ""
+msgstr "Dire"
 
 #: .\templates\courses\learning_path_detail.html:78
 msgid "Cours dans ce parcours"
-msgstr ""
+msgstr "Kou nan pakou sa a"
 
 #: .\templates\courses\learning_path_detail.html:116
 #: .\templates\subscriptions\select_courses.html:44
 msgid "unités"
-msgstr ""
+msgstr "inite"
 
 #: .\templates\courses\learning_path_detail.html:130
 msgid "Aucun cours dans ce parcours"
-msgstr ""
+msgstr "Pa gen kou nan pakou sa a"
 
 #: .\templates\courses\learning_path_detail.html:132
 msgid "Des cours seront bientôt ajoutés à ce parcours."
-msgstr ""
+msgstr "Kou yo ap ajoute nan pakou sa a byento."
 
 #: .\templates\courses\learning_path_list.html:12
 msgid "Parcours d'apprentissage"
-msgstr ""
+msgstr "Pakou aprantisaj"
 
 #: .\templates\courses\learning_path_list.html:15
 msgid "Choisissez votre"
-msgstr ""
+msgstr "Chwazi"
 
 #: .\templates\courses\learning_path_list.html:15
 msgid "chemin"
-msgstr ""
+msgstr "chemen"
 
 #: .\templates\courses\learning_path_list.html:18
 msgid "Suivez un parcours structuré pour maîtriser une compétence de A à Z."
-msgstr ""
+msgstr "Swiv yon pakou estriktire pou metrize yon konpetans de A rive Z."
 
 #: .\templates\courses\learning_path_list.html:57
 #: .\templates\progress\dashboard.html:17
 msgid "cours"
-msgstr ""
+msgstr "kou"
 
 #: .\templates\courses\learning_path_list.html:75
 msgid "complété"
-msgstr ""
+msgstr "konplete"
 
 #: .\templates\courses\learning_path_list.html:80
 msgid "Voir le parcours"
-msgstr ""
+msgstr "Wè pakou a"
 
 #: .\templates\courses\learning_path_list.html:91
 msgid "Aucun parcours disponible"
-msgstr ""
+msgstr "Pa gen pakou disponib"
 
 #: .\templates\courses\learning_path_list.html:93
 msgid "De nouveaux parcours seront bientôt disponibles."
-msgstr ""
+msgstr "Nouvo pakou ap disponib byento."
 
 #: .\templates\courses\lesson_detail.html:402
 #: .\templates\courses\module_detail.html:300
 msgid "Leçon"
-msgstr ""
+msgstr "Leson"
 
 #: .\templates\courses\lesson_detail.html:418
 msgid "Sections"
-msgstr ""
+msgstr "Seksyon"
 
 #: .\templates\courses\lesson_detail.html:435
 msgid "Aucune section dans cette leçon."
-msgstr ""
+msgstr "Pa gen seksyon nan leson sa a."
 
 #: .\templates\courses\lesson_detail.html:445
 msgid "Quiz de la leçon"
-msgstr ""
+msgstr "Quiz leson an"
 
 #: .\templates\courses\lesson_detail.html:478
 msgid "Marquer cette leçon comme terminée"
-msgstr ""
+msgstr "Make leson sa a kòm fini"
 
 #: .\templates\courses\lesson_detail.html:483 .\templates\quiz\detail.html:90
 #: .\templates\quiz\quiz_detail.html:90 .\templates\quiz\result.html:45
 msgid "Retour au module"
-msgstr ""
+msgstr "Retounen nan modil la"
 
 #: .\templates\courses\lesson_detail.html:488 .\templates\quiz\detail.html:43
 #: .\templates\quiz\quiz_detail.html:43
 msgid "Commencer le quiz"
-msgstr ""
+msgstr "Kòmanse quiz la"
 
 #: .\templates\courses\module_detail.html:278
 #: .\templates\courses\unit_detail.html:13
 msgid "Module"
-msgstr ""
+msgstr "Modil"
 
 #: .\templates\courses\module_detail.html:283
 msgid "quiz"
-msgstr ""
+msgstr "quiz"
 
 #: .\templates\courses\module_detail.html:307
 msgid "Aucune leçon dans ce module."
-msgstr ""
+msgstr "Pa gen leson nan modil sa a."
 
 #: .\templates\courses\module_detail.html:317
 msgid "Quiz du module"
-msgstr ""
+msgstr "Quiz modil la"
 
 #: .\templates\courses\module_detail.html:348
 msgid "Retour à l'unité"
-msgstr ""
+msgstr "Retounen nan inite a"
 
 #: .\templates\courses\module_detail.html:353
 msgid "Commencer la première leçon"
-msgstr ""
+msgstr "Kòmanse premye leson an"
 
 #: .\templates\courses\section_detail.html:9
 msgid "Contenus"
-msgstr ""
+msgstr "Kontni"
 
 #: .\templates\courses\section_detail.html:18
 msgid "Votre navigateur ne supporte pas la lecture de vidéos."
-msgstr ""
+msgstr "Navigatè ou pa sipòte lekti videyo."
 
 #: .\templates\courses\section_detail.html:19
 msgid "Aucune vidéo disponible dans cette langue."
-msgstr ""
+msgstr "Pa gen videyo disponib nan lang sa a."
 
 #: .\templates\courses\section_detail.html:23
 msgid "Aucune image disponible dans cette langue."
-msgstr ""
+msgstr "Pa gen imaj disponib nan lang sa a."
 
 #: .\templates\courses\section_detail.html:27
 msgid "Votre navigateur ne supporte pas l'audio."
-msgstr ""
+msgstr "Navigatè ou pa sipòte odyo."
 
 #: .\templates\courses\section_detail.html:27
 msgid "Aucun fichier audio disponible dans cette langue."
-msgstr ""
+msgstr "Pa gen fichye odyo disponib nan lang sa a."
 
 #: .\templates\courses\section_detail.html:31
 msgid "Télécharger le PDF"
-msgstr ""
+msgstr "Telechaje PDF la"
 
 #: .\templates\courses\section_detail.html:31
 msgid "Aucun PDF disponible dans cette langue."
-msgstr ""
+msgstr "Pa gen PDF disponib nan lang sa a."
 
 #: .\templates\courses\section_detail.html:35
 msgid "Aucun lien disponible dans cette langue."
-msgstr ""
+msgstr "Pa gen lyen disponib nan lang sa a."
 
 #: .\templates\courses\section_detail.html:38
 #: .\templates\quiz\correction\corriger_tentative.html:62
 msgid "Télécharger le fichier"
-msgstr ""
+msgstr "Telechaje fichye a"
 
 #: .\templates\courses\section_detail.html:40
 msgid "Type de contenu non pris en charge ou non disponible."
-msgstr ""
+msgstr "Kalite kontni pa sipòte oswa pa disponib."
 
 #: .\templates\courses\section_detail.html:43
 msgid "Aucun contenu dans cette section."
-msgstr ""
+msgstr "Pa gen kontni nan seksyon sa a."
 
 #: .\templates\courses\unit_detail.html:8
 msgid "Unité"
-msgstr ""
+msgstr "Inite"
 
 #: .\templates\courses\unit_detail.html:10
 msgid "Modules"
-msgstr ""
+msgstr "Modil"
 
 #: .\templates\courses\unit_detail.html:15
 msgid "Aucun module dans cette unité."
-msgstr ""
+msgstr "Pa gen modil nan inite sa a."
 
 #: .\templates\enrollments\admin_pending.html:4
 #: .\templates\enrollments\admin_pending.html:9
 msgid "Inscriptions en attente"
-msgstr ""
+msgstr "Enskripsyon annatant"
 
 #: .\templates\enrollments\admin_pending.html:10
 #: .\templates\subscriptions\admin_pending.html:10
 msgid "en attente"
-msgstr ""
+msgstr "annatant"
 
 #: .\templates\enrollments\admin_pending.html:18
 #: .\templates\quiz\correction\corriger_tentative.html:6
 #: .\templates\quiz\correction\tentative_list.html:12
 #: .\templates\subscriptions\admin_pending.html:18
 msgid "Utilisateur"
-msgstr ""
+msgstr "Itilizatè"
 
 #: .\templates\enrollments\admin_pending.html:20
 #: .\templates\subscriptions\admin_pending.html:20
 msgid "Méthode"
-msgstr ""
+msgstr "Metòd"
 
 #: .\templates\enrollments\admin_pending.html:21
 #: .\templates\enrollments\enrollment_detail.html:26
 #: .\templates\subscriptions\admin_pending.html:21
 msgid "ID transaction"
-msgstr ""
+msgstr "ID tranzaksyon"
 
 #: .\templates\enrollments\admin_pending.html:22
 #: .\templates\subscriptions\admin_pending.html:22
 msgid "Photo"
-msgstr ""
+msgstr "Foto"
 
 #: .\templates\enrollments\admin_pending.html:24
 #: .\templates\quiz\correction\tentative_list.html:17
 #: .\templates\subscriptions\admin_pending.html:24
 msgid "Action"
-msgstr ""
+msgstr "Aksyon"
 
 #: .\templates\enrollments\admin_pending.html:43
 #: .\templates\subscriptions\admin_pending.html:43
 msgid "Aucune"
-msgstr ""
+msgstr "Okenn"
 
 #: .\templates\enrollments\admin_pending.html:49
 msgid "Approuver cette inscription ?"
-msgstr ""
+msgstr "Apwouve enskripsyon sa a ?"
 
 #: .\templates\enrollments\admin_pending.html:52
 msgid "Refuser cette inscription ?"
-msgstr ""
+msgstr "Refize enskripsyon sa a ?"
 
 #: .\templates\enrollments\admin_pending.html:68
 msgid "Aucune inscription en attente."
-msgstr ""
+msgstr "Pa gen enskripsyon annatant."
 
 #: .\templates\enrollments\enroll_form.html:13
 msgid "Ce cours est payant"
-msgstr ""
+msgstr "Kou sa a se peyan"
 
 #: .\templates\enrollments\enroll_form.html:14
 msgid ""
 "Effectuez le paiement via MonCash ou NatCash, puis remplissez le formulaire "
 "ci-dessous."
 msgstr ""
+"Fè peman an atravè MonCash oswa NatCash, epi ranpli fòmilè ki anba a."
 
 #: .\templates\enrollments\enroll_form.html:17
 msgid "Instructions"
-msgstr ""
+msgstr "Enstriksyon"
 
 #: .\templates\enrollments\enroll_form.html:19
 msgid "Envoyez le montant exact"
-msgstr ""
+msgstr "Voye montan egzak la"
 
 #: .\templates\enrollments\enroll_form.html:19
 msgid "au numéro MonCash ou NatCash indiqué ci-dessous."
-msgstr ""
+msgstr "nan nimewo MonCash oswa NatCash ki endike anba a."
 
 #: .\templates\enrollments\enroll_form.html:20
 msgid "Conservez l'ID de transaction qui vous sera fourni."
-msgstr ""
+msgstr "Konsève ID tranzaksyon ki pral ba ou a."
 
 #: .\templates\enrollments\enroll_form.html:21
 msgid ""
 "Remplissez le formulaire ci-dessous avec vos informations et l'ID de "
 "transaction."
-msgstr ""
+msgstr "Ranpli fòmilè ki anba a ak enfòmasyon ou ak ID tranzaksyon an."
 
 #: .\templates\enrollments\enroll_form.html:27
 msgid "Numéros de paiement"
-msgstr ""
+msgstr "Nimewo peman"
 
 #: .\templates\enrollments\enroll_form.html:49
 msgid "Code agent (retrait)"
-msgstr ""
+msgstr "Kòd ajan (retrè)"
 
 #: .\templates\enrollments\enroll_form.html:56
 msgid "Copiez le numéro correspondant à votre méthode de paiement."
-msgstr ""
+msgstr "Kopye nimewo ki koresponn ak metòd peman ou."
 
 #: .\templates\enrollments\enroll_form.html:62
 msgid ""
 "Ce cours est gratuit. Cliquez sur le bouton pour vous inscrire immédiatement."
-msgstr ""
+msgstr "Kou sa a gratis. Klike sou bouton an pou enskri imedyatman."
 
 #: .\templates\enrollments\enroll_form.html:71
 #: .\templates\enrollments\enrollment_detail.html:25
 #: .\templates\subscriptions\subscribe.html:41
 msgid "Méthode de paiement"
-msgstr ""
+msgstr "Metòd peman"
 
 #: .\templates\enrollments\enroll_form.html:77
 #: .\templates\enrollments\enrollment_detail.html:27
 #: .\templates\subscriptions\subscribe.html:47
 msgid "Nom sur le compte"
-msgstr ""
+msgstr "Non sou kont lan"
 
 #: .\templates\enrollments\enroll_form.html:83
 #: .\templates\enrollments\enrollment_detail.html:28
 #: .\templates\pages\contact.html:23
 #: .\templates\subscriptions\subscribe.html:53
 msgid "Téléphone"
-msgstr ""
+msgstr "Telefòn"
 
 #: .\templates\enrollments\enroll_form.html:89
 #: .\templates\subscriptions\subscribe.html:59
 msgid "ID de transaction"
-msgstr ""
+msgstr "ID tranzaksyon"
 
 #: .\templates\enrollments\enroll_form.html:95
 msgid "Photo du paiement (facultatif)"
-msgstr ""
+msgstr "Foto peman an (opsyonèl)"
 
 #: .\templates\enrollments\enroll_form.html:98
 msgid "Prenez une photo de votre reçu MonCash ou NatCash."
-msgstr ""
+msgstr "Pran yon foto resi MonCash oswa NatCash ou."
 
 #: .\templates\enrollments\enroll_form.html:106
 msgid "Soumettre la preuve de paiement"
-msgstr ""
+msgstr "Soumèt prèv peman an"
 
 #: .\templates\enrollments\enroll_form.html:108
 msgid "S'inscrire gratuitement"
-msgstr ""
+msgstr "Enskri gratis"
 
 #: .\templates\enrollments\enrollment_detail.html:4
 msgid "Détail de l'inscription"
-msgstr ""
+msgstr "Detay enskripsyon an"
 
 #: .\templates\enrollments\enrollment_detail.html:11
 msgid "Demande"
-msgstr ""
+msgstr "Demann"
 
 #: .\templates\enrollments\enrollment_detail.html:30
 msgid "Photo paiement"
-msgstr ""
+msgstr "Foto peman"
 
 #: .\templates\enrollments\enrollment_detail.html:37
 msgid "Vous avez accès à ce cours."
-msgstr ""
+msgstr "Ou gen aksè a kou sa a."
 
 #: .\templates\enrollments\enrollment_detail.html:39
 msgid "Accéder au cours"
-msgstr ""
+msgstr "Aksede kou a"
 
 #: .\templates\enrollments\enrollment_detail.html:42
 msgid "Votre paiement est en cours de vérification."
-msgstr ""
+msgstr "Peman ou an ap verifye."
 
 #: .\templates\enrollments\enrollment_detail.html:44
 msgid "Votre inscription a été refusée."
-msgstr ""
+msgstr "Enskripsyon ou te refize."
 
 #: .\templates\enrollments\enrollment_list.html:42
 msgid "Vous n'êtes inscrit à aucun cours."
-msgstr ""
+msgstr "Ou pa enskri nan okenn kou."
 
 #: .\templates\home.html:12
 msgid "Plateforme e-learning"
-msgstr ""
+msgstr "Platfòm e-learning"
 
 #: .\templates\home.html:17
 msgid "Apprenez sans limites"
-msgstr ""
+msgstr "Aprann san limit"
 
 #: .\templates\home.html:18
 msgid "Où que vous soyez"
-msgstr ""
+msgstr "Kèlkeswa kote ou ye"
 
 #: .\templates\home.html:23
 msgid "Des cours de qualité pour développer vos compétences à votre rythme."
-msgstr ""
+msgstr "Kou kalite pou devlope konpetans ou nan pwòp rit ou."
 
 #: .\templates\home.html:33
 msgid "Commencer gratuitement"
-msgstr ""
+msgstr "Kòmanse gratis"
 
 #: .\templates\home.html:56
 msgid "Satisfaction"
-msgstr ""
+msgstr "Satisfaksyon"
 
 #: .\templates\home.html:71
 msgid "Formation en ligne"
-msgstr ""
+msgstr "Fòmasyon an liy"
 
 #: .\templates\home.html:72
 msgid "+1000 étudiants"
-msgstr ""
+msgstr "+1000 etidyan"
 
 #: .\templates\home.html:79
 msgid "Certifiés"
-msgstr ""
+msgstr "Sètifye"
 
 #: .\templates\home.html:80
 msgid "Reconnus par l'État"
-msgstr ""
+msgstr "Rekonèt pa Leta"
 
 #: .\templates\home.html:87
 msgid "+50 cours"
-msgstr ""
+msgstr "+50 kou"
 
 #: .\templates\home.html:88
 msgid "Disponibles"
-msgstr ""
+msgstr "Disponib"
 
 #: .\templates\home.html:97
 msgid "Pourquoi nous choisir ?"
-msgstr ""
+msgstr "Poukisa chwazi nou ?"
 
 #: .\templates\home.html:98
 msgid "Une expérience d'apprentissage"
-msgstr ""
+msgstr "Yon eksperyans aprantisaj"
 
 #: .\templates\home.html:98
 msgid "unique"
-msgstr ""
+msgstr "inik"
 
 #: .\templates\home.html:107
 msgid "Cours interactifs"
-msgstr ""
+msgstr "Kou entèraktif"
 
 #: .\templates\home.html:108
 msgid "Apprenez avec des vidéos, quiz et exercices pratiques conçus pour vous."
-msgstr ""
+msgstr "Aprann ak videyo, quiz ak egzèsis pratik ki fèt pou ou."
 
 #: .\templates\home.html:110 .\templates\home.html:121
 #: .\templates\home.html:132
 msgid "En savoir plus"
-msgstr ""
+msgstr "Pou w aprann plis"
 
 #: .\templates\home.html:118
 msgid "Certificats vérifiés"
-msgstr ""
+msgstr "Sètifika verifye"
 
 #: .\templates\home.html:119
 msgid ""
 "Recevez des certificats reconnus après chaque cours complété avec succès."
-msgstr ""
+msgstr "Resevwa sètifika rekonèt apre chak kou fini ak siksè."
 
 #: .\templates\home.html:129
 msgid "Classement & Badges"
-msgstr ""
+msgstr "Klasman & Badj"
 
 #: .\templates\home.html:130
 msgid "Gagnez des points, débloquez des badges et grimpez dans le classement."
-msgstr ""
+msgstr "Genyen pwen, debloke badj epi monte nan klasman an."
 
 #: .\templates\home.html:141
 msgid "Prêt à commencer votre"
-msgstr ""
+msgstr "Pare pou kòmanse"
 
 #: .\templates\home.html:141
 msgid "aventure"
-msgstr ""
+msgstr "avanti"
 
 #: .\templates\home.html:142
 msgid ""
 "Rejoignez des milliers d'apprenants et transformez votre avenir dès "
 "aujourd'hui."
-msgstr ""
+msgstr "Vin jwenn dè milye aprenan epi transfòme avni ou depi jodi a."
 
 #: .\templates\home.html:144
 msgid "Créer un compte gratuit"
-msgstr ""
+msgstr "Kreye yon kont gratis"
 
 #: .\templates\home.html:152
 msgid "Ce que nos étudiants disent"
-msgstr ""
+msgstr "Sa etidyan nou yo di"
 
 #: .\templates\home.html:153
 msgid "Ils ont"
-msgstr ""
+msgstr "Yo te"
 
 #: .\templates\home.html:153
 msgid "réussi"
-msgstr ""
+msgstr "reyisi"
 
 #: .\templates\home.html:153
 msgid "grâce à nous"
-msgstr ""
+msgstr "gras a nou"
 
 #: .\templates\home.html:168
 msgid ""
 "Grâce à EduPlatform, j'ai appris le développement web en 3 mois. Aujourd'hui "
 "je travaille comme freelance."
 msgstr ""
+"Gras a EduPlatform, mwen te aprann devlopman wèb nan 3 mwa. Jodi a mwen "
+"travay kòm endepandan."
 
 #: .\templates\home.html:177
 msgid "Développeur Web"
-msgstr ""
+msgstr "Devlopè Wèb"
 
 #: .\templates\home.html:192
 msgid ""
 "Les cours sont bien structurés et les professeurs sont très compétents. Je "
 "recommande à 100%."
 msgstr ""
+"Kou yo byen estriktire epi pwofesè yo trè konpetan. Mwen rekòmande a 100%."
 
 #: .\templates\home.html:201
 msgid "Data Analyst"
-msgstr ""
+msgstr "Analis Done"
 
 #: .\templates\maintenance.html:4
 msgid "Maintenance"
-msgstr ""
+msgstr "Antretyen"
 
 #: .\templates\maintenance.html:10
 msgid "Site en maintenance"
-msgstr ""
+msgstr "Sit an antretyen"
 
 #: .\templates\maintenance.html:19
 msgid "Rejoindre le groupe WhatsApp"
-msgstr ""
+msgstr "Vin jwenn gwoup WhatsApp la"
 
 #: .\templates\notifications\list.html:13
 msgid "Supprimer toutes les notifications ?"
-msgstr ""
+msgstr "Efase tout notifikasyon yo ?"
 
 #: .\templates\notifications\list.html:14
 msgid "Tout supprimer"
-msgstr ""
+msgstr "Efase tout"
 
 #: .\templates\notifications\list.html:47
 msgid "Aucune notification."
-msgstr ""
+msgstr "Pa gen notifikasyon."
 
 #: .\templates\pages\about.html:11
 msgid "À propos de nous"
-msgstr ""
+msgstr "A pwopo de nou"
 
 #: .\templates\pages\about.html:14
 msgid ""
 "Découvrez notre mission, nos valeurs et notre engagement pour l'éducation"
-msgstr ""
+msgstr "Dekouvri misyon nou, valè nou ak angajman nou pou edikasyon"
 
 #: .\templates\pages\about.html:23
 msgid ""
 "EduPlatform se yon platform e-learning ki fèt pou ede moun aprann san limit."
 msgstr ""
+"EduPlatform se yon platfòm e-learning ki fèt pou ede moun aprann san limit."
 
 #: .\templates\pages\about.html:24
 msgid "Misyon nou se bay tout moun aksè a edikasyon kalite."
-msgstr ""
+msgstr "Misyon nou se bay tout moun aksè a edikasyon kalite."
 
 #: .\templates\pages\about.html:25
 msgid ""
 "Nou kwè ke tout moun merite opòtinite pou aprann epi grandi, kèlkeswa kote "
 "yo ye oswa sitiyasyon yo."
 msgstr ""
+"Nou kwè ke tout moun merite opòtinite pou aprann epi grandi, kèlkeswa kote "
+"yo ye oswa sitiyasyon yo."
 
 #: .\templates\pages\about.html:33
 msgid "Accessibilité"
-msgstr ""
+msgstr "Aksesibilite"
 
 #: .\templates\pages\about.html:34
 msgid "Edikasyon pou tout moun, tout kote"
-msgstr ""
+msgstr "Edikasyon pou tout moun, tout kote"
 
 #: .\templates\pages\about.html:42
 msgid "Innovation"
-msgstr ""
+msgstr "Inovasyon"
 
 #: .\templates\pages\about.html:43
 msgid "Toujou ap avanse ak teknoloji"
-msgstr ""
+msgstr "Toujou ap avanse ak teknoloji"
 
 #: .\templates\pages\about.html:51
 msgid "Qualité"
-msgstr ""
+msgstr "Kalite"
 
 #: .\templates\pages\about.html:52
 msgid "Kontni ki prepare pa ekspè"
-msgstr ""
+msgstr "Kontni ki prepare pa ekspè"
 
 #: .\templates\pages\about.html:67
 msgid "Image illustrative"
-msgstr ""
+msgstr "Imaj ilistratif"
 
 #: .\templates\pages\conditions.html:4
 msgid "Conditions générales"
-msgstr ""
+msgstr "Kondisyon jeneral"
 
 #: .\templates\pages\conditions.html:8
 msgid "Conditions générales d'utilisation"
-msgstr ""
+msgstr "Kondisyon jeneral itilizasyon"
 
 #: .\templates\pages\contact.html:4 .\templates\pages\contact.html:10
 msgid "Contactez-nous"
-msgstr ""
+msgstr "Kontakte nou"
 
 #: .\templates\pages\contact.html:13
 msgid "Nous sommes là pour vous aider."
-msgstr ""
+msgstr "Nou la pou ede ou."
 
 #: .\templates\pages\contact.html:32
 msgid "Heures d'ouverture"
-msgstr ""
+msgstr "Lè ouvèti"
 
 #: .\templates\pages\contact.html:57
 msgid "Adresse"
-msgstr ""
+msgstr "Adrès"
 
 #: .\templates\pages\contact.html:69
 msgid "Aucune carte disponible."
-msgstr ""
+msgstr "Pa gen kat disponib."
 
 #: .\templates\pages\faq.html:8
 msgid "Questions fréquentes"
-msgstr ""
+msgstr "Kesyon yo mande souvan"
 
 #: .\templates\pages\privacy.html:8
 msgid "Politique de confidentialité"
-msgstr ""
+msgstr "Politik konfidansyalite"
 
 #: .\templates\progress\course_progress.html:14
 msgid "Suivez votre progression dans ce cours"
-msgstr ""
+msgstr "Swiv pwogresyon ou nan kou sa a"
 
 #: .\templates\progress\course_progress.html:25
 msgid "Progression globale"
-msgstr ""
+msgstr "Pwogresyon jeneral"
 
 #: .\templates\progress\course_progress.html:28
 msgid "terminé"
-msgstr ""
+msgstr "fini"
 
 #: .\templates\progress\course_progress.html:45
 msgid "Leçons"
-msgstr ""
+msgstr "Leson"
 
 #: .\templates\progress\course_progress.html:97
 msgid "Terminer"
-msgstr ""
+msgstr "Fini"
 
 #: .\templates\progress\course_progress.html:106
 msgid "Aucune leçon disponible pour ce cours."
-msgstr ""
+msgstr "Pa gen leson disponib pou kou sa a."
 
 #: .\templates\progress\course_progress.html:114
 msgid "Retour au tableau de bord"
-msgstr ""
+msgstr "Retounen nan tablodbò"
 
 #: .\templates\progress\course_progress.html:117
 msgid "Voir le cours"
-msgstr ""
+msgstr "Wè kou a"
 
 #: .\templates\progress\course_progress.html:121
 #: .\templates\progress\dashboard.html:90 .\templates\quiz\detail.html:38
 #: .\templates\quiz\detail.html:72 .\templates\quiz\quiz_detail.html:38
 #: .\templates\quiz\quiz_detail.html:72
 msgid "Continuer"
-msgstr ""
+msgstr "Kontinye"
 
 #: .\templates\progress\dashboard.html:17
 msgid "leçons terminées"
-msgstr ""
+msgstr "leson fini"
 
 #: .\templates\progress\dashboard.html:22
 msgid "terminés"
-msgstr ""
+msgstr "fini"
 
 #: .\templates\progress\dashboard.html:25
 msgid "en cours"
-msgstr ""
+msgstr "an kou"
 
 #: .\templates\progress\dashboard.html:38
 msgid "Leçons terminées"
-msgstr ""
+msgstr "Leson fini"
 
 #: .\templates\progress\dashboard.html:42
 msgid "Leçons en cours"
-msgstr ""
+msgstr "Leson an kou"
 
 #: .\templates\progress\dashboard.html:46
 msgid "Cours terminés"
-msgstr ""
+msgstr "Kou fini"
 
 #: .\templates\progress\dashboard.html:74
 msgid "Terminé"
-msgstr ""
+msgstr "Fini"
 
 #: .\templates\progress\dashboard.html:87 .\templates\quiz\list.html:28
 #: .\templates\quiz\quiz_list.html:28
 msgid "Voir détails"
-msgstr ""
+msgstr "Wè detay"
 
 #: .\templates\progress\dashboard.html:94
 msgid "Félicitations!"
-msgstr ""
+msgstr "Felisitasyon!"
 
 #: .\templates\progress\dashboard.html:105
 msgid "Vous n'avez pas encore commencé de cours."
-msgstr ""
+msgstr "Ou poko kòmanse okenn kou."
 
 #: .\templates\progress\dashboard.html:107
 msgid "Explorez nos cours et commencez votre apprentissage dès maintenant."
-msgstr ""
+msgstr "Eksplore kou nou yo epi kòmanse aprantisaj ou kounye a."
 
 #: .\templates\quiz\correction\corriger_tentative.html:5
 msgid "Correction de la tentative"
-msgstr ""
+msgstr "Koreksyon tantativ la"
 
 #: .\templates\quiz\correction\corriger_tentative.html:8
 msgid "Score actuel"
-msgstr ""
+msgstr "Nòt aktyèl"
 
 #: .\templates\quiz\correction\corriger_tentative.html:16
 #: .\templates\quiz\result.html:68 .\templates\quiz\take_quiz.html:25
 #: .\templates\quiz\take_quiz.html:45
 msgid "Question"
-msgstr ""
+msgstr "Kesyon"
 
 #: .\templates\quiz\correction\corriger_tentative.html:43
 msgid "Réponse de l'utilisateur"
-msgstr ""
+msgstr "Repons itilizatè a"
 
 #: .\templates\quiz\correction\corriger_tentative.html:49
 #: .\templates\quiz\result.html:90
 msgid "Aucune réponse sélectionnée"
-msgstr ""
+msgstr "Pa gen repons chwazi"
 
 #: .\templates\quiz\correction\corriger_tentative.html:64
 msgid "Aucun fichier envoyé"
-msgstr ""
+msgstr "Pa gen fichye voye"
 
 #: .\templates\quiz\correction\corriger_tentative.html:67
 msgid "Type non pris en charge pour l'affichage"
-msgstr ""
+msgstr "Kalite pa sipòte pou afichaj"
 
 #: .\templates\quiz\correction\corriger_tentative.html:72
 msgid "Points attribués (sur"
-msgstr ""
+msgstr "Pwen akòde (sou"
 
 #: .\templates\quiz\correction\corriger_tentative.html:79
 msgid "Laissez vide pour utiliser la notation automatique"
-msgstr ""
+msgstr "Kite vid pou itilize notasyon otomatik"
 
 #: .\templates\quiz\correction\corriger_tentative.html:84
 msgid "Aucune question trouvée."
-msgstr ""
+msgstr "Pa gen kesyon jwenn."
 
 #: .\templates\quiz\correction\corriger_tentative.html:89
 msgid "Enregistrer les corrections"
-msgstr ""
+msgstr "Anrejistre koreksyon yo"
 
 #: .\templates\quiz\correction\corriger_tentative.html:92
 msgid "Retour à la liste des tentatives"
-msgstr ""
+msgstr "Retounen nan lis tantativ yo"
 
 #: .\templates\quiz\correction\tentative_list.html:5
 msgid "Tentatives soumises"
-msgstr ""
+msgstr "Tantativ soumèt"
 
 #: .\templates\quiz\correction\tentative_list.html:14
 #: .\templates\quiz\detail.html:57 .\templates\quiz\quiz_detail.html:57
 msgid "Score"
-msgstr ""
+msgstr "Nòt"
 
 #: .\templates\quiz\correction\tentative_list.html:16
 msgid "Soumis le"
-msgstr ""
+msgstr "Soumèt le"
 
 #: .\templates\quiz\correction\tentative_list.html:38
 msgid "Corriger"
-msgstr ""
+msgstr "Korije"
 
 #: .\templates\quiz\correction\tentative_list.html:48
 msgid "Aucune tentative soumise pour le moment."
-msgstr ""
+msgstr "Pa gen tantativ soumèt pou kounye a."
 
 #: .\templates\quiz\correction\tentative_list.html:54
 msgid "Retour à l'administration"
-msgstr ""
+msgstr "Retounen nan administrasyon"
 
 #: .\templates\quiz\detail.html:10 .\templates\quiz\list.html:25
 #: .\templates\quiz\quiz_detail.html:10 .\templates\quiz\quiz_list.html:25
 msgid "Score requis"
-msgstr ""
+msgstr "Nòt obligatwa"
 
 #: .\templates\quiz\detail.html:21 .\templates\quiz\quiz_detail.html:21
 msgid "Indépendant"
-msgstr ""
+msgstr "Endepandan"
 
 #: .\templates\quiz\detail.html:28 .\templates\quiz\quiz_detail.html:28
 msgid "Vous avez déjà réussi ce quiz !"
-msgstr ""
+msgstr "Ou deja reyisi quiz sa a !"
 
 #: .\templates\quiz\detail.html:30 .\templates\quiz\quiz_detail.html:30
 msgid "Voir mon résultat"
-msgstr ""
+msgstr "Wè rezilta mwen"
 
 #: .\templates\quiz\detail.html:36 .\templates\quiz\quiz_detail.html:36
 msgid "Vous avez une tentative en cours."
-msgstr ""
+msgstr "Ou gen yon tantativ an kou."
 
 #: .\templates\quiz\detail.html:49 .\templates\quiz\quiz_detail.html:49
 msgid "Vos tentatives"
-msgstr ""
+msgstr "Tantativ ou yo"
 
 #: .\templates\quiz\detail.html:69 .\templates\quiz\quiz_detail.html:69
 msgid "En cours"
-msgstr ""
+msgstr "An kou"
 
 #: .\templates\quiz\detail.html:79 .\templates\quiz\quiz_detail.html:79
 msgid "Aucune tentative."
-msgstr ""
+msgstr "Pa gen tantativ."
 
 #: .\templates\quiz\detail.html:86 .\templates\quiz\quiz_detail.html:86
 #: .\templates\quiz\result.html:41
 msgid "Retour au cours"
-msgstr ""
+msgstr "Retounen nan kou a"
 
 #: .\templates\quiz\detail.html:94 .\templates\quiz\quiz_detail.html:94
 #: .\templates\quiz\result.html:49
 msgid "Retour à la leçon"
-msgstr ""
+msgstr "Retounen nan leson an"
 
 #: .\templates\quiz\list.html:4 .\templates\quiz\quiz_list.html:4
 msgid "Quiz disponibles"
-msgstr ""
+msgstr "Quiz disponib"
 
 #: .\templates\quiz\list.html:20 .\templates\quiz\quiz_list.html:20
 msgid "À faire"
-msgstr ""
+msgstr "Pou fè"
 
 #: .\templates\quiz\list.html:26 .\templates\quiz\quiz_list.html:26
 #: .\templates\quiz\take_quiz.html:16
 msgid "questions"
-msgstr ""
+msgstr "kesyon"
 
 #: .\templates\quiz\list.html:36 .\templates\quiz\quiz_list.html:36
 msgid "Aucun quiz disponible pour le moment."
-msgstr ""
+msgstr "Pa gen quiz disponib pou kounye a."
 
 #: .\templates\quiz\result.html:4 .\templates\quiz\result.html:12
 msgid "Résultat du quiz"
-msgstr ""
+msgstr "Rezilta quiz la"
 
 #: .\templates\quiz\result.html:23
 msgid "Félicitations ! Vous avez réussi !"
-msgstr ""
+msgstr "Felisitasyon! Ou reyisi!"
 
 #: .\templates\quiz\result.html:27
 msgid "Pas encore réussi. Réessayez !"
-msgstr ""
+msgstr "Ou poko reyisi. Eseye ankò!"
 
 #: .\templates\quiz\result.html:32
 msgid "Seuil de réussite"
-msgstr ""
+msgstr "Limit reyisit"
 
 #: .\templates\quiz\result.html:36
 msgid "Réessayer"
-msgstr ""
+msgstr "Eseye ankò"
 
 #: .\templates\quiz\result.html:61
 msgid "Détail de vos réponses"
-msgstr ""
+msgstr "Detay repons ou yo"
 
 #: .\templates\quiz\result.html:77
 msgid "Votre réponse"
-msgstr ""
+msgstr "Repons ou"
 
 #: .\templates\quiz\result.html:108 .\templates\quiz\result.html:120
 #: .\templates\quiz\result.html:130
 msgid "Télécharger"
-msgstr ""
+msgstr "Telechaje"
 
 #: .\templates\quiz\result.html:111 .\templates\quiz\result.html:123
 #: .\templates\quiz\result.html:133 .\templates\quiz\result.html:142
 msgid "Aucun fichier téléchargé"
-msgstr ""
+msgstr "Pa gen fichye telechaje"
 
 #: .\templates\quiz\result.html:151
 msgid "Bonne réponse"
-msgstr ""
+msgstr "Bon repons"
 
 #: .\templates\quiz\result.html:163
 msgid "Explication"
-msgstr ""
+msgstr "Esplikasyon"
 
 #: .\templates\quiz\result.html:169
 msgid "Aucune réponse enregistrée."
-msgstr ""
+msgstr "Pa gen repons anrejistre."
 
 #: .\templates\quiz\take_quiz.html:13
 msgid "Temps restant"
-msgstr ""
+msgstr "Tan ki rete"
 
 #: .\templates\quiz\take_quiz.html:19
 msgid "répondues"
-msgstr ""
+msgstr "reponn"
 
 #: .\templates\quiz\take_quiz.html:46
 msgid "pts"
-msgstr ""
+msgstr "pwen"
 
 #: .\templates\quiz\take_quiz.html:90
 msgid "Écrivez votre réponse..."
-msgstr ""
+msgstr "Ekri repons ou..."
 
 #: .\templates\quiz\take_quiz.html:95
 msgid "Écrivez votre réponse ici..."
-msgstr ""
+msgstr "Ekri repons ou isit..."
 
 #: .\templates\quiz\take_quiz.html:101
 msgid "Enregistrez votre réponse audio"
-msgstr ""
+msgstr "Anrejistre repons odyo ou"
 
 #: .\templates\quiz\take_quiz.html:117
 msgid "Maintenez le bouton pour enregistrer (cliquez sur ordinateur)"
-msgstr ""
+msgstr "Kenbe bouton an pou anrejistre (klike sou òdinatè)"
 
 #: .\templates\quiz\take_quiz.html:125
 msgid "Ou téléchargez un fichier audio"
-msgstr ""
+msgstr "Oswa telechaje yon fichye odyo"
 
 #: .\templates\quiz\take_quiz.html:133
 msgid "Téléchargez votre réponse vidéo"
-msgstr ""
+msgstr "Telechaje repons videyo ou"
 
 #: .\templates\quiz\take_quiz.html:140
 msgid "Téléchargez votre réponse image"
-msgstr ""
+msgstr "Telechaje repons imaj ou"
 
 #: .\templates\quiz\take_quiz.html:147
 msgid "Téléchargez votre fichier réponse"
-msgstr ""
+msgstr "Telechaje fichye repons ou"
 
 #: .\templates\quiz\take_quiz.html:158
 msgid "Précédent"
-msgstr ""
+msgstr "Anvan"
 
 #: .\templates\quiz\take_quiz.html:162
 msgid "Suivant"
-msgstr ""
+msgstr "Apre"
 
 #: .\templates\quiz\take_quiz.html:165
 msgid "Soumettre le quiz"
-msgstr ""
+msgstr "Soumèt quiz la"
 
 #: .\templates\quiz\take_quiz.html:361
 msgid "Êtes-vous sûr de vouloir soumettre ce quiz ?"
-msgstr ""
+msgstr "Èske ou sèten ou vle soumèt quiz sa a ?"
 
 #: .\templates\ranking\leaderboard.html:8
 msgid "Classement général"
-msgstr ""
+msgstr "Klasman jeneral"
 
 #: .\templates\ranking\leaderboard.html:10
 msgid "Général"
-msgstr ""
+msgstr "Jeneral"
 
 #: .\templates\ranking\leaderboard.html:11 .\templates\ranking\my_rank.html:11
 msgid "Cette semaine"
-msgstr ""
+msgstr "Semèn sa a"
 
 #: .\templates\ranking\leaderboard.html:12 .\templates\ranking\my_rank.html:12
 msgid "Ce mois"
-msgstr ""
+msgstr "Mwa sa a"
 
 #: .\templates\ranking\leaderboard.html:18
 msgid "Aucun joueur."
-msgstr ""
+msgstr "Pa gen jwè."
 
 #: .\templates\ranking\leaderboard.html:25
 msgid "Aucun joueur cette semaine."
-msgstr ""
+msgstr "Pa gen jwè semèn sa a."
 
 #: .\templates\ranking\leaderboard.html:32
 msgid "Aucun joueur ce mois."
-msgstr ""
+msgstr "Pa gen jwè mwa sa a."
 
 #: .\templates\ranking\my_rank.html:10
 msgid "Points totaux"
-msgstr ""
+msgstr "Pwen total"
 
 #: .\templates\ranking\my_rank.html:16
 msgid "Niveau actuel"
-msgstr ""
+msgstr "Nivo aktyèl"
 
 #: .\templates\ranking\my_rank.html:19
 msgid "Prochain niveau"
-msgstr ""
+msgstr "Pwochen nivo"
 
 #: .\templates\ranking\my_rank.html:19
 msgid "points requis"
-msgstr ""
+msgstr "pwen obligatwa"
 
 #: .\templates\ranking\my_rank.html:24
 msgid "Historique récent"
-msgstr ""
+msgstr "Istwa resan"
 
 #: .\templates\ranking\my_rank.html:32
 msgid "Aucune activité récente."
-msgstr ""
+msgstr "Pa gen aktivite resan."
 
 #: .\templates\subscriptions\admin_pending.html:4
 #: .\templates\subscriptions\admin_pending.html:9
 msgid "Abonnements en attente"
-msgstr ""
+msgstr "Abònman annatant"
 
 #: .\templates\subscriptions\admin_pending.html:19
 #: .\templates\subscriptions\select_courses.html:12
 msgid "Plan"
-msgstr ""
+msgstr "Plan"
 
 #: .\templates\subscriptions\admin_pending.html:49
 msgid "Gérer"
-msgstr ""
+msgstr "Jere"
 
 #: .\templates\subscriptions\admin_pending.html:60
 msgid "Aucun abonnement en attente."
-msgstr ""
+msgstr "Pa gen abònman annatant."
 
 #: .\templates\subscriptions\detail.html:16
 msgid "Début"
-msgstr ""
+msgstr "Kòmansman"
 
 #: .\templates\subscriptions\detail.html:29
 #: .\templates\subscriptions\my_subscriptions.html:15
 msgid "Action requise"
-msgstr ""
+msgstr "Aksyon obligatwa"
 
 #: .\templates\subscriptions\detail.html:30
 msgid "Vous devez choisir vos cours pour accéder au contenu."
-msgstr ""
+msgstr "Ou dwe chwazi kou ou yo pou jwenn aksè a kontni an."
 
 #: .\templates\subscriptions\detail.html:32
 #: .\templates\subscriptions\my_subscriptions.html:18
 #: .\templates\subscriptions\my_subscriptions.html:48
 #: .\templates\subscriptions\select_courses.html:4
 msgid "Choisir mes cours"
-msgstr ""
+msgstr "Chwazi kou mwen yo"
 
 #: .\templates\subscriptions\detail.html:38
 msgid "Cours sélectionnés"
-msgstr ""
+msgstr "Kou chwazi"
 
 #: .\templates\subscriptions\detail.html:53
 msgid "Aucun cours sélectionné."
-msgstr ""
+msgstr "Pa gen kou chwazi."
 
 #: .\templates\subscriptions\detail.html:57
 msgid "Accès actifs"
-msgstr ""
+msgstr "Aksè aktif"
 
 #: .\templates\subscriptions\detail.html:67
 msgid "Expire"
-msgstr ""
+msgstr "Ekspire"
 
 #: .\templates\subscriptions\detail.html:74
 msgid "Aucun accès actif."
-msgstr ""
+msgstr "Pa gen aksè aktif."
 
 #: .\templates\subscriptions\list.html:9
 msgid "Plans d'abonnement"
-msgstr ""
+msgstr "Plan abònman"
 
 #: .\templates\subscriptions\list.html:12
 msgid "Choisissez le plan qui vous convient et accédez à des cours exclusifs."
-msgstr ""
+msgstr "Chwazi plan ki bon pou ou epi jwenn aksè a kou eksklizif."
 
 #: .\templates\subscriptions\list.html:18
 msgid "Abonnement actif"
-msgstr ""
+msgstr "Abònman aktif"
 
 #: .\templates\subscriptions\list.html:19
 msgid "expire le"
-msgstr ""
+msgstr "ekspire le"
 
 #: .\templates\subscriptions\list.html:29
 msgid "GRATUIT"
-msgstr ""
+msgstr "GRATIS"
 
 #: .\templates\subscriptions\list.html:44
 #: .\templates\subscriptions\subscribe.html:25
 msgid "jours"
-msgstr ""
+msgstr "jou"
 
 #: .\templates\subscriptions\list.html:48
 #: .\templates\subscriptions\subscribe.html:28
 msgid "Cours inclus"
-msgstr ""
+msgstr "Kou enkli"
 
 #: .\templates\subscriptions\list.html:50
 #: .\templates\subscriptions\subscribe.html:30
 msgid "max"
-msgstr ""
+msgstr "maks"
 
 #: .\templates\subscriptions\list.html:52
 #: .\templates\subscriptions\subscribe.html:32
 msgid "tous"
-msgstr ""
+msgstr "tout"
 
 #: .\templates\subscriptions\list.html:64
 msgid "Activer gratuitement"
-msgstr ""
+msgstr "Aktive gratis"
 
 #: .\templates\subscriptions\list.html:68
 #: .\templates\subscriptions\subscribe.html:4
 #: .\templates\subscriptions\subscribe.html:9
 msgid "S'abonner"
-msgstr ""
+msgstr "Abòne"
 
 #: .\templates\subscriptions\list.html:74
 msgid "Aucun plan disponible pour le moment."
-msgstr ""
+msgstr "Pa gen plan disponib pou kounye a."
 
 #: .\templates\subscriptions\my_subscriptions.html:4
 #: .\templates\subscriptions\my_subscriptions.html:9
 msgid "Mes abonnements"
-msgstr ""
+msgstr "Abònman mwen yo"
 
 #: .\templates\subscriptions\my_subscriptions.html:16
 msgid "Votre abonnement"
-msgstr ""
+msgstr "Abònman ou"
 
 #: .\templates\subscriptions\my_subscriptions.html:16
 msgid "est actif, mais vous devez choisir vos cours."
-msgstr ""
+msgstr "aktif, men ou dwe chwazi kou ou yo."
 
 #: .\templates\subscriptions\my_subscriptions.html:41
 msgid "Expire le"
-msgstr ""
+msgstr "Ekspire le"
 
 #: .\templates\subscriptions\my_subscriptions.html:60
 msgid "Vous n'avez pas encore d'abonnement."
-msgstr ""
+msgstr "Ou poko gen abònman."
 
 #: .\templates\subscriptions\my_subscriptions.html:64
 msgid "Voir les plans"
-msgstr ""
+msgstr "Wè plan yo"
 
 #: .\templates\subscriptions\select_courses.html:9
 msgid "Choisissez vos cours"
-msgstr ""
+msgstr "Chwazi kou ou yo"
 
 #: .\templates\subscriptions\select_courses.html:13
 msgid "Places restantes"
-msgstr ""
+msgstr "Plas ki rete"
 
 #: .\templates\subscriptions\select_courses.html:23
 msgid "Déjà sélectionnés"
-msgstr ""
+msgstr "Deja chwazi"
 
 #: .\templates\subscriptions\select_courses.html:54
 msgid "Valider la sélection"
-msgstr ""
+msgstr "Valide seleksyon an"
 
 #: .\templates\subscriptions\select_courses.html:57
 msgid "Plus tard"
-msgstr ""
+msgstr "Pita"
 
 #: .\templates\subscriptions\select_courses.html:84
 msgid "Vous ne pouvez sélectionner que"
-msgstr ""
+msgstr "Ou ka chwazi sèlman"
 
 #: .\templates\subscriptions\select_courses.html:84
 msgid "cours maximum."
-msgstr ""
+msgstr "kou maksimòm."
 
 #: .\templates\subscriptions\subscribe.html:17
 msgid "Prix"
-msgstr ""
+msgstr "Pri"
 
 #: .\templates\subscriptions\subscribe.html:65
 msgid "Photo du paiement"
-msgstr ""
+msgstr "Foto peman an"
 
 #: .\templates\subscriptions\subscribe.html:68
 msgid "Prenez une photo de votre reçu de paiement."
-msgstr ""
+msgstr "Pran yon foto resi peman ou."
 
 #: .\templates\theme_manager\theme_preview.html:4
 #: .\templates\theme_manager\theme_preview.html:8
 msgid "Aperçu du thème"
-msgstr ""
+msgstr "Aprevi tèm nan"
 
 #: .\templates\theme_manager\theme_preview.html:10
 msgid "Couleurs principales"
-msgstr ""
+msgstr "Koulè prensipal yo"
 
 #: .\templates\theme_manager\theme_preview.html:21
 msgid "Boutons"
-msgstr ""
+msgstr "Bouton"
 
 #: .\templates\theme_manager\theme_preview.html:35
 msgid "Gérer les thèmes"
-msgstr ""
+msgstr "Jere tèm yo"
 
 #: .\theme_manager\models.py:188
 msgid "Thèmes"
-msgstr ""
+msgstr "Tèm"
 
 #: .\venv\Lib\site-packages\django\contrib\messages\apps.py:16
 msgid "Messages"
-msgstr ""
+msgstr "Mesaj"
 
 #: .\venv\Lib\site-packages\django\contrib\sitemaps\apps.py:8
 msgid "Site Maps"
-msgstr ""
+msgstr "Kat sit"
 
 #: .\venv\Lib\site-packages\django\contrib\staticfiles\apps.py:9
 msgid "Static Files"
-msgstr ""
+msgstr "Fichye statik"
 
 #: .\venv\Lib\site-packages\django\contrib\syndication\apps.py:7
 msgid "Syndication"
-msgstr ""
+msgstr "Sindikasyon"
 
 #. Translators: String used to replace omitted page numbers in elided page
 #. range generated by paginators, e.g. [1, 2, '…', 5, 6, 7, '…', 9, 10].
 #: .\venv\Lib\site-packages\django\core\paginator.py:33
 msgid "…"
-msgstr ""
+msgstr "…"
 
 #: .\venv\Lib\site-packages\django\core\paginator.py:35
 msgid "That page number is not an integer"
-msgstr ""
+msgstr "Nimewo paj sa a pa yon nonb antye"
 
 #: .\venv\Lib\site-packages\django\core\paginator.py:36
 msgid "That page number is less than 1"
-msgstr ""
+msgstr "Nimewo paj sa a pi piti pase 1"
 
 #: .\venv\Lib\site-packages\django\core\paginator.py:37
 msgid "That page contains no results"
-msgstr ""
+msgstr "Paj sa a pa gen rezilta"
 
 #: .\venv\Lib\site-packages\django\core\validators.py:22
 msgid "Enter a valid value."
-msgstr ""
+msgstr "Mete yon valè ki valab."
 
 #: .\venv\Lib\site-packages\django\core\validators.py:70
 msgid "Enter a valid domain name."
-msgstr ""
+msgstr "Mete yon non domèn ki valab."
 
 #: .\venv\Lib\site-packages\django\core\validators.py:153
 #: .\venv\Lib\site-packages\django\forms\fields.py:773
 msgid "Enter a valid URL."
-msgstr ""
+msgstr "Mete yon URL ki valab."
 
 #: .\venv\Lib\site-packages\django\core\validators.py:200
 msgid "Enter a valid integer."
-msgstr ""
+msgstr "Mete yon nonb antye ki valab."
 
 #: .\venv\Lib\site-packages\django\core\validators.py:211
 msgid "Enter a valid email address."
-msgstr ""
+msgstr "Mete yon adrès imèl ki valab."
 
 #. Translators: "letters" means latin letters: a-z and A-Z.
 #: .\venv\Lib\site-packages\django\core\validators.py:289
 msgid ""
 "Enter a valid “slug” consisting of letters, numbers, underscores or hyphens."
 msgstr ""
+"Mete yon « slug » ki valab ak lèt, chif, ti ba oswa tire."
 
 #: .\venv\Lib\site-packages\django\core\validators.py:297
 msgid ""
 "Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or "
 "hyphens."
 msgstr ""
+"Mete yon « slug » ki valab ak lèt Unicode, chif, ti ba oswa tire."
 
 #: .\venv\Lib\site-packages\django\core\validators.py:309
 #: .\venv\Lib\site-packages\django\core\validators.py:318
@@ -2622,44 +2640,44 @@ msgstr ""
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2220
 #, python-format
 msgid "Enter a valid %(protocol)s address."
-msgstr ""
+msgstr "Mete yon adrès %(protocol)s ki valab."
 
 #: .\venv\Lib\site-packages\django\core\validators.py:311
 msgid "IPv4"
-msgstr ""
+msgstr "IPv4"
 
 #: .\venv\Lib\site-packages\django\core\validators.py:320
 #: .\venv\Lib\site-packages\django\utils\ipv6.py:43
 msgid "IPv6"
-msgstr ""
+msgstr "IPv6"
 
 #: .\venv\Lib\site-packages\django\core\validators.py:334
 msgid "IPv4 or IPv6"
-msgstr ""
+msgstr "IPv4 oswa IPv6"
 
 #: .\venv\Lib\site-packages\django\core\validators.py:375
 msgid "Enter only digits separated by commas."
-msgstr ""
+msgstr "Mete sèlman chif separe pa vigil."
 
 #: .\venv\Lib\site-packages\django\core\validators.py:381
 #, python-format
 msgid "Ensure this value is %(limit_value)s (it is %(show_value)s)."
-msgstr ""
+msgstr "Asire valè sa a se %(limit_value)s (li se %(show_value)s)."
 
 #: .\venv\Lib\site-packages\django\core\validators.py:416
 #, python-format
 msgid "Ensure this value is less than or equal to %(limit_value)s."
-msgstr ""
+msgstr "Asire valè sa a pi piti pase oswa egal a %(limit_value)s."
 
 #: .\venv\Lib\site-packages\django\core\validators.py:425
 #, python-format
 msgid "Ensure this value is greater than or equal to %(limit_value)s."
-msgstr ""
+msgstr "Asire valè sa a pi gran pase oswa egal a %(limit_value)s."
 
 #: .\venv\Lib\site-packages\django\core\validators.py:434
 #, python-format
 msgid "Ensure this value is a multiple of step size %(limit_value)s."
-msgstr ""
+msgstr "Asire valè sa a se yon miltip %(limit_value)s."
 
 #: .\venv\Lib\site-packages\django\core\validators.py:441
 #, python-format
@@ -2667,6 +2685,8 @@ msgid ""
 "Ensure this value is a multiple of step size %(limit_value)s, starting from "
 "%(offset)s, e.g. %(offset)s, %(valid_value1)s, %(valid_value2)s, and so on."
 msgstr ""
+"Asire valè sa a se yon miltip %(limit_value)s, kòmanse depi %(offset)s, pa "
+"egzanp %(offset)s, %(valid_value1)s, %(valid_value2)s, ak sou sa."
 
 #: .\venv\Lib\site-packages\django\core\validators.py:473
 #, python-format
@@ -2676,8 +2696,8 @@ msgid ""
 msgid_plural ""
 "Ensure this value has at least %(limit_value)d characters (it has "
 "%(show_value)d)."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Asire valè sa a gen omwen %(limit_value)d karaktè (li gen %(show_value)d)."
+msgstr[1] "Asire valè sa a gen omwen %(limit_value)d karaktè (li gen %(show_value)d)."
 
 #: .\venv\Lib\site-packages\django\core\validators.py:491
 #, python-format
@@ -2687,28 +2707,28 @@ msgid ""
 msgid_plural ""
 "Ensure this value has at most %(limit_value)d characters (it has "
 "%(show_value)d)."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Asire valè sa a gen omwen %(limit_value)d karaktè (li gen %(show_value)d)."
+msgstr[1] "Asire valè sa a gen omwen %(limit_value)d karaktè (li gen %(show_value)d)."
 
 #: .\venv\Lib\site-packages\django\core\validators.py:514
 #: .\venv\Lib\site-packages\django\forms\fields.py:364
 #: .\venv\Lib\site-packages\django\forms\fields.py:403
 msgid "Enter a number."
-msgstr ""
+msgstr "Mete yon nonb."
 
 #: .\venv\Lib\site-packages\django\core\validators.py:516
 #, python-format
 msgid "Ensure that there are no more than %(max)s digit in total."
 msgid_plural "Ensure that there are no more than %(max)s digits in total."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Asire pa gen plis pase %(max)s chif an total."
+msgstr[1] "Asire pa gen plis pase %(max)s chif an total."
 
 #: .\venv\Lib\site-packages\django\core\validators.py:521
 #, python-format
 msgid "Ensure that there are no more than %(max)s decimal place."
 msgid_plural "Ensure that there are no more than %(max)s decimal places."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Asire pa gen plis pase %(max)s plas desimal."
+msgstr[1] "Asire pa gen plis pase %(max)s plas desimal."
 
 #: .\venv\Lib\site-packages\django\core\validators.py:526
 #, python-format
@@ -2716,8 +2736,8 @@ msgid ""
 "Ensure that there are no more than %(max)s digit before the decimal point."
 msgid_plural ""
 "Ensure that there are no more than %(max)s digits before the decimal point."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Asire pa gen plis pase %(max)s chif anvan pwen desimal la."
+msgstr[1] "Asire pa gen plis pase %(max)s chif anvan pwen desimal la."
 
 #: .\venv\Lib\site-packages\django\core\validators.py:597
 #, python-format
@@ -2725,43 +2745,45 @@ msgid ""
 "File extension “%(extension)s” is not allowed. Allowed extensions are: "
 "%(allowed_extensions)s."
 msgstr ""
+"Ekstansyon fichye « %(extension)s » pa pèmèt. Ekstansyon pèmèt yo se: "
+"%(allowed_extensions)s."
 
 #: .\venv\Lib\site-packages\django\core\validators.py:659
 msgid "Null characters are not allowed."
-msgstr ""
+msgstr "Karaktè nil pa pèmèt."
 
 #: .\venv\Lib\site-packages\django\db\models\base.py:1633
 #: .\venv\Lib\site-packages\django\forms\models.py:932
 msgid "and"
-msgstr ""
+msgstr "ak"
 
 #: .\venv\Lib\site-packages\django\db\models\base.py:1635
 #, python-format
 msgid "%(model_name)s with this %(field_labels)s already exists."
-msgstr ""
+msgstr "%(model_name)s ak %(field_labels)s sa a deja egziste."
 
 #: .\venv\Lib\site-packages\django\db\models\constraints.py:20
 #, python-format
 msgid "Constraint “%(name)s” is violated."
-msgstr ""
+msgstr "Kontrent « %(name)s » vyole."
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:134
 #, python-format
 msgid "Value %(value)r is not a valid choice."
-msgstr ""
+msgstr "Valè %(value)r pa yon chwa ki valab."
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:135
 msgid "This field cannot be null."
-msgstr ""
+msgstr "Chan sa a pa ka vid."
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:136
 msgid "This field cannot be blank."
-msgstr ""
+msgstr "Chan sa a pa ka vid."
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:137
 #, python-format
 msgid "%(model_name)s with this %(field_label)s already exists."
-msgstr ""
+msgstr "%(model_name)s ak %(field_label)s sa a deja egziste."
 
 #. Translators: The 'lookup_type' is one of 'date', 'year' or
 #. 'month'. Eg: "Title must be unique for pub_date year"
@@ -2769,39 +2791,39 @@ msgstr ""
 #, python-format
 msgid ""
 "%(field_label)s must be unique for %(date_field_label)s %(lookup_type)s."
-msgstr ""
+msgstr "%(field_label)s dwe inik pou %(date_field_label)s %(lookup_type)s."
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:180
 #, python-format
 msgid "Field of type: %(field_type)s"
-msgstr ""
+msgstr "Chan de kalite: %(field_type)s"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1161
 #, python-format
 msgid "“%(value)s” value must be either True or False."
-msgstr ""
+msgstr "Valè « %(value)s » dwe swa Vre oswa Fo."
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1162
 #, python-format
 msgid "“%(value)s” value must be either True, False, or None."
-msgstr ""
+msgstr "Valè « %(value)s » dwe swa Vre, Fo oswa Okenn."
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1164
 msgid "Boolean (Either True or False)"
-msgstr ""
+msgstr "Bouleyen (Swa Vre oswa Fo)"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1214
 #, python-format
 msgid "String (up to %(max_length)s)"
-msgstr ""
+msgstr "Chèn (jiska %(max_length)s)"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1216
 msgid "String (unlimited)"
-msgstr ""
+msgstr "Chèn (san limit)"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1325
 msgid "Comma-separated integers"
-msgstr ""
+msgstr "Nonb antye separe pa vigil"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1426
 #, python-format
@@ -2809,6 +2831,7 @@ msgid ""
 "“%(value)s” value has an invalid date format. It must be in YYYY-MM-DD "
 "format."
 msgstr ""
+"Valè « %(value)s » gen yon fòma dat ki pa valab. Li dwe nan fòma YYYY-MM-DD."
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1430
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1565
@@ -2817,10 +2840,11 @@ msgid ""
 "“%(value)s” value has the correct format (YYYY-MM-DD) but it is an invalid "
 "date."
 msgstr ""
+"Valè « %(value)s » gen fòma ki kòrèk (YYYY-MM-DD) men li pa yon dat valab."
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1434
 msgid "Date (without time)"
-msgstr ""
+msgstr "Dat (san lè)"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1561
 #, python-format
@@ -2828,6 +2852,8 @@ msgid ""
 "“%(value)s” value has an invalid format. It must be in YYYY-MM-DD "
 "HH:MM[:ss[.uuuuuu]][TZ] format."
 msgstr ""
+"Valè « %(value)s » gen yon fòma ki pa valab. Li dwe nan fòma YYYY-MM-DD "
+"HH:MM[:ss[.uuuuuu]][TZ]."
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1569
 #, python-format
@@ -2835,19 +2861,21 @@ msgid ""
 "“%(value)s” value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]]"
 "[TZ]) but it is an invalid date/time."
 msgstr ""
+"Valè « %(value)s » gen fòma ki kòrèk (YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ]) "
+"men li pa yon dat/lè valab."
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1574
 msgid "Date (with time)"
-msgstr ""
+msgstr "Dat (ak lè)"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1701
 #, python-format
 msgid "“%(value)s” value must be a decimal number."
-msgstr ""
+msgstr "Valè « %(value)s » dwe yon nonb desimal."
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1703
 msgid "Decimal number"
-msgstr ""
+msgstr "Nonb desimal"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1864
 #, python-format
@@ -2855,83 +2883,85 @@ msgid ""
 "“%(value)s” value has an invalid format. It must be in [DD] "
 "[[HH:]MM:]ss[.uuuuuu] format."
 msgstr ""
+"Valè « %(value)s » gen yon fòma ki pa valab. Li dwe nan fòma [DD] "
+"[[HH:]MM:]ss[.uuuuuu]."
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1868
 msgid "Duration"
-msgstr ""
+msgstr "Dire"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1920
 msgid "Email address"
-msgstr ""
+msgstr "Adrès imèl"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1945
 msgid "File path"
-msgstr ""
+msgstr "Chemen fichye"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2023
 #, python-format
 msgid "“%(value)s” value must be a float."
-msgstr ""
+msgstr "Valè « %(value)s » dwe yon nonb desimal."
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2025
 msgid "Floating point number"
-msgstr ""
+msgstr "Nonb desimal"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2065
 #, python-format
 msgid "“%(value)s” value must be an integer."
-msgstr ""
+msgstr "Valè « %(value)s » dwe yon nonb antye."
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2067
 msgid "Integer"
-msgstr ""
+msgstr "Nonb antye"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2163
 msgid "Big (8 byte) integer"
-msgstr ""
+msgstr "Gwo nonb antye (8 byte)"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2180
 msgid "Small integer"
-msgstr ""
+msgstr "Ti nonb antye"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2188
 msgid "IPv4 address"
-msgstr ""
+msgstr "Adrès IPv4"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2219
 msgid "IP address"
-msgstr ""
+msgstr "Adrès IP"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2310
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2311
 #, python-format
 msgid "“%(value)s” value must be either None, True or False."
-msgstr ""
+msgstr "Valè « %(value)s » dwe swa Okenn, Vre oswa Fo."
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2313
 msgid "Boolean (Either True, False or None)"
-msgstr ""
+msgstr "Bouleyen (Swa Vre, Fo oswa Okenn)"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2364
 msgid "Positive big integer"
-msgstr ""
+msgstr "Gwo nonb antye pozitif"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2379
 msgid "Positive integer"
-msgstr ""
+msgstr "Nonb antye pozitif"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2394
 msgid "Positive small integer"
-msgstr ""
+msgstr "Ti nonb antye pozitif"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2410
 #, python-format
 msgid "Slug (up to %(max_length)s)"
-msgstr ""
+msgstr "Slug (jiska %(max_length)s)"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2446
 msgid "Text"
-msgstr ""
+msgstr "Tèks"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2526
 #, python-format
@@ -2939,6 +2969,8 @@ msgid ""
 "“%(value)s” value has an invalid format. It must be in HH:MM[:ss[.uuuuuu]] "
 "format."
 msgstr ""
+"Valè « %(value)s » gen yon fòma ki pa valab. Li dwe nan fòma HH:MM[:ss"
+"[.uuuuuu]]."
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2530
 #, python-format
@@ -2946,173 +2978,177 @@ msgid ""
 "“%(value)s” value has the correct format (HH:MM[:ss[.uuuuuu]]) but it is an "
 "invalid time."
 msgstr ""
+"Valè « %(value)s » gen fòma ki kòrèk (HH:MM[:ss[.uuuuuu]]) men li pa yon lè "
+"valab."
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2534
 msgid "Time"
-msgstr ""
+msgstr "Lè"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2642
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2666
 msgid "Raw binary data"
-msgstr ""
+msgstr "Done binaire brit"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2731
 #, python-format
 msgid "“%(value)s” is not a valid UUID."
-msgstr ""
+msgstr "« %(value)s » pa yon UUID ki valab."
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2733
 msgid "Universally unique identifier"
-msgstr ""
+msgstr "Idantifyan inivèsèl inik"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\files.py:244
 msgid "File"
-msgstr ""
+msgstr "Fichye"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\files.py:420
 msgid "Image"
-msgstr ""
+msgstr "Imaj"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\json.py:24
 msgid "A JSON object"
-msgstr ""
+msgstr "Yon objè JSON"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\json.py:26
 msgid "Value must be valid JSON."
-msgstr ""
+msgstr "Valè dwe JSON ki valab."
 
 #: .\venv\Lib\site-packages\django\db\models\fields\related.py:974
 #, python-format
 msgid "%(model)s instance with %(field)s %(value)r is not a valid choice."
-msgstr ""
+msgstr "Egzanp %(model)s ak %(field)s %(value)r pa yon chwa ki valab."
 
 #: .\venv\Lib\site-packages\django\db\models\fields\related.py:977
 msgid "Foreign Key (type determined by related field)"
-msgstr ""
+msgstr "Kle etranjè (kalite detèmine pa chan relye)"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\related.py:1271
 msgid "One-to-one relationship"
-msgstr ""
+msgstr "Relasyon youn-a-yonn"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\related.py:1328
 #, python-format
 msgid "%(from)s-%(to)s relationship"
-msgstr ""
+msgstr "Relasyon %(from)s-%(to)s"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\related.py:1330
 #, python-format
 msgid "%(from)s-%(to)s relationships"
-msgstr ""
+msgstr "Relasyon %(from)s-%(to)s"
 
 #: .\venv\Lib\site-packages\django\db\models\fields\related.py:1378
 msgid "Many-to-many relationship"
-msgstr ""
+msgstr "Relasyon plizyè-a-plizyè"
 
 #. Translators: If found as last label character, these punctuation
 #. characters will prevent the default label_suffix to be appended to
 #. the label
 #: .\venv\Lib\site-packages\django\forms\boundfield.py:188
 msgid ":?.!"
-msgstr ""
+msgstr ":?.!"
 
 #: .\venv\Lib\site-packages\django\forms\fields.py:91
 msgid "This field is required."
-msgstr ""
+msgstr "Chan sa a obligatwa."
 
 #: .\venv\Lib\site-packages\django\forms\fields.py:313
 msgid "Enter a whole number."
-msgstr ""
+msgstr "Mete yon nonb antye."
 
 #: .\venv\Lib\site-packages\django\forms\fields.py:484
 #: .\venv\Lib\site-packages\django\forms\fields.py:1241
 msgid "Enter a valid date."
-msgstr ""
+msgstr "Mete yon dat ki valab."
 
 #: .\venv\Lib\site-packages\django\forms\fields.py:507
 #: .\venv\Lib\site-packages\django\forms\fields.py:1242
 msgid "Enter a valid time."
-msgstr ""
+msgstr "Mete yon lè ki valab."
 
 #: .\venv\Lib\site-packages\django\forms\fields.py:534
 msgid "Enter a valid date/time."
-msgstr ""
+msgstr "Mete yon dat/lè ki valab."
 
 #: .\venv\Lib\site-packages\django\forms\fields.py:568
 msgid "Enter a valid duration."
-msgstr ""
+msgstr "Mete yon dire ki valab."
 
 #: .\venv\Lib\site-packages\django\forms\fields.py:569
 #, python-brace-format
 msgid "The number of days must be between {min_days} and {max_days}."
-msgstr ""
+msgstr "Kantite jou yo dwe ant {min_days} ak {max_days}."
 
 #: .\venv\Lib\site-packages\django\forms\fields.py:638
 msgid "No file was submitted. Check the encoding type on the form."
-msgstr ""
+msgstr "Pa gen fichye soumèt. Tcheke kalite ankodaj fòmilè a."
 
 #: .\venv\Lib\site-packages\django\forms\fields.py:639
 msgid "No file was submitted."
-msgstr ""
+msgstr "Pa gen fichye soumèt."
 
 #: .\venv\Lib\site-packages\django\forms\fields.py:640
 msgid "The submitted file is empty."
-msgstr ""
+msgstr "Fichye soumèt la vid."
 
 #: .\venv\Lib\site-packages\django\forms\fields.py:642
 #, python-format
 msgid "Ensure this filename has at most %(max)d character (it has %(length)d)."
 msgid_plural ""
 "Ensure this filename has at most %(max)d characters (it has %(length)d)."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Asire non fichye sa a gen omwen %(max)d karaktè (li gen %(length)d)."
+msgstr[1] "Asire non fichye sa a gen omwen %(max)d karaktè (li gen %(length)d)."
 
 #: .\venv\Lib\site-packages\django\forms\fields.py:647
 msgid "Please either submit a file or check the clear checkbox, not both."
-msgstr ""
+msgstr "Tanpri swa soumèt yon fichye oswa tcheke bwat efase a, pa tou de."
 
 #: .\venv\Lib\site-packages\django\forms\fields.py:715
 msgid ""
 "Upload a valid image. The file you uploaded was either not an image or a "
 "corrupted image."
 msgstr ""
+"Telechaje yon imaj ki valab. Fichye ou te telechaje a pa t yon imaj oswa li "
+"koronpi."
 
 #: .\venv\Lib\site-packages\django\forms\fields.py:862
 #: .\venv\Lib\site-packages\django\forms\fields.py:949
 #: .\venv\Lib\site-packages\django\forms\models.py:1621
 #, python-format
 msgid "Select a valid choice. %(value)s is not one of the available choices."
-msgstr ""
+msgstr "Chwazi yon chwa ki valab. %(value)s pa youn nan chwa ki disponib yo."
 
 #: .\venv\Lib\site-packages\django\forms\fields.py:951
 #: .\venv\Lib\site-packages\django\forms\fields.py:1070
 #: .\venv\Lib\site-packages\django\forms\models.py:1619
 msgid "Enter a list of values."
-msgstr ""
+msgstr "Mete yon lis valè."
 
 #: .\venv\Lib\site-packages\django\forms\fields.py:1071
 msgid "Enter a complete value."
-msgstr ""
+msgstr "Mete yon valè konplè."
 
 #: .\venv\Lib\site-packages\django\forms\fields.py:1313
 msgid "Enter a valid UUID."
-msgstr ""
+msgstr "Mete yon UUID ki valab."
 
 #: .\venv\Lib\site-packages\django\forms\fields.py:1343
 msgid "Enter a valid JSON."
-msgstr ""
+msgstr "Mete yon JSON ki valab."
 
 #. Translators: This is the default suffix added to form field labels
 #: .\venv\Lib\site-packages\django\forms\forms.py:97
 msgid ":"
-msgstr ""
+msgstr ":"
 
 #: .\venv\Lib\site-packages\django\forms\forms.py:239
 #, python-format
 msgid "(Hidden field %(name)s) %(error)s"
-msgstr ""
+msgstr "(Chan kache %(name)s) %(error)s"
 
 #: .\venv\Lib\site-packages\django\forms\formsets.py:61
 #, python-format
@@ -3120,39 +3156,41 @@ msgid ""
 "ManagementForm data is missing or has been tampered with. Missing fields: "
 "%(field_names)s. You may need to file a bug report if the issue persists."
 msgstr ""
+"Done ManagementForm manke oswa yo te manyen. Chan ki manke: %(field_names)s. "
+"Ou ka bezwen fè yon rapò pwoblèm si pwoblèm nan pèsiste."
 
 #: .\venv\Lib\site-packages\django\forms\formsets.py:65
 #, python-format
 msgid "Please submit at most %(num)d form."
 msgid_plural "Please submit at most %(num)d forms."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Tanpri soumèt omwen %(num)d fòmilè."
+msgstr[1] "Tanpri soumèt omwen %(num)d fòmilè."
 
 #: .\venv\Lib\site-packages\django\forms\formsets.py:70
 #, python-format
 msgid "Please submit at least %(num)d form."
 msgid_plural "Please submit at least %(num)d forms."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Tanpri soumèt omwen %(num)d fòmilè."
+msgstr[1] "Tanpri soumèt omwen %(num)d fòmilè."
 
 #: .\venv\Lib\site-packages\django\forms\formsets.py:484
 #: .\venv\Lib\site-packages\django\forms\formsets.py:491
 msgid "Order"
-msgstr ""
+msgstr "Lòd"
 
 #: .\venv\Lib\site-packages\django\forms\formsets.py:499
 msgid "Delete"
-msgstr ""
+msgstr "Efase"
 
 #: .\venv\Lib\site-packages\django\forms\models.py:925
 #, python-format
 msgid "Please correct the duplicate data for %(field)s."
-msgstr ""
+msgstr "Tanpri korije done ki kopi pou %(field)s."
 
 #: .\venv\Lib\site-packages\django\forms\models.py:930
 #, python-format
 msgid "Please correct the duplicate data for %(field)s, which must be unique."
-msgstr ""
+msgstr "Tanpri korije done ki kopi pou %(field)s, ki dwe inik."
 
 #: .\venv\Lib\site-packages\django\forms\models.py:937
 #, python-format
@@ -3160,23 +3198,25 @@ msgid ""
 "Please correct the duplicate data for %(field_name)s which must be unique "
 "for the %(lookup)s in %(date_field)s."
 msgstr ""
+"Tanpri korije done ki kopi pou %(field_name)s ki dwe inik pou %(lookup)s nan "
+"%(date_field)s."
 
 #: .\venv\Lib\site-packages\django\forms\models.py:946
 msgid "Please correct the duplicate values below."
-msgstr ""
+msgstr "Tanpri korije valè ki kopi anba yo."
 
 #: .\venv\Lib\site-packages\django\forms\models.py:1383
 msgid "The inline value did not match the parent instance."
-msgstr ""
+msgstr "Valè inline a pa matche ak egzanp paran an."
 
 #: .\venv\Lib\site-packages\django\forms\models.py:1474
 msgid "Select a valid choice. That choice is not one of the available choices."
-msgstr ""
+msgstr "Chwazi yon chwa ki valab. Chwa sa a pa youn nan chwa ki disponib yo."
 
 #: .\venv\Lib\site-packages\django\forms\models.py:1623
 #, python-format
 msgid "“%(pk)s” is not a valid value."
-msgstr ""
+msgstr "« %(pk)s » pa yon valè ki valab."
 
 #: .\venv\Lib\site-packages\django\forms\utils.py:229
 #, python-format
@@ -3184,454 +3224,456 @@ msgid ""
 "%(datetime)s couldn’t be interpreted in time zone %(current_timezone)s; it "
 "may be ambiguous or it may not exist."
 msgstr ""
+"%(datetime)s pa t ka entèprete nan zòn tan %(current_timezone)s; li ka "
+"anbigi oswa li ka pa egziste."
 
 #: .\venv\Lib\site-packages\django\forms\widgets.py:528
 msgid "Clear"
-msgstr ""
+msgstr "Efase"
 
 #: .\venv\Lib\site-packages\django\forms\widgets.py:529
 msgid "Currently"
-msgstr ""
+msgstr "Kounye a"
 
 #: .\venv\Lib\site-packages\django\forms\widgets.py:530
 msgid "Change"
-msgstr ""
+msgstr "Chanje"
 
 #: .\venv\Lib\site-packages\django\forms\widgets.py:869
 msgid "Unknown"
-msgstr ""
+msgstr "Enkoni"
 
 #: .\venv\Lib\site-packages\django\forms\widgets.py:870
 msgid "Yes"
-msgstr ""
+msgstr "Wi"
 
 #: .\venv\Lib\site-packages\django\forms\widgets.py:871
 msgid "No"
-msgstr ""
+msgstr "Non"
 
 #: .\venv\Lib\site-packages\django\tasks\base.py:34
 msgctxt "Task"
 msgid "Ready"
-msgstr ""
+msgstr "Pare"
 
 #: .\venv\Lib\site-packages\django\tasks\base.py:36
 msgctxt "Task"
 msgid "Running"
-msgstr ""
+msgstr "Ap kouri"
 
 #: .\venv\Lib\site-packages\django\tasks\base.py:38
 msgctxt "Task"
 msgid "Failed"
-msgstr ""
+msgstr "Echwe"
 
 #: .\venv\Lib\site-packages\django\tasks\base.py:40
 msgctxt "Task"
 msgid "Successful"
-msgstr ""
+msgstr "Reyisi"
 
 #. Translators: Please do not add spaces around commas.
 #: .\venv\Lib\site-packages\django\template\defaultfilters.py:878
 msgid "yes,no,maybe"
-msgstr ""
+msgstr "wi,non,petèt"
 
 #: .\venv\Lib\site-packages\django\template\defaultfilters.py:908
 #: .\venv\Lib\site-packages\django\template\defaultfilters.py:925
 #, python-format
 msgid "%(size)d byte"
 msgid_plural "%(size)d bytes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(size)d byte"
+msgstr[1] "%(size)d byte"
 
 #: .\venv\Lib\site-packages\django\template\defaultfilters.py:927
 #, python-format
 msgid "%s KB"
-msgstr ""
+msgstr "%s KO"
 
 #: .\venv\Lib\site-packages\django\template\defaultfilters.py:929
 #, python-format
 msgid "%s MB"
-msgstr ""
+msgstr "%s MO"
 
 #: .\venv\Lib\site-packages\django\template\defaultfilters.py:931
 #, python-format
 msgid "%s GB"
-msgstr ""
+msgstr "%s GO"
 
 #: .\venv\Lib\site-packages\django\template\defaultfilters.py:933
 #, python-format
 msgid "%s TB"
-msgstr ""
+msgstr "%s TO"
 
 #: .\venv\Lib\site-packages\django\template\defaultfilters.py:935
 #, python-format
 msgid "%s PB"
-msgstr ""
+msgstr "%s PO"
 
 #: .\venv\Lib\site-packages\django\utils\dateformat.py:74
 msgid "p.m."
-msgstr ""
+msgstr "p.m."
 
 #: .\venv\Lib\site-packages\django\utils\dateformat.py:75
 msgid "a.m."
-msgstr ""
+msgstr "a.m."
 
 #: .\venv\Lib\site-packages\django\utils\dateformat.py:80
 msgid "PM"
-msgstr ""
+msgstr "PM"
 
 #: .\venv\Lib\site-packages\django\utils\dateformat.py:81
 msgid "AM"
-msgstr ""
+msgstr "AM"
 
 #: .\venv\Lib\site-packages\django\utils\dateformat.py:153
 msgid "midnight"
-msgstr ""
+msgstr "minwi"
 
 #: .\venv\Lib\site-packages\django\utils\dateformat.py:155
 msgid "noon"
-msgstr ""
+msgstr "midi"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:7
 msgid "Monday"
-msgstr ""
+msgstr "Lendi"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:8
 msgid "Tuesday"
-msgstr ""
+msgstr "Madi"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:9
 msgid "Wednesday"
-msgstr ""
+msgstr "Mèkredi"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:10
 msgid "Thursday"
-msgstr ""
+msgstr "Jedi"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:11
 msgid "Friday"
-msgstr ""
+msgstr "Vandredi"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:12
 msgid "Saturday"
-msgstr ""
+msgstr "Samdi"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:13
 msgid "Sunday"
-msgstr ""
+msgstr "Dimanch"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:16
 msgid "Mon"
-msgstr ""
+msgstr "Len"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:17
 msgid "Tue"
-msgstr ""
+msgstr "Mad"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:18
 msgid "Wed"
-msgstr ""
+msgstr "Mèk"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:19
 msgid "Thu"
-msgstr ""
+msgstr "Jed"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:20
 msgid "Fri"
-msgstr ""
+msgstr "Van"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:21
 msgid "Sat"
-msgstr ""
+msgstr "Sam"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:22
 msgid "Sun"
-msgstr ""
+msgstr "Dim"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:25
 msgid "January"
-msgstr ""
+msgstr "Janvye"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:26
 msgid "February"
-msgstr ""
+msgstr "Fevriye"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:27
 msgid "March"
-msgstr ""
+msgstr "Mas"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:28
 msgid "April"
-msgstr ""
+msgstr "Avril"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:29
 msgid "May"
-msgstr ""
+msgstr "Me"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:30
 msgid "June"
-msgstr ""
+msgstr "Jen"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:31
 msgid "July"
-msgstr ""
+msgstr "Jiyè"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:32
 msgid "August"
-msgstr ""
+msgstr "Out"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:33
 msgid "September"
-msgstr ""
+msgstr "Septanm"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:34
 msgid "October"
-msgstr ""
+msgstr "Oktòb"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:35
 msgid "November"
-msgstr ""
+msgstr "Novanm"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:36
 msgid "December"
-msgstr ""
+msgstr "Desanm"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:39
 msgid "jan"
-msgstr ""
+msgstr "jan"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:40
 msgid "feb"
-msgstr ""
+msgstr "fev"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:41
 msgid "mar"
-msgstr ""
+msgstr "mas"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:42
 msgid "apr"
-msgstr ""
+msgstr "avr"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:43
 msgid "may"
-msgstr ""
+msgstr "me"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:44
 msgid "jun"
-msgstr ""
+msgstr "jen"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:45
 msgid "jul"
-msgstr ""
+msgstr "jiy"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:46
 msgid "aug"
-msgstr ""
+msgstr "out"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:47
 msgid "sep"
-msgstr ""
+msgstr "sep"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:48
 msgid "oct"
-msgstr ""
+msgstr "okt"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:49
 msgid "nov"
-msgstr ""
+msgstr "nov"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:50
 msgid "dec"
-msgstr ""
+msgstr "des"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:53
 msgctxt "abbrev. month"
 msgid "Jan."
-msgstr ""
+msgstr "Jan."
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:54
 msgctxt "abbrev. month"
 msgid "Feb."
-msgstr ""
+msgstr "Fev."
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:55
 msgctxt "abbrev. month"
 msgid "March"
-msgstr ""
+msgstr "Mas"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:56
 msgctxt "abbrev. month"
 msgid "April"
-msgstr ""
+msgstr "Avr."
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:57
 msgctxt "abbrev. month"
 msgid "May"
-msgstr ""
+msgstr "Me"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:58
 msgctxt "abbrev. month"
 msgid "June"
-msgstr ""
+msgstr "Jen"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:59
 msgctxt "abbrev. month"
 msgid "July"
-msgstr ""
+msgstr "Jiy."
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:60
 msgctxt "abbrev. month"
 msgid "Aug."
-msgstr ""
+msgstr "Out"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:61
 msgctxt "abbrev. month"
 msgid "Sept."
-msgstr ""
+msgstr "Sep."
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:62
 msgctxt "abbrev. month"
 msgid "Oct."
-msgstr ""
+msgstr "Okt."
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:63
 msgctxt "abbrev. month"
 msgid "Nov."
-msgstr ""
+msgstr "Nov."
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:64
 msgctxt "abbrev. month"
 msgid "Dec."
-msgstr ""
+msgstr "Des."
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:67
 msgctxt "alt. month"
 msgid "January"
-msgstr ""
+msgstr "Janvye"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:68
 msgctxt "alt. month"
 msgid "February"
-msgstr ""
+msgstr "Fevriye"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:69
 msgctxt "alt. month"
 msgid "March"
-msgstr ""
+msgstr "Mas"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:70
 msgctxt "alt. month"
 msgid "April"
-msgstr ""
+msgstr "Avril"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:71
 msgctxt "alt. month"
 msgid "May"
-msgstr ""
+msgstr "Me"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:72
 msgctxt "alt. month"
 msgid "June"
-msgstr ""
+msgstr "Jen"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:73
 msgctxt "alt. month"
 msgid "July"
-msgstr ""
+msgstr "Jiyè"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:74
 msgctxt "alt. month"
 msgid "August"
-msgstr ""
+msgstr "Out"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:75
 msgctxt "alt. month"
 msgid "September"
-msgstr ""
+msgstr "Septanm"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:76
 msgctxt "alt. month"
 msgid "October"
-msgstr ""
+msgstr "Oktòb"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:77
 msgctxt "alt. month"
 msgid "November"
-msgstr ""
+msgstr "Novanm"
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:78
 msgctxt "alt. month"
 msgid "December"
-msgstr ""
+msgstr "Desanm"
 
 #: .\venv\Lib\site-packages\django\utils\ipv6.py:20
 msgid "This is not a valid IPv6 address."
-msgstr ""
+msgstr "Sa a pa yon adrès IPv6 ki valab."
 
 #: .\venv\Lib\site-packages\django\utils\text.py:76
 #, python-format
 msgctxt "String to return when truncating text"
 msgid "%(truncated_text)s…"
-msgstr ""
+msgstr "%(truncated_text)s…"
 
 #: .\venv\Lib\site-packages\django\utils\text.py:282
 msgid "or"
-msgstr ""
+msgstr "oswa"
 
 #. Translators: This string is used as a separator between list elements
 #: .\venv\Lib\site-packages\django\utils\text.py:301
 #: .\venv\Lib\site-packages\django\utils\timesince.py:135
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: .\venv\Lib\site-packages\django\utils\timesince.py:8
 #, python-format
 msgid "%(num)d year"
 msgid_plural "%(num)d years"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(num)d ane"
+msgstr[1] "%(num)d ane"
 
 #: .\venv\Lib\site-packages\django\utils\timesince.py:9
 #, python-format
 msgid "%(num)d month"
 msgid_plural "%(num)d months"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(num)d mwa"
+msgstr[1] "%(num)d mwa"
 
 #: .\venv\Lib\site-packages\django\utils\timesince.py:10
 #, python-format
 msgid "%(num)d week"
 msgid_plural "%(num)d weeks"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(num)d semèn"
+msgstr[1] "%(num)d semèn"
 
 #: .\venv\Lib\site-packages\django\utils\timesince.py:11
 #, python-format
 msgid "%(num)d day"
 msgid_plural "%(num)d days"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(num)d jou"
+msgstr[1] "%(num)d jou"
 
 #: .\venv\Lib\site-packages\django\utils\timesince.py:12
 #, python-format
 msgid "%(num)d hour"
 msgid_plural "%(num)d hours"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(num)d èdtan"
+msgstr[1] "%(num)d èdtan"
 
 #: .\venv\Lib\site-packages\django\utils\timesince.py:13
 #, python-format
 msgid "%(num)d minute"
 msgid_plural "%(num)d minutes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(num)d minit"
+msgstr[1] "%(num)d minit"
 
 #: .\venv\Lib\site-packages\django\views\csrf.py:29
 msgid "Forbidden"
-msgstr ""
+msgstr "Entèdi"
 
 #: .\venv\Lib\site-packages\django\views\csrf.py:30
 msgid "CSRF verification failed. Request aborted."
-msgstr ""
+msgstr "Verifikasyon CSRF echwe. Demann lan anile."
 
 #: .\venv\Lib\site-packages\django\views\csrf.py:34
 msgid ""
@@ -3640,6 +3682,9 @@ msgid ""
 "required for security reasons, to ensure that your browser is not being "
 "hijacked by third parties."
 msgstr ""
+"Ou wè mesaj sa a paske sit HTTPS sa a egzije yon header « Referer » voye pa "
+"navigatè wèb ou, men pa gen youn ki te voye. Header sa a obligatwa pou rezon "
+"sekirite, pou asire navigatè ou pa detounen pa twazyèm pati."
 
 #: .\venv\Lib\site-packages\django\views\csrf.py:40
 msgid ""
@@ -3647,6 +3692,9 @@ msgid ""
 "enable them, at least for this site, or for HTTPS connections, or for “same-"
 "origin” requests."
 msgstr ""
+"Si ou te konfigire navigatè ou pou dezaktive header « Referer », tanpri "
+"re-aktive yo, omwen pou sit sa a, oswa pou koneksyon HTTPS, oswa pou demann "
+"« menm orijin »."
 
 #: .\venv\Lib\site-packages\django\views\csrf.py:45
 msgid ""
@@ -3656,6 +3704,11 @@ msgid ""
 "If you’re concerned about privacy, use alternatives like <a "
 "rel=\"noreferrer\" …> for links to third-party sites."
 msgstr ""
+"Si w ap itilize tag <meta name=\"referrer\" content=\"no-referrer\"> oswa "
+"ou enkli header « Referrer-Policy: no-referrer », tanpri retire yo. Pwoteksyon "
+"CSRF egzije header « Referer » pou fè tchek referer strik. Si ou konsène ak "
+"vi prive, itilize altènativ tankou <a rel=\"noreferrer\" …> pou lyen sou sit "
+"twazyèm pati."
 
 #: .\venv\Lib\site-packages\django\views\csrf.py:54
 msgid ""
@@ -3663,44 +3716,49 @@ msgid ""
 "submitting forms. This cookie is required for security reasons, to ensure "
 "that your browser is not being hijacked by third parties."
 msgstr ""
+"Ou wè mesaj sa a paske sit sa a egzije yon cookie CSRF lè w ap soumèt "
+"fòmilè. Cookie sa a obligatwa pou rezon sekirite, pou asire navigatè ou pa "
+"detounen pa twazyèm pati."
 
 #: .\venv\Lib\site-packages\django\views\csrf.py:60
 msgid ""
 "If you have configured your browser to disable cookies, please re-enable "
 "them, at least for this site, or for “same-origin” requests."
 msgstr ""
+"Si ou te konfigire navigatè ou pou dezaktive cookies, tanpri re-aktive yo, "
+"omwen pou sit sa a, oswa pou demann « menm orijin »."
 
 #: .\venv\Lib\site-packages\django\views\csrf.py:66
 msgid "More information is available with DEBUG=True."
-msgstr ""
+msgstr "Plis enfòmasyon disponib ak DEBUG=True."
 
 #: .\venv\Lib\site-packages\django\views\generic\dates.py:44
 msgid "No year specified"
-msgstr ""
+msgstr "Pa gen ane espesifye"
 
 #: .\venv\Lib\site-packages\django\views\generic\dates.py:64
 #: .\venv\Lib\site-packages\django\views\generic\dates.py:115
 #: .\venv\Lib\site-packages\django\views\generic\dates.py:214
 msgid "Date out of range"
-msgstr ""
+msgstr "Dat la depase limit"
 
 #: .\venv\Lib\site-packages\django\views\generic\dates.py:94
 msgid "No month specified"
-msgstr ""
+msgstr "Pa gen mwa espesifye"
 
 #: .\venv\Lib\site-packages\django\views\generic\dates.py:147
 msgid "No day specified"
-msgstr ""
+msgstr "Pa gen jou espesifye"
 
 #: .\venv\Lib\site-packages\django\views\generic\dates.py:194
 msgid "No week specified"
-msgstr ""
+msgstr "Pa gen semèn espesifye"
 
 #: .\venv\Lib\site-packages\django\views\generic\dates.py:353
 #: .\venv\Lib\site-packages\django\views\generic\dates.py:384
 #, python-format
 msgid "No %(verbose_name_plural)s available"
-msgstr ""
+msgstr "Pa gen %(verbose_name_plural)s disponib"
 
 #: .\venv\Lib\site-packages\django\views\generic\dates.py:680
 #, python-format
@@ -3708,51 +3766,53 @@ msgid ""
 "Future %(verbose_name_plural)s not available because "
 "%(class_name)s.allow_future is False."
 msgstr ""
+"%(verbose_name_plural)s nan lavni pa disponib paske %(class_name)s.allow_future "
+"se Fo."
 
 #: .\venv\Lib\site-packages\django\views\generic\dates.py:720
 #, python-format
 msgid "Invalid date string “%(datestr)s” given format “%(format)s”"
-msgstr ""
+msgstr "Chèn dat « %(datestr)s » pa valab pou fòma « %(format)s »"
 
 #: .\venv\Lib\site-packages\django\views\generic\detail.py:56
 #, python-format
 msgid "No %(verbose_name)s found matching the query"
-msgstr ""
+msgstr "Pa gen %(verbose_name)s jwenn ki matche ak rechèch la"
 
 #: .\venv\Lib\site-packages\django\views\generic\list.py:70
 msgid "Page is not “last”, nor can it be converted to an int."
-msgstr ""
+msgstr "Paj la pa « dènye », ni li pa ka konvèti an nonb antye."
 
 #: .\venv\Lib\site-packages\django\views\generic\list.py:77
 #, python-format
 msgid "Invalid page (%(page_number)s): %(message)s"
-msgstr ""
+msgstr "Paj pa valab (%(page_number)s): %(message)s"
 
 #: .\venv\Lib\site-packages\django\views\generic\list.py:173
 #, python-format
 msgid "Empty list and “%(class_name)s.allow_empty” is False."
-msgstr ""
+msgstr "Lis vid epi « %(class_name)s.allow_empty » se Fo."
 
 #: .\venv\Lib\site-packages\django\views\static.py:49
 msgid "Directory indexes are not allowed here."
-msgstr ""
+msgstr "Endèks repètwa pa pèmèt isit."
 
 #: .\venv\Lib\site-packages\django\views\static.py:51
 #, python-format
 msgid "“%(path)s” does not exist"
-msgstr ""
+msgstr "« %(path)s » pa egziste"
 
 #: .\venv\Lib\site-packages\django\views\static.py:68
 #: .\venv\Lib\site-packages\django\views\templates\directory_index.html:8
 #: .\venv\Lib\site-packages\django\views\templates\directory_index.html:11
 #, python-format
 msgid "Index of %(directory)s"
-msgstr ""
+msgstr "Endèks %(directory)s"
 
 #: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:7
 #: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:204
 msgid "The install worked successfully! Congratulations!"
-msgstr ""
+msgstr "Enstalasyon an mache byen! Felisitasyon!"
 
 #: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:206
 #, python-format
@@ -3760,6 +3820,8 @@ msgid ""
 "View <a href=\"https://docs.djangoproject.com/en/%(version)s/releases/\" "
 "target=\"_blank\" rel=\"noopener\">release notes</a> for Django %(version)s"
 msgstr ""
+"Gade <a href=\"https://docs.djangoproject.com/en/%(version)s/releases/\" "
+"target=\"_blank\" rel=\"noopener\">nòt vèsyon</a> pou Django %(version)s"
 
 #: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:208
 #, python-format
@@ -3769,27 +3831,31 @@ msgid ""
 "rel=\"noopener\">DEBUG=True</a> is in your settings file and you have not "
 "configured any URLs."
 msgstr ""
+"Ou wè paj sa a paske <a href=\"https://docs.djangoproject.com/en/"
+"%(version)s/ref/settings/#debug\" target=\"_blank\" "
+"rel=\"noopener\">DEBUG=True</a> nan fichye paramèt ou epi ou pa te "
+"konfigire okenn URL."
 
 #: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:217
 msgid "Django Documentation"
-msgstr ""
+msgstr "Dokimantasyon Django"
 
 #: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:218
 msgid "Topics, references, &amp; how-to’s"
-msgstr ""
+msgstr "Sijè, referans, &amp; kijan pou fè"
 
 #: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:226
 msgid "Tutorial: A Polling App"
-msgstr ""
+msgstr "Titoryèl: Yon Aplikasyon Vòt"
 
 #: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:227
 msgid "Get started with Django"
-msgstr ""
+msgstr "Kòmanse ak Django"
 
 #: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:235
 msgid "Django Community"
-msgstr ""
+msgstr "Kominote Django"
 
 #: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:236
 msgid "Connect, get help, or contribute"
-msgstr ""
+msgstr "Konekte, jwenn èd, oswa kontribye"
