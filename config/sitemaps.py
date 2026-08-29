@@ -32,15 +32,22 @@ class CourseSitemap(Sitemap):
     priority = 0.8
 
     def items(self):
+        # Sèvi ak 'publie' — menm jan ak course_list view la
         return Course.objects.filter(publie=True)
 
     def lastmod(self, obj):
+        # Tcheke dat ki egziste
         if hasattr(obj, 'date_modification'):
             return obj.date_modification
         elif hasattr(obj, 'date_creation'):
             return obj.date_creation
+        elif hasattr(obj, 'created_at'):
+            return obj.created_at
+        elif hasattr(obj, 'updated_at'):
+            return obj.updated_at
         else:
             return timezone.now()
 
     def location(self, obj):
+        # Sèvi ak pk — menm jan ak course_detail view la
         return reverse('courses:course_detail', args=[obj.pk])
