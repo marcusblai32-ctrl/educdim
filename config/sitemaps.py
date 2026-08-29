@@ -32,13 +32,18 @@ class CourseSitemap(Sitemap):
     priority = 0.8
 
     def items(self):
-        return Course.objects.filter(is_published=True)
+        # Sèvi ak 'publie' — menm jan ak course_list view la
+        return Course.objects.filter(publie=True)
 
     def lastmod(self, obj):
-        return obj.updated_at
+        # Tcheke si 'date_modification' egziste, sinon itilize 'date_creation'
+        if hasattr(obj, 'date_modification'):
+            return obj.date_modification
+        elif hasattr(obj, 'date_creation'):
+            return obj.date_creation
+        else:
+            return timezone.now()
 
     def location(self, obj):
-        # Si modèl la gen get_absolute_url, itilize l
-        if hasattr(obj, 'get_absolute_url'):
-            return obj.get_absolute_url()
-        return f"/cours/{obj.slug}/"
+        # Sèvi ak URL named pattern avèk pk (menm jan ak course_detail view la)
+        return reverse('courses:course_detail', args=[obj.pk])
