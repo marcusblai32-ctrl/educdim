@@ -248,7 +248,7 @@
 
 .course-navigation {
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* MODIFIKASYON: santre navigasyon */
     align-items: center;
     gap: 1rem;
     max-width: 900px;
@@ -268,7 +268,7 @@
 
 .course-actions-top {
     display: flex;
-    justify-content: center;
+    justify-content: center; /* deja santre */
     align-items: center;
     flex-wrap: wrap;
     gap: .7rem;
@@ -406,7 +406,7 @@
 
 .course-actions-bottom {
     display: flex;
-    justify-content: center;
+    justify-content: center; /* deja santre */
     align-items: center;
     gap: .8rem;
     padding: 1.4rem 1.5rem 1.7rem;
@@ -488,7 +488,7 @@
 .quiz-card-footer {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center; /* MODIFIKASYON: santre kontni footer */
     flex-wrap: wrap;
     gap: .6rem;
     margin-top: auto;
@@ -595,6 +595,7 @@
         flex-direction: column;
         gap: .6rem;
         margin-top: 1.4rem;
+        justify-content: center; /* asire santre nan mobile */
     }
 
     .course-navigation .btn {
@@ -671,6 +672,7 @@
 
     .quiz-card-footer {
         align-items: flex-start;
+        justify-content: center; /* MODIFIKASYON: santre nan mobile */
     }
 
     .quiz-percent {
