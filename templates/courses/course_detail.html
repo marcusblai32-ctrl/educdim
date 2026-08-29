@@ -200,7 +200,7 @@
    ============================================================ */
 .course-navigation {
     display: flex;
-    justify-content: center; /* santre */
+    justify-content: center;
     align-items: center;
     gap: 1rem;
     max-width: 900px;
@@ -331,7 +331,7 @@
 }
 
 /* ============================================================
-   COURSE ACTIONS BOTTOM (nouvo pozisyon anndan card-body)
+   COURSE ACTIONS BOTTOM (anba card-body)
    ============================================================ */
 .course-actions-bottom {
     display: flex;
@@ -340,9 +340,10 @@
     flex-wrap: wrap;
     gap: .8rem;
     max-width: 900px;
-    margin: 0 auto 1.8rem;  /* espas anba */
-    padding: 0 0 1.5rem;
-    border-bottom: 1px solid var(--glass-brd-soft, rgba(0,0,0,.07)); /* separasyon */
+    margin: 1.5rem auto 0;      /* espas anlè */
+    padding: 1.5rem 0 0;        /* espas entèn anlè */
+    border-top: 1px solid var(--glass-brd-soft, rgba(0,0,0,.07)); /* liy separasyon anlè */
+    border-bottom: none;
 }
 .course-actions-bottom .btn {
     display: inline-flex;
@@ -404,7 +405,7 @@
 .quiz-card-footer {
     display: flex;
     align-items: center;
-    justify-content: center; /* santre */
+    justify-content: center;
     flex-wrap: wrap;
     gap: .6rem;
     margin-top: auto;
@@ -505,7 +506,8 @@
     .course-actions-bottom {
         flex-direction: column;
         align-items: stretch;
-        margin-bottom: 1.2rem;
+        margin-top: 1.2rem;
+        padding-top: 1.2rem;
     }
     .course-actions-bottom .btn {
         width: 100%;
@@ -669,7 +671,7 @@
     </div>
 
     <!-- ======================================================
-         CARD 2: CONTENU DU COURS (bouton anndan card-body)
+         CARD 2: CONTENU DU COURS (bouton anba)
          ====================================================== -->
     <div class="card">
         <div class="card-body">
@@ -677,7 +679,28 @@
                 <i class="fas fa-list-ul"></i> {% trans "Contenu du cours" %}
             </h2>
 
-            <!-- Bouton Commencer / S'inscrire / Se connecter (anndan card-body) -->
+            <!-- Liste des unités -->
+            {% if unites %}
+            <div class="units-list">
+                {% for unite in unites %}
+                <div class="unit-card">
+                    <h3><a href="{% url 'courses:unit_detail' unite.pk %}">{{ unite.titre }}</a></h3>
+                    {% if unite.description %}
+                    <p>{{ unite.description }}</p>
+                    {% endif %}
+                    <span class="unit-modules">
+                        <i class="fas fa-book-open"></i> {{ unite.modules.count }} {% trans "modules" %}
+                    </span>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="empty-units">
+                <i class="fas fa-folder-open"></i> {% trans "Aucune unité disponible pour ce cours." %}
+            </p>
+            {% endif %}
+
+            <!-- Bouton aksyon (Commencer / S'inscrire / Se connecter) -->
             <div class="course-actions-bottom">
                 {% if user.is_authenticated %}
                     {% if inscription_approuvee or a_acces_abonnement %}
@@ -705,27 +728,6 @@
                 </a>
                 {% endif %}
             </div>
-
-            <!-- Liste des unités -->
-            {% if unites %}
-            <div class="units-list">
-                {% for unite in unites %}
-                <div class="unit-card">
-                    <h3><a href="{% url 'courses:unit_detail' unite.pk %}">{{ unite.titre }}</a></h3>
-                    {% if unite.description %}
-                    <p>{{ unite.description }}</p>
-                    {% endif %}
-                    <span class="unit-modules">
-                        <i class="fas fa-book-open"></i> {{ unite.modules.count }} {% trans "modules" %}
-                    </span>
-                </div>
-                {% endfor %}
-            </div>
-            {% else %}
-            <p class="empty-units">
-                <i class="fas fa-folder-open"></i> {% trans "Aucune unité disponible pour ce cours." %}
-            </p>
-            {% endif %}
         </div>
     </div>
 
