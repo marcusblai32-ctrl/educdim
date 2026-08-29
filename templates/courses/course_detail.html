@@ -4,1146 +4,1332 @@
 {% block title %}{{ cours.titre }} - {{ theme.site_name|default:'EducDim' }}{% endblock %}
 
 {% block extra_css %}
+
 <style>
-    /* ===== SEUL CSS SPESIFIK POU COURSE DETAIL ===== */
+
+/* ============================================================
+   EDUCDIM - COURSE DETAIL
+   Design professionnel, moderne et responsive
+   ============================================================ */
+
+.course-detail-container {
+    max-width: 1180px;
+    margin: 2rem auto 4rem;
+    padding: 0 1.25rem;
+}
+
+/* ============================================================
+   GENERAL CARD
+   ============================================================ */
+
+.course-detail-container > .card {
+    width: 100%;
+    margin: 0 auto 1.5rem;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 20px;
+    background: var(--glass, rgba(255,255,255,.88));
+    border: 1px solid var(--glass-brd, rgba(0,0,0,.08));
+    box-shadow: var(--shadow, 0 10px 35px rgba(0,0,0,.08));
+}
+
+/* ============================================================
+   COURSE HEADER
+   ============================================================ */
+
+.course-detail-header {
+    position: relative;
+    padding: 3rem 3rem 2.5rem;
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(86,36,208,.12),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at bottom left,
+            rgba(37,99,235,.08),
+            transparent 30%
+        );
+}
+
+.course-detail-main {
+    width: 100%;
+    max-width: 980px;
+    margin: 0 auto;
+}
+
+/* ============================================================
+   BADGES
+   ============================================================ */
+
+.course-detail-badges {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: .55rem;
+    margin-bottom: 1.35rem;
+}
+
+.course-detail-badges .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    padding: .42rem .8rem;
+    border-radius: 999px;
+    font-size: .78rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+/* ============================================================
+   TITLE
+   ============================================================ */
+
+.course-detail-title {
+    max-width: 900px;
+    margin: 0 auto .75rem;
+    text-align: center;
+    font-family: var(--font-display, Inter, sans-serif);
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.12;
+    font-weight: 800;
+    letter-spacing: -.035em;
+    color: var(--text, #171717);
+}
+
+/* ============================================================
+   LEARNING PATH POSITION
+   ============================================================ */
+
+.course-detail-position {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .4rem;
+    margin: 0 auto 1.5rem;
+    color: var(--text-muted, #6b7280);
+    font-size: .92rem;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.course-detail-position i {
+    color: var(--primary, #5624d0);
+}
+
+.course-detail-link {
+    color: var(--primary, #5624d0);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.course-detail-link:hover {
+    text-decoration: underline;
+}
+
+/* ============================================================
+   DESCRIPTION
+   ============================================================ */
+
+.course-detail-description {
+    max-width: 820px;
+    margin: 0 auto;
+    color: var(--text, #333);
+    font-size: 1rem;
+    line-height: 1.85;
+    text-align: left;
+}
+
+.course-detail-description p {
+    margin: 0 0 1rem;
+}
+
+.course-detail-description p:last-child {
+    margin-bottom: 0;
+}
+
+/* ============================================================
+   PREREQUISITES
+   ============================================================ */
+
+.prerequisites-box {
+    max-width: 820px;
+    margin: 2rem auto 0;
+    padding: 1.25rem 1.4rem;
+    border-radius: 16px;
+    background: var(--glass-soft, rgba(86,36,208,.05));
+    border: 1px solid var(--glass-brd-soft, rgba(86,36,208,.12));
+}
+
+.prerequisites-box h4 {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    margin: 0 0 1rem;
+    font-family: var(--font-display, Inter, sans-serif);
+    font-size: 1rem;
+    font-weight: 750;
+    color: var(--text, #222);
+}
+
+.prerequisites-box h4 i {
+    color: var(--primary, #5624d0);
+}
+
+.prerequisites-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.prerequisites-list li {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    min-height: 42px;
+    padding: .55rem .65rem;
+    margin-bottom: .4rem;
+    border-radius: 10px;
+    background: rgba(255,255,255,.45);
+}
+
+.prerequisites-list li:last-child {
+    margin-bottom: 0;
+}
+
+.prereq-missing {
+    color: var(--danger, #dc3545);
+}
+
+.prereq-success {
+    color: var(--success, #198754);
+}
+
+.prereq-title {
+    color: var(--text, #222);
+    font-weight: 600;
+}
+
+.prereq-title-muted {
+    color: var(--text-muted, #777);
+}
+
+.prereq-link {
+    margin-left: auto;
+    color: var(--primary, #5624d0);
+    font-size: .8rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.prereq-link:hover {
+    text-decoration: underline;
+}
+
+.prerequisites-completed {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    margin: 0;
+    padding: .8rem;
+    border-radius: 10px;
+    color: var(--success, #198754);
+    background: rgba(25,135,84,.08);
+    font-weight: 650;
+}
+
+/* ============================================================
+   COURSE NAVIGATION
+   ============================================================ */
+
+.course-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    max-width: 900px;
+    margin: 2rem auto 0;
+}
+
+.course-navigation .btn {
+    max-width: 48%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ============================================================
+   ADMIN ACTIONS
+   ============================================================ */
+
+.course-actions-top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .7rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--glass-brd-soft, rgba(0,0,0,.08));
+}
+
+.course-actions-top .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .45rem;
+    min-width: 150px;
+    padding: .7rem 1.15rem;
+    border-radius: 10px;
+    font-size: .85rem;
+    font-weight: 700;
+}
+
+/* ============================================================
+   SECTION CARD
+   ============================================================ */
+
+.section-card-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .6rem;
+    margin: 0;
+    padding: 1.5rem 1.5rem 1.2rem;
+    font-family: var(--font-display, Inter, sans-serif);
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text, #222);
+}
+
+.section-card-title i {
+    color: var(--primary, #5624d0);
+}
+
+/* ============================================================
+   CONTENT CARD
+   ============================================================ */
+
+.course-detail-container > .card:nth-of-type(2) {
+    padding-bottom: 0;
+}
+
+.course-detail-container .card-body {
+    padding: 0 1.5rem 1.5rem;
+}
+
+/* ============================================================
+   UNITS
+   ============================================================ */
+
+.units-list {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.unit-card {
+    position: relative;
+    padding: 1.2rem 1.35rem;
+    margin-bottom: .8rem;
+    border-radius: 14px;
+    background: rgba(255,255,255,.55);
+    border: 1px solid var(--glass-brd, rgba(0,0,0,.08));
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+
+.unit-card:last-child {
+    margin-bottom: 0;
+}
+
+.unit-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(86,36,208,.25);
+    box-shadow: 0 8px 24px rgba(0,0,0,.07);
+}
+
+.unit-card h3 {
+    margin: 0 0 .45rem;
+    font-size: 1rem;
+    font-weight: 750;
+}
+
+.unit-card h3 a {
+    color: var(--text, #222);
+    text-decoration: none;
+}
+
+.unit-card h3 a:hover {
+    color: var(--primary, #5624d0);
+}
+
+.unit-card p {
+    margin: 0 0 .7rem;
+    color: var(--text-muted, #6b7280);
+    font-size: .88rem;
+    line-height: 1.55;
+}
+
+.unit-modules {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    color: var(--text-muted, #6b7280);
+    font-size: .78rem;
+    font-weight: 600;
+}
+
+.unit-modules i {
+    color: var(--primary, #5624d0);
+}
+
+/* ============================================================
+   EMPTY UNITS
+   ============================================================ */
+
+.empty-units {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    text-align: center;
+    color: var(--text-muted, #6b7280);
+    border: 1px dashed var(--glass-brd, rgba(0,0,0,.15));
+    border-radius: 14px;
+}
+
+/* ============================================================
+   COURSE ACTIONS BOTTOM
+   ============================================================ */
+
+.course-actions-bottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .8rem;
+    padding: 1.4rem 1.5rem 1.7rem;
+    border-top: 1px solid var(--glass-brd-soft, rgba(0,0,0,.07));
+}
+
+.course-actions-bottom .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .55rem;
+    min-width: 230px;
+    border-radius: 12px;
+    font-weight: 750;
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.course-actions-bottom .btn:hover {
+    transform: translateY(-2px);
+}
+
+.course-actions-bottom .btn-lg {
+    padding: .85rem 1.5rem;
+}
+
+/* ============================================================
+   QUIZ
+   ============================================================ */
+
+.quiz-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1.5rem 1.7rem;
+}
+
+.quiz-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 175px;
+    padding: 1.3rem;
+    border-radius: 15px;
+    background: rgba(255,255,255,.55);
+    border: 1px solid var(--glass-brd, rgba(0,0,0,.08));
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+
+.quiz-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(86,36,208,.25);
+    box-shadow: 0 10px 28px rgba(0,0,0,.08);
+}
+
+.quiz-card h3 {
+    margin: 0 0 .55rem;
+    font-size: 1rem;
+    font-weight: 750;
+    line-height: 1.35;
+}
+
+.quiz-card h3 a {
+    color: var(--text, #222);
+    text-decoration: none;
+}
+
+.quiz-card h3 a:hover {
+    color: var(--primary, #5624d0);
+}
+
+.quiz-card p {
+    margin: 0 0 1rem;
+    color: var(--text-muted, #6b7280);
+    font-size: .85rem;
+    line-height: 1.55;
+}
+
+.quiz-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: .6rem;
+    margin-top: auto;
+}
+
+.quiz-percent {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    color: var(--text-muted, #6b7280);
+    font-size: .78rem;
+    font-weight: 650;
+}
+
+.quiz-percent i {
+    color: var(--primary, #5624d0);
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+
+.course-detail-container .btn {
+    text-decoration: none;
+}
+
+.course-detail-container .btn-sm {
+    font-size: .78rem;
+}
+
+.course-detail-container .btn-primary {
+    box-shadow: 0 5px 16px rgba(86,36,208,.18);
+}
+
+.course-detail-container .btn-primary:hover {
+    box-shadow: 0 8px 22px rgba(86,36,208,.25);
+}
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 768px) {
+
     .course-detail-container {
-        max-width: 1320px;
-        margin: 2rem auto;
-        padding: 0 1.5rem;
+        margin: 1rem auto 2.5rem;
+        padding: 0 .7rem;
     }
 
-    /* ===== CARD AVEC 10% MARGIN ===== */
-    .card {
-        width: 90% !important;
-        max-width: 1200px;
-        margin-left: auto !important;
-        margin-right: auto !important;
-        margin-bottom: 2rem !important;
-        padding: 2.5rem !important;
+    .course-detail-container > .card {
+        border-radius: 16px;
+        margin-bottom: 1rem;
     }
 
-    /* ===== COURSE HEADER ===== */
+    .course-detail-header {
+        padding: 1.7rem 1.15rem 1.5rem;
+    }
+
+    .course-detail-badges {
+        gap: .4rem;
+        margin-bottom: 1rem;
+    }
+
+    .course-detail-badges .badge {
+        padding: .35rem .6rem;
+        font-size: .68rem;
+    }
+
     .course-detail-title {
-        font-size: 2.4rem;
-        font-weight: 800;
-        margin-bottom: 0.8rem;
-        font-family: var(--font-display);
-        text-align: center;
-        color: var(--text, #212529);
-        line-height: 1.2;
+        font-size: 1.55rem;
+        line-height: 1.25;
+        letter-spacing: -.02em;
     }
 
     .course-detail-position {
-        color: var(--text-muted);
-        font-size: 1rem;
-        margin-bottom: 1rem;
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    .course-detail-position i {
-        color: var(--primary);
-    }
-
-    .course-detail-link {
-        color: var(--primary);
-        font-weight: 600;
-        text-decoration: none;
-    }
-
-    .course-detail-link:hover {
-        text-decoration: underline;
+        font-size: .78rem;
+        margin-bottom: 1.1rem;
     }
 
     .course-detail-description {
-        max-width: 900px;
-        margin: 0 auto;
-        text-align: left;
-        line-height: 1.8;
-        color: var(--text, #212529);
-        font-size: 1.05rem;
+        font-size: .88rem;
+        line-height: 1.7;
     }
 
-    /* ===== PREREQUISITES ===== */
     .prerequisites-box {
-        background: var(--glass-soft);
-        backdrop-filter: blur(10px);
-        padding: 1.2rem 1.5rem;
-        border-radius: var(--radius-sm);
-        margin-bottom: 1.8rem;
-        border: 1px solid var(--glass-brd-soft);
-        max-width: 900px;
-        margin-left: auto;
-        margin-right: auto;
+        margin-top: 1.4rem;
+        padding: 1rem;
     }
 
     .prerequisites-box h4 {
-        margin-bottom: 0.6rem;
-        font-size: 1.05rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-family: var(--font-display);
-        justify-content: center;
-        color: var(--text, #212529);
-    }
-
-    .prerequisites-box h4 i {
-        color: var(--primary);
-    }
-
-    .prerequisites-completed {
-        color: var(--success);
-        margin: 0;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-weight: 500;
-        justify-content: center;
-    }
-
-    .prerequisites-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
+        font-size: .9rem;
     }
 
     .prerequisites-list li {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.3rem 0;
-        color: var(--text, #212529);
+        align-items: flex-start;
+        font-size: .8rem;
     }
-
-    .prereq-missing { color: var(--danger); }
-    .prereq-success { color: var(--success); }
-    .prereq-title-muted { color: var(--text-muted); }
-    .prereq-title { font-weight: 500; color: var(--text, #212529); }
 
     .prereq-link {
-        color: var(--primary);
-        font-size: 0.85rem;
-        margin-left: 0.5rem;
-        font-weight: 600;
-        text-decoration: none;
+        font-size: .72rem;
     }
 
-    .prereq-link:hover {
-        text-decoration: underline;
+    .course-navigation {
+        flex-direction: column;
+        gap: .6rem;
+        margin-top: 1.4rem;
     }
 
-    /* ===== COURSE ACTIONS ANBA (bouton commencer) ===== */
-    .course-actions-bottom {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        margin-top: 2rem;
-        padding-top: 1.5rem;
-        border-top: 1px solid var(--glass-brd-soft);
-        justify-content: center;
-        align-items: center;
+    .course-navigation .btn {
+        width: 100%;
+        max-width: 100%;
     }
 
-    .course-actions-bottom .btn {
-        min-width: 220px;
-        justify-content: center;
-        border-radius: 50px;
-        padding: 0.9rem 2.2rem;
-        font-weight: 600;
-        transition: var(--transition);
-        font-family: var(--font-body);
-        border: none;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        text-decoration: none;
-        font-size: 1rem;
-    }
-
-    .course-actions-bottom .btn-lg {
-        padding: 1rem 2.5rem;
-        font-size: 1.1rem;
-    }
-
-    .course-actions-bottom .btn-success {
-        background: linear-gradient(135deg, var(--success), #4ade80);
-        color: #fff;
-        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
-    }
-
-    .course-actions-bottom .btn-success:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
-    }
-
-    .course-actions-bottom .btn-primary {
-        background: linear-gradient(135deg, var(--primary), #8aa0ff);
-        color: #fff;
-        box-shadow: 0 4px 15px rgba(26, 26, 46, 0.25);
-    }
-
-    .course-actions-bottom .btn-primary:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(26, 26, 46, 0.35);
-    }
-
-    .course-actions-bottom .btn-secondary {
-        background: var(--glass-2);
-        color: var(--text);
-        border: 1px solid var(--glass-brd);
-        backdrop-filter: blur(10px);
-    }
-
-    .course-actions-bottom .btn-secondary:hover {
-        background: var(--glass-soft);
-        transform: translateY(-3px);
-    }
-
-    .course-actions-bottom .btn-secondary:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-        transform: none !important;
-        box-shadow: none !important;
-    }
-
-    /* ===== COURSE ACTIONS ANLÈ (staff) ===== */
     .course-actions-top {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        margin-top: 1.5rem;
-        justify-content: center;
-        align-items: center;
+        flex-direction: column;
+        align-items: stretch;
+        gap: .55rem;
+        margin-top: 1.4rem;
+        padding-top: 1.2rem;
     }
 
     .course-actions-top .btn {
-        min-width: 160px;
-        justify-content: center;
-        border-radius: 50px;
-        padding: 0.6rem 1.5rem;
-        font-weight: 600;
-        transition: var(--transition);
-        font-family: var(--font-body);
-        border: none;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        text-decoration: none;
-        font-size: 0.85rem;
+        width: 100%;
     }
 
-    .course-actions-top .btn-secondary {
-        background: var(--glass-2);
-        color: var(--text);
-        border: 1px solid var(--glass-brd);
-        backdrop-filter: blur(10px);
+    .section-card-title {
+        padding: 1.15rem 1rem 1rem;
+        font-size: 1rem;
     }
 
-    .course-actions-top .btn-secondary:hover {
-        background: var(--glass-soft);
-        transform: translateY(-3px);
-    }
-
-    .course-actions-top .btn-danger {
-        background: linear-gradient(135deg, var(--danger), #fb7185);
-        color: #fff;
-        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.25);
-    }
-
-    .course-actions-top .btn-danger:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(220, 53, 69, 0.35);
-    }
-
-    /* ===== QUIZ GRID (pi laj) ===== */
-    .quiz-grid {
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
-        gap: 1.5rem !important;
-    }
-
-    .quiz-card {
-        padding: 1.5rem 1.8rem !important;
-        min-height: 180px !important;
-    }
-
-    .quiz-card h3 {
-        font-size: 1.15rem !important;
-        text-align: left !important;
-    }
-
-    .quiz-card p {
-        text-align: left !important;
-    }
-
-    .quiz-card-footer {
-        gap: 0.8rem !important;
-    }
-
-    /* ===== UNITS LIST (pi laj) ===== */
-    .units-list {
-        max-width: 900px !important;
+    .course-detail-container .card-body {
+        padding: 0 .9rem 1rem;
     }
 
     .unit-card {
-        padding: 1.2rem 1.5rem !important;
+        padding: 1rem;
     }
 
-    /* ===== RESPONSIVE - TABLET LANDSCAPE (1024px) ===== */
-    @media (max-width: 1024px) {
-        .course-detail-container {
-            padding: 0 1rem !important;
-            margin: 1.5rem auto !important;
-        }
-        
-        .card {
-            width: 85% !important;
-            max-width: 1000px !important;
-            padding: 2rem !important;
-            margin-left: auto !important;
-            margin-right: auto !important;
-            margin-bottom: 1.5rem !important;
-        }
-        
-        .course-detail-title {
-            font-size: 2rem !important;
-            margin-bottom: 0.7rem !important;
-        }
-        
-        .course-detail-position {
-            font-size: 0.9rem !important;
-            gap: 0.3rem !important;
-            margin-bottom: 0.8rem !important;
-        }
-        
-        .course-detail-description {
-            font-size: 1rem !important;
-            max-width: 800px !important;
-            line-height: 1.7 !important;
-        }
-        
-        .prerequisites-box {
-            max-width: 800px !important;
-            padding: 1rem 1.2rem !important;
-            margin-bottom: 1.5rem !important;
-        }
-        
-        .prerequisites-box h4 {
-            font-size: 0.95rem !important;
-        }
-        
-        .prerequisites-list li {
-            font-size: 0.9rem !important;
-        }
-        
-        .quiz-grid {
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
-            gap: 1.2rem !important;
-        }
-        
-        .quiz-card {
-            padding: 1.3rem 1.5rem !important;
-            min-height: 160px !important;
-        }
-        
-        .quiz-card h3 {
-            font-size: 1.05rem !important;
-        }
-        
-        .course-actions-bottom .btn {
-            min-width: 200px !important;
-            padding: 0.8rem 1.8rem !important;
-            font-size: 0.95rem !important;
-        }
-        
-        .course-actions-bottom .btn-lg {
-            padding: 0.9rem 2rem !important;
-            font-size: 1rem !important;
-        }
-        
-        .course-actions-top .btn {
-            min-width: 140px !important;
-            padding: 0.5rem 1.2rem !important;
-            font-size: 0.8rem !important;
-            gap: 0.4rem !important;
-        }
-        
-        .units-list {
-            max-width: 800px !important;
-        }
-        
-        .unit-card {
-            padding: 1.1rem 1.3rem !important;
-        }
+    .unit-card h3 {
+        font-size: .9rem;
     }
 
-    /* ===== RESPONSIVE - TABLET PORTRAIT (768px) ===== */
-    @media (max-width: 768px) {
-        .course-detail-container {
-            margin: 1rem auto !important;
-            padding: 0 0.8rem !important;
-        }
-        
-        .card {
-            width: 92% !important;
-            max-width: 700px !important;
-            padding: 1.5rem !important;
-            margin-bottom: 1.5rem !important;
-            margin-left: auto !important;
-            margin-right: auto !important;
-        }
-        
-        .course-detail-title {
-            font-size: 1.6rem !important;
-            margin-bottom: 0.6rem !important;
-            line-height: 1.3 !important;
-        }
-        
-        .course-detail-position {
-            font-size: 0.9rem !important;
-            gap: 0.3rem !important;
-            flex-wrap: wrap !important;
-        }
-        
-        .course-detail-badges {
-            display: flex !important;
-            flex-wrap: wrap !important;
-            gap: 0.4rem !important;
-            justify-content: center !important;
-            margin-bottom: 1rem !important;
-        }
-        
-        .course-detail-badges .badge {
-            font-size: 0.7rem !important;
-            padding: 0.3rem 0.6rem !important;
-        }
-        
-        .course-detail-description {
-            font-size: 0.95rem !important;
-            line-height: 1.6 !important;
-            max-width: 100% !important;
-        }
-        
-        .prerequisites-box {
-            padding: 1rem !important;
-            margin-bottom: 1.5rem !important;
-            max-width: 100% !important;
-        }
-        
-        .prerequisites-box h4 {
-            font-size: 0.95rem !important;
-            gap: 0.4rem !important;
-            margin-bottom: 0.5rem !important;
-        }
-        
-        .prerequisites-list li {
-            padding: 0.25rem 0 !important;
-            font-size: 0.9rem !important;
-            gap: 0.4rem !important;
-        }
-        
-        .prereq-link {
-            font-size: 0.75rem !important;
-            margin-left: 0.3rem !important;
-        }
-        
-        .course-actions-top {
-            flex-direction: column !important;
-            align-items: stretch !important;
-            gap: 0.8rem !important;
-            margin-top: 1rem !important;
-        }
-        
-        .course-actions-top .btn {
-            width: 100% !important;
-            min-width: unset !important;
-            justify-content: center !important;
-            padding: 0.7rem 1rem !important;
-            font-size: 0.85rem !important;
-        }
-        
-        .course-actions-bottom {
-            flex-direction: column !important;
-            align-items: stretch !important;
-            gap: 0.8rem !important;
-            margin-top: 1.5rem !important;
-            padding-top: 1.2rem !important;
-        }
-        
-        .course-actions-bottom .btn {
-            width: 100% !important;
-            min-width: unset !important;
-            justify-content: center !important;
-            padding: 0.8rem 1.5rem !important;
-            font-size: 0.95rem !important;
-        }
-        
-        .course-actions-bottom .btn-lg {
-            padding: 0.9rem 2rem !important;
-            font-size: 1rem !important;
-        }
-        
-        .course-navigation {
-            flex-direction: column !important;
-            align-items: stretch !important;
-            gap: 0.8rem !important;
-            margin: 1.5rem 0 !important;
-        }
-        
-        .course-navigation .btn {
-            width: 100% !important;
-            justify-content: center !important;
-            padding: 0.7rem 1rem !important;
-            font-size: 0.85rem !important;
-        }
-        
-        .quiz-grid {
-            grid-template-columns: 1fr !important;
-            gap: 1rem !important;
-        }
-        
-        .quiz-card {
-            padding: 1.2rem !important;
-            min-height: 150px !important;
-        }
-        
-        .quiz-card h3 {
-            font-size: 1.05rem !important;
-            margin-bottom: 0.5rem !important;
-        }
-        
-        .quiz-card p {
-            font-size: 0.9rem !important;
-            margin-bottom: 0.8rem !important;
-        }
-        
-        .quiz-card-footer {
-            gap: 0.6rem !important;
-            flex-wrap: wrap !important;
-        }
-        
-        .quiz-card-footer .btn-sm {
-            padding: 0.5rem 1rem !important;
-            font-size: 0.8rem !important;
-        }
-        
-        .units-list {
-            max-width: 100% !important;
-        }
-        
-        .unit-card {
-            padding: 1rem 1.2rem !important;
-            margin-bottom: 0.8rem !important;
-        }
-        
-        .unit-card h3 {
-            font-size: 1.05rem !important;
-            margin-bottom: 0.4rem !important;
-        }
-        
-        .unit-card p {
-            font-size: 0.9rem !important;
-            margin-bottom: 0.5rem !important;
-        }
-        
-        .unit-modules {
-            font-size: 0.8rem !important;
-        }
-        
-        .section-card-title {
-            font-size: 1.2rem !important;
-            margin-bottom: 1rem !important;
-        }
-        
-        .empty-units {
-            font-size: 0.95rem !important;
-            padding: 1.5rem !important;
-        }
-        
-        .badge-success, .badge-danger, .badge-warning {
-            font-size: 0.7rem !important;
-            padding: 0.3rem 0.6rem !important;
-        }
+    .unit-card p {
+        font-size: .78rem;
     }
 
-    /* ===== RESPONSIVE - MOBILE LARGE (480px) ===== */
-    @media (max-width: 480px) {
-        .course-detail-container {
-            margin: 0.5rem auto !important;
-            padding: 0 0.5rem !important;
-        }
-        
-        .card {
-            width: 95% !important;
-            max-width: 460px !important;
-            padding: 1rem !important;
-            margin-bottom: 1rem !important;
-            margin-left: auto !important;
-            margin-right: auto !important;
-        }
-        
-        .course-detail-title {
-            font-size: 1.3rem !important;
-            margin-bottom: 0.5rem !important;
-            line-height: 1.3 !important;
-        }
-        
-        .course-detail-position {
-            font-size: 0.8rem !important;
-            flex-direction: column !important;
-            gap: 0.2rem !important;
-            margin-bottom: 0.8rem !important;
-        }
-        
-        .course-detail-badges {
-            gap: 0.3rem !important;
-            margin-bottom: 0.8rem !important;
-        }
-        
-        .course-detail-badges .badge {
-            font-size: 0.6rem !important;
-            padding: 0.2rem 0.5rem !important;
-        }
-        
-        .course-detail-description {
-            font-size: 0.85rem !important;
-            line-height: 1.5 !important;
-        }
-        
-        .prerequisites-box {
-            padding: 0.8rem !important;
-            margin-bottom: 1rem !important;
-        }
-        
-        .prerequisites-box h4 {
-            font-size: 0.85rem !important;
-            gap: 0.3rem !important;
-        }
-        
-        .prerequisites-list li {
-            padding: 0.2rem 0 !important;
-            font-size: 0.8rem !important;
-            flex-wrap: wrap !important;
-            gap: 0.3rem !important;
-        }
-        
-        .prereq-link {
-            font-size: 0.7rem !important;
-        }
-        
-        .course-actions-top {
-            gap: 0.6rem !important;
-            margin-top: 0.8rem !important;
-        }
-        
-        .course-actions-top .btn {
-            padding: 0.6rem 0.8rem !important;
-            font-size: 0.8rem !important;
-            gap: 0.3rem !important;
-        }
-        
-        .course-actions-bottom {
-            gap: 0.6rem !important;
-            margin-top: 1rem !important;
-            padding-top: 1rem !important;
-        }
-        
-        .course-actions-bottom .btn {
-            padding: 0.7rem 1.2rem !important;
-            font-size: 0.85rem !important;
-            gap: 0.4rem !important;
-        }
-        
-        .course-actions-bottom .btn-lg {
-            padding: 0.8rem 1.5rem !important;
-            font-size: 0.9rem !important;
-        }
-        
-        .course-navigation {
-            gap: 0.6rem !important;
-            margin: 1rem 0 !important;
-        }
-        
-        .course-navigation .btn {
-            padding: 0.6rem 0.8rem !important;
-            font-size: 0.8rem !important;
-            gap: 0.3rem !important;
-        }
-        
-        .quiz-grid {
-            gap: 0.8rem !important;
-        }
-        
-        .quiz-card {
-            padding: 1rem !important;
-            min-height: 130px !important;
-        }
-        
-        .quiz-card h3 {
-            font-size: 0.95rem !important;
-            margin-bottom: 0.5rem !important;
-        }
-        
-        .quiz-card p {
-            font-size: 0.8rem !important;
-            margin-bottom: 0.8rem !important;
-        }
-        
-        .quiz-card-footer {
-            gap: 0.4rem !important;
-            font-size: 0.75rem !important;
-            flex-direction: column !important;
-            align-items: flex-start !important;
-        }
-        
-        .quiz-card-footer .btn-sm {
-            padding: 0.4rem 0.8rem !important;
-            font-size: 0.75rem !important;
-            width: 100% !important;
-            justify-content: center !important;
-        }
-        
-        .unit-card {
-            padding: 0.8rem 1rem !important;
-            margin-bottom: 0.6rem !important;
-        }
-        
-        .unit-card h3 {
-            font-size: 0.95rem !important;
-            margin-bottom: 0.3rem !important;
-        }
-        
-        .unit-card p {
-            font-size: 0.8rem !important;
-            margin-bottom: 0.5rem !important;
-        }
-        
-        .unit-modules {
-            font-size: 0.75rem !important;
-        }
-        
-        .section-card-title {
-            font-size: 1.1rem !important;
-            margin-bottom: 1rem !important;
-        }
-        
-        .empty-units {
-            font-size: 0.85rem !important;
-            padding: 1.2rem !important;
-        }
-        
-        .badge-success, .badge-danger, .badge-warning {
-            font-size: 0.65rem !important;
-            padding: 0.25rem 0.5rem !important;
-        }
+    .unit-modules {
+        font-size: .7rem;
     }
 
-    /* ===== RESPONSIVE - MOBILE MEDIUM (360px) ===== */
-    @media (max-width: 360px) {
-        .course-detail-container {
-            padding: 0 0.3rem !important;
-            margin: 0.3rem auto !important;
-        }
-        
-        .card {
-            width: 98% !important;
-            max-width: 350px !important;
-            padding: 0.8rem !important;
-            margin-bottom: 0.8rem !important;
-        }
-        
-        .course-detail-title {
-            font-size: 1.2rem !important;
-            margin-bottom: 0.4rem !important;
-        }
-        
-        .course-detail-position {
-            font-size: 0.75rem !important;
-            margin-bottom: 0.6rem !important;
-        }
-        
-        .course-detail-badges .badge {
-            font-size: 0.55rem !important;
-            padding: 0.2rem 0.4rem !important;
-        }
-        
-        .course-detail-description {
-            font-size: 0.8rem !important;
-            line-height: 1.4 !important;
-        }
-        
-        .prerequisites-box {
-            padding: 0.7rem !important;
-            margin-bottom: 0.8rem !important;
-        }
-        
-        .prerequisites-box h4 {
-            font-size: 0.8rem !important;
-        }
-        
-        .prerequisites-list li {
-            font-size: 0.75rem !important;
-            padding: 0.15rem 0 !important;
-        }
-        
-        .prereq-link {
-            font-size: 0.65rem !important;
-        }
-        
-        .course-actions-top .btn,
-        .course-actions-bottom .btn {
-            padding: 0.5rem 0.8rem !important;
-            font-size: 0.75rem !important;
-        }
-        
-        .course-actions-bottom .btn-lg {
-            padding: 0.7rem 1.2rem !important;
-            font-size: 0.8rem !important;
-        }
-        
-        .course-navigation .btn {
-            padding: 0.5rem 0.7rem !important;
-            font-size: 0.75rem !important;
-        }
-        
-        .quiz-card {
-            padding: 0.8rem !important;
-            min-height: 120px !important;
-        }
-        
-        .quiz-card h3 {
-            font-size: 0.9rem !important;
-        }
-        
-        .quiz-card p {
-            font-size: 0.75rem !important;
-        }
-        
-        .quiz-card-footer {
-            font-size: 0.7rem !important;
-        }
-        
-        .unit-card {
-            padding: 0.7rem 0.8rem !important;
-        }
-        
-        .unit-card h3 {
-            font-size: 0.9rem !important;
-        }
-        
-        .unit-card p {
-            font-size: 0.75rem !important;
-        }
-        
-        .section-card-title {
-            font-size: 1rem !important;
-            margin-bottom: 0.8rem !important;
-        }
-        
-        .empty-units {
-            font-size: 0.8rem !important;
-            padding: 1rem !important;
-        }
+    .course-actions-bottom {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 1rem;
     }
 
-    /* ===== RESPONSIVE - MOBILE SMALL (320px) ===== */
-    @media (max-width: 320px) {
-        .course-detail-container {
-            padding: 0 0.2rem !important;
-            margin: 0.2rem auto !important;
-        }
-        
-        .card {
-            width: 99% !important;
-            max-width: 310px !important;
-            padding: 0.6rem !important;
-            margin-bottom: 0.6rem !important;
-        }
-        
-        .course-detail-title {
-            font-size: 1.1rem !important;
-            margin-bottom: 0.3rem !important;
-        }
-        
-        .course-detail-position {
-            font-size: 0.7rem !important;
-            margin-bottom: 0.5rem !important;
-        }
-        
-        .course-detail-description {
-            font-size: 0.75rem !important;
-            line-height: 1.3 !important;
-        }
-        
-        .prerequisites-box {
-            padding: 0.6rem !important;
-            margin-bottom: 0.7rem !important;
-        }
-        
-        .prerequisites-box h4 {
-            font-size: 0.75rem !important;
-        }
-        
-        .prerequisites-list li {
-            font-size: 0.7rem !important;
-            padding: 0.1rem 0 !important;
-        }
-        
-        .course-actions-top .btn,
-        .course-actions-bottom .btn {
-            padding: 0.4rem 0.7rem !important;
-            font-size: 0.7rem !important;
-        }
-        
-        .course-actions-bottom .btn-lg {
-            padding: 0.6rem 1rem !important;
-            font-size: 0.75rem !important;
-        }
-        
-        .course-navigation .btn {
-            padding: 0.4rem 0.6rem !important;
-            font-size: 0.7rem !important;
-        }
-        
-        .quiz-card {
-            padding: 0.7rem !important;
-            min-height: 110px !important;
-        }
-        
-        .quiz-card h3 {
-            font-size: 0.85rem !important;
-        }
-        
-        .quiz-card p {
-            font-size: 0.7rem !important;
-        }
-        
-        .unit-card {
-            padding: 0.6rem 0.7rem !important;
-        }
-        
-        .unit-card h3 {
-            font-size: 0.85rem !important;
-        }
-        
-        .unit-card p {
-            font-size: 0.7rem !important;
-        }
-        
-        .section-card-title {
-            font-size: 0.95rem !important;
-            margin-bottom: 0.7rem !important;
-        }
-        
-        .empty-units {
-            font-size: 0.75rem !important;
-            padding: 0.8rem !important;
-        }
+    .course-actions-bottom .btn {
+        width: 100%;
+        min-width: 0;
     }
+
+    .quiz-grid {
+        grid-template-columns: 1fr;
+        gap: .75rem;
+        padding: 0 .9rem 1rem;
+    }
+
+    .quiz-card {
+        min-height: 145px;
+        padding: 1rem;
+    }
+
+    .quiz-card h3 {
+        font-size: .9rem;
+    }
+
+    .quiz-card p {
+        font-size: .76rem;
+    }
+
+    .quiz-card-footer {
+        align-items: flex-start;
+    }
+
+    .quiz-percent {
+        font-size: .7rem;
+    }
+}
+
+/* ============================================================
+   SMALL MOBILE
+   ============================================================ */
+
+@media (max-width: 480px) {
+
+    .course-detail-container {
+        padding: 0 .45rem;
+    }
+
+    .course-detail-header {
+        padding: 1.35rem .85rem 1.2rem;
+    }
+
+    .course-detail-title {
+        font-size: 1.3rem;
+    }
+
+    .course-detail-description {
+        font-size: .8rem;
+    }
+
+    .prerequisites-box {
+        padding: .8rem;
+    }
+
+    .prerequisites-list li {
+        font-size: .72rem;
+    }
+
+    .section-card-title {
+        font-size: .9rem;
+    }
+
+    .unit-card {
+        padding: .85rem;
+    }
+
+    .quiz-card {
+        padding: .85rem;
+    }
+
+    .course-actions-bottom .btn-lg {
+        padding: .75rem 1rem;
+        font-size: .82rem;
+    }
+}
+
 </style>
+
 {% endblock %}
 
+
 {% block content %}
+
 <div class="course-detail-container">
 
-    <!-- ===== CARD 1: ENFÒMASYON COURS ===== -->
+    <!-- ======================================================
+         CARD 1: INFORMATIONS DU COURS
+         ====================================================== -->
+
     <div class="card">
+
         <div class="course-detail-header">
+
             <div class="course-detail-main">
-                <!-- Badges -->
+
+                <!-- BADGES -->
                 <div class="course-detail-badges">
-                    {% if cours.nivo %}<span class="badge badge-primary">{{ cours.nivo.get_nom_display }}</span>{% endif %}
-                    {% if cours.categorie %}<span class="badge badge-secondary">{{ cours.categorie.nom }}</span>{% endif %}
-                    {% if cours.est_payant %}<span class="badge badge-warning">{% trans "Payant" %} - {{ cours.prix }} HTG</span>{% else %}<span class="badge badge-success">{% trans "Gratuit" %}</span>{% endif %}
-                    {% if cours.publie %}<span class="badge badge-primary">{% trans "Publié" %}</span>{% endif %}
-                    {% if cours.learning_path %}<span class="badge badge-secondary"><i class="fas fa-road"></i> {{ cours.learning_path.nom }}</span>{% endif %}
+
+                    {% if cours.nivo %}
+                    <span class="badge badge-primary">
+                        {{ cours.nivo.get_nom_display }}
+                    </span>
+                    {% endif %}
+
+                    {% if cours.categorie %}
+                    <span class="badge badge-secondary">
+                        <i class="fas fa-layer-group"></i>
+                        {{ cours.categorie.nom }}
+                    </span>
+                    {% endif %}
+
+                    {% if cours.est_payant %}
+                    <span class="badge badge-warning">
+                        <i class="fas fa-tag"></i>
+                        {% trans "Payant" %} - {{ cours.prix }} HTG
+                    </span>
+                    {% else %}
+                    <span class="badge badge-success">
+                        <i class="fas fa-gift"></i>
+                        {% trans "Gratuit" %}
+                    </span>
+                    {% endif %}
+
+                    {% if cours.publie %}
+                    <span class="badge badge-primary">
+                        <i class="fas fa-check-circle"></i>
+                        {% trans "Publié" %}
+                    </span>
+                    {% endif %}
+
+                    {% if cours.learning_path %}
+                    <span class="badge badge-secondary">
+                        <i class="fas fa-road"></i>
+                        {{ cours.learning_path.nom }}
+                    </span>
+                    {% endif %}
+
                 </div>
 
-                <h1 class="course-detail-title">{{ cours.titre }}</h1>
 
+                <!-- TITRE -->
+                <h1 class="course-detail-title">
+                    {{ cours.titre }}
+                </h1>
+
+
+                <!-- POSITION LEARNING PATH -->
                 {% if position_display %}
+
                 <p class="course-detail-position">
-                    <i class="fas fa-road"></i> {{ position_display }}
+
+                    <i class="fas fa-road"></i>
+
+                    {{ position_display }}
+
                     {% if cours.learning_path %}
-                    - <a href="{% url 'courses:learning_path_detail' cours.learning_path.pk %}" class="course-detail-link">{{ cours.learning_path.nom }}</a>
+
+                        <span>-</span>
+
+                        <a
+                            href="{% url 'courses:learning_path_detail' cours.learning_path.pk %}"
+                            class="course-detail-link"
+                        >
+                            {{ cours.learning_path.nom }}
+                        </a>
+
                     {% endif %}
+
                 </p>
+
                 {% endif %}
 
+
+                <!-- DESCRIPTION -->
                 <div class="course-detail-description">
                     {{ cours.description|linebreaks }}
                 </div>
 
+
+                <!-- ==================================================
+                     PREREQUIS
+                     ================================================== -->
+
                 {% if prerequisites %}
+
                 <div class="prerequisites-box">
-                    <h4><i class="fas fa-list-check"></i> {% trans "Prérequis" %}</h4>
+
+                    <h4>
+                        <i class="fas fa-list-check"></i>
+                        {% trans "Prérequis" %}
+                    </h4>
+
+
                     {% if prerequis_completed %}
+
                     <p class="prerequisites-completed">
-                        <i class="fas fa-check-circle"></i> {% trans "Vous avez complété tous les prérequis !" %}
+
+                        <i class="fas fa-check-circle"></i>
+
+                        {% trans "Vous avez complété tous les prérequis !" %}
+
                     </p>
+
                     {% else %}
+
                     <ul class="prerequisites-list">
+
                         {% for prereq in prerequisites %}
+
                         <li>
+
                             {% if prereq.prerequis in prerequis_missing %}
-                            <span class="prereq-missing"><i class="fas fa-times-circle"></i></span>
-                            <span class="prereq-title-muted">{{ prereq.prerequis.titre }}</span>
-                            <a href="{% url 'courses:course_detail' prereq.prerequis.pk %}" class="prereq-link">
-                                <i class="fas fa-arrow-right"></i> {% trans "Voir" %}
-                            </a>
+
+                                <span class="prereq-missing">
+                                    <i class="fas fa-times-circle"></i>
+                                </span>
+
+                                <span class="prereq-title-muted">
+                                    {{ prereq.prerequis.titre }}
+                                </span>
+
+                                <a
+                                    href="{% url 'courses:course_detail' prereq.prerequis.pk %}"
+                                    class="prereq-link"
+                                >
+                                    <i class="fas fa-arrow-right"></i>
+                                    {% trans "Voir" %}
+                                </a>
+
                             {% else %}
-                            <span class="prereq-success"><i class="fas fa-check-circle"></i></span>
-                            <span class="prereq-title">{{ prereq.prerequis.titre }}</span>
+
+                                <span class="prereq-success">
+                                    <i class="fas fa-check-circle"></i>
+                                </span>
+
+                                <span class="prereq-title">
+                                    {{ prereq.prerequis.titre }}
+                                </span>
+
                             {% endif %}
+
                         </li>
+
                         {% endfor %}
+
                     </ul>
+
                     {% endif %}
+
                 </div>
+
                 {% endif %}
+
+
+                <!-- ==================================================
+                     NAVIGATION ENTRE COURS
+                     ================================================== -->
 
                 {% if previous_course or next_course %}
+
                 <div class="course-navigation">
+
                     {% if previous_course %}
-                    <a href="{% url 'courses:course_detail' previous_course.pk %}" class="btn btn-outline btn-sm">
-                        <i class="fas fa-arrow-left"></i> {{ previous_course.titre }}
+
+                    <a
+                        href="{% url 'courses:course_detail' previous_course.pk %}"
+                        class="btn btn-outline btn-sm"
+                    >
+                        <i class="fas fa-arrow-left"></i>
+
+                        {{ previous_course.titre }}
+
                     </a>
+
                     {% endif %}
+
+
                     {% if next_course %}
-                    <a href="{% url 'courses:course_detail' next_course.pk %}" class="btn btn-outline btn-sm">
-                        {{ next_course.titre }} <i class="fas fa-arrow-right"></i>
+
+                    <a
+                        href="{% url 'courses:course_detail' next_course.pk %}"
+                        class="btn btn-outline btn-sm"
+                    >
+
+                        {{ next_course.titre }}
+
+                        <i class="fas fa-arrow-right"></i>
+
                     </a>
+
                     {% endif %}
+
                 </div>
+
                 {% endif %}
+
+
+                <!-- ==================================================
+                     ACTIONS ADMIN
+                     ================================================== -->
+
+                {% if user.is_staff %}
 
                 <div class="course-actions-top">
-                    {% if user.is_staff %}
-                    <a href="{% url 'courses:course_edit' cours.pk %}" class="btn btn-secondary">
-                        <i class="fas fa-edit"></i> {% trans "Modifier" %}
+
+                    <a
+                        href="{% url 'courses:course_edit' cours.pk %}"
+                        class="btn btn-secondary"
+                    >
+                        <i class="fas fa-edit"></i>
+                        {% trans "Modifier" %}
                     </a>
-                    <a href="{% url 'courses:course_delete' cours.pk %}" class="btn btn-danger">
-                        <i class="fas fa-trash"></i> {% trans "Supprimer" %}
+
+
+                    <a
+                        href="{% url 'courses:course_delete' cours.pk %}"
+                        class="btn btn-danger"
+                    >
+                        <i class="fas fa-trash"></i>
+                        {% trans "Supprimer" %}
                     </a>
-                    <a href="{% url 'courses:toggle_inscription' cours.pk %}" class="btn btn-secondary">
+
+
+                    <a
+                        href="{% url 'courses:toggle_inscription' cours.pk %}"
+                        class="btn btn-secondary"
+                    >
+
                         <i class="fas fa-toggle-{% if cours.inscription_ouverte %}on{% else %}off{% endif %}"></i>
-                        {% if cours.inscription_ouverte %}{% trans "Fermer inscriptions" %}{% else %}{% trans "Ouvrir inscriptions" %}{% endif %}
+
+                        {% if cours.inscription_ouverte %}
+
+                            {% trans "Fermer inscriptions" %}
+
+                        {% else %}
+
+                            {% trans "Ouvrir inscriptions" %}
+
+                        {% endif %}
+
                     </a>
-                    {% endif %}
+
                 </div>
+
+                {% endif %}
+
             </div>
+
         </div>
+
     </div>
 
-    <!-- ===== CARD 2: CONTENU COURS + ACTIONS ===== -->
+
+    <!-- ======================================================
+         CARD 2: CONTENU DU COURS
+         ====================================================== -->
+
     <div class="card">
+
         <div class="card-body">
+
             <h2 class="section-card-title">
-                <i class="fas fa-list-ul"></i> {% trans "Contenu du cours" %}
+
+                <i class="fas fa-list-ul"></i>
+
+                {% trans "Contenu du cours" %}
+
             </h2>
+
+
             {% if unites %}
+
             <div class="units-list">
+
                 {% for unite in unites %}
+
                 <div class="unit-card">
-                    <h3><a href="{% url 'courses:unit_detail' unite.pk %}">{{ unite.titre }}</a></h3>
+
+                    <h3>
+
+                        <a
+                            href="{% url 'courses:unit_detail' unite.pk %}"
+                        >
+                            {{ unite.titre }}
+                        </a>
+
+                    </h3>
+
+
                     {% if unite.description %}
-                    <p>{{ unite.description }}</p>
+
+                    <p>
+                        {{ unite.description }}
+                    </p>
+
                     {% endif %}
+
+
                     <span class="unit-modules">
-                        <i class="fas fa-book-open"></i> {{ unite.modules.count }} {% trans "modules" %}
+
+                        <i class="fas fa-book-open"></i>
+
+                        {{ unite.modules.count }}
+
+                        {% trans "modules" %}
+
                     </span>
+
                 </div>
+
                 {% endfor %}
+
             </div>
+
+
             {% else %}
-            <p class="empty-units">{% trans "Aucune unité disponible pour ce cours." %}</p>
+
+            <p class="empty-units">
+
+                <i class="fas fa-folder-open"></i>
+
+                {% trans "Aucune unité disponible pour ce cours." %}
+
+            </p>
+
             {% endif %}
+
         </div>
+
+
+        <!-- ==================================================
+             COURSE ACTION
+             ================================================== -->
 
         <div class="course-actions-bottom">
+
             {% if user.is_authenticated %}
+
+
                 {% if inscription_approuvee or a_acces_abonnement %}
+
+
                     {% if cours.unites.first %}
-                    <a href="{% url 'courses:unit_detail' cours.unites.first.pk %}" class="btn btn-success btn-lg">
-                        <i class="fas fa-play"></i> {% trans "Commencer le cours" %}
+
+                    <a
+                        href="{% url 'courses:unit_detail' cours.unites.first.pk %}"
+                        class="btn btn-success btn-lg"
+                    >
+
+                        <i class="fas fa-play"></i>
+
+                        {% trans "Commencer le cours" %}
+
                     </a>
+
                     {% else %}
-                    <button class="btn btn-secondary btn-lg" disabled>
-                        <i class="fas fa-clock"></i> {% trans "Cours en préparation" %}
+
+                    <button
+                        class="btn btn-secondary btn-lg"
+                        disabled
+                    >
+
+                        <i class="fas fa-clock"></i>
+
+                        {% trans "Cours en préparation" %}
+
                     </button>
+
                     {% endif %}
+
+
                 {% elif prerequis_completed %}
-                <a href="{% url 'enrollments:enroll_course' cours.pk %}" class="btn btn-primary btn-lg">
-                    <i class="fas fa-user-plus"></i> {% trans "S'inscrire" %}
-                </a>
+
+
+                    <a
+                        href="{% url 'enrollments:enroll_course' cours.pk %}"
+                        class="btn btn-primary btn-lg"
+                    >
+
+                        <i class="fas fa-user-plus"></i>
+
+                        {% trans "S'inscrire" %}
+
+                    </a>
+
+
                 {% else %}
-                <button class="btn btn-secondary btn-lg" disabled>
-                    <i class="fas fa-lock"></i> {% trans "Prérequis manquants" %}
-                </button>
+
+
+                    <button
+                        class="btn btn-secondary btn-lg"
+                        disabled
+                    >
+
+                        <i class="fas fa-lock"></i>
+
+                        {% trans "Prérequis manquants" %}
+
+                    </button>
+
+
                 {% endif %}
+
+
             {% else %}
-            <a href="{% url 'accounts:login' %}?next={{ request.path }}" class="btn btn-primary btn-lg">
-                <i class="fas fa-sign-in-alt"></i> {% trans "Se connecter pour s'inscrire" %}
-            </a>
+
+
+                <a
+                    href="{% url 'accounts:login' %}?next={{ request.path }}"
+                    class="btn btn-primary btn-lg"
+                >
+
+                    <i class="fas fa-sign-in-alt"></i>
+
+                    {% trans "Se connecter pour s'inscrire" %}
+
+                </a>
+
+
             {% endif %}
+
         </div>
+
     </div>
 
-    <!-- ===== CARD 3: QUIZ DU COURS ===== -->
+
+    <!-- ======================================================
+         CARD 3: QUIZ
+         ====================================================== -->
+
     {% if quizzes %}
+
     <div class="card">
+
         <h2 class="section-card-title">
-            <i class="fas fa-question-circle"></i> {% trans "Quiz du cours" %}
+
+            <i class="fas fa-question-circle"></i>
+
+            {% trans "Quiz du cours" %}
+
         </h2>
+
+
         <div class="quiz-grid">
+
             {% for quiz in quizzes %}
+
             <div class="quiz-card">
-                <h3><a href="{% url 'quiz:detail' quiz.pk %}">{{ quiz.titre }}</a></h3>
-                {% if quiz.description %}
-                <p>{{ quiz.description|truncatechars:100 }}</p>
-                {% endif %}
-                <div class="quiz-card-footer">
-                    <span class="quiz-percent">
-                        <i class="fas fa-percent"></i> {{ quiz.pourcentage_reussite }}% {% trans "réussite" %}
-                    </span>
-                    {% if user.is_authenticated %}
-                        {% with tentative_quiz=quiz.pk %}
-                            {% for key, value in user_tentatives.items %}
-                                {% if key == tentative_quiz %}
-                                    {% if value.date_soumission %}
-                                        {% if value.reussi %}
-                                        <span class="badge badge-success"><i class="fas fa-check-circle"></i> {% trans "Réussi" %} ({{ value.score|floatformat:0 }}%)</span>
-                                        {% else %}
-                                        <span class="badge badge-danger"><i class="fas fa-times-circle"></i> {% trans "Échoué" %} ({{ value.score|floatformat:0 }}%)</span>
-                                        {% endif %}
-                                    {% else %}
-                                    <a href="{% url 'quiz:start' quiz.pk %}" class="btn btn-primary btn-sm">
-                                        <i class="fas fa-play"></i> {% trans "Commencer" %}
-                                    </a>
-                                    {% endif %}
-                                {% endif %}
-                            {% empty %}
-                            <a href="{% url 'quiz:start' quiz.pk %}" class="btn btn-primary btn-sm">
-                                <i class="fas fa-play"></i> {% trans "Commencer" %}
-                            </a>
-                            {% endfor %}
-                        {% endwith %}
-                    {% else %}
-                    <a href="{% url 'accounts:login' %}?next={% url 'quiz:detail' quiz.pk %}" class="btn btn-secondary btn-sm">
-                        <i class="fas fa-sign-in-alt"></i> {% trans "Se connecter" %}
+
+                <h3>
+
+                    <a
+                        href="{% url 'quiz:detail' quiz.pk %}"
+                    >
+                        {{ quiz.titre }}
                     </a>
+
+                </h3>
+
+
+                {% if quiz.description %}
+
+                <p>
+                    {{ quiz.description|truncatechars:100 }}
+                </p>
+
+                {% endif %}
+
+
+                <div class="quiz-card-footer">
+
+                    <span class="quiz-percent">
+
+                        <i class="fas fa-percent"></i>
+
+                        {{ quiz.pourcentage_reussite }}%
+
+                        {% trans "réussite" %}
+
+                    </span>
+
+
+                    {% if user.is_authenticated %}
+
+                    {% with tentative_quiz=quiz.pk %}
+
+                    {% for key, value in user_tentatives.items %}
+
+                    {% if key == tentative_quiz %}
+
+                        {% if value.date_soumission %}
+
+                            {% if value.reussi %}
+
+                            <span class="badge badge-success">
+
+                                <i class="fas fa-check-circle"></i>
+
+                                {% trans "Réussi" %}
+
+                                ({{ value.score|floatformat:0 }}%)
+
+                            </span>
+
+                            {% else %}
+
+                            <span class="badge badge-danger">
+
+                                <i class="fas fa-times-circle"></i>
+
+                                {% trans "Échoué" %}
+
+                                ({{ value.score|floatformat:0 }}%)
+
+                            </span>
+
+                            {% endif %}
+
+                        {% else %}
+
+                            <a
+                                href="{% url 'quiz:start' quiz.pk %}"
+                                class="btn btn-primary btn-sm"
+                            >
+
+                                <i class="fas fa-play"></i>
+
+                                {% trans "Commencer" %}
+
+                            </a>
+
+                        {% endif %}
+
                     {% endif %}
+
+                    {% empty %}
+
+                    <a
+                        href="{% url 'quiz:start' quiz.pk %}"
+                        class="btn btn-primary btn-sm"
+                    >
+
+                        <i class="fas fa-play"></i>
+
+                        {% trans "Commencer" %}
+
+                    </a>
+
+                    {% endfor %}
+
+                    {% endwith %}
+
+
+                    {% else %}
+
+                    <a
+                        href="{% url 'accounts:login' %}?next={% url 'quiz:detail' quiz.pk %}"
+                        class="btn btn-secondary btn-sm"
+                    >
+
+                        <i class="fas fa-sign-in-alt"></i>
+
+                        {% trans "Se connecter" %}
+
+                    </a>
+
+                    {% endif %}
+
                 </div>
+
             </div>
+
             {% endfor %}
+
         </div>
+
     </div>
+
     {% endif %}
 
 </div>
+
 {% endblock %}
