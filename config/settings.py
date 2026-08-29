@@ -17,23 +17,38 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env('SECRET_KEY', default='django-insecure-dev-key')
 DEBUG = env.bool('DEBUG', default=True)
 
-ALLOWED_HOSTS = [
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[
     'localhost',
     '127.0.0.1',
     '.onrender.com',
     'educdim.onrender.com',
-    'educdim.com',
-]
+])
 
 # ============================================
 # DATABASE
 # ============================================
-DATABASES = {
-    'default': dj_database_url.config(
-        default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',
-        conn_max_age=600
-    )
-}
+DATABASE_URL = env('DATABASE_URL', default=None)
+
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.parse(
+            DATABASE_URL,
+            conn_max_age=600,
+            conn_health_checks=True,
+            ssl_require=True
+        )
+    }
+    DATABASES['default']['OPTIONS'] = {
+        'connect_timeout': 10,
+        'options': '-c statement_timeout=15000ms'
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # ============================================
 # SITE INFO
@@ -61,13 +76,7 @@ else:
     DEFAULT_FROM_EMAIL = 'no-reply@educdim.com'
 
 # ============================================
-# TELERIVET (SMS)
-# ============================================
-TELERIVET_API_KEY = env('TELERIVET_API_KEY', default='')
-TELERIVET_PROJECT_ID = env('TELERIVET_PROJECT_ID', default='')
-
-# ============================================
-# SECURE SETTINGS (Production)
+# SECURE SETTINGS
 # ============================================
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
@@ -81,38 +90,28 @@ if not DEBUG:
     CSRF_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = 'Lax'
     CSRF_COOKIE_SAMESITE = 'Lax'
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = 'DENY'
 else:
     SECURE_SSL_REDIRECT = False
     SESSION_COOKIE_SECURE = False
     CSRF_COOKIE_SECURE = False
 
 # ============================================
-# SESSIONS - KONFIGIRASYON POU SESYON AN EKSPIRE
+# SESSIONS
 # ============================================
-# Tan sesyon an nan segonn (3600 = 1 èdtan)
 SESSION_COOKIE_AGE = 3600
-
-# Dekonekte lè navigatè a fèmen
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-
-# Mete ajou sesyon an chak reqèt pou renouvle li
 SESSION_SAVE_EVERY_REQUEST = True
-
-# Cookie sesyon an ka itilize sèlman pa HTTP (pa JavaScript)
 SESSION_COOKIE_HTTPONLY = True
-
-# Cookie sesyon an voye sèlman sou menm sit la
 SESSION_COOKIE_SAMESITE = 'Lax'
 
-# Cookie sesyon an voye sèlman an HTTPS (mande pou pwodiksyon)
-SESSION_COOKIE_SECURE = False  # Mete a True lè DEBUG=False
-
 # ============================================
-# CSRF CONFIGURATION
+# CSRF
 # ============================================
 CSRF_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SAMESITE = 'Lax'
-CSRF_COOKIE_SECURE = False  # Mete a True lè DEBUG=False
 
 # ============================================
 # LANGUAGE & TIMEZONE
@@ -128,7 +127,7 @@ USE_I18N = True
 USE_TZ = True
 
 # ============================================
-# INSTALLED APPS (LÒD ENPÒTAN)
+# INSTALLED APPS - KOREKTE (RETIRE DOUB sitemaps)
 # ============================================
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -137,7 +136,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts.apps.AccountsConfig',          # <--- PREMYE
+    'django.contrib.sitemaps',  # ✅ Sèlman sa a, PA mete 'sitemaps' ankò
+    'accounts.apps.AccountsConfig',
     'courses.apps.CoursesConfig',
     'enrollments.apps.EnrollmentsConfig',
     'progress.apps.ProgressConfig',
@@ -151,7 +151,7 @@ INSTALLED_APPS = [
     'ads.apps.AdsConfig',
     'subscriptions.apps.SubscriptionsConfig',
     'dashboard.apps.DashboardConfig',
-    'todo.apps.TodoConfig',  # <--- AJOUTE
+    'todo.apps.TodoConfig',
 ]
 
 # ============================================
@@ -172,10 +172,13 @@ MIDDLEWARE = [
 ]
 
 # ============================================
-# TEMPLATES
+# URLS
 # ============================================
 ROOT_URLCONF = 'config.urls'
 
+# ============================================
+# TEMPLATES
+# ============================================
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -197,6 +200,9 @@ TEMPLATES = [
     },
 ]
 
+# ============================================
+# WSGI
+# ============================================
 WSGI_APPLICATION = 'config.wsgi.application'
 
 # ============================================
@@ -206,6 +212,12 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
         'OPTIONS': {'min_length': 8}
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
     {
         'NAME': 'accounts.validators.ComplexPasswordValidator',
@@ -229,10 +241,33 @@ LOGOUT_REDIRECT_URL = 'accounts:login'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# ============================================
+# LOGGING
+# ============================================
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+        'django.security': {
+            'handlers': ['console'],
+            'level': 'WARNING',
+            'propagate': False,
+        },
+    },
+}
