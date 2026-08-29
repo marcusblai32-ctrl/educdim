@@ -1,93 +1,92 @@
-#!/usr/bin/env bash
-# exit on error
-set -o errexit
+#!/bin/bash
 
-echo "📦 Installation des dépendances..."
-pip install --upgrade pip
+echo "==========================================="
+echo "BUILD: Kòmanse pwosesis build"
+echo "==========================================="
+
+# ==========================================
+# 1. ENSTALE DEPANDANS
+# ==========================================
+echo "==========================================="
+echo "BUILD: Enstale depandans"
+echo "==========================================="
 pip install -r requirements.txt
 
-echo "📁 Collecte des fichiers statiques..."
-python manage.py collectstatic --no-input
+# ==========================================
+# 2. EFASE ANSYEN DOSYE LOCALE
+# ==========================================
+echo "==========================================="
+echo "BUILD: Efase ansyen dosye locale"
+echo "==========================================="
+rm -rf locale/
+echo "Ansyen dosye locale efase!"
 
-echo "🗄️  Exécution des migrations..."
-python manage.py makemigrations
-python manage.py migrate
+# ==========================================
+# 3. KREYE NOUVO FICHYE TRADIKSYON
+# ==========================================
+echo "==========================================="
+echo "BUILD: Kreye nouvo fichye tradiksyon"
+echo "==========================================="
+python manage.py makemessages -l fr -l ht --keep-pot
 
-# ============================================
-# AJOUTE TAB ACTIVITEUTILISATEUR AVEC PYTHON
-# ============================================
-echo "🔧 Vérification de la table ActiviteUtilisateur..."
-python manage.py shell << 'EOF'
-from django.db import connection
+# ==========================================
+# 4. KORIJE PLURAL-FORMS
+# ==========================================
+echo "==========================================="
+echo "BUILD: Korije Plural-Forms"
+echo "==========================================="
+python -c "
+import os
 
-def create_table_if_not_exists():
-    with connection.cursor() as cursor:
-        # Verifye si tab egziste
-        cursor.execute("""
-            SELECT EXISTS (
-                SELECT 1 FROM information_schema.tables 
-                WHERE table_name='progress_activiteutilisateur'
-            )
-        """)
-        exists = cursor.fetchone()[0]
-        
-        if not exists:
-            print("Kreye tab progress_activiteutilisateur...")
-            cursor.execute("""
-                CREATE TABLE progress_activiteutilisateur (
-                    id bigserial NOT NULL PRIMARY KEY,
-                    utilisateur_id integer NOT NULL,
-                    type_activite varchar(30) NOT NULL,
-                    description text NOT NULL,
-                    cours_id integer,
-                    lecon_id integer,
-                    date timestamp with time zone NOT NULL
-                )
-            """)
-            
-            # Foreign keys
-            cursor.execute("""
-                ALTER TABLE progress_activiteutilisateur ADD CONSTRAINT 
-                progress_activiteutilisateur_utilisateur_id_fkey 
-                FOREIGN KEY (utilisateur_id) REFERENCES accounts_customuser(id)
-            """)
-            
-            cursor.execute("""
-                ALTER TABLE progress_activiteutilisateur ADD CONSTRAINT 
-                progress_activiteutilisateur_cours_id_fkey 
-                FOREIGN KEY (cours_id) REFERENCES courses_course(id)
-            """)
-            
-            cursor.execute("""
-                ALTER TABLE progress_activiteutilisateur ADD CONSTRAINT 
-                progress_activiteutilisateur_lecon_id_fkey 
-                FOREIGN KEY (lecon_id) REFERENCES courses_lecon(id)
-            """)
-            
-            # Index
-            cursor.execute("""
-                CREATE INDEX progress_activiteutilisateur_utilisateur_id_idx 
-                ON progress_activiteutilisateur(utilisateur_id)
-            """)
-            cursor.execute("""
-                CREATE INDEX progress_activiteutilisateur_cours_id_idx 
-                ON progress_activiteutilisateur(cours_id)
-            """)
-            cursor.execute("""
-                CREATE INDEX progress_activiteutilisateur_lecon_id_idx 
-                ON progress_activiteutilisateur(lecon_id)
-            """)
-            cursor.execute("""
-                CREATE INDEX progress_activiteutilisateur_date_idx 
-                ON progress_activiteutilisateur(date)
-            """)
-            
-            print("✅ Tab progress_activiteutilisateur kreye avèk siksè!")
-        else:
-            print("✅ Tab progress_activiteutilisateur deja egziste.")
+for lang in ['fr', 'ht']:
+    po_file = f'locale/{lang}/LC_MESSAGES/django.po'
+    
+    if not os.path.exists(po_file):
+        print(f'Fichye {po_file} pa egziste, sote...')
+        continue
+    
+    print(f'Korije: {po_file}')
+    
+    with open(po_file, 'r', encoding='utf-8') as f:
+        content = f.read()
+    
+    # Korije Plural-Forms
+    content = content.replace(
+        'Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;',
+        'Plural-Forms: nplurals=2; plural=(n != 1);'
+    )
+    
+    # Retire flag fuzzy ki ka kreye pwoblèm
+    content = content.replace('#, fuzzy\n', '')
+    
+    # Korije Language field
+    content = content.replace(
+        'Language: \\\\n',
+        f'Language: {lang}\\\\n'
+    )
+    
+    with open(po_file, 'w', encoding='utf-8') as f:
+        f.write(content)
+    
+    print(f'Korije ak siksè: {po_file}')
+"
 
-create_table_if_not_exists()
-print("✅ Tout tab vérifiées avèk siksè!")
-EOF
+# ==========================================
+# 5. KONPILE TRADIKSYON YO
+# ==========================================
+echo "==========================================="
+echo "BUILD: Konpile tradiksyon yo"
+echo "==========================================="
+python manage.py compilemessages
 
-echo "✅ Build terminé avec succès!"
+# ==========================================
+# 6. KOLEKTE STATIK
+# ==========================================
+echo "==========================================="
+echo "BUILD: Kolekte fichye statik yo"
+echo "==========================================="
+python manage.py collectstatic --noinput
+
+echo "==========================================="
+echo "BUILD: Pwosesis build fini ak siksè!"
+echo "==========================================="
