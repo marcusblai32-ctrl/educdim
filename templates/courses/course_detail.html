@@ -331,7 +331,7 @@
 }
 
 /* ============================================================
-   COURSE ACTIONS BOTTOM (anba card-body)
+   COURSE ACTIONS BOTTOM (anba card-body ak border ble)
    ============================================================ */
 .course-actions-bottom {
     display: flex;
@@ -340,26 +340,82 @@
     flex-wrap: wrap;
     gap: .8rem;
     max-width: 900px;
-    margin: 1.5rem auto 0;      /* espas anlè */
-    padding: 1.5rem 0 0;        /* espas entèn anlè */
-    border-top: 1px solid var(--glass-brd-soft, rgba(0,0,0,.07)); /* liy separasyon anlè */
-    border-bottom: none;
+    margin: 1.5rem auto 0;
+    padding: 1.2rem;                /* plis espas pou border la */
+    border: 1px solid var(--primary, #5624d0);   /* ✅ border ble */
+    border-radius: 14px;            /* kwen awondi */
+    background: rgba(86, 36, 208, 0.03);          /* ti koulè ble transparan */
 }
+
 .course-actions-bottom .btn {
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: .55rem;
-    min-width: 230px;
-    border-radius: 12px;
-    font-weight: 750;
-    transition: transform .2s ease, box-shadow .2s ease;
+    min-width: 200px;               /* yon ti kras pi piti */
+    padding: .7rem 1.4rem;          /* menm jan ak btn-sm quiz */
+    border-radius: 10px;            /* menm kwen ak quiz */
+    font-weight: 700;
+    font-size: .9rem;               /* menm gwosè ak quiz */
+    transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    text-decoration: none;
+    border: none;                   /* retire border default */
+    cursor: pointer;
+    overflow: hidden;               /* pou ::after pa depase */
 }
-.course-actions-bottom .btn:hover {
+
+/* Efè hover: liy ble anba bouton */
+.course-actions-bottom .btn::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 1px;
+    background-color: #0d6efd;
+    transition: width .25s ease;
+}
+.course-actions-bottom .btn:hover::after {
+    width: 80%;
+}
+
+/* Pou bouton "Commencer" ki vèt, fè l vin ble tankou quiz */
+.course-actions-bottom .btn-success {
+    background: var(--primary, #5624d0);   /* chanje vèt an ble */
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(86, 36, 208, 0.25);
+}
+.course-actions-bottom .btn-success:hover {
+    background: #4520a8;                    /* pi fonse lè hover */
+    box-shadow: 0 6px 16px rgba(86, 36, 208, 0.35);
     transform: translateY(-2px);
 }
-.course-actions-bottom .btn-lg {
-    padding: .85rem 1.5rem;
+
+/* Pou bouton "S'inscrire" (primary) deja ble, asire li byen */
+.course-actions-bottom .btn-primary {
+    background: var(--primary, #5624d0);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(86, 36, 208, 0.25);
+}
+.course-actions-bottom .btn-primary:hover {
+    background: #4520a8;
+    box-shadow: 0 6px 16px rgba(86, 36, 208, 0.35);
+    transform: translateY(-2px);
+}
+
+/* Pou bouton disabled (Prérequis manquants, etc.) */
+.course-actions-bottom .btn-secondary:disabled {
+    background: #e9ecef;
+    color: #6c757d;
+    border: 1px solid #dee2e6;
+    box-shadow: none;
+    transform: none;
+    cursor: not-allowed;
+}
+.course-actions-bottom .btn-secondary:disabled::after {
+    display: none;   /* pa gen liy hover pou disabled */
 }
 
 /* ============================================================
@@ -507,7 +563,7 @@
         flex-direction: column;
         align-items: stretch;
         margin-top: 1.2rem;
-        padding-top: 1.2rem;
+        padding: 1rem;
     }
     .course-actions-bottom .btn {
         width: 100%;
