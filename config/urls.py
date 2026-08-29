@@ -4,7 +4,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
 from django.conf.urls.i18n import i18n_patterns
-from django.http import JsonResponse  # <--- AJOUTE LIY SA A
+from django.http import JsonResponse
+from django.contrib.sitemaps.views import sitemap
+from config.sitemaps import StaticViewSitemap, CourseSitemap
 from courses.views import about_page, contact_page, conditions_page, privacy_page, faq_page
 
 
@@ -13,7 +15,13 @@ admin.site.site_title = "Administration EducDim"
 admin.site.index_title = "Bienvenue dans l'administration EducDim"
 
 
-# <--- AJOUTE FONKSYON SA A
+# ============ SITEMAP ============
+sitemaps = {
+    'static': StaticViewSitemap,
+    'courses': CourseSitemap,
+}
+
+
 def health_check(request):
     """
     Health check endpoint pou Render.
@@ -28,7 +36,11 @@ def health_check(request):
 urlpatterns = [
     path('dp/', admin.site.urls),
     path('i18n/', include('django.conf.urls.i18n')),
-    path('health/', health_check, name='health_check'),  # <--- AJOUTE LIY SA A
+    path('health/', health_check, name='health_check'),
+    
+    # ===== SITEMAP (deyò i18n pou Google jwenn li fasil) =====
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+    path('robots.txt', TemplateView.as_view(template_name='robots.txt', content_type='text/plain'), name='robots'),
 ]
 
 
@@ -54,7 +66,6 @@ urlpatterns += i18n_patterns(
     path('confidentialite/', privacy_page, name='privacy'),
     path('faq/', faq_page, name='faq'),
 
-    # ===== CHANJMAN: TRUE (pa gen prefiks pou lang default) =====
     prefix_default_language=True,
 )
 
