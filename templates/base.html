@@ -31,7 +31,7 @@
             margin: 0 auto;
             padding: 0 1rem;
         }
-        
+
         .banner-container .banner {
             display: block;
             border-radius: var(--radius, 8px);
@@ -39,40 +39,40 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             margin: 0.5rem 0;
         }
-        
+
         .banner-container .banner:hover {
             transform: scale(1.01);
             box-shadow: var(--shadow, 0 4px 20px rgba(0,0,0,0.08));
         }
-        
+
         .banner-container .banner img {
             width: 100%;
             height: auto;
             display: block;
         }
-        
+
         .banner-container .banner-header {
             margin-bottom: 1rem;
         }
-        
+
         .banner-container .banner-footer {
             margin-top: 1rem;
         }
-        
+
         .banner-container .banner-sidebar {
             margin: 1rem 0;
         }
-        
+
         .banner-container .banner-sidebar img {
             max-width: 100%;
             height: auto;
             border-radius: var(--radius, 8px);
         }
-        
+
         .banner-container .banner-empty {
             display: none;
         }
-        
+
         /* Sidebar layout */
         .main-with-sidebar {
             display: flex;
@@ -82,17 +82,17 @@
             margin: 0 auto;
             padding: 0 1rem;
         }
-        
+
         .main-with-sidebar .sidebar {
             flex: 0 0 250px;
             max-width: 100%;
         }
-        
+
         .main-with-sidebar .main-content {
             flex: 1;
             min-width: 300px;
         }
-        
+
         @media (max-width: 768px) {
             .main-with-sidebar {
                 flex-direction: column;
@@ -104,6 +104,31 @@
             .main-with-sidebar .main-content {
                 order: 1;
             }
+        }
+
+        /* ===== LANG SWITCHER ===== */
+        .lang-switcher select {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--glass-brd, rgba(0,0,0,0.1));
+            background: var(--glass, rgba(255,255,255,0.9));
+            color: var(--text, #333);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            appearance: auto;
+        }
+
+        .lang-switcher select:hover {
+            border-color: var(--primary, #5624d0);
+            box-shadow: 0 2px 8px rgba(86,36,208,0.15);
+        }
+
+        .lang-switcher select:focus {
+            outline: none;
+            border-color: var(--primary, #5624d0);
+            box-shadow: 0 0 0 3px rgba(86,36,208,0.1);
         }
     </style>
 
@@ -226,18 +251,15 @@
                 {% endif %}
             </nav>
 
+            {# ===== SWITCH LANG (MANYÈL) ===== #}
+            {% get_current_language as CURRENT_LANGUAGE %}
             <div class="lang-switcher">
                 <form action="{% url 'set_language' %}" method="post">
                     {% csrf_token %}
                     <input name="next" type="hidden" value="{{ request.path }}">
                     <select name="language" onchange="this.form.submit()">
-                        {% get_current_language as LANGUAGE_CODE %}
-                        {% get_available_languages as LANGUAGES %}
-                        {% for lang in LANGUAGES %}
-                            <option value="{{ lang.0 }}" {% if lang.0 == LANGUAGE_CODE %}selected{% endif %}>
-                                {{ lang.1 }}
-                            </option>
-                        {% endfor %}
+                        <option value="fr" {% if CURRENT_LANGUAGE == 'fr' %}selected{% endif %}>Français</option>
+                        <option value="ht" {% if CURRENT_LANGUAGE == 'ht' %}selected{% endif %}>Kreyòl</option>
                     </select>
                 </form>
             </div>
@@ -314,7 +336,7 @@
             </div>
         </aside>
         {% endif %}
-        
+
         <main class="main-content">
             {% block messages %}
                 {% if messages %}
