@@ -338,13 +338,13 @@
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    gap: .8rem;
+    gap: .5rem;                   /* redwi gap pou akomode margin */
     max-width: 900px;
     margin: 1.5rem auto 0;
-    padding: 1.2rem;                /* plis espas pou border la */
-    border: 1px solid var(--primary, #5624d0);   /* ✅ border ble */
-    border-radius: 14px;            /* kwen awondi */
-    background: rgba(86, 36, 208, 0.03);          /* ti koulè ble transparan */
+    padding: 1rem;                /* yon ti kras pi piti */
+    border: 1px solid var(--primary, #5624d0);
+    border-radius: 14px;
+    background: rgba(86, 36, 208, 0.03);
 }
 
 .course-actions-bottom .btn {
@@ -352,17 +352,24 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: .55rem;
-    min-width: 200px;               /* yon ti kras pi piti */
-    padding: .7rem 1.4rem;          /* menm jan ak btn-sm quiz */
-    border-radius: 10px;            /* menm kwen ak quiz */
+    gap: .45rem;
+    min-width: 160px;             /* pi piti */
+    padding: .6rem 1.2rem;        /* pi piti */
+    margin: .2rem;                /* ti margin */
+    border-radius: 10px;
     font-weight: 700;
-    font-size: .9rem;               /* menm gwosè ak quiz */
+    font-size: .85rem;            /* pi piti */
     transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
     text-decoration: none;
-    border: none;                   /* retire border default */
+    border: none;
     cursor: pointer;
-    overflow: hidden;               /* pou ::after pa depase */
+    overflow: hidden;
+}
+
+/* Surcharge pou btn-lg (bouton gen klas btn-lg) */
+.course-actions-bottom .btn.btn-lg {
+    padding: .6rem 1.2rem;
+    font-size: .85rem;
 }
 
 /* Efè hover: liy ble anba bouton */
@@ -383,12 +390,12 @@
 
 /* Pou bouton "Commencer" ki vèt, fè l vin ble tankou quiz */
 .course-actions-bottom .btn-success {
-    background: var(--primary, #5624d0);   /* chanje vèt an ble */
+    background: var(--primary, #5624d0);
     color: #fff;
     box-shadow: 0 4px 12px rgba(86, 36, 208, 0.25);
 }
 .course-actions-bottom .btn-success:hover {
-    background: #4520a8;                    /* pi fonse lè hover */
+    background: #4520a8;
     box-shadow: 0 6px 16px rgba(86, 36, 208, 0.35);
     transform: translateY(-2px);
 }
@@ -415,7 +422,7 @@
     cursor: not-allowed;
 }
 .course-actions-bottom .btn-secondary:disabled::after {
-    display: none;   /* pa gen liy hover pou disabled */
+    display: none;
 }
 
 /* ============================================================
@@ -563,11 +570,13 @@
         flex-direction: column;
         align-items: stretch;
         margin-top: 1.2rem;
-        padding: 1rem;
+        padding: .8rem;
+        gap: .4rem;
     }
     .course-actions-bottom .btn {
         width: 100%;
         min-width: 0;
+        margin: .1rem 0;
     }
     .unit-card { padding: 1rem; }
     .unit-card h3 { font-size: .9rem; }
@@ -606,8 +615,8 @@
     .unit-card { padding: .85rem; }
     .quiz-card { padding: .85rem; }
     .course-actions-bottom .btn-lg {
-        padding: .75rem 1rem;
-        font-size: .82rem;
+        padding: .55rem 1rem;
+        font-size: .8rem;
     }
 }
 </style>
