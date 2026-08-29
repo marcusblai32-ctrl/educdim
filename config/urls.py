@@ -4,6 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
 from django.conf.urls.i18n import i18n_patterns
+from django.http import JsonResponse  # <--- AJOUTE LIY SA A
 from courses.views import about_page, contact_page, conditions_page, privacy_page, faq_page
 
 
@@ -12,9 +13,22 @@ admin.site.site_title = "Administration EducDim"
 admin.site.index_title = "Bienvenue dans l'administration EducDim"
 
 
+# <--- AJOUTE FONKSYON SA A
+def health_check(request):
+    """
+    Health check endpoint pou Render.
+    Retounen yon repons JSON pou montre ke app la vivan.
+    """
+    return JsonResponse({
+        "status": "ok",
+        "message": "I am alive!",
+    })
+
+
 urlpatterns = [
     path('dp/', admin.site.urls),
     path('i18n/', include('django.conf.urls.i18n')),
+    path('health/', health_check, name='health_check'),  # <--- AJOUTE LIY SA A
 ]
 
 
