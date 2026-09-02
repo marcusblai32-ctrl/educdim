@@ -1775,3 +1775,105 @@ input[type="file"][data-error]::before {
 [data-bs-theme="dark"] .password-field .toggle-password:hover {
     background: rgba(255, 255, 255, 0.06);
 }
+
+/* ============ AJISTEMAN Siplemantè pou ti aparèy ============ */
+
+/* 1. Learning Path Grid — evite debòde sou tablèt */
+@media (max-width: 1024px) {
+    .learning-path-grid {
+        grid-template-columns: 1fr !important; /* fòse yon kolòn */
+        gap: 1.2rem;
+    }
+}
+
+/* 2. Auth Container — redwi margin sou telefòn */
+@media (max-width: 480px) {
+    .auth-container {
+        margin: 1rem auto;
+        padding: 0 0.75rem;
+    }
+    .auth-card {
+        padding: 1.5rem; /* ti rediksyon ankò */
+    }
+}
+
+/* 3. Tit detay kou — pi piti sou 480px */
+@media (max-width: 480px) {
+    .course-detail-title {
+        font-size: 1.3rem;
+    }
+    .course-detail-description {
+        font-size: 0.9rem;
+    }
+    .prerequisites-box {
+        padding: 1rem 1.2rem;
+    }
+}
+
+/* 4. Header — optimize pou 360px ak pi piti */
+@media (max-width: 360px) {
+    .logo {
+        font-size: 0.9rem;
+    }
+    .logo img {
+        height: 32px; /* si w gen imaj */
+    }
+    .lang-switcher select {
+        min-width: 68px;
+        padding: 0.35rem 1.8rem 0.35rem 0.6rem;
+        font-size: 0.75rem;
+    }
+    .menu-toggle {
+        padding: 0.4rem 0.55rem;
+        font-size: 1.1rem;
+    }
+}
+
+/* 5. Filtè yo — redwi padding sou ti ekran */
+@media (max-width: 480px) {
+    .filters-container {
+        padding: 0.75rem 1rem;
+        margin: 0 0.75rem 1.5rem;
+    }
+    .search-box input,
+    .filter-group select {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.75rem;
+    }
+    .search-box button {
+        padding: 0.5rem 0.9rem;
+    }
+}
+
+/* 6. Course Card — kenbe imaj yon ti jan pi wo sou 480px */
+@media (max-width: 480px) {
+    .course-card .course-img,
+    .course-card .no-image {
+        height: 110px; /* olye de 100px */
+    }
+    .course-card .course-body {
+        padding: 0.7rem 0.9rem;
+    }
+}
+
+/* 7. Hero Section — si ou vle montre yon bagay senp olye de kache */
+@media (max-width: 768px) {
+    /* Si ou pa vle kache .hero-visual nèt, ou ka fè li parèt anba kontni an */
+    .hero-visual {
+        display: none; /* ou deja fè sa, se oke */
+    }
+    /* Men si ou vle, ou ka mete yon vèsyon senp */
+    /* .hero-visual { display: flex; flex-direction: column; } */
+}
+
+/* 8. Bouton yo — asire yo pa twò laj sou telefòn */
+@media (max-width: 480px) {
+    .btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.85rem;
+    }
+    .btn-lg {
+        padding: 0.8rem 1.6rem;
+        font-size: 0.95rem;
+    }
+}
